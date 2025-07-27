@@ -32,7 +32,7 @@
             <Color x:Key="SystemListLowColor">#19000000</Color>
             <Color x:Key="SystemListMediumColor">#33000000</Color>
             <Color x:Key="SystemErrorTextColor">#C50500</Color>
-            <Color x:Key="SystemRegionColor">#EEEEEE</Color>
+            <Color x:Key="SystemRegionColor">#DDDDDD</Color>
             <Color x:Key="SystemRevealListLowColor">#17000000</Color>
             <Color x:Key="SystemRevealListMediumColor">#2E000000</Color>
         </ResourceDictionary>
@@ -66,7 +66,7 @@
             <Color x:Key="SystemListMediumColor">#33FFFFFF</Color>
             <Color x:Key="SystemErrorTextColor">#FFF000</Color>
             <!--  Main background color  -->
-            <Color x:Key="SystemRegionColor">#252525</Color>
+            <Color x:Key="SystemRegionColor">#171717</Color>
             <Color x:Key="SystemRevealListLowColor">#18FFFFFF</Color>
             <Color x:Key="SystemRevealListMediumColor">#30FFFFFF</Color>
         </ResourceDictionary>
