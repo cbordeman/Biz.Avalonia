@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Avalonia.Data.Converters;
+using System.Globalization;
 
 namespace Biz.Theme.Converters;
 
@@ -13,7 +11,7 @@ public class TreeViewItemIndentConverter : IMultiValueConverter
     {
         if (values.Count > 1 && values[0] is int level && values[1] is double indent)
         {
-            return new Thickness(indent * level, 0, 0, 0);
+            return new Thickness(left: indent * level, 0, 0, 0);
         }
 
         return new Thickness(0);
