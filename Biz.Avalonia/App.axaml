@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avalonia="clr-namespace:Biz.Avalonia"
     xmlns:local="using:Biz.Avalonia"
-	xmlns:theme="using:Biz.Theme"
+    xmlns:theme="using:Biz.Theme"
     RequestedThemeVariant="Default">
 
     <Application.DataTemplates>
@@ -13,137 +13,7 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <!--  Light Theme Colors  -->
-                <ResourceDictionary x:Key="Light">
-                    <!--  App Custom Colors  -->
-                    <SolidColorBrush x:Key="AppBackgroundBrush">#DDDDDD</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppForegroundBrush">#202020</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppAccentBrush">#0078D4</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppSecondaryBackgroundBrush">#F3F2F1</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppBorderBrush">#E1DFDD</SolidColorBrush>
-
-                    <!--  System Colors  -->
-                    <SolidColorBrush x:Key="SystemAccentColorBrush">#0078D4</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorLight1Brush">#106EBE</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorLight2Brush">#005A9E</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorLight3Brush">#004578</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorDark1Brush">#2B88D8</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorDark2Brush">#7BB4F5</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorDark3Brush">#C7E0F4</SolidColorBrush>
-
-                    <!--  Background Colors  -->
-                    <SolidColorBrush x:Key="SystemBackgroundBrush">#DDDDDD</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemBackgroundSecondaryBrush">#D3D2D1</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemBackgroundTertiaryBrush">#CCCCCC</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemBackgroundQuarternaryBrush">#C3C2C1</SolidColorBrush>
-
-                    <!--  Text Colors  -->
-                    <SolidColorBrush x:Key="SystemForegroundBrush">#101010</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemForegroundSecondaryBrush">#2B2B2B</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemForegroundTertiaryBrush">#3A3A3A</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemForegroundQuarternaryBrush">#515151</SolidColorBrush>
-
-                    <!--  Control Colors  -->
-                    <SolidColorBrush x:Key="ControlBackgroundBrush">#DDDDDD</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBackgroundSecondaryBrush">#C3C2C1</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBackgroundTertiaryBrush">#BBBBBB</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBackgroundDisabledBrush">#A3A2A1</SolidColorBrush>
-
-                    <SolidColorBrush x:Key="ControlForegroundBrush">#101010</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlForegroundSecondaryBrush">#2B2B2B</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlForegroundTertiaryBrush">#3A3A3A</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlForegroundDisabledBrush">#515151</SolidColorBrush>
-
-                    <!--  Border Colors  -->
-                    <SolidColorBrush x:Key="ControlBorderBrush">#AFAEAC</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBorderSecondaryBrush">#9F9D9C</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBorderDisabledBrush">#767675</SolidColorBrush>
-
-                    <!--  Chrome Colors  -->
-                    <SolidColorBrush x:Key="SystemChromeMediumBrush">#CCCCCC</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeMediumLowBrush">#E5E5E5</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeLowBrush">#F2F2F2</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeHighBrush">#767676</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackMediumLowBrush">#CCCCCC</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackMediumBrush">#767676</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackHighBrush">#4C4C4C</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteMediumBrush">#F2F2F2</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteMediumLowBrush">#E5E5E5</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteLowBrush">#CCCCCC</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayBrush">#767676</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayMediumBrush">#CCCCCC</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayMediumLowBrush">#E5E5E5</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayLowBrush">#F2F2F2</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackLowBrush">#F2F2F2</SolidColorBrush>
-                </ResourceDictionary>
-
-                <!--  Dark Theme Colors  -->
-                <ResourceDictionary x:Key="Dark">
-                    <!--  App Custom Colors  -->
-                    <SolidColorBrush x:Key="AppBackgroundBrush">#171717</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppForegroundBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppAccentBrush">#4AC376</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppSecondaryBackgroundBrush">#1E1E1E</SolidColorBrush>
-                    <SolidColorBrush x:Key="AppBorderBrush">#404040</SolidColorBrush>
-
-                    <!--  System Colors  -->
-                    <SolidColorBrush x:Key="SystemAccentColorBrush">#60CDFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorLight1Brush">#7BD4FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorLight2Brush">#96DBFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorLight3Brush">#B1E2FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorDark1Brush">#4BC2FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorDark2Brush">#36B7FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemAccentColorDark3Brush">#21ACFF</SolidColorBrush>
-
-                    <!--  Background Colors  -->
-                    <SolidColorBrush x:Key="SystemBackgroundBrush">#171717</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemBackgroundSecondaryBrush">#1E1E1E</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemBackgroundTertiaryBrush">#2D2D2D</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemBackgroundQuarternaryBrush">#3C3C3C</SolidColorBrush>
-
-                    <!--  Text Colors  -->
-                    <SolidColorBrush x:Key="SystemForegroundBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemForegroundSecondaryBrush">#E1E1E1</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemForegroundTertiaryBrush">#C8C8C8</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemForegroundQuarternaryBrush">#AFAFAF</SolidColorBrush>
-
-                    <!--  Control Colors  -->
-                    <SolidColorBrush x:Key="ControlBackgroundBrush">#444444</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBackgroundSecondaryBrush">#2D2D2D</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBackgroundTertiaryBrush">#3C3C3C</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBackgroundDisabledBrush">#2D2D2D</SolidColorBrush>
-
-                    <SolidColorBrush x:Key="ControlForegroundBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlForegroundSecondaryBrush">#E1E1E1</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlForegroundTertiaryBrush">#C8C8C8</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlForegroundDisabledBrush">#AFAFAF</SolidColorBrush>
-
-                    <!--  Border Colors  -->
-                    <SolidColorBrush x:Key="ControlBorderBrush">#404040</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBorderSecondaryBrush">#505050</SolidColorBrush>
-                    <SolidColorBrush x:Key="ControlBorderDisabledBrush">#2D2D2D</SolidColorBrush>
-
-                    <!--  Chrome Colors  -->
-                    <SolidColorBrush x:Key="SystemChromeMediumBrush">#404040</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeMediumLowBrush">#2D2D2D</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeLowBrush">#1E1E1E</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeHighBrush">#606060</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackMediumLowBrush">#404040</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackMediumBrush">#606060</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackHighBrush">#808080</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteBrush">#171717</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteMediumBrush">#1E1E1E</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteMediumLowBrush">#2D2D2D</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeWhiteLowBrush">#404040</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayBrush">#606060</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayMediumBrush">#404040</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayMediumLowBrush">#2D2D2D</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeGrayLowBrush">#1E1E1E</SolidColorBrush>
-                    <SolidColorBrush x:Key="SystemChromeBlackLowBrush">#1E1E1E</SolidColorBrush>
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary.ThemeDictionaries />
         </ResourceDictionary>
     </Application.Resources>
 
