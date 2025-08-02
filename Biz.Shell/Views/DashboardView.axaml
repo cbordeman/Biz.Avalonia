@@ -38,7 +38,7 @@
                 VerticalAlignment="Center"
                 ItemsSource="{Binding ThemeStyles}"
                 SelectedItem="{Binding ThemeSelected}">
-                <!--  SelectedIndex="{Binding ThemeSelectedIndex}" >  -->
+
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="x:String">
                         <TextBlock Text="{Binding TargetNullValue=Unset}" />
