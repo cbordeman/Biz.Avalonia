@@ -4,10 +4,10 @@ namespace Avalonia.Themes.Fluent;
 
 public partial class ColorPaletteResources
 {
-    private bool _hasAccentColor;
-    private Color _accentColor;
-    private Color _accentColorDark1, _accentColorDark2, _accentColorDark3;
-    private Color _accentColorLight1, _accentColorLight2, _accentColorLight3;
+    private bool hasAccentColor;
+    private Color accentColor;
+    private Color accentColorDark1, accentColorDark2, accentColorDark3;
+    private Color accentColorLight1, accentColorLight2, accentColorLight3;
 
     public static readonly DirectProperty<ColorPaletteResources, Color> AccentProperty
         = AvaloniaProperty.RegisterDirect<ColorPaletteResources, Color>(nameof(Accent), r => r.Accent, (r, v) => r.Accent = v);
@@ -17,8 +17,8 @@ public partial class ColorPaletteResources
     /// </summary>
     public Color Accent
     {
-        get => _accentColor;
-        set => SetAndRaise(AccentProperty, ref _accentColor, value);
+        get => accentColor;
+        set => SetAndRaise(AccentProperty, ref accentColor, value);
     }
 
     /// <summary>

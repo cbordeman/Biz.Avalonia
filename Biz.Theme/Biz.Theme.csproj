@@ -12,7 +12,4 @@
 	<ItemGroup>
 		<AvaloniaResource Include="**/*.xaml" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Avalonia.Themes.Fluent" />
-	</ItemGroup>
 </Project>

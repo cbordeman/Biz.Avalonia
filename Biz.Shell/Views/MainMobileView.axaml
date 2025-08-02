@@ -1,0 +1,59 @@
+<UserControl
+    x:Class="Biz.Shell.Views.MainMobileView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:regions="http://prismlibrary.com/"
+    xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainMobileViewModel"
+    mc:Ignorable="d">
+
+    <Grid>
+        <TextBlock>XXXXXXXXXXXXX</TextBlock>
+        <!--  ~1~  Phone Layout  @1@  -->
+        <!--  <StackPanel  -->
+        <!--  Name="PhoneLayout"  -->
+        <!--  IsVisible="true"  -->
+        <!--  Orientation="Vertical">  -->
+        <!--     <ContentControl regions:RegionManager.RegionName="HamburgerMenuRegion" /> -->
+        <!--     <ContentControl regions:RegionManager.RegionName="MainContentRegion" /> -->
+        <!--  ~1~  Bottom Tab Bar  @1@  -->
+        <!--     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"> -->
+        <!--  ~1~  Tabs with icon + label  @1@  -->
+        <!--     </StackPanel> -->
+        <!--     <ContentControl regions:RegionManager.RegionName="FooterRegion" /> -->
+        <!-- </StackPanel> -->
+    </Grid>
+</UserControl>
+
+
+<!--  <UserControl  -->
+<!--  x:Class="Biz.Avalonia.Views.MainView"  -->
+<!--  xmlns="https://github.com/avaloniaui"  -->
+<!--  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  -->
+<!--  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  -->
+<!--  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  -->
+<!--  xmlns:vm="clr-namespace:Biz.Avalonia.ViewModels"  -->
+<!--  d:DesignHeight="450"  -->
+<!--  d:DesignWidth="800"  -->
+<!--  x:DataType="vm:MainViewModel"  -->
+<!--  mc:Ignorable="d">  -->
+<!--     <Design.DataContext> -->
+<!--         <vm:MainViewModel /> -->
+<!--     </Design.DataContext> -->
+<!--    -->
+<!--     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"> -->
+<!--         <TextBlock HorizontalAlignment="Center" Text="{Binding Greeting}" /> -->
+<!--  <StackPanel  -->
+<!--  Margin="0,10,0,0"  -->
+<!--  HorizontalAlignment="Center"  -->
+<!--  Orientation="Horizontal">  -->
+<!--             <Label>Enter some text:</Label> -->
+<!--             <TextBox Width="90" /> -->
+<!--         </StackPanel> -->
+<!--         <Button Margin="0,20,0,0" HorizontalAlignment="Center">Click Me!</Button> -->
+<!--     </StackPanel> -->
+<!-- </UserControl> -->

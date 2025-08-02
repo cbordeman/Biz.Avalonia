@@ -10,12 +10,12 @@ namespace Biz.Theme;
 
 internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDictionary<ThemeVariant, ColorPaletteResources>
 {
-    private readonly AvaloniaDictionary<ThemeVariant, ColorPaletteResources> _inner;
+    private readonly AvaloniaDictionary<ThemeVariant, ColorPaletteResources> inner;
 
     public ColorPaletteResourcesCollection()
     {
-        _inner = new AvaloniaDictionary<ThemeVariant, ColorPaletteResources>(2);
-        _inner.ForEachItem(
+        inner = new AvaloniaDictionary<ThemeVariant, ColorPaletteResources>(2);
+        inner.ForEachItem(
             (key, x) =>
             {
                 if (Owner is not null)
@@ -26,7 +26,7 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
                 if (key != ThemeVariant.Dark && key != ThemeVariant.Light)
                 {
                     throw new InvalidOperationException(
-                        $"{nameof(FluentTheme)}.{nameof(FluentTheme.Palettes)} only supports Light and Dark variants.");
+                        $"{nameof(BizTheme)}.{nameof(BizTheme.Palettes)} only supports Light and Dark variants.");
                 }
             },
             (_, x) =>
@@ -39,7 +39,7 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
             () => throw new NotSupportedException("Dictionary reset not supported"));
     }
 
-    public override bool HasResources => _inner.Count > 0;
+    public override bool HasResources => inner.Count > 0;
     public override bool TryGetResource(object key, ThemeVariant theme, out object value)
     {
         if (theme == null || theme == ThemeVariant.Default)
@@ -47,7 +47,7 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
             theme = ThemeVariant.Light;
         }
 
-        if (_inner.TryGetValue(theme, out var themePaletteResources)
+        if (inner.TryGetValue(theme, out var themePaletteResources)
             && themePaletteResources.TryGetResource(key, theme, out value))
         {
             return true;
@@ -60,7 +60,7 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
     protected override void OnAddOwner(IResourceHost owner)
     {
         base.OnAddOwner(owner);
-        foreach (var palette in _inner.Values)
+        foreach (var palette in inner.Values)
         {
             ((IResourceProvider)palette).AddOwner(owner);
         }
@@ -69,7 +69,7 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
     protected override void OnRemoveOwner(IResourceHost owner)
     {
         base.OnRemoveOwner(owner);
-        foreach (var palette in _inner.Values)
+        foreach (var palette in inner.Values)
         {
             ((IResourceProvider)palette).RemoveOwner(owner);
         }
@@ -77,56 +77,56 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
 
     IEnumerator<KeyValuePair<ThemeVariant, ColorPaletteResources>> IEnumerable<KeyValuePair<ThemeVariant, ColorPaletteResources>>.GetEnumerator()
     {
-        return _inner.GetEnumerator();
+        return inner.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return ((IEnumerable)_inner).GetEnumerator();
+        return ((IEnumerable)inner).GetEnumerator();
     }
 
     void ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.Add(KeyValuePair<ThemeVariant, ColorPaletteResources> item)
     {
-        ((ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>)_inner).Add(item);
+        ((ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>)inner).Add(item);
     }
 
     void ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.Clear()
     {
-        _inner.Clear();
+        inner.Clear();
     }
 
     bool ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.Contains(KeyValuePair<ThemeVariant, ColorPaletteResources> item)
     {
-        return ((ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>)_inner).Contains(item);
+        return ((ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>)inner).Contains(item);
     }
 
     void ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.CopyTo(KeyValuePair<ThemeVariant, ColorPaletteResources>[] array, int arrayIndex)
     {
-        _inner.CopyTo(array, arrayIndex);
+        inner.CopyTo(array, arrayIndex);
     }
 
     bool ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.Remove(KeyValuePair<ThemeVariant, ColorPaletteResources> item)
     {
-        return ((ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>)_inner).Remove(item);
+        return ((ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>)inner).Remove(item);
     }
 
-    int ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.Count => _inner.Count;
+    int ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.Count => inner.Count;
 
-    bool ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.IsReadOnly => _inner.IsReadOnly;
+    bool ICollection<KeyValuePair<ThemeVariant, ColorPaletteResources>>.IsReadOnly => inner.IsReadOnly;
 
     void IDictionary<ThemeVariant, ColorPaletteResources>.Add(ThemeVariant key, ColorPaletteResources value)
     {
-        _inner.Add(key, value);
+        inner.Add(key, value);
     }
 
     bool IDictionary<ThemeVariant, ColorPaletteResources>.ContainsKey(ThemeVariant key)
     {
-        return _inner.ContainsKey(key);
+        return inner.ContainsKey(key);
     }
 
     bool IDictionary<ThemeVariant, ColorPaletteResources>.Remove(ThemeVariant key)
     {
-        return _inner.Remove(key);
+        return inner.Remove(key);
     }
 
     bool IDictionary<ThemeVariant, ColorPaletteResources>.TryGetValue(ThemeVariant key,
@@ -135,16 +135,16 @@ internal sealed class ColorPaletteResourcesCollection : ResourceProvider, IDicti
 #endif
         out ColorPaletteResources value)
     {
-        return _inner.TryGetValue(key, out value);
+        return inner.TryGetValue(key, out value);
     }
 
     ColorPaletteResources IDictionary<ThemeVariant, ColorPaletteResources>.this[ThemeVariant key]
     {
-        get => _inner[key];
-        set => _inner[key] = value;
+        get => inner[key];
+        set => inner[key] = value;
     }
 
-    ICollection<ThemeVariant> IDictionary<ThemeVariant, ColorPaletteResources>.Keys => _inner.Keys;
+    ICollection<ThemeVariant> IDictionary<ThemeVariant, ColorPaletteResources>.Keys => inner.Keys;
 
-    ICollection<ColorPaletteResources> IDictionary<ThemeVariant, ColorPaletteResources>.Values => _inner.Values;
+    ICollection<ColorPaletteResources> IDictionary<ThemeVariant, ColorPaletteResources>.Values => inner.Values;
 }

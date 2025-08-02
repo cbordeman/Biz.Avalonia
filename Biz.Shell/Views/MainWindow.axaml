@@ -1,0 +1,82 @@
+﻿<Window
+    x:Class="Biz.Shell.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
+    xmlns:vm="clr-namespace:Biz.Shell.ViewModels;assembly=Biz.Shell"
+    Title="{Binding Title}"
+    Width="700"
+    Height="500"
+    d:DesignHeight="500"
+    d:DesignWidth="700"
+    x:CompileBindings="True"
+    x:DataType="vm:MainWindowViewModel"
+    Background="Transparent"
+    Icon="/Assets/logo.ico"
+    TransparencyLevelHint="AcrylicBlur"
+    mc:Ignorable="d">
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="true">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    MaterialOpacity="0.65"
+                    TintOpacity="1" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="*,150,Auto">
+            <!--  Sidebar  -->
+            <Panel Grid.Row="0" Grid.Column="0">
+                <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.SidebarRegion}" />
+            </Panel>
+
+            <!--  Main Content  -->
+            <ContentControl
+                Grid.Row="0"
+                Grid.Column="1"
+                prism:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}" />
+
+            <!--  Footer  -->
+            <Panel
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.FooterRegion}" />
+            </Panel>
+
+            <GridSplitter
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Height="3"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                BorderThickness="1" />
+
+
+            <Panel
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <StackPanel
+                    Margin="5"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <TextBlock FontWeight="Bold" Text="User Name: " />
+                    <TextBlock FontStyle="Italic" Text="PrismAvalonia!" />
+
+                    <TextBlock FontWeight="Bold" Text="Status:" />
+                    <TextBlock Text="Disconnected" />
+
+                    <TextBlock FontWeight="Bold" Text="Connection Id: " />
+                    <TextBlock FontStyle="Italic" Text="0x07CC" />
+                </StackPanel>
+            </Panel>
+
+        </Grid>
+    </Panel>
+</Window>

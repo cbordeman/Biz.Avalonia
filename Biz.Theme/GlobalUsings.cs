@@ -6,3 +6,5 @@ global using Avalonia.Themes.Fluent;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
+global using Avalonia.Data.Converters;
+global using System.Globalization;

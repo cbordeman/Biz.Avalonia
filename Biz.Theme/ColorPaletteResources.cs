@@ -16,9 +16,9 @@ namespace Avalonia.Themes.Fluent;
 /// </remarks>
 public partial class ColorPaletteResources : ResourceProvider
 {
-    private readonly Dictionary<string, Color> _colors = new(StringComparer.InvariantCulture);
+    private readonly Dictionary<string, Color> colors = new(StringComparer.InvariantCulture);
 
-    public override bool HasResources => _hasAccentColor || _colors.Count > 0;
+    public override bool HasResources => hasAccentColor || colors.Count > 0;
 
     public override bool TryGetResource(object key, ThemeVariant? theme, out object? value)
     {
@@ -26,47 +26,47 @@ public partial class ColorPaletteResources : ResourceProvider
         {
             if (strKey.Equals(SystemAccentColors.AccentKey, StringComparison.InvariantCulture))
             {
-                value = _accentColor;
-                return _hasAccentColor;
+                value = accentColor;
+                return hasAccentColor;
             }
 
             if (strKey.Equals(SystemAccentColors.AccentDark1Key, StringComparison.InvariantCulture))
             {
-                value = _accentColorDark1;
-                return _hasAccentColor;
+                value = accentColorDark1;
+                return hasAccentColor;
             }
 
             if (strKey.Equals(SystemAccentColors.AccentDark2Key, StringComparison.InvariantCulture))
             {
-                value = _accentColorDark2;
-                return _hasAccentColor;
+                value = accentColorDark2;
+                return hasAccentColor;
             }
 
             if (strKey.Equals(SystemAccentColors.AccentDark3Key, StringComparison.InvariantCulture))
             {
-                value = _accentColorDark3;
-                return _hasAccentColor;
+                value = accentColorDark3;
+                return hasAccentColor;
             }
 
             if (strKey.Equals(SystemAccentColors.AccentLight1Key, StringComparison.InvariantCulture))
             {
-                value = _accentColorLight1;
-                return _hasAccentColor;
+                value = accentColorLight1;
+                return hasAccentColor;
             }
 
             if (strKey.Equals(SystemAccentColors.AccentLight2Key, StringComparison.InvariantCulture))
             {
-                value = _accentColorLight2;
-                return _hasAccentColor;
+                value = accentColorLight2;
+                return hasAccentColor;
             }
 
             if (strKey.Equals(SystemAccentColors.AccentLight3Key, StringComparison.InvariantCulture))
             {
-                value = _accentColorLight3;
-                return _hasAccentColor;
+                value = accentColorLight3;
+                return hasAccentColor;
             }
 
-            if (_colors.TryGetValue(strKey, out var color))
+            if (colors.TryGetValue(strKey, out var color))
             {
                 value = color;
                 return true;
@@ -79,7 +79,7 @@ public partial class ColorPaletteResources : ResourceProvider
 
     private Color GetColor(string key)
     {
-        if (_colors.TryGetValue(key, out var color))
+        if (colors.TryGetValue(key, out var color))
         {
             return color;
         }
@@ -91,11 +91,11 @@ public partial class ColorPaletteResources : ResourceProvider
     {
         if (value == default)
         {
-            _colors.Remove(key);
+            colors.Remove(key);
         }
         else
         {
-            _colors[key] = value;
+            colors[key] = value;
         }
     }
 
@@ -105,13 +105,13 @@ public partial class ColorPaletteResources : ResourceProvider
 
         if (change.Property == AccentProperty)
         {
-            _hasAccentColor = _accentColor != default;
+            hasAccentColor = accentColor != default;
 
-            if (_hasAccentColor)
+            if (hasAccentColor)
             {
-                (_accentColorDark1, _accentColorDark2, _accentColorDark3,
-                        _accentColorLight1, _accentColorLight2, _accentColorLight3) =
-                    SystemAccentColors.CalculateAccentShades(_accentColor);
+                (accentColorDark1, accentColorDark2, accentColorDark3,
+                        accentColorLight1, accentColorLight2, accentColorLight3) =
+                    SystemAccentColors.CalculateAccentShades(accentColor);
             }
             RaiseResourcesChanged();
         }

@@ -11,8 +11,8 @@ public enum DensityStyle
 /// </summary>
 public class BizTheme : Styles, IResourceNode
 {
-    private readonly ResourceDictionary _compactStyles;
-    private DensityStyle _densityStyle;
+    private readonly ResourceDictionary compactStyles;
+    private DensityStyle densityStyle;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BizTheme"/> class.
@@ -22,7 +22,7 @@ public class BizTheme : Styles, IResourceNode
     { 
         AvaloniaXamlLoader.Load(sp, this);
 
-        _compactStyles = (ResourceDictionary)GetAndRemove("CompactStyles");
+        compactStyles = (ResourceDictionary)GetAndRemove("CompactStyles");
 
         Palettes = Resources.MergedDictionaries.OfType<ColorPaletteResourcesCollection>().FirstOrDefault()
             ?? throw new InvalidOperationException("BizTheme was initialized with missing ColorPaletteResourcesCollection.");
@@ -44,8 +44,8 @@ public class BizTheme : Styles, IResourceNode
     /// </summary>
     public DensityStyle DensityStyle
     {
-        get => _densityStyle;
-        set => SetAndRaise(DensityStyleProperty, ref _densityStyle, value);
+        get => densityStyle;
+        set => SetAndRaise(DensityStyleProperty, ref densityStyle, value);
     }
 
     public IDictionary<ThemeVariant, ColorPaletteResources> Palettes { get; }
@@ -63,8 +63,8 @@ public class BizTheme : Styles, IResourceNode
     bool IResourceNode.TryGetResource(object key, ThemeVariant theme, out object value)
     {
         // DensityStyle dictionary should be checked first
-        if (_densityStyle == DensityStyle.Compact
-            && _compactStyles.TryGetResource(key, theme, out value))
+        if (densityStyle == DensityStyle.Compact
+            && compactStyles.TryGetResource(key, theme, out value))
         {
             return true;
         }

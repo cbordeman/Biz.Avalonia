@@ -1,0 +1,25 @@
+<dryIoc:PrismApplication
+    x:Class="Biz.Shell.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avalonia="clr-namespace:Biz.Shell"
+    xmlns:dryIoc="http://prismlibrary.com/"
+    xmlns:local="using:Biz.Shell"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:theme="using:Biz.Theme"
+    RequestedThemeVariant="Default">
+
+    <Application.DataTemplates>
+        <avalonia:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries />
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <theme:BizTheme DensityStyle="Compact" />
+    </Application.Styles>
+</dryIoc:PrismApplication>

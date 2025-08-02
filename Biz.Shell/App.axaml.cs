@@ -1,0 +1,96 @@
+using System;
+using Biz.Shell.Infrastructure;
+using Biz.Shell.Services;
+using Biz.Shell.ViewModels;
+using Biz.Shell.Views;
+
+namespace Biz.Shell;
+
+public partial class App : PrismApplication
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+        base.Initialize();
+    }
+
+    protected override AvaloniaObject CreateShell()
+    {
+        switch (ApplicationLifetime)
+        {
+            case IClassicDesktopStyleApplicationLifetime desktop:
+                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+                DisableAvaloniaDataAnnotationValidation();
+                return Container.Resolve<MainWindow>();
+            case ISingleViewApplicationLifetime singleViewPlatform:
+                return Container.Resolve<MainMobileView>();
+            default:
+                throw new System.InvalidOperationException("Unsupported application lifetime.");
+        }
+    }
+
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
+    {
+        containerRegistry.Register<MainWindow>();
+        containerRegistry.Register<MainWindowViewModel>();
+        containerRegistry.Register<MainMobileView>();
+        containerRegistry.Register<MainMobileViewModel>();
+        
+        Debug.WriteLine("RegisterTypes()");
+
+        // Note:
+        // SidebarView isn't listed, note we're using `AutoWireViewModel` in the View's AXAML.
+        // See the line, `prism:ViewModelLocator.AutoWireViewModel="True"`
+
+        // Services
+        containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
+        containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
+
+        // Views - Region Navigation
+        containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
+        containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
+        containerRegistry.RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
+
+        // Dialogs, etc.
+    }
+
+    private void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // remove each entry found
+        foreach (var plugin in dataValidationPluginsToRemove)
+        {
+            BindingPlugins.DataValidators.Remove(plugin);
+        }
+    }
+    
+    protected override void OnInitialized()
+    {
+        Debug.WriteLine("OnInitialized()");
+
+        // Register Views to the Region it will appear in. Don't register them in the ViewModel.
+        var regionManager = Container.Resolve<IRegionManager>();
+
+        // WARNING: Prism v11.0.0-prev4
+        // - DataTemplates MUST define a DataType or else an XAML error will be thrown
+        // - Error: DataTemplate inside of DataTemplates must have a DataType set
+        regionManager.RegisterViewWithRegion(RegionNames.MainContentRegion, typeof(DashboardView));
+        regionManager.RegisterViewWithRegion(RegionNames.SidebarRegion, typeof(SidebarView));
+
+        ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
+        ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
+    }
+
+    /// <summary>Custom region adapter mappings.</summary>
+    /// <param name="regionAdapterMappings">Region Adapters.</param>
+    protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+    {
+        Debug.WriteLine("ConfigureRegionAdapterMappings()");
+        regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
+        regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
+    }
+}

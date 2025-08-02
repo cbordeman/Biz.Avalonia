@@ -16,11 +16,11 @@ internal sealed class SystemAccentColors : ResourceProvider
     public const string AccentLight2Key = "SystemAccentColorLight2";
     public const string AccentLight3Key = "SystemAccentColorLight3";
     
-    private static readonly Color s_defaultSystemAccentColor = Color.FromRgb(0, 120, 215);
-    private bool _invalidateColors = true;
-    private Color _systemAccentColor;
-    private Color _systemAccentColorDark1, _systemAccentColorDark2, _systemAccentColorDark3;
-    private Color _systemAccentColorLight1, _systemAccentColorLight2, _systemAccentColorLight3;
+    private static readonly Color SDefaultSystemAccentColor = Color.FromRgb(0, 120, 215);
+    private bool invalidateColors = true;
+    private Color systemAccentColor;
+    private Color systemAccentColorDark1, systemAccentColorDark2, systemAccentColorDark3;
+    private Color systemAccentColorLight1, systemAccentColorLight2, systemAccentColorLight3;
 
     public override bool HasResources => true;
     public override bool TryGetResource(object key, ThemeVariant theme, out object value)
@@ -30,49 +30,49 @@ internal sealed class SystemAccentColors : ResourceProvider
             if (strKey.Equals(AccentKey, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColor;
+                value = systemAccentColor;
                 return true;
             }
 
             if (strKey.Equals(AccentDark1Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColorDark1;
+                value = systemAccentColorDark1;
                 return true;
             }
 
             if (strKey.Equals(AccentDark2Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColorDark2;
+                value = systemAccentColorDark2;
                 return true;
             }
 
             if (strKey.Equals(AccentDark3Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColorDark3;
+                value = systemAccentColorDark3;
                 return true;
             }
 
             if (strKey.Equals(AccentLight1Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColorLight1;
+                value = systemAccentColorLight1;
                 return true;
             }
 
             if (strKey.Equals(AccentLight2Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColorLight2;
+                value = systemAccentColorLight2;
                 return true;
             }
 
             if (strKey.Equals(AccentLight3Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = _systemAccentColorLight3;
+                value = systemAccentColorLight3;
                 return true;
             }
         }
@@ -88,7 +88,7 @@ internal sealed class SystemAccentColors : ResourceProvider
             platformSettings.ColorValuesChanged += PlatformSettingsOnColorValuesChanged;
         }
 
-        _invalidateColors = true;
+        invalidateColors = true;
     }
 
     protected override void OnRemoveOwner(IResourceHost owner)
@@ -98,20 +98,20 @@ internal sealed class SystemAccentColors : ResourceProvider
             platformSettings.ColorValuesChanged -= PlatformSettingsOnColorValuesChanged;
         }
 
-        _invalidateColors = true;
+        invalidateColors = true;
     }
 
     private void EnsureColors()
     {
-        if (_invalidateColors)
+        if (invalidateColors)
         {
-            _invalidateColors = false;
+            invalidateColors = false;
 
             var platformSettings = GetFromOwner(Owner);
             
-            _systemAccentColor = platformSettings?.GetColorValues().AccentColor1 ?? s_defaultSystemAccentColor;
-            (_systemAccentColorDark1,_systemAccentColorDark2, _systemAccentColorDark3,
-                    _systemAccentColorLight1, _systemAccentColorLight2, _systemAccentColorLight3) = CalculateAccentShades(_systemAccentColor);
+            systemAccentColor = platformSettings?.GetColorValues().AccentColor1 ?? SDefaultSystemAccentColor;
+            (systemAccentColorDark1,systemAccentColorDark2, systemAccentColorDark3,
+                    systemAccentColorLight1, systemAccentColorLight2, systemAccentColorLight3) = CalculateAccentShades(systemAccentColor);
         }
     }
 
@@ -128,32 +128,32 @@ internal sealed class SystemAccentColors : ResourceProvider
     public static (Color d1, Color d2, Color d3, Color l1, Color l2, Color l3) CalculateAccentShades(Color accentColor)
     {
         // dark1step = (hslAccent.L - SystemAccentColorDark1.L) * 255
-        const double dark1step = 28.5 / 255d;
-        const double dark2step = 49 / 255d;
-        const double dark3step = 74.5 / 255d;
+        const double dark1Step = 28.5 / 255d;
+        const double dark2Step = 49 / 255d;
+        const double dark3Step = 74.5 / 255d;
         // light1step = (SystemAccentColorLight1.L - hslAccent.L) * 255
-        const double light1step = 39 / 255d;
-        const double light2step = 70 / 255d;
-        const double light3step = 103 / 255d;
+        const double light1Step = 39 / 255d;
+        const double light2Step = 70 / 255d;
+        const double light3Step = 103 / 255d;
         
         var hslAccent = accentColor.ToHsl();
 
         return (
             // Darker shades
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark1step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark2step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark3step).ToRgb(),
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark1Step).ToRgb(),
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark2Step).ToRgb(),
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark3Step).ToRgb(),
 
             // Lighter shades
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light1step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light2step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light3step).ToRgb()
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light1Step).ToRgb(),
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light2Step).ToRgb(),
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light3Step).ToRgb()
         );
     }
     
     private void PlatformSettingsOnColorValuesChanged(object sender, PlatformColorValues e)
     {
-        _invalidateColors = true;
+        invalidateColors = true;
         Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
     }
 }
