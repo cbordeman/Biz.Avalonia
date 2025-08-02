@@ -52,7 +52,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
         containerRegistry.RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
 
-        // Dialogs, etc.
+        // Dialogs, etc. 
     }
 
     private void DisableAvaloniaDataAnnotationValidation()
