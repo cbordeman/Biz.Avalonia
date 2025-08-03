@@ -22,11 +22,13 @@
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" />
     <PackageReference Include="CommunityToolkit.HighPerformance" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Prism.Avalonia" />
     <PackageReference Include="Prism.DryIoc.Avalonia" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Biz.Shell.Core\Biz.Shell.Core.csproj" />
     <ProjectReference Include="..\Biz.Theme\Biz.Theme.csproj" />
   </ItemGroup>
 

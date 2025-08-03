@@ -1,13 +1,7 @@
 ﻿using Avalonia.Controls;
+using Biz.Shell.Core.Services;
 
 namespace Biz.Shell.Services;
-
-public interface IFormFactorService
-{
-    FormFactor CurrentFormFactor { get; }
-    event FormFactorService.Notify? Changed;
-    void NotifyWidthChanged(double width);
-}
 
 public class FormFactorService : BindableBase, IFormFactorService
 {
@@ -18,7 +12,6 @@ public class FormFactorService : BindableBase, IFormFactorService
     
     public FormFactor CurrentFormFactor { get; private set; }
 
-    public delegate void Notify();
     public event Notify? Changed;
     
     public void NotifyWidthChanged(double width)
@@ -48,4 +41,3 @@ public class FormFactorService : BindableBase, IFormFactorService
     }
 }
 
-public enum FormFactor { NotSet, Phone, Tablet, Desktop }

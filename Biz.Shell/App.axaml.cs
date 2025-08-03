@@ -1,4 +1,5 @@
 using System;
+using Biz.Shell.Core.Services;
 
 namespace Biz.Shell;
 
@@ -32,10 +33,12 @@ public partial class App : PrismApplication
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        containerRegistry.Register<MainWindow>();
-        containerRegistry.Register<MainWindowViewModel>();
-        containerRegistry.Register<MainSmallView>();
-        containerRegistry.Register<MainSmallViewModel>();
+        // containerRegistry.Register<MainWindow>();
+        // containerRegistry.Register<MainWindowViewModel>();
+        // containerRegistry.Register<MainLargeView>();
+        // containerRegistry.Register<MainLargeViewModel>();
+        // containerRegistry.Register<MainSmallView>();
+        // containerRegistry.Register<MainSmallViewModel>();
 
         Debug.WriteLine("RegisterTypes()");
 
@@ -48,6 +51,9 @@ public partial class App : PrismApplication
         containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
 
         // Views - Region Navigation
+        // containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
+        // containerRegistry.RegisterForNavigation<MainLargeView, MainLargeViewModel>();
+        // containerRegistry.RegisterForNavigation<MainSmallView, MainSmallViewModel>();
         containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
         containerRegistry.RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();

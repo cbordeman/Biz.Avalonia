@@ -18,4 +18,5 @@ global using DryIoc;
 global using System.Collections.Generic;
 global using System.Collections.ObjectModel;
 global using Avalonia.Styling;
+global using Biz.Shell.Core;
 global using Prism.Commands;
