@@ -4,20 +4,21 @@ namespace Biz.Shell.ViewModels
     {
         #region Main
 
-        public MainSmallViewModel? Main
+        public MainLargeViewModel? Main
         {
             get => main;
             set => SetProperty(ref main, value);
         }
 
-        MainSmallViewModel? main;
+        MainLargeViewModel? main;
 
         #endregion Main
 
-        public MainWindowViewModel(IContainer container, MainSmallViewModel mainViewModelSmall) : base(container)
+        public MainWindowViewModel(IContainer container, MainLargeViewModel mainLargeViewModel)
+            : base(container)
         {
-            Main = mainViewModelSmall;
-            Title = "Shell";
+            Main = mainLargeViewModel;
+            Title = "Shell (Window)";
         }
     }
 }
