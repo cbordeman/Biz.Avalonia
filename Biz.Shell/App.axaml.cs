@@ -1,8 +1,4 @@
 using System;
-using Biz.Shell.Infrastructure;
-using Biz.Shell.Services;
-using Biz.Shell.ViewModels;
-using Biz.Shell.Views;
 
 namespace Biz.Shell;
 
@@ -23,10 +19,14 @@ public partial class App : PrismApplication
                 // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
                 return Container.Resolve<MainWindow>();
+
             case ISingleViewApplicationLifetime singleViewPlatform:
-                return Container.Resolve<MainMobileView>();
+                // This includes browser / WASM, so we must use form factor
+                // in deciding UI elements.
+                return Container.Resolve<MainSmallView>();
+
             default:
-                throw new System.InvalidOperationException("Unsupported application lifetime.");
+                throw new InvalidOperationException("Unsupported application lifetime.");
         }
     }
 
@@ -34,9 +34,9 @@ public partial class App : PrismApplication
     {
         containerRegistry.Register<MainWindow>();
         containerRegistry.Register<MainWindowViewModel>();
-        containerRegistry.Register<MainMobileView>();
-        containerRegistry.Register<MainMobileViewModel>();
-        
+        containerRegistry.Register<MainSmallView>();
+        containerRegistry.Register<MainSmallViewModel>();
+
         Debug.WriteLine("RegisterTypes()");
 
         // Note:
@@ -67,7 +67,7 @@ public partial class App : PrismApplication
             BindingPlugins.DataValidators.Remove(plugin);
         }
     }
-    
+
     protected override void OnInitialized()
     {
         Debug.WriteLine("OnInitialized()");

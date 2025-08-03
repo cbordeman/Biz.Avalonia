@@ -29,4 +29,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Biz.Theme\Biz.Theme.csproj" />
   </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Views\MainLargeView.axaml.cs">
+            <DependentUpon>MainLargeView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+    </ItemGroup>
 </Project>

@@ -1,5 +1,3 @@
-using Biz.Shell.Services;
-
 namespace Biz.Shell.ViewModels;
 
 public class DashboardViewModel : NavigationAwareViewModelBase
@@ -8,7 +6,7 @@ public class DashboardViewModel : NavigationAwareViewModelBase
 
     int counter;
     int listItemSelected = -1;
-    ObservableCollection<string> listItems = new();
+    ObservableCollection<string> listItems = [];
     string listItemText = string.Empty;
     ThemeVariant themeSelected = ThemeVariant.Default;
 
@@ -56,9 +54,17 @@ public class DashboardViewModel : NavigationAwareViewModelBase
         }
     }
 
-    public string ListItemText { get => listItemText; set => SetProperty(ref listItemText, value); }
+    public string ListItemText
+    {
+        get => listItemText;
+        set => SetProperty(ref listItemText, value);
+    }
 
-    public ObservableCollection<string> ListItems { get => listItems; set => SetProperty(ref listItems, value); }
+    public ObservableCollection<string> ListItems
+    {
+        get => listItems;
+        set => SetProperty(ref listItems, value);
+    }
 
     public ThemeVariant ThemeSelected
     {

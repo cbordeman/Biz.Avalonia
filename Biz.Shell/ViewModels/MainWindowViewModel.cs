@@ -1,24 +1,22 @@
-using System;
-using System.Threading.Tasks;
-using Prism.Commands;
-using Prism.Navigation.Regions;
-
 namespace Biz.Shell.ViewModels
 {
     public class MainWindowViewModel : NavigationAwareViewModelBase
-    { 
+    {
         #region Main
-        public MainMobileViewModel? Main
+
+        public MainSmallViewModel? Main
         {
             get => main;
             set => SetProperty(ref main, value);
         }
-        MainMobileViewModel? main;        
+
+        MainSmallViewModel? main;
+
         #endregion Main
-        
-        public MainWindowViewModel(IContainer container, MainMobileViewModel mainViewModelMobile) : base(container)
+
+        public MainWindowViewModel(IContainer container, MainSmallViewModel mainViewModelSmall) : base(container)
         {
-            Main = mainViewModelMobile;
+            Main = mainViewModelSmall;
             Title = "Shell";
         }
     }
