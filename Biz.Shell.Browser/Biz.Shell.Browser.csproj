@@ -9,6 +9,12 @@
     <Company />
     <Product />
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>TRACE;WASM</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>TRACE;WASM</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />

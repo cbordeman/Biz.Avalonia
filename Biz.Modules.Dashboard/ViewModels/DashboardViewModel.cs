@@ -1,4 +1,4 @@
-namespace Biz.Shell.ViewModels;
+namespace Biz.Modules.Dashboard.ViewModels;
 
 public class DashboardViewModel : NavigationAwareViewModelBase
 {

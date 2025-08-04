@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="Avalonia.Controls">
+        <HintPath>..\Biz.Shell.Desktop\bin\Debug\net9.0\Avalonia.Controls.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" />
+      <PackageReference Include="Prism.Avalonia" />
+      <PackageReference Include="Prism.Container.Abstractions" />
+      <PackageReference Include="Prism.Core" />
+    </ItemGroup>
+
+</Project>

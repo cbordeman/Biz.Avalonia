@@ -1,10 +1,3 @@
-using System.Diagnostics;
-using Prism.Commands;
-using Prism.Navigation;
-using Prism.Navigation.Regions;
-using System.Collections.Generic;
-using Biz.Shell.Views;
-
 namespace Biz.Shell.ViewModels
 {
     public class SettingsViewModel : NavigationAwareViewModelBase

@@ -1,4 +1,4 @@
-﻿namespace Biz.Shell.Core;
+﻿namespace Biz.Core;
 
 public interface IInitializeAsync
 {

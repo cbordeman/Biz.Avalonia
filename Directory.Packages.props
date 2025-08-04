@@ -20,6 +20,7 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageVersion Include="Prism.Avalonia" Version="9.0.537.11130" />
     <PackageVersion Include="Prism.Container.Abstractions" Version="9.0.107" />
+    <PackageVersion Include="Prism.Core" Version="9.0.537" />
     <PackageVersion Include="Prism.DryIoc.Avalonia" Version="9.0.537.11130" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
   </ItemGroup>

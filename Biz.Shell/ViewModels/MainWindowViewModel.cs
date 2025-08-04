@@ -1,4 +1,5 @@
 using System;
+using Biz.Core.ViewModels;
 using JetBrains.Annotations;
 
 namespace Biz.Shell.ViewModels

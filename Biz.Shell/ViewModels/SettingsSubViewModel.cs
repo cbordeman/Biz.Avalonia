@@ -1,8 +1,4 @@
-using System.Diagnostics;
-using Prism.Commands;
-using Prism.Navigation.Regions;
-using System.Collections.Generic;
-using Biz.Shell.Views;
+using Biz.Modules.Dashboard.Core;
 
 namespace Biz.Shell.ViewModels;
 
@@ -24,7 +20,8 @@ public class SettingsSubViewModel : NavigationAwareViewModelBase
         if (journal != null && journal.CanGoBack)
             journal.GoBack();
         else
-            RegionManager.RequestNavigate(RegionNames.MainContentRegion, nameof(DashboardView));
+            RegionManager.RequestNavigate(RegionNames.MainContentRegion, 
+                DashboardModuleConstants.DashboardView);
     });
 
     public string? MessageText { get => messageText; set => SetProperty(ref messageText, value); }

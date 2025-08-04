@@ -1,6 +1,3 @@
-using System;
-using Biz.Shell.Core.Services;
-
 namespace Biz.Shell;
 
 public partial class App : PrismApplication
@@ -54,7 +51,6 @@ public partial class App : PrismApplication
         // containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
         // containerRegistry.RegisterForNavigation<MainLargeView, MainLargeViewModel>();
         // containerRegistry.RegisterForNavigation<MainSmallView, MainSmallViewModel>();
-        containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
         containerRegistry.RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
 
@@ -74,7 +70,8 @@ public partial class App : PrismApplication
         }
     }
 
-    protected override void OnInitialized()
+    protected override void OnInitialized
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ()
     {
         Debug.WriteLine("OnInitialized()");
 
@@ -84,7 +81,6 @@ public partial class App : PrismApplication
         // WARNING: Prism v11.0.0-prev4
         // - DataTemplates MUST define a DataType or else an XAML error will be thrown
         // - Error: DataTemplate inside of DataTemplates must have a DataType set
-        regionManager.RegisterViewWithRegion(RegionNames.MainContentRegion, typeof(DashboardView));
         regionManager.RegisterViewWithRegion(RegionNames.SidebarRegion, typeof(SidebarView));
 
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
@@ -99,4 +95,34 @@ public partial class App : PrismApplication
         regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
         regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
     }
+    
+    protected override IModuleCatalog CreateModuleCatalog()
+    {
+    protected override IModuleCatalog CreateModuleCatalog()
+    {
+        if (OperatingSystem.IsAndroid() || 
+            OperatingSystem.IsIOS() ||
+            OperatingSystem.IsBrowser())
+        {
+            var codeCatalog = new ModuleCatalog();
+            codeCatalog.AddModule(typeof(ModuleA));
+            return codeCatalog;
+        }
+        else
+        {
+            var compositeCatalog = new CompositeModuleCatalog();
+
+            // Add modules defined in code
+            var codeCatalog = new ModuleCatalog();
+            // codeCatalog.AddModule(typeof(ModuleA));
+            // codeCatalog.AddModule(typeof(ModuleB));
+            compositeCatalog.AddCatalog(codeCatalog);
+
+            // Add modules discovered from a directory
+            var directoryCatalog = new DirectoryModuleCatalog() { ModulePath = @".\Modules" };
+            compositeCatalog.AddCatalog(directoryCatalog);
+
+            return compositeCatalog;
+        }
+    }    }
 }

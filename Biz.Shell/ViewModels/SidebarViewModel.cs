@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Biz.Core.ViewModels;
 using Biz.Shell.Views;
 using Prism.Commands;
 using Prism.Navigation.Regions;
@@ -31,7 +32,7 @@ namespace Biz.Shell.ViewModels
         bool CanDashboardCommand() => true;
         Task ExecuteDashboardCommand()
         {
-            RegionManager.RequestNavigate(RegionNames.MainContentRegion, nameof(DashboardView));
+            RegionManager.RequestNavigate(RegionNames.MainContentRegion, "DashboardView");
             return Task.CompletedTask;
         }
         #endregion DashboardCommand

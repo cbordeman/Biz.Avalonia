@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Biz.Shell.ViewModels;
+﻿namespace Biz.Shell.ViewModels;
 
 public class MainSmallViewModel : NavigationAwareViewModelBase
 {

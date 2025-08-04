@@ -16,6 +16,16 @@
     <Company>Chris Bordeman</Company>
     <Product />
     <LangVersion>default</LangVersion>
+    <UserSecretsId>046c0822-6e95-4ccc-b574-9cf421936bf0</UserSecretsId>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>ANDROID</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
   </ItemGroup>
 </Project>

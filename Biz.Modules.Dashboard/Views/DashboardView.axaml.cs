@@ -1,6 +1,5 @@
-namespace Biz.Shell.Views;
+namespace Biz.Modules.Dashboard.Views;
 
-/// <summary>DashboardView.</summary>
 public partial class DashboardView : UserControl
 {
     public DashboardView()

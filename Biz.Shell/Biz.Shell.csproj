@@ -28,7 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Biz.Shell.Core\Biz.Shell.Core.csproj" />
+    <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />
+    <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
     <ProjectReference Include="..\Biz.Theme\Biz.Theme.csproj" />
   </ItemGroup>
 

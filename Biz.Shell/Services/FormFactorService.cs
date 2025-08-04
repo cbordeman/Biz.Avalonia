@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
-using Biz.Shell.Core.Services;
+using Biz.Core.Services;
+using Prism.Mvvm;
 
 namespace Biz.Shell.Services;
 
@@ -16,7 +17,7 @@ public class FormFactorService : BindableBase, IFormFactorService
     
     public void NotifyWidthChanged(double width)
     {
-        if (width == lastKnownWidth) return;
+        if (Math.Abs(width - lastKnownWidth) < 0.01) return;
         lastKnownWidth = width;
         
         FormFactor newFormFactor;

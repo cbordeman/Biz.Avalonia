@@ -1,9 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Biz.Shell.Core.Services;
+using Biz.Core.Services;
 using Biz.Shell.Services;
 
-namespace Biz.Shell.Core;
+namespace Biz.Core;
 
 public class TopLevelUserControl : UserControl
 {

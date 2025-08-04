@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Biz.Shell.Core;
+namespace Biz.Core;
 
 public static class TaskExtensions
 {

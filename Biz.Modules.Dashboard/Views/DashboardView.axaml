@@ -1,11 +1,11 @@
 ﻿<UserControl
-    x:Class="Biz.Shell.Views.DashboardView"
+    x:Class="Biz.Modules.Dashboard.Views.DashboardView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    xmlns:vm="clr-namespace:Biz.Modules.Dashboard.ViewModels"
     d:DesignHeight="350"
     d:DesignWidth="500"
     x:CompileBindings="True"

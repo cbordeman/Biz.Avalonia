@@ -12,6 +12,12 @@
     <LangVersion>default</LangVersion>
     <Product />
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;TRACE;iOS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;TRACE;iOS</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.iOS" />

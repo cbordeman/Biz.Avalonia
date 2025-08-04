@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Biz.Shell.ViewModels;
+﻿namespace Biz.Core.ViewModels;
 
 public abstract class NavigationAwareViewModelBase : FormFactorAwareViewModel, INavigationAware,
     IConfirmNavigationRequest

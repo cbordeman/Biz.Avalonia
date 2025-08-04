@@ -1,4 +1,4 @@
-﻿namespace Biz.Shell.Core.Services;
+﻿namespace Biz.Core.Services;
 
 public enum FormFactor { NotSet, Phone, Tablet, Desktop }
 
