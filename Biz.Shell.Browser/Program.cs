@@ -2,6 +2,9 @@
 using Avalonia.Browser;
 using Biz.Shell;
 using System.Threading.Tasks;
+using Biz.Core;
+using Biz.Platform;
+using Prism.Ioc;
 
 internal sealed partial class Program
 {
@@ -10,5 +13,8 @@ internal sealed partial class Program
             .StartBrowserAppAsync("out");
 
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>();
+    {
+        PlatformHelper.RegistrationService = new MobileRegistrationService();
+        return AppBuilder.Configure<App>();
+    }
 }

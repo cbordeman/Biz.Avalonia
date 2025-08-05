@@ -2,5 +2,5 @@
 
 public interface IPlatformModuleCatalogService
 {
-    IModuleCatalog GetPrismModuleCatalog();
+    void ConfigureModuleCatalog(IModuleCatalog moduleCatalog);
 }

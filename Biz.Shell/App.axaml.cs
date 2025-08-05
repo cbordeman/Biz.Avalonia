@@ -1,6 +1,6 @@
 namespace Biz.Shell;
 
-public partial class App : PrismApplication
+public class App : PrismApplication
 {
     public override void Initialize()
     {
@@ -12,14 +12,14 @@ public partial class App : PrismApplication
     {
         switch (ApplicationLifetime)
         {
-            case IClassicDesktopStyleApplicationLifetime desktop:
+            case IClassicDesktopStyleApplicationLifetime:
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
                 // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
                 return Container.Resolve<MainWindow>();
 
-            case ISingleViewApplicationLifetime singleViewPlatform:
-                // This includes browser / WASM, so we must use form factor
+            case ISingleViewApplicationLifetime:
+                // This includes browser / WASM, so we must use the form factor
                 // in deciding UI elements.
                 return Container.Resolve<MainSmallView>();
 
@@ -28,17 +28,22 @@ public partial class App : PrismApplication
         }
     }
 
+    protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+    {
+        var pmcs = ContainerLocator.Current.Resolve<IPlatformModuleCatalogService>();
+        pmcs.ConfigureModuleCatalog(moduleCatalog);
+    }
+
+    protected override IModuleCatalog CreateModuleCatalog()
+    {
+        return new CompositeModuleCatalog();
+    }
+
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        // containerRegistry.Register<MainWindow>();
-        // containerRegistry.Register<MainWindowViewModel>();
-        // containerRegistry.Register<MainLargeView>();
-        // containerRegistry.Register<MainLargeViewModel>();
-        // containerRegistry.Register<MainSmallView>();
-        // containerRegistry.Register<MainSmallViewModel>();
-
-        Debug.WriteLine("RegisterTypes()");
-
+        // Platform-specific registrations
+        PlatformHelper.RegistrationService?.RegisterPlatformTypes(containerRegistry);
+        
         // Note:
         // SidebarView isn't listed, note we're using `AutoWireViewModel` in the View's AXAML.
         // See the line, `prism:ViewModelLocator.AutoWireViewModel="True"`
@@ -48,9 +53,6 @@ public partial class App : PrismApplication
         containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
 
         // Views - Region Navigation
-        // containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
-        // containerRegistry.RegisterForNavigation<MainLargeView, MainLargeViewModel>();
-        // containerRegistry.RegisterForNavigation<MainSmallView, MainSmallViewModel>();
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
         containerRegistry.RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
 
@@ -64,23 +66,18 @@ public partial class App : PrismApplication
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
         // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-        {
+        foreach (var plugin in dataValidationPluginsToRemove) 
             BindingPlugins.DataValidators.Remove(plugin);
-        }
     }
 
-    protected override void OnInitialized
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ()
+    protected override void OnInitialized()
     {
-        Debug.WriteLine("OnInitialized()");
-
         // Register Views to the Region it will appear in. Don't register them in the ViewModel.
         var regionManager = Container.Resolve<IRegionManager>();
 
         // WARNING: Prism v11.0.0-prev4
-        // - DataTemplates MUST define a DataType or else an XAML error will be thrown
-        // - Error: DataTemplate inside of DataTemplates must have a DataType set
+        // - DataTemplates MUST define a DataType, or else an XAML error will be thrown
+        // - Error: DataTemplate inside DataTemplates must have a DataType set
         regionManager.RegisterViewWithRegion(RegionNames.SidebarRegion, typeof(SidebarView));
 
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
@@ -91,13 +88,7 @@ public partial class App : PrismApplication
     /// <param name="regionAdapterMappings">Region Adapters.</param>
     protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
     {
-        Debug.WriteLine("ConfigureRegionAdapterMappings()");
         regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
         regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
-    }
-    
-    protected override IModuleCatalog CreateModuleCatalog()
-    {
-        
     }
 }

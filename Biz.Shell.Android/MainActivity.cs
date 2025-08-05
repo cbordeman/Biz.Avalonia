@@ -3,8 +3,8 @@ using Android.Content.PM;
 using Android.OS;
 using Avalonia;
 using Avalonia.Android;
+using Biz.Core;
 using Biz.Platform;
-using Prism.Ioc;
 
 namespace Biz.Shell.Android;
 
@@ -20,11 +20,7 @@ public class MainActivity : AvaloniaMainActivity<App>
     {
         base.OnCreate(savedInstanceState);
 
-        var container = ContainerLocator.Current;
-        var containerRegistry = container.Resolve<IContainerRegistry>();
-
-        // Mobile platform services
-        containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
+        PlatformHelper.RegistrationService = new MobileRegistrationService();
     }
 
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
