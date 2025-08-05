@@ -98,31 +98,6 @@ public partial class App : PrismApplication
     
     protected override IModuleCatalog CreateModuleCatalog()
     {
-    protected override IModuleCatalog CreateModuleCatalog()
-    {
-        if (OperatingSystem.IsAndroid() || 
-            OperatingSystem.IsIOS() ||
-            OperatingSystem.IsBrowser())
-        {
-            var codeCatalog = new ModuleCatalog();
-            codeCatalog.AddModule(typeof(ModuleA));
-            return codeCatalog;
-        }
-        else
-        {
-            var compositeCatalog = new CompositeModuleCatalog();
-
-            // Add modules defined in code
-            var codeCatalog = new ModuleCatalog();
-            // codeCatalog.AddModule(typeof(ModuleA));
-            // codeCatalog.AddModule(typeof(ModuleB));
-            compositeCatalog.AddCatalog(codeCatalog);
-
-            // Add modules discovered from a directory
-            var directoryCatalog = new DirectoryModuleCatalog() { ModulePath = @".\Modules" };
-            compositeCatalog.AddCatalog(directoryCatalog);
-
-            return compositeCatalog;
-        }
-    }    }
+        
+    }
 }
