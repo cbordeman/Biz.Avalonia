@@ -19,19 +19,10 @@ public class DesktopModuleCatalogService : IPlatformModuleCatalogService
         // codeCatalog.AddModule(typeof(ModuleB));
         compositeCatalog.AddCatalog(codeCatalog);
 
-        // Add modules discovered from a directory
+        // Add modules discovered from the Modules subdirectory.
         var ass = Assembly.GetExecutingAssembly();
-        var location = ass.Location;
-        var sourceDirectory = Path.GetDirectoryName(location);
-        string mods;
-        if (Debugger.IsAttached)
-        {
-            mods = sourceDirectory!.Replace(".Shell.Desktop", ".Shell");
-            mods = Path.Combine(mods, "Modules");
-        }
-        else
-            mods = Path.Combine(sourceDirectory!, "Modules");
-        var directoryCatalog = new DirectoryModuleCatalog() { ModulePath = mods };
+        var modulesPath = Path.Combine(Path.GetDirectoryName(ass.Location)!, "Modules");
+        var directoryCatalog = new DirectoryModuleCatalog() { ModulePath = modulesPath };
         compositeCatalog.AddCatalog(directoryCatalog);
     }
 }

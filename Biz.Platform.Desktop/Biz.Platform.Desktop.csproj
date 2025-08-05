@@ -23,23 +23,5 @@
     <ItemGroup>
       <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />
       <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
-    </ItemGroup>
-
-    <!--  The next PropertyGroup and Target goes in every module csproj.  -->
-    <PropertyGroup>
-        <ModulesOutputPath>$(SolutionDir)Biz.Shell\bin\$(Configuration)\$(TargetFramework)\Modules</ModulesOutputPath>
-    </PropertyGroup>
-    <Target Name="CopyModuleToShell" AfterTargets="Build">
-        <Copy
-                SourceFiles="$(OutputPath)$(AssemblyName).dll"
-                DestinationFolder="$(ModulesOutputPath)"
-                SkipUnchangedFiles="true" />
-
-        <!-- Copy dependencies if needed -->
-<!--        <Copy-->
-<!--                SourceFiles="@(ReferenceCopyLocalPaths)"-->
-<!--                DestinationFolder="$(ModulesOutputPath)"-->
-<!--                SkipUnchangedFiles="true" />-->
-    </Target>
-    
+    </ItemGroup>    
 </Project>

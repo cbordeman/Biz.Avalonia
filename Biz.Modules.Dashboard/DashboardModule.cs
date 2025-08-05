@@ -4,7 +4,7 @@
 public class DashboardModule : IModule
 {
     public void RegisterTypes(IContainerRegistry containerRegistry)
-    {
+    { 
         containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>(DashboardModuleConstants.DashboardView);
     }
     

@@ -34,10 +34,7 @@ public class App : PrismApplication
         pmcs.ConfigureModuleCatalog(moduleCatalog);
     }
 
-    protected override IModuleCatalog CreateModuleCatalog()
-    {
-        return new CompositeModuleCatalog();
-    }
+    protected override IModuleCatalog CreateModuleCatalog() => new CompositeModuleCatalog();
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
