@@ -5,6 +5,7 @@
     xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:regions="http://prismlibrary.com/"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -12,20 +13,20 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock>XXXXXXXXXXXXX</TextBlock>
-        <!--  ~1~  Phone Layout  @1@  -->
-        <!--  <StackPanel  -->
-        <!--  Name="PhoneLayout"  -->
-        <!--  IsVisible="true"  -->
-        <!--  Orientation="Vertical">  -->
-        <!--     <ContentControl regions:RegionManager.RegionName="HamburgerMenuRegion" /> -->
-        <!--     <ContentControl regions:RegionManager.RegionName="MainContentRegion" /> -->
-        <!--  ~1~  Bottom Tab Bar  @1@  -->
-        <!--     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"> -->
-        <!--  ~1~  Tabs with icon + label  @1@  -->
-        <!--     </StackPanel> -->
-        <!--     <ContentControl regions:RegionManager.RegionName="FooterRegion" /> -->
-        <!-- </StackPanel> -->
+        <!-- <TextBlock>XXXXXXXXXXXXX</TextBlock> -->
+        <!--  Phone Layout  -->
+        <StackPanel
+            Name="PhoneLayout"
+            IsVisible="true"
+            Orientation="Vertical">
+            <ContentControl regions:RegionManager.RegionName="HamburgerMenuRegion" />
+            <ContentControl regions:RegionManager.RegionName="MainContentRegion" />
+            <!--  Bottom Tab Bar  -->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <!--  Tabs with icon + label  -->
+            </StackPanel>
+            <ContentControl regions:RegionManager.RegionName="FooterRegion" />
+        </StackPanel>
     </Grid>
 </core:TopLevelUserControl>
 

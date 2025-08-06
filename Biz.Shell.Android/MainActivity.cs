@@ -18,9 +18,9 @@ public class MainActivity : AvaloniaMainActivity<App>
 {
     protected override void OnCreate(Bundle? savedInstanceState)
     {
-        base.OnCreate(savedInstanceState);
-
         PlatformHelper.RegistrationService = new MobileRegistrationService();
+        
+        base.OnCreate(savedInstanceState);
     }
 
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)

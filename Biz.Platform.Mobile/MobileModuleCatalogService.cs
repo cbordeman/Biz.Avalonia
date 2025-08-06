@@ -9,6 +9,9 @@ public class MobileModuleCatalogService : IPlatformModuleCatalogService
 {
     public void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
     {
-        moduleCatalog.AddModule(typeof(DashboardModule));
+        moduleCatalog.AddModule(
+            DashboardModuleConstants.ModuleName,
+            typeof(DashboardModule).AssemblyQualifiedName,
+            InitializationMode.OnDemand);
     }
 }

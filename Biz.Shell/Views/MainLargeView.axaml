@@ -10,23 +10,39 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="vm:MainLargeViewModel"
+    Background="#151515"
     mc:Ignorable="d">
 
-    <Grid>
-        <!--  Phone Layout  -->
-        <StackPanel
-            Name="PhoneLayout"
-            IsVisible="true"
-            Orientation="Vertical">
-            <ContentControl regions:RegionManager.RegionName="HamburgerMenuRegion" />
-            <ContentControl regions:RegionManager.RegionName="MainContentRegion" />
-            <!--  Bottom Tab Bar  -->
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <!--  Tabs with icon + label  -->
-            </StackPanel>
-            <ContentControl regions:RegionManager.RegionName="FooterRegion" />
-        </StackPanel>
-    </Grid>
+    <!--  Desktop Layout  -->
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open..." />
+                <MenuItem Header="Save" />
+                <MenuItem Header="Recent">
+                    <MenuItem Header="File1.txt" />
+                    <MenuItem Header="File2.txt" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo" />
+                <MenuItem Header="Redo" />
+                <Separator />
+                <MenuItem Header="Copy" />
+                <MenuItem Header="Paste" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" />
+            </MenuItem>
+        </Menu>
+        <!--  Your main content here  -->
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="Menu demo" />
+    </DockPanel>
 </core:TopLevelUserControl>
 
 
