@@ -1,5 +1,3 @@
-using ShadUI;
-
 namespace Biz.Shell.ViewModels
 {
     [UsedImplicitly]
