@@ -33,7 +33,7 @@ namespace Biz.Shell.ViewModels
         async Task ExecuteTryCloseCommand()
         {
             if (await DialogService.Confirm(
-                    "Close", "Do you really want to exit?",
+                    "Close", "Do you really want to exit?", 
                     "Yes", "No"))
             {
                 Environment.Exit(0);
