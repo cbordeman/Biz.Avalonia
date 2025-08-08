@@ -4,7 +4,6 @@ using Biz.Shell;
 using System.Threading.Tasks;
 using Biz.Core;
 using Biz.Platform;
-using Prism.Ioc;
 
 internal sealed partial class Program
 {

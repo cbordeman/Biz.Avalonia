@@ -1,36 +1,67 @@
-﻿<Window
+﻿<shadUi:Window
     x:Class="Biz.Shell.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell"
+    xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:prism="http://prismlibrary.com/"
-    xmlns:views="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
+    xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels;assembly=Biz.Shell"
+    Name="Window"
     Title="{Binding Title}"
-    Width="700"
-    Height="500"
+    Width="900"
+    Height="600"
     d:DesignHeight="500"
     d:DesignWidth="700"
     x:CompileBindings="True"
     x:DataType="vm:MainWindowViewModel"
-    Background="Transparent"
     Icon="/Assets/logo.ico"
-    TransparencyLevelHint="AcrylicBlur"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <Panel>
-        <!-- <ExperimentalAcrylicBorder IsHitTestVisible="true"> -->
-        <!--     <ExperimentalAcrylicBorder.Material> -->
-        <!--  <ExperimentalAcrylicMaterial  -->
-        <!--  BackgroundSource="Digger"  -->
-        <!--  MaterialOpacity="0.65"  -->
-        <!--  TintOpacity="1" />  -->
-        <!--     </ExperimentalAcrylicBorder.Material> -->
-        <!-- </ExperimentalAcrylicBorder> -->
 
-        <ContentControl Content="{Binding Main}" />
-    </Panel>
-</Window>
+    <shadUi:Window.LogoContent>
+        <PathIcon
+            Width="14"
+            Height="14"
+            Margin="8,8,0,8"
+            Data="{x:Static shadUi:Icons.Logo}" />
+    </shadUi:Window.LogoContent>
+
+    <shadUi:Window.Hosts>
+        <shadUi:DialogHost Manager="{Binding DialogService.DialogHost}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadUi:Window}}" />
+    </shadUi:Window.Hosts>
+
+    <shadUi:Window.RightWindowTitleBarContent>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button
+                Width="30"
+                Height="30"
+                Background="{DynamicResource SidebarBackgroundColor}"
+                Command="{Binding Main.SwitchThemeCommand}"
+                CornerRadius="{DynamicResource MdCornerRadius}"
+                ToolTip.Tip="Switch Theme">
+                <TextBlock Classes="LucideIcon" Text="{Binding Main.CurrentTheme, Converter={x:Static converters:ThemeModeConverters.ToLucideIcon}}" />
+            </Button>
+            <Button
+                x:Name="FullscreenButton"
+                Width="30"
+                Height="30"
+                Background="{DynamicResource SidebarBackgroundColor}"
+                CornerRadius="{DynamicResource MdCornerRadius}">
+                <Panel>
+                    <TextBlock
+                        Classes="LucideIcon"
+                        IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsNotFullScreen}}"
+                        Text="&#58681;" />
+                    <TextBlock
+                        Classes="LucideIcon"
+                        IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsFullScreen}}"
+                        Text="&#57631;" />
+                </Panel>
+            </Button>
+        </StackPanel>
+    </shadUi:Window.RightWindowTitleBarContent>
+
+    <ContentControl Content="{Binding Main}" />
+</shadUi:Window>

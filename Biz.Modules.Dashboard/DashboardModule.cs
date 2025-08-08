@@ -1,5 +1,6 @@
 ﻿namespace Biz.Modules.Dashboard.Core;
 
+// Module attributes are necessary for directory loading scenario.
 [Module(ModuleName = DashboardModuleConstants.ModuleName, OnDemand = true)]
 //[ModuleDependency()]
 public class DashboardModule : IModule

@@ -9,9 +9,11 @@ public class MobileModuleCatalogService : IPlatformModuleCatalogService
 {
     public void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
     {
+        // The call to AddModule() is for the non-directory loaded
+        // scenario.  Only desktop supports directory loading.
         moduleCatalog.AddModule(
             DashboardModuleConstants.ModuleName,
             typeof(DashboardModule).AssemblyQualifiedName,
-            InitializationMode.OnDemand);
+            initializationMode: InitializationMode.OnDemand);
     }
 }

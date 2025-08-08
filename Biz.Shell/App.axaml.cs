@@ -1,3 +1,5 @@
+using Avalonia.Media;
+
 namespace Biz.Shell;
 
 public class App : PrismApplication
@@ -5,6 +7,7 @@ public class App : PrismApplication
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        
         base.Initialize();
     }
 
@@ -88,4 +91,5 @@ public class App : PrismApplication
         regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
         regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
     }
+
 }

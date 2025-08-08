@@ -6,20 +6,41 @@
     xmlns:dryIoc="http://prismlibrary.com/"
     xmlns:local="using:Biz.Shell"
     xmlns:prism="http://prismlibrary.com"
-    xmlns:theme="using:Biz.Theme"
-    RequestedThemeVariant="Default">
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    RequestedThemeVariant="Dark">
 
     <Application.DataTemplates>
         <avalonia:ViewLocator />
     </Application.DataTemplates>
 
+    <Application.Styles>
+        <shadui:ShadTheme />
+
+        <!--  Global style applying black background to all windows in dark mode  -->
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+        </Style>
+
+    </Application.Styles>
+
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries />
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="WindowBackgroundBrush">Black</SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="WindowBackgroundBrush">White</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <!--  Fonts  -->
+            <FontFamily x:Key="LucideIcon">avares://Biz.Shell/Assets/Fonts#lucide</FontFamily>
+            <FontFamily x:Key="ShadUIIcon">avares://Biz.Shell/Assets/Fonts#shadui</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
-        <theme:BizTheme DensityStyle="Compact" />
+        <StyleInclude Source="/Styles/TextBlock.axaml" />
     </Application.Styles>
 </dryIoc:PrismApplication>

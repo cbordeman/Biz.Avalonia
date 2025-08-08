@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <Version>0.0.1</Version>
+        <FileVersion>0.0.1</FileVersion>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <PackageDescription>Avalonia-based Desktop UI Library inspired by shadcn and Suki UI Library</PackageDescription>
+        <PackageTags>avalonia;avaloniaui;ui;theme;shadui</PackageTags>
+        <PackageProjectUrl>https://github.com/accntech/shad-ui.git</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/accntech/shad-ui.git</RepositoryUrl>
+        <Authors>accntech</Authors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia"/>
+        <PackageReference Include="Avalonia.Controls.ColorPicker"/>
+        <PackageReference Include="Avalonia.Skia"/>
+        <PackageReference Include="MinVer">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Avalonia.Themes.Simple" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <MinVerDefaultPreReleaseIdentifiers>preview</MinVerDefaultPreReleaseIdentifiers>
+    </PropertyGroup>
+
+</Project>

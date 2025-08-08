@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace Biz.Shell.Services;
 
-public class FormFactorService : BindableBase, IFormFactorService
+public class FormFactorService : IFormFactorService
 {
     const double PhoneMaxWidth = 600;
     const double TabletMaxWidth = 900;

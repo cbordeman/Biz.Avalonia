@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Theme", "Biz.Theme\Biz.Theme.csproj", "{531F3BB8-B0FC-65A3-5E78-A1C64D475AF3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Shell.Android", "Biz.Shell.Android\Biz.Shell.Android.csproj", "{5D2D09FB-B7DA-6672-3C79-BE5EFA3CD61B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
@@ -36,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Platform.Desktop", "Biz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Platform.Mobile", "Biz.Platform.Mobile\Biz.Platform.Mobile.csproj", "{F24D4E3B-C6AC-41B2-BE9F-8E000F50B486}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadUI", "ShadUI\ShadUI.csproj", "{6E0C5C88-0D9A-4F1A-A829-C6DBE46491DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,10 +46,6 @@ Global
 		{EBFA8512-1EA5-4D8C-B4AC-AB5B48A6D568}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBFA8512-1EA5-4D8C-B4AC-AB5B48A6D568}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBFA8512-1EA5-4D8C-B4AC-AB5B48A6D568}.Release|Any CPU.Build.0 = Release|Any CPU
-		{531F3BB8-B0FC-65A3-5E78-A1C64D475AF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{531F3BB8-B0FC-65A3-5E78-A1C64D475AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{531F3BB8-B0FC-65A3-5E78-A1C64D475AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{531F3BB8-B0FC-65A3-5E78-A1C64D475AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D2D09FB-B7DA-6672-3C79-BE5EFA3CD61B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D2D09FB-B7DA-6672-3C79-BE5EFA3CD61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D2D09FB-B7DA-6672-3C79-BE5EFA3CD61B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -90,6 +86,10 @@ Global
 		{F24D4E3B-C6AC-41B2-BE9F-8E000F50B486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F24D4E3B-C6AC-41B2-BE9F-8E000F50B486}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F24D4E3B-C6AC-41B2-BE9F-8E000F50B486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0C5C88-0D9A-4F1A-A829-C6DBE46491DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0C5C88-0D9A-4F1A-A829-C6DBE46491DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0C5C88-0D9A-4F1A-A829-C6DBE46491DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0C5C88-0D9A-4F1A-A829-C6DBE46491DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

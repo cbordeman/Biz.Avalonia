@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Biz.Core.ViewModels;
 using Biz.Shell.Views;
 using Prism.Commands;
 using Prism.Navigation.Regions;

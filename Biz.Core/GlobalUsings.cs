@@ -1,4 +1,5 @@
 ﻿// Global using directives
 
-global using Biz.Shell.ViewModels;
+global using Avalonia.Controls;
+global using Avalonia.Data.Converters;
 global using DryIoc;

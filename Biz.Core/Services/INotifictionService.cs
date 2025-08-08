@@ -1,5 +1,3 @@
-using Avalonia.Controls;
-
 namespace Biz.Shell.Services;
 
 public interface INotificationService
