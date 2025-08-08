@@ -32,10 +32,8 @@ namespace Biz.Shell.ViewModels
         {
             if (await DialogService.Confirm(
                     "Close", "Do you really want to exit?",
-                    "Yes", "No"))
-            {
+                    "Yes", "No")) 
                 Environment.Exit(0);
-            }
         }
         #endregion TryCloseCommand
     }
