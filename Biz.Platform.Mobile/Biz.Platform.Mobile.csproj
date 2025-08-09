@@ -18,4 +18,11 @@
       <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Views\MessageDialogView.axaml.cs">
+        <DependentUpon>MainLargeView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>

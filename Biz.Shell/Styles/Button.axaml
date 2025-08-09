@@ -1,0 +1,122 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--  Primary  -->
+    <Style Selector="Button.Primary">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+        <Style Selector="^ /template/ TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource PrimaryColor50}" />
+        </Style>
+    </Style>
+
+    <!--  Secondary  -->
+    <Style Selector="Button.Secondary">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
+        <Style Selector="^ /template/ TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource SecondaryColor50}" />
+        </Style>
+    </Style>
+
+    <!--  Destructive  -->
+    <Style Selector="Button.Destructive">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+        <Style Selector="^ /template/ TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource DestructiveColor50}" />
+        </Style>
+    </Style>
+
+    <!--  Outline  -->
+    <Style Selector="Button.Outline">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Background" Value="{DynamicResource SelectionColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Style Selector="^ /template/ TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+        </Style>
+    </Style>
+
+    <!--  Ghost  -->
+    <Style Selector="Button.Ghost">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Style Selector="^ /template/ TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+        </Style>
+    </Style>
+
+    <!--  Icon  -->
+    <Style Selector="Button.Icon">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+        </Style>
+    </Style>
+
+    <!--  DestructiveIcon  -->
+    <Style Selector="Button.DestructiveIcon">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+        </Style>
+        <Style Selector="^ /template/ Border#HoverBackground">
+            <Setter Property="Background" Value="{DynamicResource DestructiveColor50}" />
+        </Style>
+    </Style>
+</Styles>

@@ -79,9 +79,10 @@ public class App : PrismApplication
         // - DataTemplates MUST define a DataType, or else an XAML error will be thrown
         // - Error: DataTemplate inside DataTemplates must have a DataType set
         regionManager.RegisterViewWithRegion(RegionNames.SidebarRegion, typeof(SidebarView));
-
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
+        
+        PlatformHelper.RegistrationService?.InitializePlatform(Container);
     }
 
     /// <summary>Custom region adapter mappings.</summary>
@@ -91,5 +92,4 @@ public class App : PrismApplication
         regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
         regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
     }
-
 }

@@ -11,4 +11,5 @@ public static class StringConverters
             "Always Selected" => SelectionMode.AlwaysSelected,
             _ => SelectionMode.Single
         });
+    
 }

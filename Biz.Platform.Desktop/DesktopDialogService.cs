@@ -27,9 +27,4 @@ public class DesktopDialogService : IPlatformDialogService
         
         return tcs.Task;
     }
-
-    public void ShowDialog(string name, IDialogParameters parameters, DialogCallback callback)
-    {
-        throw new NotImplementedException();
-    }
 }

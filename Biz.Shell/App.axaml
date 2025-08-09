@@ -26,6 +26,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
+                <!-- <ResourceDictionary.MergedDictionaries> -->
+                <!--     <ResourceInclude Source="avares://ShadUI/Controls/Constants.axaml" /> -->
+                <!--     <ResourceInclude Source="avares://ShadUI/Controls/Resources.axaml" /> -->
+                <!-- </ResourceDictionary.MergedDictionaries> -->
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="WindowBackgroundBrush">Black</SolidColorBrush>
                 </ResourceDictionary>
@@ -36,11 +40,12 @@
 
             <!--  Fonts  -->
             <FontFamily x:Key="LucideIcon">avares://Biz.Shell/Assets/Fonts#lucide</FontFamily>
-            <FontFamily x:Key="ShadUIIcon">avares://Biz.Shell/Assets/Fonts#shadui</FontFamily>
+            <FontFamily x:Key="ShadUiIcon">avares://Biz.Shell/Assets/Fonts#shadui</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
         <StyleInclude Source="/Styles/TextBlock.axaml" />
+        <!-- <StyleInclude Source="/Styles/Button.axaml" /> -->
     </Application.Styles>
 </dryIoc:PrismApplication>
