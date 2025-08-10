@@ -20,9 +20,9 @@
 
     <ItemGroup>
       <Compile Update="Views\MessageDialogView.axaml.cs">
-        <DependentUpon>MainLargeView.axaml</DependentUpon>
-        <SubType>Code</SubType>
+        <DependentUpon>MessageDialogView.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
 
+    
 </Project>

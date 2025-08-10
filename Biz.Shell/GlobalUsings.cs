@@ -1,6 +1,7 @@
 ﻿global using System;
 global using System.Diagnostics;
 global using System.Linq;
+global using System.Reflection;
 global using Avalonia;
 global using Avalonia.Controls;
 global using Avalonia.Controls.ApplicationLifetimes;
@@ -19,6 +20,8 @@ global using Prism.Ioc;
 global using Prism.Modularity;
 global using Prism.Navigation.Regions;
 global using System.Threading.Tasks;
+global using Avalonia.Styling;
+global using Avalonia.Threading;
 global using JetBrains.Annotations;
 global using Prism.Commands;
 global using Prism.Navigation;

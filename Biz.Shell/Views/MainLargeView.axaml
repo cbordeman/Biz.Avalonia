@@ -1,16 +1,19 @@
-<core:TopLevelUserControl
+<views:TopLevelUserControl
     x:Class="Biz.Shell.Views.MainLargeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
     xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dashboard="clr-namespace:Biz.Modules.Dashboard;assembly=Biz.Modules.Dashboard.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    xmlns:views="clr-namespace:Biz.Core.Views;assembly=Biz.Core"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:CompileBindings="True"
     x:DataType="vm:MainLargeViewModel"
     mc:Ignorable="d">
     <Panel>
@@ -44,7 +47,8 @@
                 <StackPanel Spacing="4">
                     <shadui:SidebarItemLabel AsSeparator="True" Text="Get Started" />
                     <shadui:SidebarItem
-                        Command="{Binding OpenDashboardCommand}"
+                        Command="{Binding GoToPageCommand}"
+                        CommandParameter="{x:Static dashboard:DashboardConstants.DashboardView}"
                         Content="Dashboard"
                         IsChecked="True"
                         Route="dashboard"
@@ -59,7 +63,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenThemeCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Theming"
                         Route="theme"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Theming'}">
@@ -73,7 +77,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenTypographyCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Typography"
                         Route="typography"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Typography'}">
@@ -91,7 +95,7 @@
                         AsSeparator="True"
                         Text="Components" />
                     <shadui:SidebarItem
-                        Command="{Binding OpenAvatarCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Avatar"
                         Route="avatar"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Avatar'}">
@@ -105,7 +109,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenButtonsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Button"
                         Route="button"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Buttons'}">
@@ -119,7 +123,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenCardsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Card"
                         Route="card"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Cards'}">
@@ -133,7 +137,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenCheckBoxesCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="CheckBox"
                         Route="checkbox"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='CheckBox'}">
@@ -147,7 +151,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenColorsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Color"
                         Route="color"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Colors'}">
@@ -161,7 +165,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenComboBoxesCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="ComboBox"
                         Route="combobox"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='ComboBox'}">
@@ -175,7 +179,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenDataGridCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Data Table"
                         Route="data-table"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Data Table'}">
@@ -189,7 +193,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenDateCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Date Control"
                         Route="date"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Date'}">
@@ -203,7 +207,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenDialogsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Dialog"
                         Route="dialog"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dialogs'}">
@@ -217,7 +221,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenInputsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Input"
                         Route="input"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Inputs'}">
@@ -231,7 +235,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenMenusCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Menu"
                         Route="menu"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Menus'}">
@@ -245,7 +249,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenNumericsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Numeric Input"
                         Route="numeric"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Numerics'}">
@@ -259,7 +263,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenSidebarCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Sidebar"
                         Route="sidebar"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Sidebar'}">
@@ -273,7 +277,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenSlidersCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Slider"
                         Route="slider"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Sliders'}">
@@ -287,7 +291,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenSwitchCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Switch"
                         Route="switch"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Switch'}">
@@ -301,7 +305,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenTabsCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Tab Control"
                         Route="tab-control"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Tabs'}">
@@ -315,7 +319,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenTimeCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Time"
                         Route="time"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Time'}">
@@ -329,7 +333,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenToastCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Toast"
                         Route="toast"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Toasts'}">
@@ -343,7 +347,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenToggleCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Toggle"
                         Route="toggle"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Toggle'}">
@@ -357,7 +361,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenToolTipCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Tooltip"
                         Route="tooltip"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Tooltip'}">
@@ -371,7 +375,7 @@
                         </shadui:SidebarItem.Icon>
                     </shadui:SidebarItem>
                     <shadui:SidebarItem
-                        Command="{Binding OpenMiscellaneousCommand}"
+                        Command="{Binding GoToPageCommand}"
                         Content="Miscellaneous"
                         Route="miscellaneous"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Miscellaneous'}">
@@ -461,7 +465,7 @@
                                 </Grid>
                             </shadui:MenuItemAssist.Label>
                             <Separator />
-                            <MenuItem Command="{Binding ShowAboutCommand}" Header="About">
+                            <MenuItem Command="{Binding GoToPageCommand}" Header="About">
                                 <MenuItem.Icon>
                                     <Viewbox Width="16" Height="16">
                                         <TextBlock
@@ -551,22 +555,22 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator />
-                            <MenuItem Command="{Binding TryCloseCommand}" Header="Close application">
-                                <MenuItem.Icon>
-                                    <Viewbox Width="16" Height="16">
-                                        <TextBlock
-                                            Classes="LucideIcon"
-                                            Foreground="{DynamicResource MutedColor}"
-                                            Text="&#57668;" />
-                                    </Viewbox>
-                                </MenuItem.Icon>
-                            </MenuItem>
+                            <!-- <MenuItem Command="{Binding TryCloseCommand}" Header="Close application"> -->
+                            <!--     <MenuItem.Icon> -->
+                            <!--         <Viewbox Width="16" Height="16"> -->
+                            <!--  <TextBlock  -->
+                            <!--  Classes="LucideIcon"  -->
+                            <!--  Foreground="{DynamicResource MutedColor}"  -->
+                            <!--  Text="&#57668;" />  -->
+                            <!--         </Viewbox> -->
+                            <!--     </MenuItem.Icon> -->
+                            <!-- </MenuItem> -->
                         </MenuItem>
                     </Menu>
                 </shadui:Sidebar.Footer>
             </shadui:Sidebar>
-            <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedPage}" />
+            <TransitioningContentControl Grid.Column="1" regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}" />
         </Grid>
         <shadui:ToastHost Manager="{Binding ToastManager}" />
     </Panel>
-</core:TopLevelUserControl>
+</views:TopLevelUserControl>

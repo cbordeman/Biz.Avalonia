@@ -1,6 +1,7 @@
+using ShadUI;
+
 namespace Biz.Shell.ViewModels
 {
-    [UsedImplicitly]
     public class MainWindowViewModel : NavigationAwareViewModelBase
     {
         public IPlatformDialogService DialogService { get; }
@@ -19,8 +20,9 @@ namespace Biz.Shell.ViewModels
             IPlatformDialogService platformDialogService)
             : base(container)
         {
-            main = mainLargeViewModel;
             this.DialogService = platformDialogService;
+            
+            main = mainLargeViewModel;
             Title = "Shell (Window)";
         }
         
@@ -36,5 +38,6 @@ namespace Biz.Shell.ViewModels
                 Environment.Exit(0);
         }
         #endregion TryCloseCommand
+        
     }
 }

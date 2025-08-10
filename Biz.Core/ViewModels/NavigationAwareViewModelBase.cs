@@ -1,9 +1,10 @@
-﻿namespace Biz.Core.ViewModels;
+﻿using IContainer = DryIoc.IContainer;
+
+namespace Biz.Core.ViewModels;
 
 public abstract class NavigationAwareViewModelBase : FormFactorAwareViewModel, INavigationAware,
     IConfirmNavigationRequest
 {
-    protected readonly IRegionManager? RegionManager;
     protected IRegionNavigationService RegionNavigationService = null!;
 
     #region Title
@@ -18,7 +19,6 @@ public abstract class NavigationAwareViewModelBase : FormFactorAwareViewModel, I
     protected NavigationAwareViewModelBase(IContainer container) 
         : base(container)
     {
-        this.RegionManager = container.Resolve<IRegionManager>();
     }
     
     /// <summary>
@@ -56,7 +56,11 @@ public abstract class NavigationAwareViewModelBase : FormFactorAwareViewModel, I
     /// <param name="navigationContext">The navigation context.</param>
     public virtual void OnNavigatedTo(NavigationContext navigationContext)
     {
+        // This service is specific to the current region this
+        // view is inside.
         RegionNavigationService = navigationContext.NavigationService;
+        
+        
     }
 
     /// <summary>Navigation validation checker.</summary>

@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Biz.Platform.ViewModels;
 
-public class MessageDialogViewModel : BindableBase, IDialogAware
+public sealed class MessageDialogViewModel : BindableBase, IDialogAware
 {
     // The Dialog Service sets this property for you, do NOT initialize it yourself.
     public DialogCloseListener RequestClose { get; private set; }
@@ -25,14 +25,55 @@ public class MessageDialogViewModel : BindableBase, IDialogAware
     }
     string? message;        
     #endregion Message
+
+    #region CancelText
+    public string? CancelText
+    {
+        get => cancelText;
+        set => SetProperty(ref cancelText, value);
+    }
+    string? cancelText;        
+    #endregion CancelText
+
+    #region OkText
+    public string? OkText
+    {
+        get => okText;
+        set => SetProperty(ref okText, value);
+    }
+    string? okText;        
+    #endregion OkText
     
-    // Called when the dialog opens; use this to read parameters and initialize state.
     public void OnDialogOpened(IDialogParameters parameters)
     {
         Title = parameters.GetValue<string>("title");;
         Message = parameters.GetValue<string>("message");
+        CancelText = parameters.GetValue<string>("cancelText");
+        OkText = parameters.GetValue<string>("okText");
     }
 
+    #region OkCommand
+    AsyncDelegateCommand? okCommand;
+    public AsyncDelegateCommand OkCommand => okCommand ??= new AsyncDelegateCommand(ExecuteOkCommand, CanOkCommand);
+    bool CanOkCommand() => true;
+    Task ExecuteOkCommand()
+    {
+        RequestClose.Invoke(ButtonResult.OK);
+        return Task.CompletedTask;
+    }
+    #endregion OkCommand
+    
+    #region CancelCommand
+    AsyncDelegateCommand? cancelCommand;
+    public AsyncDelegateCommand CancelCommand => cancelCommand ??= new AsyncDelegateCommand(ExecuteCancelCommand, CanCancelCommand);
+    bool CanCancelCommand() => true;
+    Task ExecuteCancelCommand()
+    {
+        RequestClose.Invoke(ButtonResult.Cancel);
+        return Task.CompletedTask;
+    }
+    #endregion CancelCommand
+    
     // Called when the dialog is closed to finalize or clean up.
     public void OnDialogClosed()
     {
@@ -40,9 +81,5 @@ public class MessageDialogViewModel : BindableBase, IDialogAware
     }
 
     // Control whether the dialog may be closed. Return false to prevent closing.
-    public bool CanCloseDialog()
-    {
-        // Example: only allow closing if a message exists.
-        return !string.IsNullOrEmpty(Message);
-    }
+    public bool CanCloseDialog() => true;
 }

@@ -1,3 +1,4 @@
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -9,16 +10,19 @@ namespace Biz.Shell.Views
         public MainWindow()
         {
             InitializeComponent();
-
+            
             Closing += OnClosing;
-            Initialize();
+            
+            ToolTip.SetTip(FullscreenButton, "Fullscreen");
+            FullscreenButton.Click += OnFullScreen;
         }
 
-        private void Initialize()
+        protected override void OnLoaded(RoutedEventArgs e)
         {
-            ToolTip.SetTip(FullscreenButton, "Fullscreen");
-            FullscreenButton.Click -= OnFullScreen;
-            FullscreenButton.Click += OnFullScreen;
+            base.OnLoaded(e);
+            
+            if (this.DataContext is IOnViewLoaded onViewLoaded)
+                onViewLoaded.OnViewLoaded();
         }
 
         private void OnFullScreen(object? sender, RoutedEventArgs e)

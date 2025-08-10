@@ -4,6 +4,7 @@ global using System.Collections.ObjectModel;
 global using Avalonia;
 global using Avalonia.Controls;
 global using Avalonia.Styling;
+global using Biz.Core;
 global using Biz.Core.ViewModels;
 global using Biz.Modules.Dashboard.ViewModels;
 global using Biz.Modules.Dashboard.Views;

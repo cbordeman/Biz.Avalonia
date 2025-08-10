@@ -46,6 +46,6 @@
 
     <Application.Styles>
         <StyleInclude Source="/Styles/TextBlock.axaml" />
-        <!-- <StyleInclude Source="/Styles/Button.axaml" /> -->
+        <StyleInclude Source="/Styles/Button.axaml" />
     </Application.Styles>
 </dryIoc:PrismApplication>

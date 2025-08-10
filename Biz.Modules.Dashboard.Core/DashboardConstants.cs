@@ -1,6 +1,6 @@
-﻿namespace Biz.Modules.Dashboard.Core;
+﻿namespace Biz.Modules.Dashboard;
 
-public static class DashboardModuleConstants
+public static class DashboardConstants
 {
     public const string ModuleName = "DashboardModule";
     public const string DashboardView = "DashboardView";

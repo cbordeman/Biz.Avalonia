@@ -2,9 +2,9 @@
 using Biz.Core.Services;
 using Biz.Shell.Services;
 
-namespace Biz.Core;
+namespace Biz.Core.Views;
 
-public class TopLevelUserControl : UserControl
+public class TopLevelUserControl : UserControlEx
 {
     IFormFactorService? formFactorService;
     

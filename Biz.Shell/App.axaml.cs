@@ -51,6 +51,7 @@ public class App : PrismApplication
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
+        containerRegistry.RegisterSingleton<IMainContentRegionNavigationService, MainContentRegionNavigationService>();
 
         // Views - Region Navigation
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
@@ -91,5 +92,7 @@ public class App : PrismApplication
     {
         regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
         regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
+        regionAdapterMappings.RegisterMapping<ItemsControl, ItemsControlRegionAdapter>();
+        regionAdapterMappings.RegisterMapping<TransitioningContentControl, TransitioningContentControlRegionAdapter>();
     }
 }

@@ -1,4 +1,4 @@
-using Biz.Modules.Dashboard.Core;
+using Biz.Modules.Dashboard;
 
 namespace Biz.Shell.ViewModels;
 
@@ -21,7 +21,7 @@ public class SettingsSubViewModel : NavigationAwareViewModelBase
             journal.GoBack();
         else
             RegionManager.RequestNavigate(RegionNames.MainContentRegion, 
-                DashboardModuleConstants.DashboardView);
+                DashboardConstants.DashboardView);
     });
 
     public string? MessageText { get => messageText; set => SetProperty(ref messageText, value); }

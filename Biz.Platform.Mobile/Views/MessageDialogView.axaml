@@ -6,34 +6,28 @@
     xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:platform="clr-namespace:Biz.Platform"
+    xmlns:regions="http://prismlibrary.com/"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
-    xmlns:viewModels="clr-namespace:Biz.Platform.ViewModels"
+    xmlns:vm="clr-namespace:Biz.Platform.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="viewModels:MessageDialogViewModel"
+    x:CompileBindings="True"
+    x:DataType="vm:MessageDialogViewModel"
     mc:Ignorable="d">
-    <Panel>
-        <Grid RowDefinitions="*,Auto">
-            <ContentControl Content="{Binding Content}" />
-            <StackPanel
-                Grid.Row="1"
-                Margin="0,8"
-                HorizontalAlignment="Right"
-                Orientation="Vertical"
-                Spacing="4">
-                <Button
-                    shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
-                    Command="{Binding CancelCommand}"
-                    Content="{Binding CancelText}"
-                    IsVisible="{Binding CancelText, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
-                <Button
-                    shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
-                    Classes="Primary"
-                    Command="{Binding OkCommand}"
-                    Content="{Binding OkText}"
-                    HotKey="Enter" />
-            </StackPanel>
-        </Grid>
-    </Panel>
+    <Grid RowDefinitions="* Auto">
+        <ContentControl Content="{Binding Message}" />
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,8"
+            HorizontalAlignment="Right"
+            Orientation="Vertical"
+            Spacing="4">
+            <Button Command="{Binding CancelCommand}" Content="{Binding CancelText}" />
+            <Button
+                Classes="Primary"
+                Command="{Binding OkCommand}"
+                Content="{Binding OkText}"
+                HotKey="Enter" />
+        </StackPanel>
+    </Grid>
 </UserControl>

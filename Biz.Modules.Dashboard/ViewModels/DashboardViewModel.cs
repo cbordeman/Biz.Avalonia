@@ -1,5 +1,6 @@
 namespace Biz.Modules.Dashboard.ViewModels;
 
+[Page("dashboard")]
 public class DashboardViewModel : NavigationAwareViewModelBase
 {
     readonly INotificationService notificationService;
@@ -8,8 +9,14 @@ public class DashboardViewModel : NavigationAwareViewModelBase
     int listItemSelected = -1;
     ObservableCollection<string> listItems = [];
     string listItemText = string.Empty;
-    ThemeVariant themeSelected = ThemeVariant.Default;
 
+    public List<ThemeVariant> ThemeStyles =>
+    [
+        ThemeVariant.Default,
+        ThemeVariant.Dark,
+        ThemeVariant.Light
+    ];
+    
     public DashboardViewModel(IContainer container) : base(container)
     {
         notificationService = container.Resolve<INotificationService>();
@@ -66,20 +73,16 @@ public class DashboardViewModel : NavigationAwareViewModelBase
         set => SetProperty(ref listItems, value);
     }
 
+    #region ThemeSelected
+    ThemeVariant themeSelected = ThemeVariant.Default;
     public ThemeVariant ThemeSelected
     {
         get => themeSelected;
         set
         {
-            SetProperty(ref themeSelected, value);
-            Application.Current!.RequestedThemeVariant = themeSelected;
+            if (SetProperty(ref themeSelected, value))
+                Application.Current!.RequestedThemeVariant = themeSelected;
         }
     }
-
-    public List<ThemeVariant> ThemeStyles => new()
-    {
-        ThemeVariant.Default,
-        ThemeVariant.Dark,
-        ThemeVariant.Light,
-    };
+    #endregion ThemeSelected
 }

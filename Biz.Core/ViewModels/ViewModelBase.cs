@@ -1,111 +1,13 @@
-﻿using System.Collections;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using Biz.Core.Services;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Biz.Core.ViewModels;
-
-public abstract class FormFactorAwareViewModel : ViewModelBase, IDisposable
-{
-    readonly IFormFactorService formFactorService;
-    
-    #region CurrentFormFactor
-    public FormFactor CurrentFormFactor
-    {
-        get => currentFormFactor;
-        set => SetProperty(ref currentFormFactor, value);
-    }
-    FormFactor currentFormFactor;        
-    #endregion CurrentFormFactor
-    
-    #region IsPhone
-    public bool IsPhone
-    {
-        get => isPhone;
-        set => SetProperty(ref isPhone, value);
-    }
-    bool isPhone;        
-    #endregion IsPhone
-
-    #region IsTablet
-    public bool IsTablet
-    {
-        get => isTablet;
-        set => SetProperty(ref isTablet, value);
-    }
-    bool isTablet;        
-    #endregion IsTablet
-
-    #region IsDesktop
-    public bool IsDesktop
-    {
-        get => isDesktop;
-        set => SetProperty(ref isDesktop, value);
-    }
-    bool isDesktop;        
-    #endregion IsDesktop
-
-    #region IsTabletOrDesktop
-    public bool IsTabletOrDesktop
-    {
-        get => isTabletOrDesktop;
-        set => SetProperty(ref isTabletOrDesktop, value);
-    }
-    bool isTabletOrDesktop;        
-    #endregion IsTabletOrDesktop
-    
-    protected FormFactorAwareViewModel(DryIoc.IContainer container) : base(container)
-    {
-        this.formFactorService = container.Resolve<IFormFactorService>();
-        formFactorService.Changed += FormFactorServiceOnChanged;
-    }
-
-    void FormFactorServiceOnChanged()
-    {
-        CurrentFormFactor = formFactorService.CurrentFormFactor;
-        
-        switch (this.formFactorService.CurrentFormFactor)
-        {
-            case FormFactor.NotSet:
-                IsPhone = false;
-                IsTablet = false;
-                IsDesktop = false;
-                IsTabletOrDesktop = false;
-                break;
-            case FormFactor.Phone:
-                IsPhone = true;
-                IsTablet = false;
-                IsDesktop = false;
-                IsTabletOrDesktop = false;
-                break;
-            case FormFactor.Tablet:
-                IsPhone = false;
-                IsTablet = true;
-                IsDesktop = false;
-                IsTabletOrDesktop = true;
-                break;
-            case FormFactor.Desktop:
-                IsPhone = false;
-                IsTablet = false;
-                IsDesktop = true;
-                IsTabletOrDesktop = true;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-    public virtual void Dispose()
-    {
-        formFactorService.Changed -= FormFactorServiceOnChanged;
-    }
-}
 
 public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
     INotifyDataErrorInfo
 {
     protected readonly DryIoc.IContainer Container;
+    protected readonly IRegionManager? RegionManager;
     
     #region INotifyDataErrorInfo
     
@@ -122,12 +24,11 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
             return Array.Empty<string>();
         }
 
-        return this.errors.TryGetValue(propertyName, out var errors)
-            ? errors
-            : Array.Empty<string>();
+        return this.errors.TryGetValue(propertyName, out var getErrors)
+            ? getErrors : [];
     }
-    
-    protected void ValidateProperty<T>(T value, string propertyName)
+
+    void ValidateProperty<T>(T value, string propertyName)
     {
         ClearErrors(propertyName);
 
@@ -137,18 +38,17 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
         };
         var validationResults = new List<ValidationResult>();
 
-        if (Validator.TryValidateProperty(value, 
-                validationContext, validationResults)) 
+        if (Validator.TryValidateProperty(value, validationContext, validationResults)) 
             return;
 
         foreach (var validationResult in validationResults) 
             AddError(propertyName, validationResult.ErrorMessage ?? string.Empty);
     }
 
-    protected void AddError(string propertyName, string error)
+    void AddError(string propertyName, string error)
     {
         if (!errors.ContainsKey(propertyName)) 
-            errors[propertyName] = new List<string>();
+            errors[propertyName] = [];
 
         if (errors[propertyName].Contains(error)) 
             return;
@@ -157,7 +57,7 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
         OnErrorsChanged(propertyName);
     }
 
-    protected void ClearErrors(string propertyName)
+    void ClearErrors(string propertyName)
     {
         if (errors.Remove(propertyName)) 
             OnErrorsChanged(propertyName);
@@ -207,20 +107,41 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
     protected ViewModelBase(DryIoc.IContainer container)
     {
         this.Container = container;
+        this.RegionManager = container.Resolve<IRegionManager>();
     }
     
-    protected virtual bool SetProperty<T>(ref T storage, T value, 
-        bool validate = false, 
-        [CallerMemberName] string? propertyName = null)
+    protected override bool SetProperty<T>(ref T storage, T value, 
+        [CallerMemberName] string? propertyName = null!)
     {
         if (EqualityComparer<T>.Default.Equals(storage, value)) return false;
 
         storage = value;
         RaisePropertyChanged(propertyName);
-        if (validate) ValidateProperty(value, propertyName);
+        ValidateProperty(value, propertyName!);
 
         return true;
     }
+
+    #region OpenUrlCommand
+    AsyncDelegateCommandWithParam<string>? openUrlCommand;
+    public AsyncDelegateCommandWithParam<string> OpenUrlCommand => openUrlCommand ??= new AsyncDelegateCommandWithParam<string>(ExecuteOpenUrlCommand, CanOpenUrlCommand);
+    bool CanOpenUrlCommand(string url) => true;
+    async Task ExecuteOpenUrlCommand(string url)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            Process.Start(new ProcessStartInfo(url.Replace("&", "^&")) { UseShellExecute = true });
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            Process.Start("xdg-open", url);
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            Process.Start("open", url);
+        }
+    }
+    #endregion OpenUrlCommand
     
     public virtual bool KeepAlive => true;
 }

@@ -1,4 +1,4 @@
-<core:TopLevelUserControl
+<views:TopLevelUserControl
     x:Class="Biz.Shell.Views.MainSmallView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:Biz.Core.Views;assembly=Biz.Core"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -28,7 +29,7 @@
             <ContentControl regions:RegionManager.RegionName="FooterRegion" />
         </StackPanel>
     </Grid>
-</core:TopLevelUserControl>
+</views:TopLevelUserControl>
 
 
 <!--  <UserControl  -->

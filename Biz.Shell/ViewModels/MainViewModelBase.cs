@@ -1,12 +1,37 @@
-﻿using Avalonia.Styling;
-using Avalonia.Threading;
-using ShadUI;
+﻿using ShadUI;
 
 namespace Biz.Shell.ViewModels;
 
-public abstract class MainViewModelBase : NavigationAwareViewModelBase
+public abstract class MainViewModelBase : FormFactorAwareViewModel,
+    IOnViewLoaded
 {
     readonly ThemeWatcher themeWatcher;
+    readonly IMainContentRegionNavigationService mainContentRegionNavigationService;
+
+    #region CurrentPageArea
+    public string? CurrentPageArea
+    {
+        get => currentPageArea;
+        set
+        {
+            if (SetProperty(ref currentPageArea, value))
+            {
+                GoToPageCommand.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
+    string? currentPageArea;        
+    #endregion CurrentPageArea
+
+    #region CurrentRoute
+    public string? CurrentRoute
+    {
+        get => currentRoute;
+        set => SetProperty(ref currentRoute, value);
+    }
+    string? currentRoute;        
+    #endregion CurrentRoute
     
     #region CurrentMode
     public ThemeMode CurrentTheme
@@ -17,11 +42,25 @@ public abstract class MainViewModelBase : NavigationAwareViewModelBase
     ThemeMode currentTheme;        
     #endregion CurrentTheme
     
+    public ToastManager ToastManager { get; }
+    
     protected MainViewModelBase(IContainer container) : base(container)
     {
         themeWatcher = container.Resolve<ThemeWatcher>();
+        ToastManager = container.Resolve<ToastManager>();
+
+        mainContentRegionNavigationService = 
+            container.Resolve<IMainContentRegionNavigationService>();
+        mainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
     }
-    
+
+    void MainContentRegionNavigationServiceOnPageChanged(string area, string route)
+    {
+        CurrentPageArea = area;
+        CurrentRoute = route;
+        GoToPageCommand.RaiseCanExecuteChanged();
+    }
+
     #region SwitchThemeCommand
     AsyncDelegateCommand? switchThemeCommand;
     public AsyncDelegateCommand SwitchThemeCommand => switchThemeCommand ??= new AsyncDelegateCommand(ExecuteSwitchThemeCommand, CanSwitchThemeCommand);
@@ -54,19 +93,44 @@ public abstract class MainViewModelBase : NavigationAwareViewModelBase
     #endregion SwitchThemeCommand
     
     #region NavigateSettingsCommand
-
     AsyncDelegateCommand? navigateSettingsCommand;
-
     public AsyncDelegateCommand NavigateSettingsCommand => navigateSettingsCommand ??=
         new AsyncDelegateCommand(ExecuteNavigateSettingsCommand, CanNavigateSettingsCommand);
-
-    bool CanNavigateSettingsCommand() => true;
-
+    static bool CanNavigateSettingsCommand() => true;
     Task ExecuteNavigateSettingsCommand()
     {
         this.RegionManager.RequestNavigate(RegionNames.MainContentRegion, nameof(SettingsView));
         return Task.CompletedTask;
     }
-
     #endregion NavigateSettingsCommand
+    
+    #region GoToPageCommand
+    AsyncDelegateCommandWithParam<string>? goToPageCommand;
+    public AsyncDelegateCommandWithParam<string> GoToPageCommand => goToPageCommand 
+        ??= new AsyncDelegateCommandWithParam<string>
+        (ExecuteGoToPageCommand, CanGoToPageCommand);
+    bool CanGoToPageCommand(string area)
+    {
+        // This command can only be used with no route.  Use a custom
+        // command if you need a route.
+        return CurrentPageArea != area || CurrentRoute != null;
+    }
+    Task ExecuteGoToPageCommand(string area)
+    {
+        RegionManager.RequestNavigate(RegionNames.MainContentRegion, area);
+        return Task.CompletedTask;
+    }
+    #endregion GoToPageCommand
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        mainContentRegionNavigationService.PageChanged -= 
+            MainContentRegionNavigationServiceOnPageChanged;
+    }
+    
+    public void OnViewLoaded()
+    {
+        mainContentRegionNavigationService.Initialize();
+    }
 }

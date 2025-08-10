@@ -1,4 +1,5 @@
-﻿using Biz.Modules.Dashboard.Core;
+﻿using Biz.Modules.Dashboard;
+using Biz.Modules.Dashboard.Core;
 using Biz.Shell;
 using JetBrains.Annotations;
 
@@ -12,7 +13,7 @@ public class MobileModuleCatalogService : IPlatformModuleCatalogService
         // The call to AddModule() is for the non-directory loaded
         // scenario.  Only desktop supports directory loading.
         moduleCatalog.AddModule(
-            DashboardModuleConstants.ModuleName,
+            DashboardConstants.ModuleName,
             typeof(DashboardModule).AssemblyQualifiedName,
             initializationMode: InitializationMode.OnDemand);
     }

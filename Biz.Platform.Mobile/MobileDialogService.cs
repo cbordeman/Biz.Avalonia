@@ -22,13 +22,16 @@ public class MobileDialogService : IPlatformDialogService
         var parameters = new DialogParameters
         {
             { "title", title },
-            { "message", message }
+            { "message", message },
+            { "okText", okText }
         };
+        if (!string.IsNullOrEmpty(cancelText)) 
+            parameters.Add("cancelText", cancelText);
 
         dialogService.ShowDialog(
-            nameof(MessageDialogView)
-            parameters,
-            dialogResult =>
+            nameof(MessageDialogView),
+            parameters, 
+            (IDialogResult dialogResult) =>
             {
                 // Assume your dialog returns ButtonResult.OK or ButtonResult.Cancel
                 tcs.SetResult(dialogResult.Result == ButtonResult.OK);
