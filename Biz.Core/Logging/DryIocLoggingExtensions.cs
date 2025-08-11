@@ -7,7 +7,6 @@ namespace Biz.Core.Logging;
 /// </summary>
 public static class DryIocLoggingExtensions
 {
-
     /// <summary>
     /// Register any logger factory with <see cref="ILogger{TCategoryName}"/> adapter.
     /// </summary>

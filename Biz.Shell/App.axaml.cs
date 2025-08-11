@@ -58,15 +58,10 @@ public class App : PrismApplication
                 builder.SetMinimumLevel(LogLevel.Information);
             }));
         
-        //container.Register(typeof(ILogger<>),
-            //made: Made.Of(req => loggerFactoryMethod.MakeGenericMethod(req.Parent.ImplementationType),
-            //ServiceInfo.Of<LoggerFactory>()));
-
-        
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
-        containerRegistry.RegisterSingleton<IMainNavigationService, MainContentRegionNavigationService>();
+        containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
 
         // Views - Region Navigation
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();

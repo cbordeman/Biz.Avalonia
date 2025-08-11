@@ -1,8 +1,8 @@
-namespace Biz.Core.Services;
+﻿namespace Biz.Core.Services;
 
 public delegate void NotifyPageChanged(string area, string route);
 
-public interface IMainNavigationService
+public interface IMainRegionNavigationService
 {
     string? CurrentPageArea { get; }
     string? CurrentRoute { get; }

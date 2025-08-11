@@ -1,6 +1,6 @@
 namespace Biz.Modules.Dashboard.ViewModels;
 
-[Page(DashboardConstants.ModuleName)]
+[Area(DashboardConstants.ModuleName)]
 public class DashboardViewModel : NavigationAwareViewModelBase
 {
     readonly INotificationService notificationService;

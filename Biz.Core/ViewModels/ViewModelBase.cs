@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using IContainer = DryIoc.IContainer;
 
 namespace Biz.Core.ViewModels;
 
-public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
-    INotifyDataErrorInfo
+public abstract class ViewModelBase : BindableBase, 
+    IRegionMemberLifetime, INotifyDataErrorInfo
 {
-    protected readonly DryIoc.IContainer Container;
+    protected readonly IContainer Container;
     protected readonly IRegionManager? RegionManager;
     
     #region INotifyDataErrorInfo
@@ -104,7 +105,7 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
     public bool IsNotBusy { get; set; }
     #endregion IsBusy
     
-    protected ViewModelBase(DryIoc.IContainer container)
+    protected ViewModelBase(IContainer container)
     {
         this.Container = container;
         this.RegionManager = container.Resolve<IRegionManager>();
@@ -126,7 +127,7 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
     AsyncDelegateCommandWithParam<string>? openUrlCommand;
     public AsyncDelegateCommandWithParam<string> OpenUrlCommand => openUrlCommand ??= new AsyncDelegateCommandWithParam<string>(ExecuteOpenUrlCommand, CanOpenUrlCommand);
     bool CanOpenUrlCommand(string url) => true;
-    async Task ExecuteOpenUrlCommand(string url)
+    Task ExecuteOpenUrlCommand(string url)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -140,6 +141,8 @@ public abstract class ViewModelBase : BindableBase, IRegionMemberLifetime,
         {
             Process.Start("open", url);
         }
+
+        return Task.CompletedTask;
     }
     #endregion OpenUrlCommand
     

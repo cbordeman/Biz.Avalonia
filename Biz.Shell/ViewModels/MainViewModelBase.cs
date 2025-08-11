@@ -6,7 +6,7 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     IOnViewLoaded
 {
     readonly ThemeWatcher themeWatcher;
-    readonly IMainNavigationService mainContentRegionNavigationService;
+    readonly IMainRegionNavigationService mainContentRegionNavigationService;
 
     #region CurrentPageArea
     public string? CurrentPageArea
@@ -50,7 +50,7 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
         ToastManager = container.Resolve<ToastManager>();
 
         mainContentRegionNavigationService = 
-            container.Resolve<IMainNavigationService>();
+            container.Resolve<IMainRegionNavigationService>();
         mainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
     }
 

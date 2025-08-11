@@ -1,12 +1,13 @@
 ﻿namespace Biz.Core;
 
+/// <summary>
+/// Area the sidebar will look for at the beginning of the
+/// current page's uri in order to highlight the correct item.
+/// Probably best to use the module name.
+/// </summary>
+/// <param name="areaName"></param>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class PageAttribute(string areaName) : Attribute
+public sealed class AreaAttribute(string areaName) : Attribute
 {
-    /// <summary>
-    /// Area the Sidebar will use to highlight which part of the
-    /// application is selected.  Must appear at the beginning of the
-    /// Uri to the current view before the slash, if there is one.
-    /// </summary>
     public string AreaName { get; } = areaName;
 }

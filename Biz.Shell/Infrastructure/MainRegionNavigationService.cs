@@ -2,10 +2,11 @@
 
 namespace Biz.Shell.Infrastructure;
 
-public class MainContentRegionNavigationService : IMainNavigationService
+public class MainContentRegionNavigationService : IMainRegionNavigationService,
+    IDisposable
 {
     bool initialized;
-    IRegion? mainRegion;
+    IRegionNavigationService? regionNavigationService;
     readonly IRegionManager regionManager;
     readonly ILogger<MainContentRegionNavigationService> logger;
 
@@ -21,6 +22,11 @@ public class MainContentRegionNavigationService : IMainNavigationService
         this.logger = logger;
     }
 
+    /// <summary>
+    /// This must be callled <i>after</i> the main region has been
+    /// fully loaded.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public void Initialize()
     {
         if (initialized) 
@@ -28,9 +34,11 @@ public class MainContentRegionNavigationService : IMainNavigationService
 
         if (this.regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
         {
-            mainRegion = this.regionManager.Regions[RegionNames.MainContentRegion];
-            mainRegion.NavigationService.Navigated += OnNavigated;
-            mainRegion.NavigationService.NavigationFailed += NavigationFailed;
+            var mainRegion = this.regionManager.Regions[RegionNames.MainContentRegion];
+            regionNavigationService = mainRegion.NavigationService;
+            regionNavigationService.Navigated += Navigated;
+            regionNavigationService.NavigationFailed += NavigationFailed;
+            
             initialized = true;
             return;
         }
@@ -43,11 +51,8 @@ public class MainContentRegionNavigationService : IMainNavigationService
         logger.LogError(args.Error, $"Navigation failed: {args.Uri}");
     }
 
-    void OnNavigated(object? sender, 
-        RegionNavigationEventArgs args)
+    void Navigated(object? sender, RegionNavigationEventArgs args)
     {
-        if (mainRegion == null) return;
-        
         // Use OriginalString so it also works with relative URIs
         var raw = args.Uri.OriginalString;
 
@@ -98,5 +103,14 @@ public class MainContentRegionNavigationService : IMainNavigationService
         CurrentRoute = route;
         this.regionManager.RequestNavigate(RegionNames.MainContentRegion, 
             route, parameters);
+    }
+
+    public void Dispose()
+    {
+        if (regionNavigationService != null)
+        {
+            regionNavigationService.Navigated -= Navigated;
+            regionNavigationService.NavigationFailed -= NavigationFailed;
+        }
     }
 }
