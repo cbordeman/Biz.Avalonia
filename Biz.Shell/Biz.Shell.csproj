@@ -20,6 +20,7 @@
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Lucide.Avalonia" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Prism.Avalonia" />
     <PackageReference Include="Prism.DryIoc.Avalonia" />
     <PackageReference Include="Responsive.Avalonia" />

@@ -1,4 +1,6 @@
-using Avalonia.Media;
+using Microsoft.Extensions.Logging;
+using Biz.Core.Logging;
+using Prism.Container.DryIoc;
 
 namespace Biz.Shell;
 
@@ -48,6 +50,19 @@ public class App : PrismApplication
         // SidebarView isn't listed, note we're using `AutoWireViewModel` in the View's AXAML.
         // See the line, `prism:ViewModelLocator.AutoWireViewModel="True"`
 
+        // Logging
+        containerRegistry.GetContainer().RegisterLoggerFactory(
+            LoggerFactory.Create(builder =>
+            {
+                builder.AddConsole();
+                builder.SetMinimumLevel(LogLevel.Information);
+            }));
+        
+        //container.Register(typeof(ILogger<>),
+            //made: Made.Of(req => loggerFactoryMethod.MakeGenericMethod(req.Parent.ImplementationType),
+            //ServiceInfo.Of<LoggerFactory>()));
+
+        
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
