@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Prism.Core" />
+      <PackageReference Include="Prism.Core" Version="9.0.537" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,11 +33,11 @@
                 DestinationFolder="$(ModulesOutputPath)"
                 SkipUnchangedFiles="true" />
 
-        <!-- Copy dependencies if needed -->
-                <Copy
-                        SourceFiles="@(ReferenceCopyLocalPaths)"
-                        DestinationFolder="$(ModulesOutputPath)"
-                        SkipUnchangedFiles="true" />
+        <!-- Copy dependencies -->
+        <Copy
+                SourceFiles="@(ReferenceCopyLocalPaths)"
+                DestinationFolder="$(ModulesOutputPath)"
+                SkipUnchangedFiles="true" />
     </Target>
 
 </Project>

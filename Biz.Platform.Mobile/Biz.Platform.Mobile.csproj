@@ -9,8 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" />
-      <PackageReference Include="Prism.Core" />
+        <PackageReference Include="Prism.Core" Version="9.0.537" />
     </ItemGroup>
 
     <ItemGroup>

@@ -15,7 +15,8 @@ internal class LoggingAdapter<T> : ILogger<T>
         adaptee = factory.CreateLogger<T>();
     }
 
-    public IDisposable BeginScope<TState>(TState state)
+    public IDisposable? BeginScope<TState>(TState state) 
+        where TState: notnull
     {
         return adaptee.BeginScope(state);
     }
@@ -25,7 +26,7 @@ internal class LoggingAdapter<T> : ILogger<T>
         return adaptee.IsEnabled(logLevel);
     }
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         adaptee.Log(logLevel, eventId, state, exception, formatter);
     }
