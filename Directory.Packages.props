@@ -21,11 +21,10 @@
     <PackageVersion Include="Prism.DryIoc.Avalonia" Version="9.0.537.11130" />
     <PackageVersion Include="Responsive.Avalonia" Version="0.1.1" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
-
-    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="11.3.1"/>
-    <PackageVersion Include="Avalonia.Skia" Version="11.3.1"/>
-    <PackageVersion Include="MinVer" Version="6.0.0"/>
-    <PackageVersion Include="Avalonia.Themes.Simple" Version="11.3.1"/>
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.1"/>
+    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="11.3.1" />
+    <PackageVersion Include="Avalonia.Skia" Version="11.3.1" />
+    <PackageVersion Include="MinVer" Version="6.0.0" />
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="11.3.1" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.1" />
   </ItemGroup>
 </Project>
