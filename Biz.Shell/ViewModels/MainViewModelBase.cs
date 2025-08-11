@@ -131,6 +131,7 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     
     public void OnViewLoaded()
     {
+        // After regions are loaded.
         mainContentRegionNavigationService.Initialize();
     }
 }

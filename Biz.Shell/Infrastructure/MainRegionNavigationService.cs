@@ -24,8 +24,9 @@ public class MainContentRegionNavigationService : IMainContentRegionNavigationSe
 
         if (this.regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
         {
-            this.regionManager.Regions[RegionNames.MainContentRegion].NavigationService.Navigated +=
-                OnNavigationServiceNavigated;
+            var region = this.regionManager.Regions[RegionNames.MainContentRegion];
+            region.NavigationService.Navigated += OnNavigated;
+            region.NavigationService.NavigationFailed += NavigationFailed;
             initialized = true;
             return;
         }
@@ -33,8 +34,13 @@ public class MainContentRegionNavigationService : IMainContentRegionNavigationSe
         throw new InvalidOperationException(
             $"MainContentRegion not found.  Could not initialize {nameof(MainContentRegionNavigationService)}.");
     }
-    
-    void OnNavigationServiceNavigated(object? sender, 
+
+    void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args)
+    {
+        
+    }
+
+    void OnNavigated(object? sender, 
         RegionNavigationEventArgs args)
     {
         var region = args.NavigationContext.NavigationService.Region;
