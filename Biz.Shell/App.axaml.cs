@@ -51,7 +51,7 @@ public class App : PrismApplication
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
-        containerRegistry.RegisterSingleton<IMainContentRegionNavigationService, MainContentRegionNavigationService>();
+        containerRegistry.RegisterSingleton<IMainNavigationService, MainContentRegionNavigationService>();
 
         // Views - Region Navigation
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();

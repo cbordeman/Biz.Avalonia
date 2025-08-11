@@ -1,20 +1,24 @@
-﻿namespace Biz.Shell.Infrastructure;
+﻿using Microsoft.Extensions.Logging;
 
-public class MainContentRegionNavigationService : IMainContentRegionNavigationService
+namespace Biz.Shell.Infrastructure;
+
+public class MainContentRegionNavigationService : IMainNavigationService
 {
     bool initialized;
-    
+    IRegion? mainRegion;
     readonly IRegionManager regionManager;
-    
+    readonly ILogger<MainContentRegionNavigationService> logger;
+
     public string? CurrentPageArea { get; private set; }
     public string? CurrentRoute { get; private set; }
     
     public event NotifyPageChanged? PageChanged;
 
-    public MainContentRegionNavigationService(IRegionManager regionManager)
+    public MainContentRegionNavigationService(IRegionManager regionManager,
+        ILogger<MainContentRegionNavigationService> logger)
     {
         this.regionManager = regionManager;
-        
+        this.logger = logger;
     }
 
     public void Initialize()
@@ -24,36 +28,65 @@ public class MainContentRegionNavigationService : IMainContentRegionNavigationSe
 
         if (this.regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
         {
-            var region = this.regionManager.Regions[RegionNames.MainContentRegion];
-            region.NavigationService.Navigated += OnNavigated;
-            region.NavigationService.NavigationFailed += NavigationFailed;
+            mainRegion = this.regionManager.Regions[RegionNames.MainContentRegion];
+            mainRegion.NavigationService.Navigated += OnNavigated;
+            mainRegion.NavigationService.NavigationFailed += NavigationFailed;
             initialized = true;
             return;
         }
-
         throw new InvalidOperationException(
             $"MainContentRegion not found.  Could not initialize {nameof(MainContentRegionNavigationService)}.");
     }
 
     void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args)
     {
-        
+        logger.LogError(args.Error, $"Navigation failed: {args.Uri}");
     }
 
     void OnNavigated(object? sender, 
         RegionNavigationEventArgs args)
     {
-        var region = args.NavigationContext.NavigationService.Region;
-        var view = region.ActiveViews.FirstOrDefault();
-        if (view == null) 
-            throw new InvalidOperationException("View must be active.");
-        var viewType = view.GetType();
-        var pageAttribute = viewType.GetCustomAttribute<PageAttribute>();
-        if (pageAttribute == null) 
-            throw new InvalidOperationException("View must have Page attribute with the area name.");
+        if (mainRegion == null) return;
+        
+        // Use OriginalString so it also works with relative URIs
+        var raw = args.Uri.OriginalString;
 
-        CurrentPageArea = pageAttribute.AreaName; 
-        CurrentRoute = args.Uri.AbsoluteUri;
+        string path;
+        string query;
+
+        if (args.Uri.IsAbsoluteUri)
+        {
+            path = args.Uri.AbsolutePath; // e.g. /Area/Route/More
+            query = args.Uri.Query;       // e.g. ?id=1
+        }
+        else
+        {
+            int qIdx = raw.IndexOf('?');
+            path = qIdx >= 0 ? raw[..qIdx] : raw;
+            query = qIdx >= 0 ? raw[qIdx..] : string.Empty;
+        }
+
+        path = path.TrimStart('/');
+
+        string pageArea;
+        string route;
+
+        int slashIdx = path.IndexOf('/');
+        if (slashIdx >= 0)
+        {
+            pageArea = path[..slashIdx];
+            var routePath = path[(slashIdx + 1)..];
+            route = string.IsNullOrEmpty(query) ? routePath : routePath + query;
+        }
+        else
+        {
+            pageArea = path;
+            // No additional path segments; keep route empty (or include query if you prefer)
+            route = string.IsNullOrEmpty(query) ? string.Empty : query;
+        }
+
+        CurrentPageArea = pageArea;
+        CurrentRoute = route;
         
         PageChanged?.Invoke(CurrentPageArea!, CurrentRoute!);
     }
