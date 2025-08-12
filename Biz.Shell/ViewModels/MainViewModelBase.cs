@@ -105,9 +105,8 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     public override void Dispose()
     {
         base.Dispose();
-        if (mainContentRegionNavigationService != null)
-            mainContentRegionNavigationService.AreaChanged -=
-                MainContentRegionNavigationServiceOnPageChanged;
+        mainContentRegionNavigationService.AreaChanged -=
+            MainContentRegionNavigationServiceOnPageChanged;
     }
     
     public void OnViewLoaded()
