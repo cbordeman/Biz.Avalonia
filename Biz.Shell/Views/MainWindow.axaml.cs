@@ -10,9 +10,9 @@ namespace Biz.Shell.Views
         public MainWindow()
         {
             InitializeComponent();
-            
+
             Closing += OnClosing;
-            
+
             ToolTip.SetTip(FullscreenButton, "Fullscreen");
             FullscreenButton.Click += OnFullScreen;
         }
@@ -20,7 +20,7 @@ namespace Biz.Shell.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-            
+
             if (this.DataContext is IOnViewLoaded onViewLoaded)
                 onViewLoaded.OnViewLoaded();
         }
@@ -43,16 +43,8 @@ namespace Biz.Shell.Views
         {
             e.Cancel = true;
 
-            if (DataContext is MainWindowViewModel viewModel)
-            {
-                viewModel.TryCloseCommand.Execute(null);
-            }
-        }
-
-        public void OnViewLoaded()
-        {
-            if (DataContext is IOnViewLoaded onViewLoaded)
-                onViewLoaded.OnViewLoaded();
+            if (DataContext is MainWindowViewModel viewModel) 
+                viewModel.TryCloseCommand.Execute(null).LogException();
         }
     }
 }

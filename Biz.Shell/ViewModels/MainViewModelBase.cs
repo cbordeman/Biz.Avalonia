@@ -1,4 +1,5 @@
-﻿using ShadUI;
+﻿using Biz.Modules.Dashboard;
+using ShadUI;
 
 namespace Biz.Shell.ViewModels;
 
@@ -113,5 +114,8 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     {
         // After regions are loaded.
         mainContentRegionNavigationService.Initialize();
+        var mm = Container.Resolve<ModuleManager>();
+        mm.LoadModule(DashboardConstants.ModuleName);
+        ExecuteGoToPageCommand(DashboardConstants.DashboardView);
     }
 }

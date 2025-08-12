@@ -3,8 +3,7 @@ using ShadUI;
 
 namespace Biz.Shell.ViewModels
 {
-    public class MainWindowViewModel : NavigationAwareViewModelBase,
-        IOnViewLoaded
+    public class MainWindowViewModel : NavigationAwareViewModelBase
     {
         public IPlatformDialogService DialogService { get; }
         
@@ -44,10 +43,5 @@ namespace Biz.Shell.ViewModels
                 Environment.Exit(0);
         }
         #endregion TryCloseCommand
-
-        public void OnViewLoaded()
-        {
-            moduleManager.LoadModule(DashboardConstants.ModuleName);
-        }
     }
 }
