@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 namespace Biz.Shell.Views
 {
     /// <summary>Main window view.</summary>
-    public partial class MainWindow : ShadUI.Window, IOnViewLoaded
+    public partial class MainWindow : ShadUI.Window
     {
         public MainWindow()
         {
