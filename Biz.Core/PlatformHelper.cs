@@ -1,4 +1,6 @@
-﻿namespace Biz.Core;
+﻿using Prism.Ioc;
+
+namespace Biz.Core;
 
 public static class PlatformHelper
 {

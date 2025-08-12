@@ -1,6 +1,7 @@
 ﻿using Biz.Core;
 using Biz.Core.Services;
 using Biz.Shell;
+using Prism.Ioc;
 using ShadUI;
 
 namespace Biz.Platform;

@@ -1,7 +1,7 @@
 ﻿using Biz.Modules.Dashboard;
-using Biz.Modules.Dashboard.Core;
 using Biz.Shell;
 using JetBrains.Annotations;
+using Prism.Modularity;
 
 namespace Biz.Platform;
 

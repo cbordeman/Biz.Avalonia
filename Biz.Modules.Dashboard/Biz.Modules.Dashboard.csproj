@@ -3,13 +3,9 @@
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latest</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Prism.Core" Version="9.0.537" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />

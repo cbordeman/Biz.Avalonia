@@ -5,33 +5,20 @@ namespace Biz.Shell.ViewModels;
 public abstract class MainViewModelBase : FormFactorAwareViewModel,
     IOnViewLoaded
 {
-    readonly ThemeWatcher themeWatcher;
     readonly IMainRegionNavigationService mainContentRegionNavigationService;
 
-    #region CurrentPageArea
-    public string? CurrentPageArea
+    #region CurrentArea
+    public string? CurrentArea
     {
-        get => currentPageArea;
+        get => currentArea;
         set
         {
-            if (SetProperty(ref currentPageArea, value))
-            {
+            if (SetProperty(ref currentArea, value)) 
                 GoToPageCommand.RaiseCanExecuteChanged();
-            }
         }
     }
-
-    string? currentPageArea;        
-    #endregion CurrentPageArea
-
-    #region CurrentRoute
-    public string? CurrentRoute
-    {
-        get => currentRoute;
-        set => SetProperty(ref currentRoute, value);
-    }
-    string? currentRoute;        
-    #endregion CurrentRoute
+    string? currentArea;        
+    #endregion CurrentArea
     
     #region CurrentMode
     public ThemeMode CurrentTheme
@@ -46,19 +33,16 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     
     protected MainViewModelBase(IContainer container) : base(container)
     {
-        themeWatcher = container.Resolve<ThemeWatcher>();
         ToastManager = container.Resolve<ToastManager>();
 
         mainContentRegionNavigationService = 
             container.Resolve<IMainRegionNavigationService>();
-        mainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
+        mainContentRegionNavigationService.AreaChanged += MainContentRegionNavigationServiceOnPageChanged;
     }
-
-    void MainContentRegionNavigationServiceOnPageChanged(string area, string route)
+    
+    void MainContentRegionNavigationServiceOnPageChanged(string area)
     {
-        CurrentPageArea = area;
-        CurrentRoute = route;
-        GoToPageCommand.RaiseCanExecuteChanged();
+        CurrentArea = area;
     }
 
     #region SwitchThemeCommand
@@ -109,15 +93,11 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     public AsyncDelegateCommandWithParam<string> GoToPageCommand => goToPageCommand 
         ??= new AsyncDelegateCommandWithParam<string>
         (ExecuteGoToPageCommand, CanGoToPageCommand);
-    bool CanGoToPageCommand(string area)
-    {
-        // This command can only be used with no route.  Use a custom
-        // command if you need a route.
-        return CurrentPageArea != area || CurrentRoute != null;
-    }
+    static bool CanGoToPageCommand(string area) => true;
     Task ExecuteGoToPageCommand(string area)
     {
-        RegionManager.RequestNavigate(RegionNames.MainContentRegion, area);
+        if (CurrentArea != area)
+            RegionManager.RequestNavigate(RegionNames.MainContentRegion, area);
         return Task.CompletedTask;
     }
     #endregion GoToPageCommand
@@ -125,8 +105,9 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     public override void Dispose()
     {
         base.Dispose();
-        mainContentRegionNavigationService.PageChanged -= 
-            MainContentRegionNavigationServiceOnPageChanged;
+        if (mainContentRegionNavigationService != null)
+            mainContentRegionNavigationService.AreaChanged -=
+                MainContentRegionNavigationServiceOnPageChanged;
     }
     
     public void OnViewLoaded()

@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Biz.Core;
 using Biz.Shell;
 using JetBrains.Annotations;
+using Prism.Modularity;
 
 namespace Biz.Platform;
 
-[UsedImplicitly]
 public class DesktopModuleCatalogService : IPlatformModuleCatalogService
 {
     public void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

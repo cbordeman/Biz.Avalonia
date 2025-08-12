@@ -1,6 +1,7 @@
-﻿using Avalonia;
+﻿using System;
 using Biz.Core.Services;
 using Biz.Shell.Services;
+using Prism.Ioc;
 
 namespace Biz.Core.Views;
 

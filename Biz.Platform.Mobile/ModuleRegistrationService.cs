@@ -3,6 +3,7 @@ using Biz.Core.Services;
 using Biz.Platform.ViewModels;
 using Biz.Platform.Views;
 using Biz.Shell;
+using Prism.Ioc;
 
 namespace Biz.Platform;
 

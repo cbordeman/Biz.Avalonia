@@ -1,3 +1,5 @@
+using System;
+
 namespace Biz.Shell.Services;
 
 public interface INotificationService

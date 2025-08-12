@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csharp",
+    "ms-vscode.powershell",
+    "editorconfig.editorconfig",
+    "shd101wyy.markdown-preview-enhanced",
+    "streetsidesoftware.code-spell-checker",
+    "unoplatform.vscode"
+  ]
+}

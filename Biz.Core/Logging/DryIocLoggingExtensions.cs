@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DryIoc;
+using Microsoft.Extensions.Logging;
 
 namespace Biz.Core.Logging;
 

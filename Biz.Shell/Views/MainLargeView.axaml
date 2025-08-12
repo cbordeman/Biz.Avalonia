@@ -25,7 +25,7 @@
                 Padding="{Binding #Toggler.IsChecked, Converter={x:Static converters:BooleanConverters.SidebarPadding}}"
                 BorderBrush="{DynamicResource BorderColor30}"
                 BorderThickness="0,0,1,0"
-                CurrentRoute="{Binding CurrentRoute}"
+                CurrentRoute="{Binding CurrentArea}"
                 Expanded="{Binding #Toggler.IsChecked}">
                 <shadui:Sidebar.ExpandEasing>
                     <shadui:EaseInOutBack BounceIntensity="Strong" />

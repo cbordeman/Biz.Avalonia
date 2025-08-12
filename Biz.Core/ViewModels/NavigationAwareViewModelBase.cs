@@ -1,8 +1,11 @@
-﻿using IContainer = DryIoc.IContainer;
+﻿using System;
+using Prism.Navigation.Regions;
 
 namespace Biz.Core.ViewModels;
 
-public abstract class NavigationAwareViewModelBase : FormFactorAwareViewModel, INavigationAware,
+public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
+    : FormFactorAwareViewModel(container),
+    INavigationAware,
     IConfirmNavigationRequest
 {
     protected IRegionNavigationService RegionNavigationService = null!;
@@ -16,11 +19,6 @@ public abstract class NavigationAwareViewModelBase : FormFactorAwareViewModel, I
     }
     #endregion Title
 
-    protected NavigationAwareViewModelBase(IContainer container) 
-        : base(container)
-    {
-    }
-    
     /// <summary>
     ///   Called to determine if this instance can handle the navigation request.
     /// </summary>

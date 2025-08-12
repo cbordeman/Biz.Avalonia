@@ -1,5 +1,3 @@
-using Avalonia;
-
 namespace Biz.Core.Converters;
 
 public static class CornerRadiusConverters

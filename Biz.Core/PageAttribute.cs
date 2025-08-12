@@ -1,4 +1,6 @@
-﻿namespace Biz.Core;
+﻿using System;
+
+namespace Biz.Core;
 
 /// <summary>
 /// Area the sidebar will look for at the beginning of the

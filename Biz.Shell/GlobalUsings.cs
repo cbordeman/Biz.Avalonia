@@ -1,7 +1,6 @@
 ﻿global using System;
 global using System.Diagnostics;
 global using System.Linq;
-global using System.Reflection;
 global using Avalonia;
 global using Avalonia.Controls;
 global using Avalonia.Controls.ApplicationLifetimes;

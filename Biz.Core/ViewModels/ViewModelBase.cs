@@ -1,13 +1,23 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using IContainer = DryIoc.IContainer;
+using System.Threading.Tasks;
+using DryIoc;
+using Prism.Mvvm;
+using Prism.Navigation.Regions;
 
 namespace Biz.Core.ViewModels;
 
 public abstract class ViewModelBase : BindableBase, 
     IRegionMemberLifetime, INotifyDataErrorInfo
 {
-    protected readonly IContainer Container;
+    protected readonly DryIoc.IContainer Container;
     protected readonly IRegionManager? RegionManager;
     
     #region INotifyDataErrorInfo
@@ -105,7 +115,7 @@ public abstract class ViewModelBase : BindableBase,
     public bool IsNotBusy { get; set; }
     #endregion IsBusy
     
-    protected ViewModelBase(IContainer container)
+    protected ViewModelBase(DryIoc.IContainer container)
     {
         this.Container = container;
         this.RegionManager = container.Resolve<IRegionManager>();

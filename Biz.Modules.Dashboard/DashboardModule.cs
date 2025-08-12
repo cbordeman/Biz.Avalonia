@@ -1,4 +1,7 @@
-﻿namespace Biz.Modules.Dashboard.Core;
+﻿using Prism.Ioc;
+using Prism.Modularity;
+
+namespace Biz.Modules.Dashboard;
 
 // Module attributes are necessary for directory loading scenario.
 [Module(ModuleName = DashboardConstants.ModuleName, OnDemand = true)]

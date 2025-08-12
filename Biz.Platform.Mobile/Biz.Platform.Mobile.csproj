@@ -3,14 +3,10 @@
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latest</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Biz.Platform</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Prism.Core" Version="9.0.537" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />

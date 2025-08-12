@@ -1,8 +1,10 @@
+using Biz.Modules.Dashboard;
 using ShadUI;
 
 namespace Biz.Shell.ViewModels
 {
-    public class MainWindowViewModel : NavigationAwareViewModelBase
+    public class MainWindowViewModel : NavigationAwareViewModelBase,
+        IOnViewLoaded
     {
         public IPlatformDialogService DialogService { get; }
         
@@ -13,16 +15,20 @@ namespace Biz.Shell.ViewModels
             set => SetProperty(ref main, value);
         }
         MainLargeViewModel main;
+        readonly IModuleManager moduleManager;
+
         #endregion Main
 
         public MainWindowViewModel(IContainer container, 
             MainLargeViewModel mainLargeViewModel, 
-            IPlatformDialogService platformDialogService)
+            IPlatformDialogService platformDialogService,
+            IModuleManager moduleManager)
             : base(container)
         {
             this.DialogService = platformDialogService;
             
             main = mainLargeViewModel;
+            this.moduleManager = moduleManager;
             Title = "Shell (Window)";
         }
         
@@ -38,6 +44,10 @@ namespace Biz.Shell.ViewModels
                 Environment.Exit(0);
         }
         #endregion TryCloseCommand
-        
+
+        public void OnViewLoaded()
+        {
+            moduleManager.LoadModule(DashboardConstants.ModuleName);
+        }
     }
 }

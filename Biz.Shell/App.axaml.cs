@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Biz.Core.Logging;
 using Prism.Container.DryIoc;
 
+
 namespace Biz.Shell;
 
 public class App : PrismApplication

@@ -1,7 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Layout;
-
-namespace Biz.Core.Converters;
+﻿namespace Biz.Core.Converters;
 
 public static class BooleanConverters
 {

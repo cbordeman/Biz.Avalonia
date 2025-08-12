@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 namespace Biz.Shell.Views
 {
     /// <summary>Main window view.</summary>
-    public partial class MainWindow : ShadUI.Window
+    public partial class MainWindow : ShadUI.Window, IOnViewLoaded
     {
         public MainWindow()
         {
@@ -47,6 +47,12 @@ namespace Biz.Shell.Views
             {
                 viewModel.TryCloseCommand.Execute(null);
             }
+        }
+
+        public void OnViewLoaded()
+        {
+            if (DataContext is IOnViewLoaded onViewLoaded)
+                onViewLoaded.OnViewLoaded();
         }
     }
 }
