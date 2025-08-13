@@ -1,5 +1,4 @@
-using System.Threading;
-using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 
 namespace Biz.Shell.Views
@@ -44,7 +43,7 @@ namespace Biz.Shell.Views
             e.Cancel = true;
 
             if (DataContext is MainWindowViewModel viewModel) 
-                viewModel.TryCloseCommand.Execute(null).LogException();
+                viewModel.TryCloseCommand.Execute().LogException();
         }
     }
 }

@@ -113,7 +113,7 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
         // This executes after regions are loaded.
         mainContentRegionNavigationService.Initialize();
         
-        // Have to load the module, if it's not already loaded.
+        // Have to load the module if it's not already loaded.
         var mm = Container.Resolve<ModuleManager>();
         mm.LoadModule(DashboardConstants.ModuleName);
         
