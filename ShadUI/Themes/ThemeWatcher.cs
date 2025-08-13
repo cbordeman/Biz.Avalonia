@@ -114,7 +114,7 @@ public class ThemeWatcher
             DialogOverlayColor = TryGetColor("DialogOverlayColor"),
             DialogBackgroundColor = TryGetColor("DialogBackgroundColor"),
             TitleBarBackgroundColor = TryGetColor("TitleBarBackgroundColor"),
-            WindowBackgroundColor = TryGetColor("WindowBackgroundColor"),
+            MainBackgroundColor = TryGetColor("MainBackgroundColor"),
             WindowButtonHoverColor = TryGetColor("WindowButtonHoverColor"),
             SidebarBackgroundColor = TryGetColor("SidebarBackgroundColor"),
             SwitchBackgroundColor = TryGetColor("SwitchBackgroundColor"),

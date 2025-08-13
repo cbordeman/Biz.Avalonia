@@ -2,60 +2,89 @@
     x:Class="Biz.Shell.Views.MainSmallView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
     xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dashboard="clr-namespace:Biz.Modules.Dashboard;assembly=Biz.Modules.Dashboard.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:views="clr-namespace:Biz.Core.Views;assembly=Biz.Core"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    x:CompileBindings="True"
     x:DataType="vm:MainSmallViewModel"
+    Background="{DynamicResource MainBackgroundColor}"
     mc:Ignorable="d">
 
     <Grid>
-        <!-- <TextBlock>XXXXXXXXXXXXX</TextBlock> -->
-        <!--  Phone Layout  -->
-        <StackPanel
-            Name="PhoneLayout"
-            IsVisible="true"
-            Orientation="Vertical">
-            <ContentControl regions:RegionManager.RegionName="HamburgerMenuRegion" />
-            <ContentControl regions:RegionManager.RegionName="MainContentRegion" />
-            <!--  Bottom Tab Bar  -->
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <!--  Tabs with icon + label  -->
-            </StackPanel>
-            <ContentControl regions:RegionManager.RegionName="FooterRegion" />
-        </StackPanel>
+        <!--  Body with a ShadUI Sidebar and content  -->
+        <Grid ColumnDefinitions="Auto,*">
+            <shadui:Sidebar
+                Grid.Column="0"
+                Width="170"
+                MinWidth="0"
+                Padding="0"
+                BorderThickness="0,0,1,0"
+                CurrentRoute="{Binding CurrentArea}"
+                Expanded="{Binding #Toggler.IsChecked}">
+                <shadui:Sidebar.ExpandEasing>
+                    <shadui:EaseInOutBack />
+                </shadui:Sidebar.ExpandEasing>
+
+                <StackPanel Spacing="0">
+                    <shadui:SidebarItemLabel AsSeparator="True" Text="Get Started" />
+                    <shadui:SidebarItem
+                        Command="{Binding GoToPageCommand}"
+                        CommandParameter="{x:Static dashboard:DashboardConstants.DashboardView}"
+                        Content="Dashboard"
+                        IsChecked="True"
+                        Route="{x:Static dashboard:DashboardConstants.DashboardView}"
+                        ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dashboard'}">
+                        <shadui:SidebarItem.Icon>
+                            <Viewbox>
+                                <TextBlock
+                                    Classes="LucideIcon"
+                                    Foreground="{DynamicResource ForegroundColor}"
+                                    Text="&#57793;" />
+                            </Viewbox>
+                        </shadui:SidebarItem.Icon>
+                    </shadui:SidebarItem>
+                    <shadui:SidebarItem
+                        Command="{Binding GoToPageCommand}"
+                        Content="Theming"
+                        Route="theme"
+                        ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Theming'}">
+                        <shadui:SidebarItem.Icon>
+                            <Viewbox>
+                                <TextBlock
+                                    Classes="LucideIcon"
+                                    Foreground="{DynamicResource ForegroundColor}"
+                                    Text="&#58088;" />
+                            </Viewbox>
+                        </shadui:SidebarItem.Icon>
+                    </shadui:SidebarItem>
+                </StackPanel>
+            </shadui:Sidebar>
+
+            <TransitioningContentControl Grid.Column="1" regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}" />
+        </Grid>
+
+        <!--  Left-aligned hamburger toggle  -->
+        <ToggleButton
+            Name="Toggler"
+            Width="48"
+            Height="48"
+            Padding="4"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            CornerRadius="4"
+            Theme="{DynamicResource SideTogglerTheme}"
+            ToolTip.Tip="Menu">
+            <Viewbox>
+                <TextBlock Classes="LucideIcon" Text="" />
+            </Viewbox>
+        </ToggleButton>
     </Grid>
 </views:TopLevelUserControl>
-
-
-<!--  <UserControl  -->
-<!--  x:Class="Biz.Avalonia.Views.MainView"  -->
-<!--  xmlns="https://github.com/avaloniaui"  -->
-<!--  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  -->
-<!--  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  -->
-<!--  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  -->
-<!--  xmlns:vm="clr-namespace:Biz.Avalonia.ViewModels"  -->
-<!--  d:DesignHeight="450"  -->
-<!--  d:DesignWidth="800"  -->
-<!--  x:DataType="vm:MainViewModel"  -->
-<!--  mc:Ignorable="d">  -->
-<!--     <Design.DataContext> -->
-<!--         <vm:MainViewModel /> -->
-<!--     </Design.DataContext> -->
-<!--    -->
-<!--     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"> -->
-<!--         <TextBlock HorizontalAlignment="Center" Text="{Binding Greeting}" /> -->
-<!--  <StackPanel  -->
-<!--  Margin="0,10,0,0"  -->
-<!--  HorizontalAlignment="Center"  -->
-<!--  Orientation="Horizontal">  -->
-<!--             <Label>Enter some text:</Label> -->
-<!--             <TextBox Width="90" /> -->
-<!--         </StackPanel> -->
-<!--         <Button Margin="0,20,0,0" HorizontalAlignment="Center">Click Me!</Button> -->
-<!--     </StackPanel> -->
-<!-- </UserControl> -->

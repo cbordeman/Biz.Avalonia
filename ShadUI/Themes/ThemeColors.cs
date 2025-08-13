@@ -63,7 +63,7 @@ public class ThemeColors
     public Color DialogOverlayColor { get; set; }
     public Color DialogBackgroundColor { get; set; }
     public Color TitleBarBackgroundColor { get; set; }
-    public Color WindowBackgroundColor { get; set; }
+    public Color MainBackgroundColor { get; set; }
     public Color WindowButtonHoverColor { get; set; }
     public Color SidebarBackgroundColor { get; set; }
     public Color SwitchBackgroundColor { get; set; }

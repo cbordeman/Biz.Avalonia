@@ -12,11 +12,7 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     public string? CurrentArea
     {
         get => currentArea;
-        set
-        {
-            if (SetProperty(ref currentArea, value)) 
-                GoToPageCommand.RaiseCanExecuteChanged();
-        }
+        set => SetProperty(ref currentArea, value);
     }
     string? currentArea;        
     #endregion CurrentArea
@@ -112,10 +108,16 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     
     public void OnViewLoaded()
     {
-        // After regions are loaded.
+        CurrentArea = DashboardConstants.DashboardView;
+        
+        // This executes after regions are loaded.
         mainContentRegionNavigationService.Initialize();
+        
+        // Gotta load the module, if it's not already loaded.
         var mm = Container.Resolve<ModuleManager>();
         mm.LoadModule(DashboardConstants.ModuleName);
+        
+        // Go to the dashboard initially.
         ExecuteGoToPageCommand(DashboardConstants.DashboardView);
     }
 }

@@ -129,7 +129,7 @@
         </Style>
         <Style Selector="^[Notification=Success]">
             <Style Selector="^ /template/ Border#PART_ToastCardInner">
-                <Setter Property="Background" Value="{DynamicResource WindowBackgroundColor}" />
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource SuccessColor20}" />
             </Style>
             <Style Selector="^ /template/ Border#PART_InnerCardBackground">
@@ -167,7 +167,7 @@
         </Style>
         <Style Selector="^[Notification=Info]">
             <Style Selector="^ /template/ Border#PART_ToastCardInner">
-                <Setter Property="Background" Value="{DynamicResource WindowBackgroundColor}" />
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource InfoColor20}" />
             </Style>
             <Style Selector="^ /template/ Border#PART_InnerCardBackground">
@@ -205,7 +205,7 @@
         </Style>
         <Style Selector="^[Notification=Warning]">
             <Style Selector="^ /template/ Border#PART_ToastCardInner">
-                <Setter Property="Background" Value="{DynamicResource WindowBackgroundColor}" />
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource WarningColor20}" />
             </Style>
             <Style Selector="^ /template/ Border#PART_InnerCardBackground">
@@ -243,7 +243,7 @@
         </Style>
         <Style Selector="^[Notification=Error]">
             <Style Selector="^ /template/ Border#PART_ToastCardInner">
-                <Setter Property="Background" Value="{DynamicResource WindowBackgroundColor}" />
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor20}" />
             </Style>
             <Style Selector="^ /template/ Border#PART_InnerCardBackground">

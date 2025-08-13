@@ -35,4 +35,9 @@
             <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Styles\General.xaml" />
+      <AvaloniaXaml Include="Styles\General.axaml" />
+    </ItemGroup>
 </Project>

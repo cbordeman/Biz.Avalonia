@@ -61,7 +61,7 @@
     <Color x:Key="DialogBackgroundColor">#F2F2F2</Color>
 
     <Color x:Key="TitleBarBackgroundColor">#FFFFFF</Color>
-    <Color x:Key="WindowBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="MainBackgroundColor">Silver</Color>
     <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
 
     <Color x:Key="SidebarBackgroundColor">#FFFFFF</Color>

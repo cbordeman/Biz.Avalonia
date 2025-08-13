@@ -17,4 +17,21 @@
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="ExtraLight" />
     </Style>
+    <Style Selector="TextBlock.Header">
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="FontFamily" Value="{StaticResource ManropeFont}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="ExtraLight" />
+        <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
+        <Setter Property="Margin">
+            <OnPlatform x:TypeArguments="Thickness">
+                <OnPlatform.Windows>10,0,0,0</OnPlatform.Windows>
+                <OnPlatform.macOS>10,0,0,0</OnPlatform.macOS>
+                <OnPlatform.iOS>40,0,0,0</OnPlatform.iOS>
+                <OnPlatform.Linux>40,0,0,0</OnPlatform.Linux>
+                <OnPlatform.Android>40,0,0,0</OnPlatform.Android>
+                <OnPlatform.Browser>40,0,0,0</OnPlatform.Browser>
+            </OnPlatform>
+        </Setter>
+    </Style>
 </Styles>

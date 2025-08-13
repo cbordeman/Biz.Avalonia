@@ -15,12 +15,6 @@
 
     <Application.Styles>
         <shadui:ShadTheme />
-
-        <!--  Global style applying black background to all windows in dark mode  -->
-        <Style Selector="Window">
-            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
-        </Style>
-
     </Application.Styles>
 
     <Application.Resources>
@@ -31,21 +25,22 @@
                 <!--     <ResourceInclude Source="avares://ShadUI/Controls/Resources.axaml" /> -->
                 <!-- </ResourceDictionary.MergedDictionaries> -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="WindowBackgroundBrush">Black</SolidColorBrush>
+                    <!-- <SolidColorBrush x:Key="WindowBackgroundBrush">Red</SolidColorBrush> -->
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="WindowBackgroundBrush">White</SolidColorBrush>
+                    <!-- <SolidColorBrush x:Key="WindowBackgroundBrush">Red</SolidColorBrush> -->
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
             <!--  Fonts  -->
             <FontFamily x:Key="LucideIcon">avares://Biz.Shell/Assets/Fonts#lucide</FontFamily>
             <FontFamily x:Key="ShadUiIcon">avares://Biz.Shell/Assets/Fonts#shadui</FontFamily>
+            <FontFamily x:Key="ManropeFont">avares://Biz.Shell/Assets/Fonts#Manrope</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
-        <StyleInclude Source="/Styles/TextBlock.axaml" />
-        <StyleInclude Source="/Styles/Button.axaml" />
+        <StyleInclude Source="/Styles/index.axaml" />
+        <StyleInclude Source="/Styles/General.axaml" />
     </Application.Styles>
 </dryIoc:PrismApplication>

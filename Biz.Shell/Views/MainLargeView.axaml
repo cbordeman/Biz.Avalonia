@@ -51,7 +51,7 @@
                         CommandParameter="{x:Static dashboard:DashboardConstants.DashboardView}"
                         Content="Dashboard"
                         IsChecked="True"
-                        Route="dashboard"
+                        Route="{x:Static dashboard:DashboardConstants.DashboardView}"
                         ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dashboard'}">
                         <shadui:SidebarItem.Icon>
                             <Viewbox>
