@@ -5,8 +5,7 @@
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:Biz.Shell.ViewModels">
 
-    <TreeDataTemplate DataType="viewModels:SidebarHeaderViewModel" 
-                      ItemsSource="{Binding Children}">
+    <TreeDataTemplate DataType="viewModels:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
         <shadui:SidebarItemLabel
             AsSeparator="True"
             IsVisible="{Binding Header, Converter={x:Static ObjectConverters.IsNotNull}}"
