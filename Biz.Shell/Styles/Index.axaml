@@ -4,4 +4,6 @@
     <StyleInclude Source="/Styles/Tooltip.axaml" />
     <StyleInclude Source="/Styles/Window.axaml" />
     <StyleInclude Source="/Styles/Icons.axaml" />
+
+    <StyleInclude Source="/Styles/General.axaml" />
 </Styles>

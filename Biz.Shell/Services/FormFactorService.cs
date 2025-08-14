@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Biz.Core.Services;
-using Prism.Mvvm;
 
 namespace Biz.Shell.Services;
 
