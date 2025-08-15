@@ -39,13 +39,12 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <!--  Data Templates  -->
-                <ResourceInclude Source="/Assets/Svgs/settings.svg" />
-
                 <ResourceInclude Source="/DataTemplates/index.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
-        <SvgSource x:Key="GearIcon" Path="/Assets/Svgs/your-icon.svg" />
+        <!--  SVG Icons  -->
+        <SvgSource x:Key="GearIcon" Path="/Assets/Svgs/settings.svg" />
     </Application.Resources>
 
     <Application.Styles>

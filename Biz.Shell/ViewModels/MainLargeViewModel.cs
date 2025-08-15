@@ -18,7 +18,7 @@ public class MainLargeViewModel : MainViewModelBase
                 [
                     new SideBarNavigationItemViewModel(
                         DashboardConstants.DashboardView,
-                        "Dashboard", "",
+                        "Dashboard", "home_regular",
                         DashboardConstants.ModuleName),
                     new SideBarNavigationItemViewModel(
                         "SettingsView",

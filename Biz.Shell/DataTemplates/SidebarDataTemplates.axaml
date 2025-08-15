@@ -27,7 +27,7 @@
                     <TextBlock
                         Classes="LucideIcon"
                         Foreground="{DynamicResource ForegroundColor}"
-                        Text="{Binding Icon}" />
+                        Text="{Binding IconResourceName}" />
                 </Viewbox>
             </shadui:SidebarItem.Icon>
         </shadui:SidebarItem>

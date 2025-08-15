@@ -79,11 +79,13 @@
                                                 ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='{Binding DisplayName}'}">
                                                 <shadui:SidebarItem.Icon>
                                                     <Viewbox>
-                                                        <TextBlock
-                                                            Classes="LucideIcon"
-                                                            Foreground="{DynamicResource ForegroundColor}"
-                                                            Text="{Binding Icon}" />
+                                                        <PathIcon Data="{Binding IconGeometry}" />
+                                                        <!--  <TextBlock  -->
+                                                        <!--  Classes="LucideIcon"  -->
+                                                        <!--  Foreground="{DynamicResource ForegroundColor}"  -->
+                                                        <!--  Text="{Binding Icon}" />  -->
                                                     </Viewbox>
+
                                                 </shadui:SidebarItem.Icon>
                                             </shadui:SidebarItem>
                                         </DataTemplate>
