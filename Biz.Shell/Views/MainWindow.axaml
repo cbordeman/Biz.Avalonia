@@ -17,7 +17,7 @@
     x:DataType="vm:MainWindowViewModel"
     Icon="/Assets/logo.ico"
     WindowStartupLocation="CenterScreen"
-    WindowState="FullScreen"
+    WindowState="Maximized"
     mc:Ignorable="d">
     <!--  BorderThickness="{Binding ElementName=Window, Path=MyBorderThickness, Mode=TwoWay}"  -->
     <shadUi:Window.LogoContent>

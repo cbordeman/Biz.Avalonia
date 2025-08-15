@@ -1,13 +1,28 @@
-﻿using Biz.Modules.Dashboard;
+﻿using System.Collections.Generic;
+using Biz.Modules.Dashboard;
 using ShadUI;
 
 namespace Biz.Shell.ViewModels;
 
-public abstract class MainViewModelBase : FormFactorAwareViewModel,
-    IOnViewLoaded
+public abstract class MainViewModelBase 
+    : FormFactorAwareViewModel, IOnViewLoaded
 {
     readonly IMainRegionNavigationService mainContentRegionNavigationService;
 
+    public List<SidebarHeaderViewModel> SidebarHeaders 
+        { get; protected set; } = null!;
+    
+    #region SidebarIsExpanded
+    public bool SidebarIsExpanded
+    {
+        get => sidebarIsExpanded;
+        set => SetProperty(ref sidebarIsExpanded, value);
+    }
+
+    bool sidebarIsExpanded;        
+    #endregion SidebarIsExpanded
+
+    
     #region CurrentArea
     public string? CurrentArea
     {
@@ -108,8 +123,6 @@ public abstract class MainViewModelBase : FormFactorAwareViewModel,
     
     public void OnViewLoaded()
     {
-        CurrentArea = DashboardConstants.DashboardView;
-        
         // This executes after regions are loaded.
         mainContentRegionNavigationService.Initialize();
         

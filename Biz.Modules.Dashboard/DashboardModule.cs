@@ -10,7 +10,8 @@ public class DashboardModule : IModule
 {
     public void RegisterTypes(IContainerRegistry containerRegistry)
     { 
-        containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>(DashboardConstants.DashboardView);
+        containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>(
+            DashboardConstants.DashboardView);
     }
     
     public void OnInitialized(IContainerProvider containerProvider)

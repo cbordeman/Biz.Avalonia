@@ -1,17 +1,31 @@
-﻿namespace Biz.Shell.ViewModels;
+﻿using Biz.Modules.Dashboard;
 
+namespace Biz.Shell.ViewModels;
+
+[UsedImplicitly]
 public class MainSmallViewModel : MainViewModelBase
 {
-    #region Greeting
-    string greeting = "Welcome to Shell (Small)";
-    public string Greeting
-    {
-        get => greeting;
-        set => SetProperty(ref greeting, value);
-    }
-    #endregion Greeting
-
     public MainSmallViewModel(IContainer container) : base(container)
     {
+        SidebarIsExpanded = false;
+
+        SidebarHeaders =
+        [
+            new SidebarHeaderViewModel()
+            {
+                Header = "Item 1",
+                Children =
+                [
+                    new SideBarNavigationItemViewModel(
+                        DashboardConstants.DashboardView,
+                        "Dashboard", "",
+                        DashboardConstants.ModuleName),
+                    new SideBarNavigationItemViewModel(
+                        "SettingsView",
+                        "Settings", "",
+                        null!)
+                ]
+            }
+        ];
     }
 }

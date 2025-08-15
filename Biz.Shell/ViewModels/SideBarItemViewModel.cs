@@ -13,7 +13,7 @@ public class SidebarItemViewModel(
     string viewName,
     string displayName,
     string icon,
-    string moduleName,
+    string? moduleName,
     ICommand command,
     object? commandParameter)
 {
@@ -22,8 +22,8 @@ public class SidebarItemViewModel(
     public string ViewName { get; init; } = viewName;
     public string DisplayName { get; init; } = displayName;
     public string Icon { get; init; } = icon;
-    public string ModuleName { get; } = moduleName;
-    public object? CommandParameter { get; set; }
+    public string? ModuleName { get; } = moduleName;
+    public object? CommandParameter { get; set; } = commandParameter;
 
     public virtual ICommand Command
     {
@@ -37,7 +37,7 @@ public class SideBarNavigationItemViewModel : SidebarItemViewModel
     public SideBarNavigationItemViewModel(string viewName,
         string displayName,
         string icon,
-        string moduleName) 
+        string? moduleName) 
         : base(viewName, displayName, icon, moduleName, null!, null)
     {
         ViewName = viewName;
