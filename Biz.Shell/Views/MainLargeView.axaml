@@ -26,18 +26,19 @@
                 BorderBrush="{DynamicResource BorderColor30}"
                 BorderThickness="0,0,1,0"
                 CurrentRoute="{Binding CurrentArea}"
-                Expanded="{Binding #Toggler.IsChecked}">
+                Expanded="{Binding SidebarIsExpanded, Mode=TwoWay}">
                 <shadui:Sidebar.ExpandEasing>
                     <shadui:EaseInOutBack BounceIntensity="Strong" />
                 </shadui:Sidebar.ExpandEasing>
                 <shadui:Sidebar.Header>
                     <ToggleButton
                         Name="Toggler"
-                        Width="32"
-                        Height="32"
+                        Width="36"
+                        Height="36"
                         Padding="8"
                         HorizontalAlignment="{Binding #Toggler.IsChecked, Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
                         CornerRadius="{DynamicResource LgCornerRadius}"
+                        IsChecked="{Binding SidebarIsExpanded, Mode=TwoWay}"
                         Theme="{DynamicResource SideTogglerTheme}">
                         <Viewbox>
                             <TextBlock Classes="LucideIcon" Text="&#57646;" />
@@ -46,10 +47,51 @@
                 </shadui:Sidebar.Header>
 
                 <!--  sidebar items  -->
-                <ItemsControl Items="{Binding SidebarItems}">
+                <ItemsControl ItemsSource="{Binding SidebarHeaders}">
                     <ItemsControl.ItemsPanel>
-                        <StackPanel Spacing="4" />
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="0" />
+                        </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <TreeDataTemplate DataType="vm:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
+                            <StackPanel Spacing="0">
+
+                                <shadui:SidebarItemLabel
+                                    AsSeparator="True"
+                                    IsVisible="{Binding Header, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                    Text="{Binding Header}" />
+
+                                <!--  Children  -->
+                                <ItemsControl ItemsSource="{Binding Children}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Spacing="0" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="vm:SidebarItemViewModel">
+                                            <shadui:SidebarItem
+                                                Command="{Binding Command}"
+                                                CommandParameter="{Binding}"
+                                                Content="{Binding DisplayName}"
+                                                Route="{Binding ViewName}"
+                                                ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='{Binding DisplayName}'}">
+                                                <shadui:SidebarItem.Icon>
+                                                    <Viewbox>
+                                                        <TextBlock
+                                                            Classes="LucideIcon"
+                                                            Foreground="{DynamicResource ForegroundColor}"
+                                                            Text="{Binding Icon}" />
+                                                    </Viewbox>
+                                                </shadui:SidebarItem.Icon>
+                                            </shadui:SidebarItem>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </TreeDataTemplate>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
                 <shadui:Sidebar.Footer>

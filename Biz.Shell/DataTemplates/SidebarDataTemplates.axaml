@@ -5,14 +5,17 @@
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:Biz.Shell.ViewModels">
 
-    <TreeDataTemplate DataType="viewModels:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
-        <shadui:SidebarItemLabel
-            AsSeparator="True"
-            IsVisible="{Binding Header, Converter={x:Static ObjectConverters.IsNotNull}}"
-            Text="{Binding Header}" />
-    </TreeDataTemplate>
+    <!--  <TreeDataTemplate  -->
+    <!--  x:Key="SidebarHeaderViewModel"  -->
+    <!--  DataType="viewModels:SidebarHeaderViewModel"  -->
+    <!--  ItemsSource="{Binding Children}">  -->
+    <!--  <shadui:SidebarItemLabel  -->
+    <!--  AsSeparator="True"  -->
+    <!--  IsVisible="{Binding Header, Converter={x:Static ObjectConverters.IsNotNull}}"  -->
+    <!--  Text="{Binding Header}" />  -->
+    <!-- </TreeDataTemplate> -->
 
-    <DataTemplate DataType="viewModels:SideBarItemViewModel">
+    <DataTemplate x:Key="SideBarItemViewModel" DataType="viewModels:SidebarItemViewModel">
         <shadui:SidebarItem
             Command="{Binding Command}"
             CommandParameter="{Binding}"

@@ -1,20 +1,12 @@
-﻿using System.Threading.Tasks;
-using Prism.Commands;
-using ShadUI;
+﻿using System.Collections.Generic;
+using Biz.Modules.Dashboard;
 
 namespace Biz.Shell.ViewModels;
 
 public class MainLargeViewModel : MainViewModelBase
 {
-    #region SidebarItems
-    public ObservableCollection<SidebarHeaderViewModel> SidebarItems
-    {
-        get => sidebarItems;
-        set => SetProperty(ref sidebarItems, value);
-    }
-    ObservableCollection<SidebarHeaderViewModel> sidebarItems;        
-    #endregion SidebarItems
-    
+    public List<SidebarHeaderViewModel> SidebarHeaders { get; }
+
     #region Greeting
     string greeting = "Welcome to Shell (Large)";
     public string Greeting
@@ -24,7 +16,34 @@ public class MainLargeViewModel : MainViewModelBase
     }
     #endregion Greeting
 
+    #region SidebarIsExpanded
+    public bool SidebarIsExpanded
+    {
+        get => sidebarIsExpanded;
+        set => SetProperty(ref sidebarIsExpanded, value);
+    }
+    bool sidebarIsExpanded = true;        
+    #endregion SidebarIsExpanded
+    
     public MainLargeViewModel(IContainer container) : base(container)
     {
+        SidebarHeaders =
+        [
+            new SidebarHeaderViewModel()
+            {
+                Header = "Item 1",
+                Children =
+                [
+                    new SideBarNavigationItemViewModel(
+                        DashboardConstants.DashboardView,
+                        "Dashboard", "",
+                        DashboardConstants.ModuleName),
+                    new SideBarNavigationItemViewModel(
+                        "SettingsView",
+                        "Settings", "",
+                        null)
+                ]
+            }
+        ];
     }
 }

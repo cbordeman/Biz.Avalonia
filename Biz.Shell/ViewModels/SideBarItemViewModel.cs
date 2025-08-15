@@ -6,10 +6,10 @@
 public class SidebarHeaderViewModel
 {
     public string? Header { get; init; }
-    public ObservableCollection<SideBarItemViewModel>? Children { get; set; }
+    public ObservableCollection<SidebarItemViewModel>? Children { get; set; }
 }
 
-public class SideBarItemViewModel(
+public class SidebarItemViewModel(
     string viewName,
     string displayName,
     string icon,
@@ -32,7 +32,7 @@ public class SideBarItemViewModel(
     }
 }
 
-public class SideBarNavigationItemViewModel : SideBarItemViewModel
+public class SideBarNavigationItemViewModel : SidebarItemViewModel
 {
     public SideBarNavigationItemViewModel(string viewName,
         string displayName,
