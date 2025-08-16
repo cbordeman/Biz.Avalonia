@@ -11,8 +11,8 @@ public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
     protected IRegionNavigationService RegionNavigationService = null!;
 
     #region Title
-    string title = string.Empty;
-    public string Title
+    string? title = null;
+    public string? Title
     {
         get => title;
         set => SetProperty(ref title, value);

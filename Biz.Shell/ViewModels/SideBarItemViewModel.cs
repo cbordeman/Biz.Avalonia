@@ -12,7 +12,7 @@ public class SidebarHeaderViewModel
 public class SidebarItemViewModel(
     string viewName,
     string displayName,
-    string iconResourceName,
+    string geometryStyleResourceName,
     string? moduleName,
     ICommand command,
     object? commandParameter)
@@ -21,7 +21,7 @@ public class SidebarItemViewModel(
     
     public string ViewName { get; init; } = viewName;
     public string DisplayName { get; init; } = displayName;
-    public string IconGeometry { get; init; }
+    public string GeometryStyleResourceName { get; init; } = geometryStyleResourceName;
     public string? ModuleName { get; } = moduleName;
     public object? CommandParameter { get; set; } = commandParameter;
 
@@ -36,9 +36,9 @@ public class SideBarNavigationItemViewModel : SidebarItemViewModel
 {
     public SideBarNavigationItemViewModel(string viewName,
         string displayName,
-        string iconResourceName,
+        string geometryStyleResourceName,
         string? moduleName) 
-        : base(viewName, displayName, iconResourceName, moduleName, null!, null)
+        : base(viewName, displayName, geometryStyleResourceName, moduleName, null!, null)
     {
         
         CommandField = NavigationCommand.Create(moduleName, viewName);

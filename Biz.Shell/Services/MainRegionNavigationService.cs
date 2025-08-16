@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Biz.Shell.Infrastructure;
+namespace Biz.Shell.Services;
 
 public class MainContentRegionNavigationService : IMainRegionNavigationService,
     IDisposable

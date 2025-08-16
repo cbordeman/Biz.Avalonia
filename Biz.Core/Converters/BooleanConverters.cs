@@ -1,4 +1,6 @@
-﻿namespace Biz.Core.Converters;
+﻿using Avalonia.Media;
+
+namespace Biz.Core.Converters;
 
 public static class BooleanConverters
 {
@@ -14,4 +16,13 @@ public static class BooleanConverters
     public static readonly IValueConverter SidebarTogglerHorizontalAlignment =
         new FuncValueConverter<bool, HorizontalAlignment>(value =>
             value ? HorizontalAlignment.Right : HorizontalAlignment.Center);
+
+    public static readonly IValueConverter SidebarToggleIcon =
+        new FuncValueConverter<bool, Geometry>(value =>
+        {
+            if (value)
+                return AppHelpers.GetAppStyleResource<Geometry>("hamburger");
+            else
+                return AppHelpers.GetAppStyleResource<Geometry>("hamburger");
+        });
 }

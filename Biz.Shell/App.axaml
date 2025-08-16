@@ -42,9 +42,6 @@
                 <ResourceInclude Source="/DataTemplates/index.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-        <!--  SVG Icons  -->
-        <SvgSource x:Key="GearIcon" Path="/Assets/Svgs/settings.svg" />
     </Application.Resources>
 
     <Application.Styles>
