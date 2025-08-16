@@ -4,7 +4,7 @@ using Biz.Core.Views;
 
 namespace Biz.Shell.Views;
 
-public partial class MainSmallView : TopLevelUserControl
+public partial class MainSmallView : FormFactorAwareUserControl
 {
     public MainSmallView()
     {

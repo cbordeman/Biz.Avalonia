@@ -5,7 +5,7 @@ using Prism.Ioc;
 
 namespace Biz.Core.Views;
 
-public class TopLevelUserControl : UserControlEx
+public class FormFactorAwareUserControl : UserControlEx
 {
     IFormFactorService? formFactorService;
     

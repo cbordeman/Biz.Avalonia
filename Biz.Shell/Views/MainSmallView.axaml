@@ -1,4 +1,4 @@
-<views:TopLevelUserControl
+<views:FormFactorAwareUserControl
     x:Class="Biz.Shell.Views.MainSmallView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -87,4 +87,4 @@
             </Viewbox>
         </ToggleButton>
     </Grid>
-</views:TopLevelUserControl>
+</views:FormFactorAwareUserControl>
