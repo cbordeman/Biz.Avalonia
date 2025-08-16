@@ -281,7 +281,7 @@
                 <TransitioningContentControl.PageTransition>
                     <PageSlide Duration="0:00:00.2">
                         <PageSlide.SlideInEasing>
-                            <shadui:EaseInOutBack BounceIntensity="Strong" />
+                            <shadui:EaseInOutBack BounceIntensity="Soft" />
                         </PageSlide.SlideInEasing>
                     </PageSlide>
                 </TransitioningContentControl.PageTransition>
