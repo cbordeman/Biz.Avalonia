@@ -279,14 +279,11 @@
             </shadui:Sidebar>
             <TransitioningContentControl Grid.Column="1" regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}">
                 <TransitioningContentControl.PageTransition>
-                    <CompositePageTransition>
-                        <PageSlide Duration="0:00:00.3">
-                            <PageSlide.SlideInEasing>
-                                <shadui:EaseInOutBack BounceIntensity="Soft" />
-                            </PageSlide.SlideInEasing>
-                        </PageSlide>
-                        <CrossFade FadeInEasing="BounceEaseInOut" Duration="0:00:00.3" />
-                    </CompositePageTransition>
+                    <PageSlide Duration="0:00:00.2">
+                        <PageSlide.SlideInEasing>
+                            <shadui:EaseInOutBack BounceIntensity="Strong" />
+                        </PageSlide.SlideInEasing>
+                    </PageSlide>
                 </TransitioningContentControl.PageTransition>
             </TransitioningContentControl>
         </Grid>
