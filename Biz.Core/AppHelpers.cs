@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Avalonia.Media;
 
 namespace Biz.Core;
 
@@ -9,7 +8,7 @@ public static class AppHelpers
     public static T GetAppStyleResource<T>(string key) where T: class
     {
         Debug.Assert(Application.Current != null, "Application.Current != null");
-        Debug.Assert(key != null, nameof(key) + " != null");
+        Debug.Assert(!string.IsNullOrEmpty(key), $"{nameof(key)} is null or empty.");
         
         var resource = Application.Current.Styles.TryGetResource(key,
             Application.Current.ActualThemeVariant,

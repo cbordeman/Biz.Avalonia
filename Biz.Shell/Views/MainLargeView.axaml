@@ -5,7 +5,6 @@
     xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
     xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dashboard="clr-namespace:Biz.Modules.Dashboard;assembly=Biz.Modules.Dashboard.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
@@ -26,22 +25,22 @@
                 BorderBrush="{DynamicResource BorderColor30}"
                 BorderThickness="0,0,1,0"
                 CurrentRoute="{Binding CurrentArea}"
-                Expanded="{Binding SidebarIsExpanded, Mode=TwoWay}">
-                <shadui:Sidebar.ExpandEasing>
-                    <shadui:EaseInOutBack BounceIntensity="Strong" />
-                </shadui:Sidebar.ExpandEasing>
+                Expanded="{Binding IsDrawerOpen, Mode=TwoWay}">
+                <!-- <shadui:Sidebar.ExpandEasing> -->
+                <!--     <shadui:EaseInOutBack BounceIntensity="Strong" /> -->
+                <!-- </shadui:Sidebar.ExpandEasing> -->
                 <shadui:Sidebar.Header>
                     <ToggleButton
                         Name="Toggler"
                         Width="36"
                         Height="36"
                         Padding="8"
-                        HorizontalAlignment="{Binding SidebarIsExpanded, Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
+                        HorizontalAlignment="{Binding IsDrawerOpen, Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
                         CornerRadius="{DynamicResource LgCornerRadius}"
                         Cursor="Hand"
-                        IsChecked="{Binding SidebarIsExpanded, Mode=TwoWay}"
+                        IsChecked="{Binding IsDrawerOpen, Mode=TwoWay}"
                         Theme="{DynamicResource SideTogglerTheme}">
-                        <PathIcon Data="{Binding SidebarIsExpanded, Converter={x:Static converters:BooleanConverters.SidebarToggleIcon}}" />
+                        <PathIcon Data="{Binding IsDrawerOpen, Converter={x:Static converters:BooleanConverters.SidebarToggleIcon}}" />
                     </ToggleButton>
                 </shadui:Sidebar.Header>
 

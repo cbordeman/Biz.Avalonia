@@ -1,13 +1,17 @@
-﻿using Biz.Modules.Dashboard;
+﻿using System.Collections.Generic;
+using Biz.Modules.Dashboard;
 
 namespace Biz.Shell.ViewModels;
 
 [UsedImplicitly]
 public class MainLargeViewModel : MainViewModelBase
 {
+    public List<SidebarHeaderViewModel> SidebarHeaders 
+        { get; protected set; } = null!;
+    
     public MainLargeViewModel(IContainer container) : base(container)
     {
-        SidebarIsExpanded = true;
+        IsDrawerOpen = true;
         
         SidebarHeaders =
         [

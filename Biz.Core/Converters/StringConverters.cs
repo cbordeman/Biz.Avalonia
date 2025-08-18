@@ -16,13 +16,13 @@ public static class StringConverters
     public static readonly IValueConverter AppResource =
         new FuncValueConverter<string, object?>(key =>
         {
-            Debug.Assert(key != null, nameof(key) + " != null");
+            Debug.Assert(!string.IsNullOrEmpty(key), $"{nameof(key)} is null or empty.");
             return AppHelpers.GetAppResource<object>(key);
         });
     public static readonly IValueConverter AppStyleResource =
         new FuncValueConverter<string, object?>(key =>
         {
-            Debug.Assert(key != null, nameof(key) + " != null");
+            Debug.Assert(!string.IsNullOrEmpty(key), $"{nameof(key)} is null or empty.");
             return AppHelpers.GetAppStyleResource<object>(key);
         });
 }

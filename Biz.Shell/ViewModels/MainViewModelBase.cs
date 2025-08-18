@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Biz.Modules.Dashboard;
 using ShadUI;
+using IContainer = DryIoc.IContainer;
 
 namespace Biz.Shell.ViewModels;
 
@@ -9,19 +11,14 @@ public abstract class MainViewModelBase
 {
     readonly IMainRegionNavigationService mainContentRegionNavigationService;
 
-    public List<SidebarHeaderViewModel> SidebarHeaders 
-        { get; protected set; } = null!;
-    
-    #region SidebarIsExpanded
-    public bool SidebarIsExpanded
+    #region IsDrawerOpen
+    public bool IsDrawerOpen
     {
-        get => sidebarIsExpanded;
-        set => SetProperty(ref sidebarIsExpanded, value);
+        get => isDrawerOpen;
+        set => SetProperty(ref isDrawerOpen, value);
     }
-
-    bool sidebarIsExpanded;        
-    #endregion SidebarIsExpanded
-
+    bool isDrawerOpen;        
+    #endregion IsDrawerOpen
     
     #region CurrentArea
     public string? CurrentArea

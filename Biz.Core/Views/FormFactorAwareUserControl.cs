@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Biz.Core.Services;
 using Biz.Shell.Services;
 using Prism.Ioc;
 
 namespace Biz.Core.Views;
 
-public class FormFactorAwareUserControl : UserControlEx
+public class FormFactorAwareUserControl : UserControlEx, IDisposable
 {
     IFormFactorService? formFactorService;
+    TopLevel? topLevel;
     
     protected override void OnDataContextChanged(EventArgs e)
     {
@@ -19,7 +21,7 @@ public class FormFactorAwareUserControl : UserControlEx
     {
         base.OnAttachedToVisualTree(e);
 
-        var topLevel = TopLevel.GetTopLevel((Visual)this.Parent!);
+        topLevel = TopLevel.GetTopLevel((Visual)this.Parent!);
         if (topLevel == null) return;
 
         // Use topLevel.Bounds.Size here for initial layout decisions
@@ -46,4 +48,14 @@ public class FormFactorAwareUserControl : UserControlEx
     // {
     //     // React to safe area inset changes (e.g., notch, status bar)
     // }
+
+    public void Dispose()
+    {
+        if (topLevel != null)
+        {
+            topLevel.SizeChanged -= TopLevel_SizeChanged;
+            topLevel = null;
+        }
+        GC.SuppressFinalize(this);
+    }
 }
