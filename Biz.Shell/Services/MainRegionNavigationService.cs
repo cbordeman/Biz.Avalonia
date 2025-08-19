@@ -57,7 +57,11 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
         {
             CurrentPage = args.Uri.OriginalString;
             CurrentArea = args.Uri.OriginalString.Split('.').First();
-            object? pageView = regionNavigationService!.Region.ActiveViews.Single();
+            
+            // There should be exactly one active view
+            // in the main region.
+            var pageView = regionNavigationService!.Region
+                .ActiveViews.Single();
             if (pageView == null)
                 throw new InvalidOperationException("Page contains no views.");
             if (pageView is not UserControl uc)
@@ -77,7 +81,7 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
         }
     }
 
-    void IDisposable.Dispose()
+    public void Dispose()
     {
         if (regionNavigationService == null) return;
 
