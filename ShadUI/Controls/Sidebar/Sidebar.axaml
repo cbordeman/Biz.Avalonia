@@ -43,7 +43,7 @@
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type shadui:Sidebar}" TargetType="{x:Type shadui:Sidebar}">
-        <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
+        <Setter Property="Background" Value="{DynamicResource SidebarBackgroundColor}" />
         <Setter Property="ItemIconContentSpacing" Value="12" />
         <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
         <Setter Property="Template">

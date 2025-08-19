@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:toolbar="clr-namespace:Biz.Core.ViewModels.Toolbar;assembly=Biz.Core"
     xmlns:views="clr-namespace:Biz.Core.Views;assembly=Biz.Core"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
     d:DesignHeight="450"
@@ -16,7 +17,7 @@
     x:DataType="vm:MainLargeViewModel"
     mc:Ignorable="d">
     <Panel>
-        <Grid ColumnDefinitions="Auto *">
+        <Grid ColumnDefinitions="Auto,*">
             <shadui:Sidebar
                 Grid.Column="0"
                 Width="220"
@@ -26,9 +27,6 @@
                 BorderThickness="0,0,1,0"
                 CurrentRoute="{Binding CurrentArea}"
                 Expanded="{Binding IsDrawerOpen, Mode=TwoWay}">
-                <!-- <shadui:Sidebar.ExpandEasing> -->
-                <!--     <shadui:EaseInOutBack BounceIntensity="Strong" /> -->
-                <!-- </shadui:Sidebar.ExpandEasing> -->
                 <shadui:Sidebar.Header>
                     <ToggleButton
                         Name="Toggler"
@@ -76,13 +74,7 @@
                                                 Route="{Binding ViewName}"
                                                 ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='{Binding DisplayName}'}">
                                                 <shadui:SidebarItem.Icon>
-
                                                     <PathIcon Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}" />
-                                                    <!--  <TextBlock  -->
-                                                    <!--  Classes="LucideIcon"  -->
-                                                    <!--  Foreground="{DynamicResource ForegroundColor}"  -->
-                                                    <!--  Text="{Binding Icon}" />  -->
-
                                                 </shadui:SidebarItem.Icon>
                                             </shadui:SidebarItem>
                                         </DataTemplate>
@@ -276,15 +268,80 @@
                     </Menu>
                 </shadui:Sidebar.Footer>
             </shadui:Sidebar>
-            <TransitioningContentControl Grid.Column="1" regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}">
-                <TransitioningContentControl.PageTransition>
-                    <PageSlide Duration="0:00:00.2">
-                        <PageSlide.SlideInEasing>
-                            <shadui:EaseInOutBack BounceIntensity="Soft" />
-                        </PageSlide.SlideInEasing>
-                    </PageSlide>
-                </TransitioningContentControl.PageTransition>
-            </TransitioningContentControl>
+
+            <!--  Header and Toolbar  -->
+            <Grid
+                Grid.Column="1"
+                Margin="5,10,0,0"
+                HorizontalAlignment="Stretch"
+                ColumnDefinitions="*,Auto"
+                RowDefinitions="Auto,*">
+
+                <!--  Main Content  -->
+                <TransitioningContentControl
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Margin="0,15,0,0"
+                    regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}">
+                    <TransitioningContentControl.PageTransition>
+                        <PageSlide Duration="0:00:00.2">
+                            <PageSlide.SlideInEasing>
+                                <shadui:EaseInOutBack BounceIntensity="Soft" />
+                            </PageSlide.SlideInEasing>
+                        </PageSlide>
+                    </TransitioningContentControl.PageTransition>
+                </TransitioningContentControl>
+
+                <!--  Header  -->
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="0,3,0,0"
+                    VerticalAlignment="Center"
+                    Classes="Header"
+                    Text="{Binding CurrentPage.Title}" />
+
+                <!--  Toolbar Buttons  -->
+                <ItemsControl
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Background="{DynamicResource SidebarBackgroundColorMobile}"
+                    BorderThickness="0"
+                    Focusable="False"
+                    ItemsSource="{Binding CurrentPage.ToolbarEntries}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="toolbar:ToolbarEntry">
+                            <!--  Toolbar Button  -->
+                            <Button
+                                Margin="3,0,0,0"
+                                Padding="1"
+                                VerticalAlignment="Stretch"
+                                Command="{Binding Command}"
+                                Focusable="False"
+                                IsVisible="{Binding IsVisible}">
+                                <StackPanel Orientation="Horizontal">
+                                    <PathIcon
+                                        VerticalAlignment="Center"
+                                        Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}"
+                                        IsVisible="{Binding GeometryStyleResourceName, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        IsVisible="{Binding Text, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}"
+                                        Text="{Binding Text}" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </Grid>
         <shadui:ToastHost Manager="{Binding ToastManager}" />
     </Panel>

@@ -65,10 +65,13 @@
     <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
 
     <Color x:Key="SidebarBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="SidebarBackgroundColorMobile">#DDDDDD</Color>
 
     <Color x:Key="SwitchBackgroundColor">#E5E5E5</Color>
     <Color x:Key="SwitchForegroundColor">#FFFFFF</Color>
 
     <Color x:Key="TabItemSelectedColor">#FFFFFF</Color>
     <Color x:Key="TabItemsBackgroundColor">#E8E8E8</Color>
+
+    <Color x:Key="HamburgerToggleBackgroundColor">#AAAAAA</Color>
 </ResourceDictionary>

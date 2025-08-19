@@ -10,15 +10,6 @@ public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
 {
     protected IRegionNavigationService RegionNavigationService = null!;
 
-    #region Title
-    string? title = null;
-    public string? Title
-    {
-        get => title;
-        set => SetProperty(ref title, value);
-    }
-    #endregion Title
-
     /// <summary>
     ///   Called to determine if this instance can handle the navigation request.
     /// </summary>

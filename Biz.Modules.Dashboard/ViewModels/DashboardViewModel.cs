@@ -5,7 +5,7 @@ using Prism.Commands;
 namespace Biz.Modules.Dashboard.ViewModels;
 
 [Area(DashboardConstants.ModuleName)]
-public class DashboardViewModel : NavigationAwareViewModelBase
+public class DashboardViewModel : PageViewModelBase
 {
     readonly INotificationService notificationService;
 
@@ -14,7 +14,7 @@ public class DashboardViewModel : NavigationAwareViewModelBase
     ObservableCollection<string> listItems = [];
     string listItemText = string.Empty;
 
-    public List<ThemeVariant> ThemeStyles =>
+    public static List<ThemeVariant> ThemeStyles =>
     [
         ThemeVariant.Default,
         ThemeVariant.Dark,
@@ -23,6 +23,7 @@ public class DashboardViewModel : NavigationAwareViewModelBase
     
     public DashboardViewModel(IContainer container) : base(container)
     {
+        Title = "Dashboard";
         notificationService = container.Resolve<INotificationService>();
         ThemeSelected = Application.Current!.RequestedThemeVariant!;
     }

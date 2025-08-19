@@ -61,7 +61,7 @@ public class App : PrismApplication
         
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
-        containerRegistry.RegisterSingleton<IFormFactorService, FormFactorService>();
+        containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
         containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
 
         // Views - Region Navigation

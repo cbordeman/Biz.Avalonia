@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Biz.Core.ViewModels.Toolbar;
 using Biz.Modules.Dashboard;
 using ShadUI;
 using IContainer = DryIoc.IContainer;
 
 namespace Biz.Shell.ViewModels;
 
+/// <summary>
+/// This is not a page; it is the top level view which contains
+/// the MainContentRegion, which hosts pages.  Desktop clients
+/// do have a window above this view, though.
+/// </summary>
 public abstract class MainViewModelBase 
-    : FormFactorAwareViewModel, IOnViewLoaded
+    : NavigationAwareViewModelBase, IOnViewLoaded
 {
     readonly IMainRegionNavigationService mainContentRegionNavigationService;
 
@@ -29,6 +33,15 @@ public abstract class MainViewModelBase
     string? currentArea;        
     #endregion CurrentArea
     
+    #region CurrentPage
+    public PageViewModelBase? CurrentPage
+    {
+        get => currentPage;
+        set => SetProperty(ref currentPage, value);
+    }
+    PageViewModelBase? currentPage;        
+    #endregion CurrentPage
+    
     #region CurrentMode
     public ThemeMode CurrentTheme
     {
@@ -46,12 +59,14 @@ public abstract class MainViewModelBase
 
         mainContentRegionNavigationService = 
             container.Resolve<IMainRegionNavigationService>();
-        mainContentRegionNavigationService.AreaChanged += MainContentRegionNavigationServiceOnPageChanged;
+        mainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
     }
     
-    void MainContentRegionNavigationServiceOnPageChanged(string area)
+    void MainContentRegionNavigationServiceOnPageChanged(
+        string area, PageViewModelBase pageVm)
     {
         CurrentArea = area;
+        CurrentPage = pageVm;
     }
 
     #region SwitchThemeCommand
@@ -85,6 +100,18 @@ public abstract class MainViewModelBase
     }
     #endregion SwitchThemeCommand
     
+    #region ToggleIsDrawerOpenCommand
+    AsyncDelegateCommand? toggleIsDrawerOpenCommand;
+    public AsyncDelegateCommand ToggleIsDrawerOpenCommand => toggleIsDrawerOpenCommand ??= new AsyncDelegateCommand(ExecuteToggleIsDrawerOpenCommand, CanToggleIsDrawerOpenCommand);
+    static bool CanToggleIsDrawerOpenCommand() => true;
+
+    Task ExecuteToggleIsDrawerOpenCommand()
+    {
+        IsDrawerOpen = !IsDrawerOpen;
+        return Task.CompletedTask;
+    }
+    #endregion ToggleIsDrawerOpenCommand
+    
     #region NavigateSettingsCommand
     AsyncDelegateCommand? navigateSettingsCommand;
     public AsyncDelegateCommand NavigateSettingsCommand => navigateSettingsCommand ??=
@@ -114,7 +141,7 @@ public abstract class MainViewModelBase
     public override void Dispose()
     {
         base.Dispose();
-        mainContentRegionNavigationService.AreaChanged -=
+        mainContentRegionNavigationService.PageChanged -=
             MainContentRegionNavigationServiceOnPageChanged;
     }
     

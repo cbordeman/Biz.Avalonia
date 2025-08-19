@@ -22,7 +22,6 @@
         <Setter Property="FontFamily" Value="{StaticResource ManropeFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="ExtraLight" />
-        <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
         <Setter Property="Margin">
             <OnPlatform x:TypeArguments="Thickness">
                 <OnPlatform.Windows>10,0,0,0</OnPlatform.Windows>

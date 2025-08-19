@@ -34,13 +34,15 @@ public class SidebarItemViewModel(
 
 public class SideBarNavigationItemViewModel : SidebarItemViewModel
 {
-    public SideBarNavigationItemViewModel(string viewName,
+    public SideBarNavigationItemViewModel(
+        string viewName,
         string displayName,
         string geometryStyleResourceName,
         string? moduleName) 
-        : base(viewName, displayName, geometryStyleResourceName, moduleName, null!, null)
+        : base(viewName, displayName, 
+            geometryStyleResourceName, moduleName, 
+            null!, viewName)
     {
-        
         CommandField = NavigationCommand.Create(moduleName, viewName);
     }
 }

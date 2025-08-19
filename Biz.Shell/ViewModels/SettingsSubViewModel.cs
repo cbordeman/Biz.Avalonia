@@ -2,7 +2,7 @@ using Biz.Modules.Dashboard;
 
 namespace Biz.Shell.ViewModels;
 
-public class SettingsSubViewModel : NavigationAwareViewModelBase
+public class SettingsSubViewModel : PageViewModelBase
 {
     private IRegionNavigationJournal? journal;
     private string? messageText = string.Empty;

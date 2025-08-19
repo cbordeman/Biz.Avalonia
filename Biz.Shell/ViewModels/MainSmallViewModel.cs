@@ -43,10 +43,8 @@ public class MainSmallViewModel : MainViewModelBase
         // When CurrentArea changes, select the corresponding
         // item for highlight.
         if (args.PropertyName == nameof(CurrentArea)) 
-            CurrentItem = SidebarItems.FirstOrDefault(x => x.ViewName == args.PropertyName);
-        
-        if (CurrentItem != null)
-            Debugger.Break();
+            CurrentItem = SidebarItems.FirstOrDefault(
+                x => x.ViewName == CurrentArea);
         
         base.OnPropertyChanged(args);
     }

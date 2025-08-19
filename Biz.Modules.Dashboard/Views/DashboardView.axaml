@@ -23,8 +23,6 @@
         <!-- </Style> -->
     </UserControl.Styles>
     <Grid RowDefinitions="auto,auto,auto,*">
-        <TextBlock Classes="Header" Text="Welcome to the Dashboard!" />
-
         <StackPanel
             Grid.Row="1"
             HorizontalAlignment="Center"

@@ -3,7 +3,7 @@ using Biz.Core.Services;
 
 namespace Biz.Shell.Services;
 
-public class FormFactorService : IFormFactorService
+public class ViewControlService : IFormFactorService
 {
     const double PhoneMaxWidth = 600;
     const double TabletMaxWidth = 900;

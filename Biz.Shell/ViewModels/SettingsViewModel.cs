@@ -1,6 +1,6 @@
 namespace Biz.Shell.ViewModels
 {
-    public class SettingsViewModel : NavigationAwareViewModelBase
+    public class SettingsViewModel : PageViewModelBase
     {
         public SettingsViewModel(IContainer container) : base(container)
         {

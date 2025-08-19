@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:toolbar="clr-namespace:Biz.Core.ViewModels.Toolbar;assembly=Biz.Core"
     xmlns:views="clr-namespace:Biz.Core.Views;assembly=Biz.Core"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels;assembly=Biz.Shell"
     x:Name="Root"
@@ -16,52 +17,123 @@
     x:CompileBindings="True"
     x:DataType="vm:MainSmallViewModel"
     mc:Ignorable="d">
-    <Grid RowDefinitions="Auto,*">
-        <!--  Hamburger button, toggles IsDrawerOpen  -->
-        <ToggleButton
+    <Grid
+        Background="{DynamicResource MainBackgroundColor}"
+        ColumnDefinitions="Auto,*,Auto"
+        RowDefinitions="Auto,*">
+
+        <!--  Hamburger button  -->
+        <Button
             x:Name="HamburgerButton"
             Width="64"
             Height="64"
-            Padding="8"
-            HorizontalAlignment="Left"
-            IsChecked="{Binding IsDrawerOpen, Mode=TwoWay}">
+            Margin="0,0,10,0"
+            Padding="12"
+            Background="{DynamicResource HamburgerToggleBackgroundColor}"
+            Command="{Binding ToggleIsDrawerOpenCommand}"
+            CornerRadius="0"
+            Focusable="False">
             <PathIcon Data="{Binding IsDrawerOpen, Converter={x:Static converters:BooleanConverters.SidebarToggleIcon}}" />
-        </ToggleButton>
+        </Button>
+
+        <!--  Page Header on toolbar  -->
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Classes="Header"
+            Text="{Binding CurrentPage.Title}" />
+
+        <!--  Toolbar Buttons  -->
+        <ItemsControl
+            Grid.Row="0"
+            Grid.Column="2"
+            Background="{DynamicResource SidebarBackgroundColorMobile}"
+            BorderThickness="0"
+            Focusable="False"
+            ItemsSource="{Binding CurrentPage.ToolbarEntries}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="toolbar:ToolbarEntry">
+                    <!--  Toolbar Button  -->
+                    <Button
+                        Margin="3,0,0,0"
+                        Padding="1"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding Command}"
+                        Focusable="False"
+                        IsVisible="{Binding IsVisible}">
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon
+                                VerticalAlignment="Center"
+                                Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}"
+                                IsVisible="{Binding GeometryStyleResourceName, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                IsVisible="{Binding Text, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}"
+                                Text="{Binding Text}" />
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--  Everything below the toolbar  -->
         <SplitView
             x:Name="MainSplitView"
             Grid.Row="1"
-            DisplayMode="CompactOverlay"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            DisplayMode="Overlay"
             IsPaneOpen="{Binding IsDrawerOpen}">
             <SplitView.Pane>
+                <!--  Sidebar  -->
                 <Panel>
                     <ItemsControl
                         x:Name="Menu"
-                        Background="{DynamicResource MainBackgroundColor}"
+                        Background="{DynamicResource SidebarBackgroundColorMobile}"
                         BorderThickness="0"
                         Focusable="False"
                         ItemsSource="{Binding SidebarItems}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                         Tag="{Binding CurrentArea}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Spacing="4" />
+                                <StackPanel />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="vm:SidebarItemViewModel">
                                 <Button
-                                    Padding="8,4"
+                                    Margin="5,10,5,0"
+                                    Padding="2,15"
                                     HorizontalContentAlignment="Left"
-                                    Background="{Binding #Root.Tag, Converter={x:Static converters:CustomConverters.ToSelectionBackgroundBrush}, ConverterParameter='{Binding CommandParameter}'}"
+                                    VerticalContentAlignment="Center"
+                                    Background="{Binding #Menu.Tag, Converter={x:Static converters:CustomConverters.ToSelectionBackgroundBrush}, ConverterParameter='{Binding CommandParameter}'}"
                                     BorderThickness="0"
-                                    Command="{Binding Command}"
-                                    Content="{Binding DisplayName}" />
+                                    Command="{Binding Command}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <PathIcon VerticalAlignment="Center" Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}" />
+                                        <TextBlock
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding DisplayName}" />
+                                    </StackPanel>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </Panel>
             </SplitView.Pane>
+
             <SplitView.Content>
                 <!--  Main content area  -->
                 <TransitioningContentControl Grid.Row="1" regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}">

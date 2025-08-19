@@ -1,11 +1,13 @@
-﻿namespace Biz.Core.Services;
+﻿using Biz.Core.ViewModels;
 
-public delegate void NotifyMainAreaChanged(string area);
+namespace Biz.Core.Services;
+
+public delegate void NotifyPageChanged(string area, PageViewModelBase page);
 
 public interface IMainRegionNavigationService
 {
-    string? CurrentArea { get; }
-    event NotifyMainAreaChanged? AreaChanged;
+    string? CurrentPage { get; }
+    event NotifyPageChanged? PageChanged;
 
     void Initialize();
 }

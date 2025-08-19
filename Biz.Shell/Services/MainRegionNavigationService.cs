@@ -10,9 +10,10 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
     readonly IRegionManager regionManager;
     readonly ILogger<MainContentRegionNavigationService> logger;
 
+    public string? CurrentPage { get; private set; }
     public string? CurrentArea { get; private set; }
-    
-    public event NotifyMainAreaChanged? AreaChanged;
+
+    public event NotifyPageChanged? PageChanged;
 
     public MainContentRegionNavigationService(IRegionManager regionManager,
         ILogger<MainContentRegionNavigationService> logger)
@@ -22,27 +23,27 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
     }
 
     /// <summary>
-    /// This must be callled <i>after</i> the main region has been
+    /// This must be called <i>after</i> the main region has been
     /// fully loaded.
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public void Initialize()
     {
-        if (initialized) 
+        if (initialized)
             return;
 
-        if (this.regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
-        {
-            var mainRegion = this.regionManager.Regions[RegionNames.MainContentRegion];
-            regionNavigationService = mainRegion.NavigationService;
-            regionNavigationService.Navigated += Navigated;
-            regionNavigationService.NavigationFailed += NavigationFailed;
-            
-            initialized = true;
-            return;
-        }
-        throw new InvalidOperationException(
-            $"MainContentRegion not found.  Could not initialize {nameof(MainContentRegionNavigationService)}.");
+        if (!this.regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
+            throw new InvalidOperationException(
+                $"MainContentRegion not found.  Could not initialize {nameof(MainContentRegionNavigationService)}.");
+
+        var mainRegion = this.regionManager.Regions[RegionNames.MainContentRegion];
+        regionNavigationService = mainRegion.NavigationService;
+
+        regionNavigationService.Navigated += Navigated;
+        regionNavigationService.NavigationFailed += NavigationFailed;
+
+        initialized = true;
+        return;
     }
 
     void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args)
@@ -52,16 +53,35 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
 
     void Navigated(object? sender, RegionNavigationEventArgs args)
     {
-        CurrentArea = args.Uri.OriginalString;
-        AreaChanged?.Invoke(CurrentArea!);
-    }
-    
-    public void Dispose()
-    {
-        if (regionNavigationService != null)
+        try
         {
-            regionNavigationService.Navigated -= Navigated;
-            regionNavigationService.NavigationFailed -= NavigationFailed;
+            CurrentPage = args.Uri.OriginalString;
+            CurrentArea = args.Uri.OriginalString.Split('.').First();
+            object? pageView = regionNavigationService!.Region.Views.First();
+            if (pageView == null)
+                throw new InvalidOperationException("Page contains no views.");
+            if (pageView is not UserControl uc)
+                throw new InvalidOperationException(
+                    "Page view must be derived from UserControl");
+            if (uc.DataContext is not PageViewModelBase vm)
+                throw new InvalidOperationException(
+                    "Page DataContext (ViewModel) must be derived from PageViewModelBase");
+            else
+                PageChanged?.Invoke(CurrentArea!, vm);
         }
+        catch (Exception e)
+        {
+            logger.LogError(e.GetBaseException(),
+                $"Failed in Navigation() method in {nameof(MainContentRegionNavigationService)}.");
+            throw;
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        if (regionNavigationService == null) return;
+
+        regionNavigationService.Navigated -= Navigated;
+        regionNavigationService.NavigationFailed -= NavigationFailed;
     }
 }

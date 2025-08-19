@@ -3,7 +3,7 @@ using ShadUI;
 
 namespace Biz.Shell.ViewModels
 {
-    public class MainWindowViewModel : NavigationAwareViewModelBase
+    public class MainWindowViewModel : PageViewModelBase
     {
         public IPlatformDialogService DialogService { get; }
         
