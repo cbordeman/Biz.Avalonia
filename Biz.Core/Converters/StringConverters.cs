@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Biz.Core.Converters;
 
@@ -16,13 +17,15 @@ public static class StringConverters
     public static readonly IValueConverter AppResource =
         new FuncValueConverter<string, object?>(key =>
         {
-            Debug.Assert(!string.IsNullOrEmpty(key), $"{nameof(key)} is null or empty.");
             return AppHelpers.GetAppResource<object>(key);
         });
     public static readonly IValueConverter AppStyleResource =
         new FuncValueConverter<string, object?>(key =>
         {
-            Debug.Assert(!string.IsNullOrEmpty(key), $"{nameof(key)} is null or empty.");
             return AppHelpers.GetAppStyleResource<object>(key);
         });
+    public static readonly IValueConverter NullOrEmptyToTrue =
+        new FuncValueConverter<string, bool>(str => string.IsNullOrEmpty(str));
+    public static readonly IValueConverter NotNullOrEmptyToTrue =
+        new FuncValueConverter<string, bool>(str => !string.IsNullOrEmpty(str));
 }

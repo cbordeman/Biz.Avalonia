@@ -1,46 +1,43 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Threading.Tasks;
 using Avalonia.Media;
 using Prism.Mvvm;
 
 namespace Biz.Core.ViewModels.Toolbar;
 
-public abstract class ToolbarEntry : BindableBase
+public class ToolbarEntry : BindableBase, IToolbarEntry
 {
-    #region GeometryStyleResourceName
-    public Geometry? GeometryStyleResourceName
-    {
-        get => geometryStyleResourceName;
-        set => SetProperty(ref geometryStyleResourceName, value);
-    }
-    Geometry? geometryStyleResourceName;        
-    #endregion GeometryStyleResourceName
+    readonly Func<object?, Task>? execute;
+    readonly Func<object?, bool>? canExecute;
 
+    #region Geometry
+    public Geometry? Geometry
+    {
+        get => geometry;
+        set => SetProperty(ref geometry, value);
+    }
+    Geometry? geometry;        
+    #endregion Geometry
+    
     #region Text
     public string? Text
     {
         get => text;
-        set => SetProperty(ref text, value);
+        init => SetProperty(ref text, value);
     }
     string? text;        
     #endregion Text
-    
-    #region Command
-    public ICommand? Command
-    {
-        get => command;
-        set => SetProperty(ref command, value);
-    }
-    ICommand? command;        
-    #endregion Command
 
-    #region CommandParameter
-    public object? CommandParameter
+    #region Command
+    AsyncDelegateCommandWithParam<object?>? command;
+    public AsyncDelegateCommandWithParam<object?> Command => command ??= 
+        new AsyncDelegateCommandWithParam<object?>(ExecuteCommand, CanExecute);
+    bool CanExecute(object? p) => canExecute?.Invoke(p) ?? true;
+    Task ExecuteCommand(object? p)
     {
-        get => commandParameter;
-        set => SetProperty(ref commandParameter, value);
+        return execute?.Invoke(p)!;
     }
-    object? commandParameter;        
-    #endregion CommandParameter
+    #endregion Command
     
     #region IsVisible
     public bool IsVisible
@@ -48,6 +45,18 @@ public abstract class ToolbarEntry : BindableBase
         get => isVisible;
         set => SetProperty(ref isVisible, value);
     }
-    bool isVisible;        
+    bool isVisible = true;
     #endregion IsVisible
+    
+    public ToolbarEntry(string? text = null,
+        string? geometryStyleResourceName = null,
+        Func<object?, Task>? execute = null,
+        Func<object?, bool>? canExecute = null)
+    {
+        if (geometryStyleResourceName is not null)
+            this.geometry = AppHelpers.GetAppStyleResource<Geometry>(geometryStyleResourceName);
+        this.execute = execute;
+        this.canExecute = canExecute;
+        this.text = text;
+    }
 }

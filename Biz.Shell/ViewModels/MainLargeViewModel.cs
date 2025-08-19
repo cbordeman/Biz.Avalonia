@@ -7,7 +7,7 @@ namespace Biz.Shell.ViewModels;
 public class MainLargeViewModel : MainViewModelBase
 {
     public List<SidebarHeaderViewModel> SidebarHeaders 
-        { get; protected set; } = null!;
+        { get; protected set; }
     
     public MainLargeViewModel(IContainer container) : base(container)
     {

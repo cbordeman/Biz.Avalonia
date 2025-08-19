@@ -272,7 +272,7 @@
             <!--  Header and Toolbar  -->
             <Grid
                 Grid.Column="1"
-                Margin="5,10,0,0"
+                Margin="10,10,0,0"
                 HorizontalAlignment="Stretch"
                 ColumnDefinitions="*,Auto"
                 RowDefinitions="Auto,*">
@@ -293,19 +293,30 @@
                 </TransitioningContentControl>
 
                 <!--  Header  -->
-                <TextBlock
+                <StackPanel
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="0,3,0,0"
-                    VerticalAlignment="Center"
-                    Classes="Header"
-                    Text="{Binding CurrentPage.Title}" />
+                    Orientation="Horizontal"
+                    Spacing="0">
+                    <Viewbox
+                        Width="28"
+                        VerticalAlignment="Stretch"
+                        IsVisible="{Binding CurrentPage.TitleGeometryResourceName, Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}">
+                        <PathIcon Data="{Binding CurrentPage.TitleGeometryResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}}" />
+                    </Viewbox>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Classes="Header"
+                        IsVisible="{Binding CurrentPage.Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Text="{Binding CurrentPage.Title}" />
+                </StackPanel>
 
                 <!--  Toolbar Buttons  -->
                 <ItemsControl
                     Grid.Row="0"
                     Grid.Column="1"
-                    Background="{DynamicResource SidebarBackgroundColorMobile}"
+                    Margin="0,0,8,0"
                     BorderThickness="0"
                     Focusable="False"
                     ItemsSource="{Binding CurrentPage.ToolbarEntries}"
@@ -313,33 +324,41 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
+                            <StackPanel Orientation="Horizontal" Spacing="8" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
+                    <ItemsControl.DataTemplates>
                         <DataTemplate DataType="toolbar:ToolbarEntry">
-                            <!--  Toolbar Button  -->
                             <Button
-                                Margin="3,0,0,0"
-                                Padding="1"
+                                Padding="11,7"
                                 VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource BorderColor}"
+                                BorderThickness="1"
                                 Command="{Binding Command}"
+                                CornerRadius="6"
                                 Focusable="False"
                                 IsVisible="{Binding IsVisible}">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
                                     <PathIcon
                                         VerticalAlignment="Center"
-                                        Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}"
-                                        IsVisible="{Binding GeometryStyleResourceName, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
+                                        Data="{Binding Geometry}"
+                                        IsVisible="{Binding Geometry, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
                                     <TextBlock
-                                        Margin="10,0,0,0"
                                         VerticalAlignment="Center"
-                                        IsVisible="{Binding Text, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}"
+                                        Classes="Small"
+                                        IsVisible="{Binding Text, Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}"
                                         Text="{Binding Text}" />
                                 </StackPanel>
                             </Button>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="toolbar:ToolbarSeparator">
+                            <Border
+                                Width="25"
+                                VerticalAlignment="Stretch"
+                                Background="Transparent"
+                                BorderThickness="0" />
+                        </DataTemplate>
+                    </ItemsControl.DataTemplates>
                 </ItemsControl>
             </Grid>
         </Grid>

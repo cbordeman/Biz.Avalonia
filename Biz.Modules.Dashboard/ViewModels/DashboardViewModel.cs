@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Biz.Core.ViewModels.Toolbar;
 using Prism.Commands;
 
 
 namespace Biz.Modules.Dashboard.ViewModels;
 
 [Area(DashboardConstants.ModuleName)]
-public class DashboardViewModel : PageViewModelBase
+public sealed class DashboardViewModel : PageViewModelBase
 {
     readonly INotificationService notificationService;
 
@@ -20,12 +22,35 @@ public class DashboardViewModel : PageViewModelBase
         ThemeVariant.Dark,
         ThemeVariant.Light
     ];
+
+    public int X { get; set; } = 5000;
     
     public DashboardViewModel(IContainer container) : base(container)
     {
         Title = "Dashboard";
+        TitleGeometryResourceName = ResourceNames.Gear;
+        
         notificationService = container.Resolve<INotificationService>();
         ThemeSelected = Application.Current!.RequestedThemeVariant!;
+        
+        ToolbarEntries.Add(new ToolbarEntry(
+            "Reply", ResourceNames.ArrowReply,
+            Reply));
+        ToolbarEntries.Add(new ToolbarEntry(
+            "Settings", ResourceNames.Gear,
+            Reply));
+        ToolbarEntries.Add(new ToolbarSeparator());
+        ToolbarEntries.Add(new ToolbarEntry(
+            "Lock", ResourceNames.Lock,
+            Reply));
+        ToolbarEntries.Add(new ToolbarEntry(
+            "Home", ResourceNames.Home,
+            Reply));
+    }
+
+    async Task Reply(object? _)
+    {
+        await Task.Delay(X);
     }
 
     public DelegateCommand CmdAddItem => new(() =>

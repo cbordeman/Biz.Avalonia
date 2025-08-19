@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Avalonia.Media;
 using Biz.Core.ViewModels.Toolbar;
 using DryIoc;
 
@@ -16,6 +17,15 @@ public abstract class PageViewModelBase(IContainer container)
     string? title;        
     #endregion Title
 
+    #region TitleGeometryResourceName
+    public string? TitleGeometryResourceName
+    {
+        get => titleGeometryResourceName;
+        set => SetProperty(ref titleGeometryResourceName, value);
+    }
+    string? titleGeometryResourceName;        
+    #endregion TitleGeometryResourceName
+    
     #region IsMinimalUi
     public bool IsMinimalUi
     {
@@ -30,5 +40,5 @@ public abstract class PageViewModelBase(IContainer container)
     public bool IsFullUi => !IsMinimalUi;
     #endregion MinimalUi
 
-    public virtual ObservableCollection<ToolbarEntry> ToolbarEntries { get; } = [];
+    public ObservableCollection<IToolbarEntry> ToolbarEntries { get; } = [];
 }
