@@ -57,7 +57,7 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
         {
             CurrentPage = args.Uri.OriginalString;
             CurrentArea = args.Uri.OriginalString.Split('.').First();
-            object? pageView = regionNavigationService!.Region.Views.First();
+            object? pageView = regionNavigationService!.Region.ActiveViews.Single();
             if (pageView == null)
                 throw new InvalidOperationException("Page contains no views.");
             if (pageView is not UserControl uc)
