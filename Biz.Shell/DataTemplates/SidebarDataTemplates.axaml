@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
+    xmlns:converters="clr-namespace:Biz.Shell.Converters;assembly=Biz.Shell"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:Biz.Shell.ViewModels">
 

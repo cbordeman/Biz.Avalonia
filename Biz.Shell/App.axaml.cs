@@ -1,6 +1,10 @@
 using Microsoft.Extensions.Logging;
-using Biz.Core.Logging;
+using Biz.Shell.Logging;
+using Biz.Shell.Services.Config;
+using Microsoft.Maui.Accessibility;
 using Prism.Container.DryIoc;
+using Prism.DryIoc;
+using Prism.Events;
 
 
 namespace Biz.Shell;
@@ -10,7 +14,7 @@ public class App : PrismApplication
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        
+
         base.Initialize();
     }
 
@@ -46,10 +50,18 @@ public class App : PrismApplication
     {
         // Platform-specific registrations
         PlatformHelper.RegistrationService?.RegisterPlatformTypes(containerRegistry);
-        
+
         // Note:
         // SidebarView isn't listed, note we're using `AutoWireViewModel` in the View's AXAML.
         // See the line, `prism:ViewModelLocator.AutoWireViewModel="True"`
+
+        // Register configuration service
+        containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
+
+        // Get configuration service to access maps API key
+        // TODO: Fix this to use the IConfigurationService via dependency injection
+        var configService = new ConfigurationService();
+        //var mapsApiKey = configService.Maps.BingMapsApiKey;
 
         // Logging
         containerRegistry.GetContainer().RegisterLoggerFactory(
@@ -58,15 +70,23 @@ public class App : PrismApplication
                 builder.AddConsole();
                 builder.SetMinimumLevel(LogLevel.Information);
             }));
-        
+
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
         containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
 
         // Views - Region Navigation
-        containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
-        containerRegistry.RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
+        containerRegistry
+            .RegisterForNavigation<SettingsView, SettingsViewModel>()
+            .RegisterForNavigation<SettingsSubView, SettingsSubViewModel>()
+            .RegisterForNavigation<LoginView, LoginViewModel>()
+            .RegisterForNavigation<TenantSelectionView, TenantSelectionViewModel>();
+
+        // Accessibility
+        containerRegistry
+            .RegisterInstance(SemanticScreenReader.Default);
+
 
         // Dialogs, etc. 
     }
@@ -78,7 +98,7 @@ public class App : PrismApplication
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
         // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove) 
+        foreach (var plugin in dataValidationPluginsToRemove)
             BindingPlugins.DataValidators.Remove(plugin);
     }
 
@@ -92,7 +112,7 @@ public class App : PrismApplication
         // - Error: DataTemplate inside DataTemplates must have a DataType set
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
-        
+
         PlatformHelper.RegistrationService?.InitializePlatform(Container);
     }
 

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Biz.Core.ViewModels;
+using Biz.Shell.ViewModels;
 using Prism.Commands;
 using Prism.Dialogs;
 using Prism.Mvvm;

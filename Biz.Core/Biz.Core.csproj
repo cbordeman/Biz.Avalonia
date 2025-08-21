@@ -7,22 +7,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Reference Include="Avalonia.Controls">
-        <HintPath>..\Biz.Shell.Desktop\bin\Debug\net9.0\Avalonia.Controls.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.3.3" />
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Prism\src\Avalonia\Prism.Avalonia\Prism.Avalonia.csproj" />
-      <ProjectReference Include="..\Prism\src\Avalonia\Prism.DryIoc.Avalonia\Prism.DryIoc.Avalonia.csproj" />
-      <ProjectReference Include="..\ShadUI\ShadUI.csproj" />
-    </ItemGroup>
-
 </Project>

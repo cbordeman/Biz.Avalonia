@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Biz.Modules.Dashboard;
+﻿using Biz.Modules.Dashboard;
 
 namespace Biz.Shell.ViewModels;
 

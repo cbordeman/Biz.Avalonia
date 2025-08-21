@@ -2,14 +2,15 @@
     x:Class="Biz.Shell.Views.MainLargeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
-    xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core"
+    xmlns:converters="clr-namespace:Biz.Shell.Converters;assembly=Biz.Shell"
+    xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
-    xmlns:toolbar="clr-namespace:Biz.Core.ViewModels.Toolbar;assembly=Biz.Core"
-    xmlns:views="clr-namespace:Biz.Core.Views;assembly=Biz.Core"
+    xmlns:shell="clr-namespace:Biz.Shell"
+    xmlns:toolbar="clr-namespace:Biz.Shell.ViewModels.Toolbar;assembly=Biz.Shell"
+    xmlns:views="clr-namespace:Biz.Shell.Views"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -282,7 +283,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Margin="0,15,0,0"
-                    regions:RegionManager.RegionName="{x:Static core:RegionNames.MainContentRegion}">
+                    regions:RegionManager.RegionName="{x:Static shell:RegionNames.MainContentRegion}">
                     <TransitioningContentControl.PageTransition>
                         <PageSlide Duration="0:00:00.2">
                             <PageSlide.SlideInEasing>

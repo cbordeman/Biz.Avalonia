@@ -1,6 +1,6 @@
 ﻿using System;
 using Avalonia;
-using Biz.Core;
+using Biz.Shell;
 using Biz.Platform;
 using Prism;
 using Prism.Ioc;

@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="clr-namespace:Biz.Core;assembly=Biz.Core">
+    xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell">
 
     <!--  Add Controls for Previewer Here  -->
     <Design.PreviewWith>

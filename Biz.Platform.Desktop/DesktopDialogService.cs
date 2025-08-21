@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Biz.Core.Services;
+using Biz.Shell.Services;
 using ShadUI;
 
 namespace Biz.Platform;
@@ -20,7 +20,8 @@ public class DesktopDialogService : IPlatformDialogService
         var dlg = ((DialogManager)DialogHost)
             .CreateDialog(title, message)
             .WithPrimaryButton(okText, () => tcs.SetResult(true))
-            .WithMinWidth(300);
+            .WithMinWidth(300)
+            .WithMaxWidth(500);
 
         if (cancelText != null) 
             dlg = dlg.WithCancelButton(cancelText, () => tcs.SetResult(false));

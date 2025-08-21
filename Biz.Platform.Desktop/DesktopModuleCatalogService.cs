@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Biz.Core;
+using Biz.Shell;
 using Biz.Shell;
 using JetBrains.Annotations;
 using Prism.Modularity;

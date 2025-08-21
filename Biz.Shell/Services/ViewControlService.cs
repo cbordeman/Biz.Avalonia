@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using Biz.Core.Services;
+using Biz.Shell.Services;
 
 namespace Biz.Shell.Services;
 

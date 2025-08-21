@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Biz.Core.ViewModels.Toolbar;
+using Biz.Shell.ViewModels.Toolbar;
 using Prism.Commands;
-
 
 namespace Biz.Modules.Dashboard.ViewModels;
 
@@ -48,9 +47,9 @@ public sealed class DashboardViewModel : PageViewModelBase
             Reply));
     }
 
-    async Task Reply(object? _)
+    Task Reply(object? _)
     {
-        await Task.Delay(X);
+        return Task.Delay(X);
     }
 
     public DelegateCommand CmdAddItem => new(() =>

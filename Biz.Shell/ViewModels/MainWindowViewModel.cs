@@ -1,12 +1,8 @@
-using Biz.Modules.Dashboard;
-using ShadUI;
-
 namespace Biz.Shell.ViewModels
 {
+    [UsedImplicitly]
     public class MainWindowViewModel : PageViewModelBase
     {
-        public IPlatformDialogService DialogService { get; }
-        
         #region Main
         public MainLargeViewModel Main
         {
@@ -14,20 +10,14 @@ namespace Biz.Shell.ViewModels
             set => SetProperty(ref main, value);
         }
         MainLargeViewModel main;
-        readonly IModuleManager moduleManager;
-
+        
         #endregion Main
 
         public MainWindowViewModel(IContainer container, 
-            MainLargeViewModel mainLargeViewModel, 
-            IPlatformDialogService platformDialogService,
-            IModuleManager moduleManager)
+            MainLargeViewModel mainLargeViewModel)
             : base(container)
         {
-            this.DialogService = platformDialogService;
-            
             main = mainLargeViewModel;
-            this.moduleManager = moduleManager;
             Title = "Shell (Window)";
         }
         

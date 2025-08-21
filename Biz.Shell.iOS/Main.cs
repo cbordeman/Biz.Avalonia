@@ -1,4 +1,4 @@
-using Biz.Core;
+using Biz.Shell;
 using Biz.Platform;
 using Prism.Ioc;
 using UIKit;

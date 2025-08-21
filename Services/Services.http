@@ -1,0 +1,8 @@
+@Services_HostAddress = http://localhost:5093
+
+GET {{Services_HostAddress}}/tenants/myavailable
+Accept: application/json
+LoginProvider: Microsoft
+
+###
+

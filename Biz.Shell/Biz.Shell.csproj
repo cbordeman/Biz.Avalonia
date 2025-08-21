@@ -17,16 +17,23 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2"/>
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4"/>
+    <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageReference Include="Lucide.Avalonia" Version="0.1.39" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.100" />
     <PackageReference Include="Responsive.Avalonia" Version="0.1.1" />
-    <PackageReference Include="XamlIcons" Version="1.0.6" />
+    <PackageReference Include="Shouldly" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />
     <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
+    <ProjectReference Include="..\Prism\src\Avalonia\Prism.DryIoc.Avalonia\Prism.DryIoc.Avalonia.csproj" />
+    <ProjectReference Include="..\Prism\src\Prism.Core\Prism.Core.csproj" />
+    <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />
     <ProjectReference Include="..\ShadUI\ShadUI.csproj" />
   </ItemGroup>
 
@@ -40,5 +47,30 @@
     <ItemGroup>
       <None Remove="Styles\General.xaml" />
       <AvaloniaXaml Include="Styles\General.axaml" />
+      <None Remove="Views\LoginView.xaml" />
+      <AvaloniaXaml Include="Views\LoginView.xaml" />
+      <None Remove="Views\TenantSelectionView.xaml" />
+      <AvaloniaXaml Include="Views\TenantSelectionView.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Authentication\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="appsettings.Development.json" />
+      <EmbeddedResource Include="appsettings.Development.json" />
+      <None Remove="appsettings.json" />
+      <EmbeddedResource Include="appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Biz.Core">
+        <HintPath>..\Biz.Shell.Desktop\bin\Debug\net9.0\Biz.Core.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

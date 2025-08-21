@@ -2,7 +2,7 @@
 using Avalonia.Browser;
 using Biz.Shell;
 using System.Threading.Tasks;
-using Biz.Core;
+using Biz.Shell;
 using Biz.Platform;
 
 internal sealed partial class Program

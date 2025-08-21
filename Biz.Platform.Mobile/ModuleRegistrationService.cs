@@ -1,5 +1,5 @@
-﻿using Biz.Core;
-using Biz.Core.Services;
+﻿using Biz.Shell;
+using Biz.Shell.Services;
 using Biz.Platform.ViewModels;
 using Biz.Platform.Views;
 using Biz.Shell;

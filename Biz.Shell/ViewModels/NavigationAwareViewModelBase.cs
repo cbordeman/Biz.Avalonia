@@ -1,0 +1,83 @@
+﻿using System;
+using Prism.Navigation;
+using Prism.Navigation.Regions;
+
+namespace Biz.Shell.ViewModels;
+
+public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
+    : FormFactorAwareViewModel(container),
+    INavigationAware,
+    IJournalAware,
+    IConfirmNavigationRequest
+{
+    protected IRegionNavigationService? NavigationService = null!;
+
+    /// <summary>
+    ///   Called to determine if this instance can handle the navigation request.
+    /// </summary>
+    /// <param name="navigationContext">The navigation context.</param>
+    /// <returns><see langword="true"/> if this instance accepts the navigation request; otherwise, <see langword="false"/>.</returns>
+    public virtual bool IsNavigationTarget(NavigationContext navigationContext)
+    {
+        // Auto-allow navigation
+        return OnNavigatingTo(navigationContext);
+    }
+
+    /// <summary>Called when the implementer is being navigated away from.</summary>
+    /// <param name="navigationContext">The navigation context.</param>
+    public virtual void OnNavigatedFrom(NavigationContext navigationContext)
+    { }
+
+    /// <summary>
+    /// Determines whether this instance accepts being navigated away from.
+    /// </summary>
+    /// <param name="navigationContext">The navigation context.</param>
+    /// <param name="continuationCallback">The callback to indicate when navigation can proceed.</param>
+    /// <remarks>
+    /// Implementors of this method do not need to invoke the callback before this method is completed,
+    /// but they must ensure the callback is eventually invoked.
+    /// </remarks>
+    public virtual void ConfirmNavigationRequest(NavigationContext navigationContext,
+        Action<bool> continuationCallback)
+    {
+        continuationCallback(true);
+    }
+    
+    /// <summary>Called when the implementer has been navigated to.</summary>
+    /// <param name="navigationContext">The navigation context.</param>
+    public virtual void OnNavigatedTo(NavigationContext navigationContext)
+    {
+        NavigationService = navigationContext.NavigationService;
+    }
+    
+    public Task NavigateToAsync(string area, INavigationParameters? parameters = null)
+    {
+        if (NavigationService != null)
+        {
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+            NavigationService!.RequestNavigate(
+                new Uri(area),
+                (NavigationResult args) =>
+                {
+                    if (args.Cancelled)
+                        taskCompletionSource.SetCanceled();
+                    else if (args.Exception != null)
+                        taskCompletionSource.SetException(args.Exception);
+                    else if (args.Success)
+                        taskCompletionSource.SetResult(true);
+                },
+                parameters);
+            return taskCompletionSource.Task;
+        }
+        return Task.FromException(new InvalidOperationException("Initialize() has not been called."));
+    }
+    
+    /// <summary>Navigation validation checker.</summary>
+    /// <remarks>Override for Prism 7.2's IsNavigationTarget.</remarks>
+    /// <param name="navigationContext">The navigation context.</param>
+    /// <returns><see langword="true"/> if this instance accepts the navigation request; otherwise, <see langword="false"/>.</returns>
+    protected virtual bool OnNavigatingTo(NavigationContext navigationContext) 
+        => true;
+
+    public virtual bool PersistInHistory() => true;
+}

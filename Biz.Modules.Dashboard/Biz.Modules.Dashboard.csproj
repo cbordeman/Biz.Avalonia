@@ -8,8 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />
+      <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
       <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
+      <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
     </ItemGroup>
 
     <ItemGroup>

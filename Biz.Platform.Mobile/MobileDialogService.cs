@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Biz.Core.Services;
+using Biz.Shell.Services;
 using Biz.Platform.Views;
 using Prism.Dialogs;
 

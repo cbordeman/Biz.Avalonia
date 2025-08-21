@@ -2,7 +2,7 @@
     x:Class="Biz.Shell.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:Biz.Core.Converters;assembly=Biz.Core"
+    xmlns:converters="clr-namespace:Biz.Shell.Converters;assembly=Biz.Shell"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"

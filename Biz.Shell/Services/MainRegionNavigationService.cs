@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Prism.Common;
 
 namespace Biz.Shell.Services;
 
@@ -7,6 +8,7 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
 {
     bool initialized;
     IRegionNavigationService? regionNavigationService;
+    IAuthenticationService AuthenticationService => ContainerLocator.Current.Resolve<IAuthenticationService>();
     readonly IRegionManager regionManager;
     readonly ILogger<MainContentRegionNavigationService> logger;
 
@@ -51,8 +53,30 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
         logger.LogError(args.Error, $"Navigation failed: {args.Uri}");
     }
 
-    void Navigated(object? sender, RegionNavigationEventArgs args)
+    // ReSharper disable once AsyncVoidMethod
+    async void Navigated(object? sender, RegionNavigationEventArgs args)
     {
+        try
+        {
+            var pageType = GetType();
+            if (pageType != typeof(LoginViewModel) &&
+                pageType != typeof(TenantSelectionViewModel) &&
+                !await AuthenticationService.IsAuthenticatedAsync())
+            {
+                regionNavigationService
+                    .RequestNavigate(GlobalConstants.LoginView);
+            }
+        }
+        catch (Exception e)
+        {
+            logger.LogError(
+                e, 
+                "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
+                nameof(MainContentRegionNavigationService), nameof(Navigated), 
+                args.Uri, e.Message);
+            return;
+        }
+        
         try
         {
             CurrentPage = args.Uri.OriginalString;
@@ -75,9 +99,11 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
         }
         catch (Exception e)
         {
-            logger.LogError(e.GetBaseException(),
-                $"Failed in Navigation() method in {nameof(MainContentRegionNavigationService)}.");
-            throw;
+            logger.LogError(
+                e, 
+                "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
+                nameof(MainContentRegionNavigationService), nameof(Navigated), 
+                args.Uri, e.Message);
         }
     }
 

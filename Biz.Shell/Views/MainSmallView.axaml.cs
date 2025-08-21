@@ -1,6 +1,6 @@
 using Avalonia.Controls.Platform;
-using Biz.Core.Services;
-using Biz.Core.Views;
+using Biz.Shell.Services;
+using Biz.Shell.Views;
 
 namespace Biz.Shell.Views;
 

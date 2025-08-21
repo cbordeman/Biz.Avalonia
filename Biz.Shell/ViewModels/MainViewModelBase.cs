@@ -1,4 +1,4 @@
-﻿using Biz.Core.ViewModels.Toolbar;
+﻿using Biz.Shell.ViewModels.Toolbar;
 using Biz.Modules.Dashboard;
 using ShadUI;
 using IContainer = DryIoc.IContainer;
