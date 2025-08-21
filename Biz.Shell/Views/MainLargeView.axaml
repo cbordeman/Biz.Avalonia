@@ -5,6 +5,7 @@
     xmlns:converters="clr-namespace:Biz.Shell.Converters;assembly=Biz.Shell"
     xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
@@ -283,7 +284,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Margin="0,15,0,0"
-                    regions:RegionManager.RegionName="{x:Static shell:RegionNames.MainContentRegion}">
+                    regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.MainContentRegion}">
                     <TransitioningContentControl.PageTransition>
                         <PageSlide Duration="0:00:00.2">
                             <PageSlide.SlideInEasing>

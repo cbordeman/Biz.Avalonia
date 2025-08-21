@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Biz.Shell;
 using Biz.Shell;
+using Biz.Shell.Infrastructure;
 using JetBrains.Annotations;
 using Prism.Modularity;
 

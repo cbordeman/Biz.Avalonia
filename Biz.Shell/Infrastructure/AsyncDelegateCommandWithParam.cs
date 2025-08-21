@@ -1,4 +1,4 @@
-﻿namespace Biz.Shell;
+﻿namespace Biz.Shell.Infrastructure;
 
 public class AsyncDelegateCommandWithParam<T> : AsyncDelegateCommand<T>
 {

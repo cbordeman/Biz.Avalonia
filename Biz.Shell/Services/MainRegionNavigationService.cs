@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Biz.Shell.Services.Authentication;
+using Microsoft.Extensions.Logging;
 using Prism.Common;
 
 namespace Biz.Shell.Services;

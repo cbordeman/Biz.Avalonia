@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Android;
 using Biz.Shell;
 using Biz.Platform;
+using Biz.Shell.Infrastructure;
 using Microsoft.Identity.Client;
 
 namespace Biz.Shell.Android;

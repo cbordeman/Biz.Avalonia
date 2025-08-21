@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Biz.Shell;
+﻿namespace Biz.Shell.Infrastructure;
 
 public static class AppHelpers
 {

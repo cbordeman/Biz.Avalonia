@@ -1,6 +1,4 @@
-﻿using Avalonia.Media;
-
-namespace Biz.Shell;
+﻿namespace Biz.Shell.Infrastructure;
 
 public static class ResourceNames
 {

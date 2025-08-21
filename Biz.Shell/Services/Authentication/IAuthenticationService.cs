@@ -1,7 +1,6 @@
-using System.Threading;
 using Biz.Models;
 
-namespace Biz.Shell.Services
+namespace Biz.Shell.Services.Authentication
 {
     public interface IAuthenticationService
     {

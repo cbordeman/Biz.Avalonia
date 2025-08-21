@@ -1,7 +1,8 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell">
+    xmlns:core="clr-namespace:Biz.Shell;assembly=Biz.Shell"
+    xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure">
 
     <!--  Add Controls for Previewer Here  -->
     <Design.PreviewWith>
@@ -9,7 +10,7 @@
             Margin="10"
             Orientation="Horizontal"
             Spacing="10">
-            <PathIcon Data="{StaticResource {x:Static core:ResourceNames.ArrowReply}}" />
+            <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.ArrowReply}}" />
             <PathIcon Data="{StaticResource hamburger}" />
             <PathIcon Data="{StaticResource home}" />
             <PathIcon Data="{StaticResource lock}" />

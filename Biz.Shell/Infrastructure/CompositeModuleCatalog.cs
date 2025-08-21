@@ -1,8 +1,4 @@
-﻿namespace Biz.Shell;
-
-using Prism.Modularity;
-using System.Collections.Generic;
-using System.Linq;
+﻿namespace Biz.Shell.Infrastructure;
 
 public class CompositeModuleCatalog : IModuleCatalog
 {

@@ -33,4 +33,3 @@ global using Avalonia.Data.Converters;
 global using Avalonia.Layout;
 global using Biz.Core.Models;
 global using DryIoc;
-global using Shouldly;

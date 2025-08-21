@@ -1,8 +1,6 @@
-using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Biz.Shell.ViewModels;
 
-namespace Biz.Shell;
+namespace Biz.Shell.Infrastructure;
 
 public class ViewLocator : IDataTemplate
 {

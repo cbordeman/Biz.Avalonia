@@ -1,5 +1,6 @@
 using Biz.Shell;
 using Biz.Platform;
+using Biz.Shell.Infrastructure;
 using Prism.Ioc;
 using UIKit;
 

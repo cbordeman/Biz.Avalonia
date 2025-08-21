@@ -1,4 +1,4 @@
-﻿namespace Biz.Shell;
+﻿namespace Biz.Shell.Infrastructure;
 
 /// <summary>
 /// When used with UserControlEx (or invoked on your view's OnLoaded(),

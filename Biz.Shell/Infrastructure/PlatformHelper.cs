@@ -1,6 +1,4 @@
-﻿using Prism.Ioc;
-
-namespace Biz.Shell;
+﻿namespace Biz.Shell.Infrastructure;
 
 public static class PlatformHelper
 {

@@ -22,7 +22,7 @@ namespace Biz.Shell.Services.Config
             
             // Load base appsettings.json
             var assembly = typeof(ConfigurationService).Assembly;
-            using var appsettingsStream = assembly.GetManifestResourceStream("Biz.appsettings.json");
+            using var appsettingsStream = assembly.GetManifestResourceStream("Biz.Shell.appsettings.json");
             if (appsettingsStream != null)
             {
                 builder.AddJsonStream(appsettingsStream);
@@ -30,7 +30,7 @@ namespace Biz.Shell.Services.Config
 
             // Load environment-specific settings
 #if DEBUG
-            using var devStream = assembly.GetManifestResourceStream("Biz.appsettings.Development.json");
+            using var devStream = assembly.GetManifestResourceStream("Biz.Shell.appsettings.Development.json");
             if (devStream != null)
             {
                 builder.AddJsonStream(devStream);

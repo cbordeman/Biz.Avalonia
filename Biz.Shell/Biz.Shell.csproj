@@ -18,6 +18,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4"/>
     <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
+    <PackageReference Include="DryIoc.Microsoft.DependencyInjection" Version="6.2.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageReference Include="Lucide.Avalonia" Version="0.1.39" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
@@ -51,10 +52,6 @@
       <AvaloniaXaml Include="Views\LoginView.xaml" />
       <None Remove="Views\TenantSelectionView.xaml" />
       <AvaloniaXaml Include="Views\TenantSelectionView.xaml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services\Authentication\" />
     </ItemGroup>
 
     <ItemGroup>

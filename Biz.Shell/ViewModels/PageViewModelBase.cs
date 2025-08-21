@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using Biz.Shell.Services;
+using Biz.Shell.Services.Authentication;
 using Biz.Shell.ViewModels.Toolbar;
 
 namespace Biz.Shell.ViewModels;
 
-public abstract class PageViewModelBase(IContainer container) 
-    : NavigationAwareViewModelBase(container)
+public abstract class PageViewModelBase : NavigationAwareViewModelBase
 {
-    protected IPlatformDialogService DialogService => Container.Resolve<IPlatformDialogService>();
-    protected IAuthenticationService AuthenticationService => Container.Resolve<IAuthenticationService>();
+    protected IAuthenticationService AuthenticationService { get; }
+    protected IPlatformDialogService DialogService { get; }
     
     #region Title
     public string? Title
@@ -43,4 +43,10 @@ public abstract class PageViewModelBase(IContainer container)
     #endregion MinimalUi
 
     public ObservableCollection<IToolbarEntry> ToolbarEntries { get; } = [];
+
+    protected PageViewModelBase(IContainer container) : base(container)
+    {
+        DialogService = Container.Resolve<IPlatformDialogService>();
+        AuthenticationService = Container.Resolve<IAuthenticationService>();
+    }
 }

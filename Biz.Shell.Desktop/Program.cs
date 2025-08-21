@@ -2,6 +2,7 @@
 using Avalonia;
 using Biz.Shell;
 using Biz.Platform;
+using Biz.Shell.Infrastructure;
 using Prism;
 using Prism.Ioc;
 

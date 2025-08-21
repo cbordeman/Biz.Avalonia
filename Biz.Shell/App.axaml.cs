@@ -1,11 +1,13 @@
-using Microsoft.Extensions.Logging;
+using Biz.Shell.Infrastructure.PrismBridge;
 using Biz.Shell.Logging;
+using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
 using Prism.Container.DryIoc;
 using Prism.DryIoc;
-using Prism.Events;
-
+using ServiceClients;
+using Shouldly;
 
 namespace Biz.Shell;
 
@@ -51,15 +53,16 @@ public class App : PrismApplication
         // Platform-specific registrations
         PlatformHelper.RegistrationService?.RegisterPlatformTypes(containerRegistry);
 
-        // Note:
-        // SidebarView isn't listed, note we're using `AutoWireViewModel` in the View's AXAML.
-        // See the line, `prism:ViewModelLocator.AutoWireViewModel="True"`
-
-        // Register configuration service
-        containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
+        // Register services.
+        containerRegistry
+            .RegisterSingleton<IConfigurationService, ConfigurationService>()
+            .RegisterSingleton<IAuthenticationService, AuthenticationService>()
+            .RegisterSingleton<IAuthDataStore, SecureStorageAuthDataStore>()
+            .RegisterSingleton<ServicesAuthHeaderHandler>();
 
         // Get configuration service to access maps API key
-        // TODO: Fix this to use the IConfigurationService via dependency injection
+        // TODO: Fix this to use the IConfigurationService via dependency
+        // injection.
         var configService = new ConfigurationService();
         //var mapsApiKey = configService.Maps.BingMapsApiKey;
 
@@ -70,6 +73,28 @@ public class App : PrismApplication
                 builder.AddConsole();
                 builder.SetMinimumLevel(LogLevel.Information);
             }));
+
+        // Hard to make this work with Prism's IContainerRegistry, so
+        // we'll register the API clients with builder.Services and
+        // hopefully Prism will pick them up.
+        string servicesUrl;
+        if (OperatingSystem.IsAndroid())
+        {
+            configService.Server.AndroidServicesUrl.ShouldNotBeNull();
+            servicesUrl = configService.Server.AndroidServicesUrl;
+        }
+        else if (OperatingSystem.IsWindows())
+        {
+            configService.Server.WindowsServicesUrl.ShouldNotBeNull();
+            servicesUrl = configService.Server.WindowsServicesUrl;
+        }
+        else 
+            throw new InvalidOperationException("Unsupported platform.");
+        
+        // Use compatibility bridge since Refit only works with
+        // IServiceCollection.
+        containerRegistry.RegisterBridge(services =>
+            services.AddApiClients(servicesUrl));
 
         // Services
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
@@ -87,11 +112,10 @@ public class App : PrismApplication
         containerRegistry
             .RegisterInstance(SemanticScreenReader.Default);
 
-
         // Dialogs, etc. 
     }
 
-    private void DisableAvaloniaDataAnnotationValidation()
+    void DisableAvaloniaDataAnnotationValidation()
     {
         // Get an array of plugins to remove
         var dataValidationPluginsToRemove =

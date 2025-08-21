@@ -1,5 +1,6 @@
 ﻿using Biz.Modules.Dashboard;
 using Biz.Shell;
+using Biz.Shell.Infrastructure;
 using JetBrains.Annotations;
 using Prism.Modularity;
 
