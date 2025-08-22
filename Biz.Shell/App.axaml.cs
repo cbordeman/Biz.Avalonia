@@ -1,13 +1,14 @@
-using Biz.Shell.Infrastructure.PrismBridge;
 using Biz.Shell.Logging;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
+using Microsoft.Maui.Storage;
 using Prism.Container.DryIoc;
 using Prism.DryIoc;
 using ServiceClients;
 using Shouldly;
+using IFormFactorService = Biz.Shell.Services.IFormFactorService;
 
 namespace Biz.Shell;
 
@@ -51,7 +52,7 @@ public class App : PrismApplication
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         // Platform-specific registrations
-        PlatformHelper.RegistrationService?.RegisterPlatformTypes(containerRegistry);
+        PlatformHelper.PlatformService?.RegisterPlatformTypes(containerRegistry);
 
         // Register services.
         containerRegistry
@@ -74,9 +75,6 @@ public class App : PrismApplication
                 builder.SetMinimumLevel(LogLevel.Information);
             }));
 
-        // Hard to make this work with Prism's IContainerRegistry, so
-        // we'll register the API clients with builder.Services and
-        // hopefully Prism will pick them up.
         string servicesUrl;
         if (OperatingSystem.IsAndroid())
         {
@@ -91,12 +89,10 @@ public class App : PrismApplication
         else 
             throw new InvalidOperationException("Unsupported platform.");
         
-        // Use compatibility bridge since Refit only works with
-        // IServiceCollection.
-        containerRegistry.RegisterBridge(services =>
-            services.AddApiClients(servicesUrl));
+        containerRegistry.AddMainApiClients(servicesUrl);
 
         // Services
+        containerRegistry.RegisterInstance(SecureStorage.Default); 
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
         containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
@@ -129,7 +125,7 @@ public class App : PrismApplication
     protected override void OnInitialized()
     {
         // Register Views to the Region it will appear in. Don't register them in the ViewModel.
-        var regionManager = Container.Resolve<IRegionManager>();
+        //var regionManager = Container.Resolve<IRegionManager>();
 
         // WARNING: Prism v11.0.0-prev4
         // - DataTemplates MUST define a DataType, or else an XAML error will be thrown
@@ -137,7 +133,7 @@ public class App : PrismApplication
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
 
-        PlatformHelper.RegistrationService?.InitializePlatform(Container);
+        PlatformHelper.PlatformService?.InitializePlatform(Container);
     }
 
     /// <summary>Custom region adapter mappings.</summary>

@@ -1,13 +1,9 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using Biz.Shell;
-using Biz.Shell;
 using Biz.Shell.Infrastructure;
-using JetBrains.Annotations;
 using Prism.Modularity;
 
-namespace Biz.Platform;
+namespace Biz.Desktop.Services;
 
 public class DesktopModuleCatalogService : IPlatformModuleCatalogService
 {

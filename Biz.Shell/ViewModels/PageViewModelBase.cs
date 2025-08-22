@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Biz.Shell.Services;
-using Biz.Shell.Services.Authentication;
+﻿using Biz.Shell.Services.Authentication;
 using Biz.Shell.ViewModels.Toolbar;
 
 namespace Biz.Shell.ViewModels;
@@ -8,7 +6,7 @@ namespace Biz.Shell.ViewModels;
 public abstract class PageViewModelBase : NavigationAwareViewModelBase
 {
     protected IAuthenticationService AuthenticationService { get; }
-    protected IPlatformDialogService DialogService { get; }
+    public IPlatformDialogService DialogService { get; }
     
     #region Title
     public string? Title

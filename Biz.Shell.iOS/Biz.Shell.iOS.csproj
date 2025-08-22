@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Biz.Platform.Mobile\Biz.Platform.Mobile.csproj" />
+    <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
   </ItemGroup>
 </Project>

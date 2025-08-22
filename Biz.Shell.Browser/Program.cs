@@ -14,7 +14,8 @@ internal sealed partial class Program
 
     public static AppBuilder BuildAvaloniaApp()
     {
-        PlatformHelper.RegistrationService = new MobileRegistrationService();
+        // TODO: setup browser platform services
+        //PlatformHelper.PlatformService = new MobileRegistrationService();
         return AppBuilder.Configure<App>();
     }
 }

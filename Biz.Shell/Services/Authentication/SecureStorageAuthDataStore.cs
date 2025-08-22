@@ -7,26 +7,39 @@ namespace Biz.Shell.Services.Authentication;
 
 internal class SecureStorageAuthDataStore : IAuthDataStore
 {
+    readonly ISecureStorage secureStorage;
+
     const string AuthDataKey = "auth_data"; // Key for SecureStorage
 
     public AuthData? Data { get; set; }
 
+    public SecureStorageAuthDataStore(ISecureStorage secureStorage)
+    {
+        this.secureStorage = secureStorage;
+    }
+    
     public async Task RestoreAuthDataAsync()
     {
-        var json = await SecureStorage.GetAsync(AuthDataKey);
-        if (!string.IsNullOrEmpty(json))
+        try
         {
-            try
+            var json = await secureStorage.GetAsync(AuthDataKey);
+            if (!string.IsNullOrEmpty(json))
             {
-                Data = JsonSerializer.Deserialize<AuthData>(json);
-                return;
+                try
+                {
+                    Data = JsonSerializer.Deserialize<AuthData>(json);
+                    return;
+                }
+                catch
+                {
+                    Data = null;
+                }
             }
-            catch
-            {
-                Data = null;
-            }
+            Data = null;
         }
-        Data = null;
+        catch (Exception e)
+        {
+        }
     }
 
     public async Task<TokenAndProvider?> GetTokenAndProvider()
@@ -50,12 +63,12 @@ internal class SecureStorageAuthDataStore : IAuthDataStore
     public async Task SaveAuthDataAsync()
     {
         var json = JsonSerializer.Serialize(Data);
-        await SecureStorage.SetAsync(AuthDataKey, json);
+        await secureStorage.SetAsync(AuthDataKey, json);
     }
 
     public void RemoveAuthData()
     {
-        SecureStorage.Remove(AuthDataKey);
+        secureStorage.Remove(AuthDataKey);
         Data = new AuthData();
     }
 

@@ -1,20 +1,19 @@
-﻿using Biz.Shell;
-using Biz.Shell.Services;
-using Biz.Shell;
+﻿using Biz.Desktop.Services;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Services;
 using Prism.Ioc;
 using ShadUI;
 
-namespace Biz.Platform;
+namespace Biz.Shell.Windows.Services;
 
-public class DesktopService : IPlatformService
+public class WindowsPlatformService : IPlatformService
 {
     public void RegisterPlatformTypes(IContainerRegistry containerRegistry)
     {
-        // Register desktop-specific types, except dialogs, which are 
+        // Register windows-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
-        containerRegistry.RegisterSingleton<IPlatformModuleCatalogService,DesktopModuleCatalogService>();
-        containerRegistry.RegisterSingleton<IPlatformDialogService,DesktopDialogService>();
+        containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
+        containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
     }
     
     public void InitializePlatform(IContainerProvider container)

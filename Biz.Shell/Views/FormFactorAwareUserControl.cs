@@ -1,4 +1,6 @@
-﻿namespace Biz.Shell.Views;
+﻿using IFormFactorService = Biz.Shell.Services.IFormFactorService;
+
+namespace Biz.Shell.Views;
 
 public class FormFactorAwareUserControl : UserControlEx, IDisposable
 {

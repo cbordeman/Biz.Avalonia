@@ -1,12 +1,9 @@
 ﻿using Biz.Modules.Dashboard;
-using Biz.Shell;
 using Biz.Shell.Infrastructure;
-using JetBrains.Annotations;
 using Prism.Modularity;
 
-namespace Biz.Platform;
+namespace Biz.Mobile.Services;
 
-[UsedImplicitly]
 public class MobileModuleCatalogService : IPlatformModuleCatalogService
 {
     public void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

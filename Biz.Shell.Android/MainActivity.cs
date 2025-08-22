@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Android;
 using Biz.Shell;
 using Biz.Platform;
+using Biz.Shell.Android.Services;
 using Biz.Shell.Infrastructure;
 using Microsoft.Identity.Client;
 
@@ -22,7 +23,7 @@ public class MainActivity : AvaloniaMainActivity<App>
 {
     protected override void OnCreate(Bundle? savedInstanceState)
     {
-        PlatformHelper.RegistrationService = new MobileRegistrationService();
+        PlatformHelper.PlatformService = new AndroidPlatformService();
         
         base.OnCreate(savedInstanceState);
     }

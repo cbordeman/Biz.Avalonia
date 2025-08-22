@@ -14,11 +14,12 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="11.3.2" />
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.4948" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Biz.Platform.Desktop\Biz.Platform.Desktop.csproj" />
-    <ProjectReference Include="..\Biz.Platform.Mobile\Biz.Platform.Mobile.csproj" />
+    <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj" />
+    <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
   </ItemGroup>
 </Project>

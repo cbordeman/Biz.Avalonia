@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
-    <ProjectReference Include="..\Biz.Platform.Mobile\Biz.Platform.Mobile.csproj" />
+    <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Biz.Models\Biz.Models.csproj" />
+    <ProjectReference Include="..\Prism\src\Prism.Core\Prism.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

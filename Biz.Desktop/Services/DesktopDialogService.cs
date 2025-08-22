@@ -2,16 +2,12 @@
 using Biz.Shell.Services;
 using ShadUI;
 
-namespace Biz.Platform;
+namespace Biz.Desktop.Services;
 
-public class DesktopDialogService : IPlatformDialogService
+public class DesktopDialogService(DialogManager dialogManager)
+    : IPlatformDialogService
 {
-    public object DialogHost { get; }
-
-    public DesktopDialogService(DialogManager dialogManager)
-    {
-        this.DialogHost = dialogManager;
-    }
+    public object DialogHost { get; } = dialogManager;
 
     public Task<bool> Confirm(string title, string message, 
         string okText = "OK", string? cancelText = "Cancel")
@@ -21,7 +17,7 @@ public class DesktopDialogService : IPlatformDialogService
             .CreateDialog(title, message)
             .WithPrimaryButton(okText, () => tcs.SetResult(true))
             .WithMinWidth(300)
-            .WithMaxWidth(500);
+            .WithMaxWidth(600);
 
         if (cancelText != null) 
             dlg = dlg.WithCancelButton(cancelText, () => tcs.SetResult(false));

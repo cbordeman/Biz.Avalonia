@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Biz.Shell.Services;
 using Biz.Platform.Views;
+using Biz.Shell.Services;
 using Prism.Dialogs;
 
-namespace Biz.Platform;
+namespace Biz.Mobile.Services;
 
 public class MobileDialogService : IPlatformDialogService
 {
-    // Not used in mobile.
+    // Not used in mobile because we're using Prism
+    // dialogs instead of ShadUI dialogs.
     public object? DialogHost => null;
 
     private readonly IDialogService dialogService;

@@ -4,8 +4,8 @@ using Prism.Common;
 
 namespace Biz.Shell.Services;
 
-public class MainContentRegionNavigationService : IMainRegionNavigationService,
-    IDisposable
+public class MainContentRegionNavigationService : 
+    IMainRegionNavigationService, IDisposable
 {
     bool initialized;
     IRegionNavigationService? regionNavigationService;
@@ -59,7 +59,9 @@ public class MainContentRegionNavigationService : IMainRegionNavigationService,
     {
         try
         {
-            var pageType = GetType();
+            var currentActiveView = args.NavigationContext.NavigationService
+                .Region.ActiveViews.Single();
+            var pageType = currentActiveView.GetType();
             if (pageType != typeof(LoginViewModel) &&
                 pageType != typeof(TenantSelectionViewModel) &&
                 !await AuthenticationService.IsAuthenticatedAsync())

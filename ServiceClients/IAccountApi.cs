@@ -1,15 +1,15 @@
-﻿using Biz.Models;
+using Biz.Models;
 using Refit;
 
 namespace ServiceClients;
 
-public interface ITenantsApi
+public interface IAccountApi
 {
-    const string Base = "Tenants";
-    public const string GetMyAvailablePath = $"/{Base}/MyAvailable";
+    const string Base = "Account";
+    public const string GetMyUserInfoPath = $"/{Base}/users/myinfo";
 
-    [Get(GetMyAvailablePath)]
-    Task<Tenant[]> GetMyAvailable();
+    [Get(GetMyUserInfoPath)]
+    Task<User> GetMyUserInfo();
 
     //[Get("/posts/{id}")]
     //Task<Post> GetPostAsync(int id);

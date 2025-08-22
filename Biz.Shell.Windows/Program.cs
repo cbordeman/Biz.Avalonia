@@ -1,12 +1,9 @@
 ﻿using System;
 using Avalonia;
-using Biz.Shell;
-using Biz.Platform;
 using Biz.Shell.Infrastructure;
-using Prism;
-using Prism.Ioc;
+using Biz.Shell.Windows.Services;
 
-namespace Biz.Shell.Desktop;
+namespace Biz.Shell.Windows;
 
 sealed class Program
 {
@@ -16,7 +13,7 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        PlatformHelper.RegistrationService = new DesktopService();
+        PlatformHelper.PlatformService = new WindowsPlatformService();
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);

@@ -1,4 +1,5 @@
 ﻿using Biz.Shell.Services;
+using IFormFactorService = Biz.Shell.Services.IFormFactorService;
 
 namespace Biz.Shell.ViewModels;
 
