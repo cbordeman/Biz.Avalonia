@@ -3,9 +3,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-<!--    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>-->
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     <Authors>Chris Bordeman</Authors>
     <Product />
+    
   </PropertyGroup>
   
   <ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.3" />    
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2"/>
+    <PackageReference Include="Avalonia.Maui" Version="11.1.0" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4"/>
     <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
@@ -25,9 +27,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
-    <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.100" />
     <PackageReference Include="Responsive.Avalonia" Version="0.1.1" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
+    
   </ItemGroup>
 
   <ItemGroup>

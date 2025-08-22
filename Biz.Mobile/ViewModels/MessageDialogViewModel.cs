@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Biz.Shell.ViewModels;
 using Prism.Commands;
 using Prism.Dialogs;
 using Prism.Mvvm;
 
-namespace Biz.Platform.ViewModels;
+namespace Biz.Mobile.ViewModels;
 
 public sealed class MessageDialogViewModel : BindableBase, IDialogAware
 {

@@ -1,9 +1,8 @@
-﻿using Avalonia;
+﻿using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Browser;
 using Biz.Shell;
-using System.Threading.Tasks;
-using Biz.Shell;
-using Biz.Platform;
+using Biz.Shell.Browser.Services;
 using Biz.Shell.Infrastructure;
 
 internal sealed partial class Program
@@ -15,7 +14,7 @@ internal sealed partial class Program
     public static AppBuilder BuildAvaloniaApp()
     {
         // TODO: setup browser platform services
-        //PlatformHelper.PlatformService = new MobileRegistrationService();
+        PlatformHelper.PlatformService = new BrowserPlatformService();
         return AppBuilder.Configure<App>();
     }
 }

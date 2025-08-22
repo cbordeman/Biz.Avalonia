@@ -1,6 +1,6 @@
 ﻿namespace Biz.Core.Services;
 
-public interface ISecureStorage
+public interface ISafeStorage
 {
     /// <summary>
     /// Gets and decrypts the value for a given key.
@@ -24,7 +24,7 @@ public interface ISecureStorage
     bool Remove(string key);
 
     /// <summary>
-    /// Removes all the stored encrypted key/value pairs.
+    /// Removes all of the stored encrypted key/value pairs.
     /// </summary>
     void RemoveAll();
 }

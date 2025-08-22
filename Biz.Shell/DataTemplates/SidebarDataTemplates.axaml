@@ -15,21 +15,21 @@
     <!--  Text="{Binding Header}" />  -->
     <!-- </TreeDataTemplate> -->
 
-    <DataTemplate x:Key="SideBarItemViewModel" DataType="viewModels:SidebarItemViewModel">
-        <shadui:SidebarItem
-            Command="{Binding Command}"
-            CommandParameter="{Binding}"
-            Content="{Binding DisplayName}"
-            Route="{Binding ViewName}"
-            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='{Binding DisplayName}'}">
-            <shadui:SidebarItem.Icon>
-                <Viewbox>
-                    <TextBlock
-                        Classes="LucideIcon"
-                        Foreground="{DynamicResource ForegroundColor}"
-                        Text="{Binding IconResourceName}" />
-                </Viewbox>
-            </shadui:SidebarItem.Icon>
-        </shadui:SidebarItem>
-    </DataTemplate>
+    <!-- <DataTemplate x:Key="SideBarItemViewModel" DataType="viewModels:SidebarItemViewModel"> -->
+    <!--  <shadui:SidebarItem  -->
+    <!--  Command="{Binding Command}"  -->
+    <!--  CommandParameter="{Binding}"  -->
+    <!--  Content="{Binding DisplayName}"  -->
+    <!--  Route="{Binding ViewName}"  -->
+    <!--  ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='{Binding DisplayName}'}">  -->
+    <!--         <shadui:SidebarItem.Icon> -->
+    <!--             <Viewbox> -->
+    <!--  <TextBlock  -->
+    <!--  Classes="LucideIcon"  -->
+    <!--  Foreground="{DynamicResource ForegroundColor}"  -->
+    <!--  Text="{Binding IconResourceName}" />  -->
+    <!--             </Viewbox> -->
+    <!--         </shadui:SidebarItem.Icon> -->
+    <!--     </shadui:SidebarItem> -->
+    <!-- </DataTemplate> -->
 </ResourceDictionary>

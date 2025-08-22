@@ -1,10 +1,13 @@
-﻿using Biz.Desktop.Services;
+﻿using Biz.Core.Services;
+using Biz.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Services;
+using MauiServices;
+using Microsoft.Maui.Storage;
 using Prism.Ioc;
 using ShadUI;
 
-namespace Biz.Shell.Windows.Services;
+namespace Biz.Shell.Desktop.Services;
 
 public class WindowsPlatformService : IPlatformService
 {
@@ -14,6 +17,8 @@ public class WindowsPlatformService : IPlatformService
         // registered in RegisterDialogs().
         containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
         containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
+        containerRegistry.RegisterSingleton<ISafeStorage, MauiSafeStorage>();
+        containerRegistry.RegisterInstance<Microsoft.Maui.Storage.ISecureStorage>(SecureStorage.Default);
     }
     
     public void InitializePlatform(IContainerProvider container)

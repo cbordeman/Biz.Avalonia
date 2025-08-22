@@ -5,12 +5,14 @@
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
       <PackageReference Include="Prism.Container.Abstractions" Version="9.0.107" />
       <PackageReference Include="Refit" Version="8.0.0" />
+      
     </ItemGroup>
 
 </Project>

@@ -92,7 +92,6 @@ public class App : PrismApplication
         containerRegistry.AddMainApiClients(servicesUrl);
 
         // Services
-        containerRegistry.RegisterInstance(SecureStorage.Default); 
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
         containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();

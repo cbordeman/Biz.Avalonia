@@ -4,8 +4,6 @@ using Android.Content.PM;
 using Android.OS;
 using Avalonia;
 using Avalonia.Android;
-using Biz.Shell;
-using Biz.Platform;
 using Biz.Shell.Android.Services;
 using Biz.Shell.Infrastructure;
 using Microsoft.Identity.Client;
@@ -21,9 +19,13 @@ namespace Biz.Shell.Android;
     ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
 public class MainActivity : AvaloniaMainActivity<App>
 {
+    public static Context Context = null!;
+    
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         PlatformHelper.PlatformService = new AndroidPlatformService();
+
+        Context = this.ApplicationContext!;
         
         base.OnCreate(savedInstanceState);
     }

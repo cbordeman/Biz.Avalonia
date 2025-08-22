@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Biz.Platform.Views;
 using Biz.Shell.Services;
 using Prism.Dialogs;
+using MessageDialogView = Biz.Mobile.Views.MessageDialogView;
 
 namespace Biz.Mobile.Services;
 
@@ -34,7 +34,7 @@ public class MobileDialogService : IPlatformDialogService
         dialogService.ShowDialog(
             nameof(MessageDialogView),
             parameters, 
-            (IDialogResult dialogResult) =>
+            dialogResult =>
             {
                 // Assume your dialog returns ButtonResult.OK or ButtonResult.Cancel
                 tcs.SetResult(dialogResult.Result == ButtonResult.OK);

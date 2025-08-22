@@ -5,6 +5,7 @@
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,6 +19,10 @@
         <DependentUpon>DashboardView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      
     </ItemGroup>
 
     <!--  The next PropertyGroup and Target goes in every module csproj.  -->

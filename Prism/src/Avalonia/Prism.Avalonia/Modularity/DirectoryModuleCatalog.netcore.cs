@@ -43,7 +43,7 @@ namespace Prism.Modularity
 
             try
             {
-                List<string> loadedAssemblies = new List<string>();
+                var loadedAssemblies = new List<string>();
 
                 var assemblies = (
                     from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()

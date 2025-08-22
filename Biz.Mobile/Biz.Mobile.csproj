@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>Biz.Mobile</AssemblyName>
         <RootNamespace>Biz.Mobile</RootNamespace>
+        
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,6 +19,10 @@
       <Compile Update="Views\MessageDialogView.axaml.cs">
         <DependentUpon>MessageDialogView.axaml</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      
     </ItemGroup>
 
     

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Biz.Platform.Views;
+namespace Biz.Mobile.Views;
 
 public partial class MessageDialogView : UserControl
 {

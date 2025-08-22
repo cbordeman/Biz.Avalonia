@@ -8,6 +8,7 @@
     <Authors>Chris Bordeman</Authors>
     <Company />
     <Product />
+    
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>TRACE;WASM</DefineConstants>
@@ -19,9 +20,11 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" Version="11.3.2" />
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4"/>
+    
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj" />
     <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
     <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />

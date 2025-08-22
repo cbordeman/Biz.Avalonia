@@ -1,10 +1,12 @@
 ﻿using System;
 using Avalonia;
+using Biz.Shell.Desktop.Services;
 using Biz.Shell.Infrastructure;
-using Biz.Shell.Windows.Services;
+using JetBrains.Annotations;
 
-namespace Biz.Shell.Windows;
+namespace Biz.Shell.Desktop;
 
+[UsedImplicitly]
 sealed class Program
 {
     // Initialization code. Don't use any Avalonia, third-party APIs or any
@@ -20,6 +22,7 @@ sealed class Program
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
+    // ReSharper disable once MemberCanBePrivate.Global
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
