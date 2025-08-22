@@ -17,7 +17,7 @@ public class BrowserPlatformService : IPlatformService
         // registered in RegisterDialogs().
         containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
         containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
-        containerRegistry.RegisterSingleton<ISafeStorage, BrowserSafeStorage>();
+        containerRegistry.RegisterSingleton<ISafeStorage, WasmSecureStorage>();
     }
     
     public void InitializePlatform(IContainerProvider container)

@@ -1,19 +1,18 @@
 ﻿using System.Text.Json;
-using Biz.Core;
-using Microsoft.Maui.Storage;
+using Biz.Core.Services;
 using ServiceClients;
 
 namespace Biz.Shell.Services.Authentication;
 
 internal class SecureStorageAuthDataStore : IAuthDataStore
 {
-    readonly ISecureStorage secureStorage;
+    readonly ISafeStorage secureStorage;
 
     const string AuthDataKey = "auth_data"; // Key for SecureStorage
 
     public AuthData? Data { get; set; }
 
-    public SecureStorageAuthDataStore(ISecureStorage secureStorage)
+    public SecureStorageAuthDataStore(ISafeStorage secureStorage)
     {
         this.secureStorage = secureStorage;
     }
@@ -39,6 +38,7 @@ internal class SecureStorageAuthDataStore : IAuthDataStore
         }
         catch (Exception e)
         {
+            
         }
     }
 
