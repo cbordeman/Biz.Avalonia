@@ -16,7 +16,11 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid Margin="{OnFormFactor Default='0,0,50,0', Mobile='0'}" RowDefinitions="*,Auto">
+        <Grid
+            Margin="{OnFormFactor Default='0,0,50,0',
+                                  Mobile='0'}"
+            IsSharedSizeScope="True"
+            RowDefinitions="*,Auto">
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -32,14 +36,10 @@
                     Classes="Large"
                     Command="{Binding LoginWithGoogleCommand}"
                     IsEnabled="{Binding IsNotBusy}">
-                    <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Orientation="Horizontal">
                         <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Center"
-                            Text="Continue with Google" />
-                    </Grid>
+                        <TextBlock Margin="7,0,0,0" Text="Continue with Google" />
+                    </StackPanel>
                 </Button>
 
                 <!--  Microsoft Login Button  -->
@@ -47,14 +47,10 @@
                     Classes="Large"
                     Command="{Binding LoginWithMicrosoftCommand}"
                     IsEnabled="{Binding IsNotBusy}">
-                    <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Orientation="Horizontal">
                         <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Center"
-                            Text="Continue with Microsoft" />
-                    </Grid>
+                        <TextBlock Margin="7,0,0,0" Text="Continue with Microsoft" />
+                    </StackPanel>
                 </Button>
 
                 <!--  Facebook Login Button  -->
@@ -64,7 +60,7 @@
                     IsEnabled="{Binding IsNotBusy}">
                     <StackPanel Orientation="Horizontal">
                         <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
-                        <TextBlock Margin="5,0,0,0" Text="Continue with Facebook" />
+                        <TextBlock Margin="7,0,0,0" Text="Continue with Facebook" />
                     </StackPanel>
                 </Button>
 
@@ -73,14 +69,10 @@
                     Classes="Large"
                     Command="{Binding LoginWithAppleCommand}"
                     IsEnabled="{Binding IsNotBusy}">
-                    <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Orientation="Horizontal">
                         <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Center"
-                            Text="Continue with Apple" />
-                    </Grid>
+                        <TextBlock Margin="7,0,0,0" Text="Continue with Apple" />
+                    </StackPanel>
                 </Button>
             </StackPanel>
 
@@ -107,11 +99,12 @@
                 <progRing:ProgressRing
                     Margin="0,0,0,20"
                     HorizontalAlignment="Center"
+                    Foreground="Silver"
                     IsActive="{Binding IsBusy}"
                     IsVisible="{Binding IsBusy}" />
                 <Button
                     HorizontalAlignment="Center"
-                    Classes="Primary"
+                    Classes="Secondary"
                     Command="{Binding CancelLoginCommand}"
                     Content="Cancel Login" />
             </StackPanel>

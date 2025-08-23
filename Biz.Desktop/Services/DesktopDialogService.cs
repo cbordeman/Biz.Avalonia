@@ -20,7 +20,9 @@ public class DesktopDialogService(DialogManager dialogManager)
             .WithMaxWidth(600);
 
         if (cancelText != null) 
-            dlg = dlg.WithCancelButton(cancelText, () => tcs.SetResult(false));
+            dlg = dlg.WithCancelButton(
+                cancelText, () => tcs.SetResult(false),
+                buttonStyle: DialogButtonStyle.Secondary);
         dlg.Show();
         
         return tcs.Task;

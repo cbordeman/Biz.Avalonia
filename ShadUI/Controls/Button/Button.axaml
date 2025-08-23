@@ -43,6 +43,7 @@
         </Border>
     </Design.PreviewWith>
     <ControlTheme x:Key="ButtonStyle" TargetType="Button">
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
