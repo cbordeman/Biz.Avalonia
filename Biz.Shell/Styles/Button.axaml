@@ -121,20 +121,11 @@
     </Style>
 
     <Style Selector="Button.Large">
-        <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="Height" Value="48" />
-        <Setter Property="FontSize" Value="26" />
-        <Setter Property="Padding" Value="16,12" />
-        <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-        <Style Selector="^ /template/ TextBlock">
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-        </Style>
-        <Style Selector="^ /template/ ContentPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-        </Style>
-        <Style Selector="^ /template/ Border#HoverBackground">
-            <Setter Property="Background" Value="{DynamicResource PrimaryColor50}" />
-        </Style>
+        <Setter Property="Background" Value="#26A5A5A5" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Padding" Value="16,8" />
     </Style>
 </Styles>

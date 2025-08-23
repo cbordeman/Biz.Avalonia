@@ -215,7 +215,7 @@ public class LoginViewModel : PageViewModelBase
     public LoginViewModel(IContainer container) 
         : base(container)
     {
-        Title = "Login";
+        Title = "Sign In to Biz";
     }
 
     Task GoToTenantSelectionPage(Tenant[] availableTenants)

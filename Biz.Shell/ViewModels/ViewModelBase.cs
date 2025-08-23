@@ -109,7 +109,7 @@ public abstract class ViewModelBase : BindableBase,
                 RaisePropertyChanged(nameof(IsNotBusy));
         }
     }
-    public bool IsNotBusy { get; set; }
+    public bool IsNotBusy => !IsBusy;
     #endregion IsBusy
     
     protected ViewModelBase(DryIoc.IContainer container)

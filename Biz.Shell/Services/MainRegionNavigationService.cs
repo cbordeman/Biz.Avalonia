@@ -59,13 +59,12 @@ public class MainContentRegionNavigationService :
     {
         try
         {
-            var currentActiveView = args.NavigationContext.NavigationService
-                .Region.ActiveViews.Single();
-            var pageType = currentActiveView.GetType();
-            if (pageType != typeof(LoginViewModel) &&
-                pageType != typeof(TenantSelectionViewModel) &&
+            var name = args.NavigationContext.Uri.OriginalString;
+            if (name != nameof(GlobalConstants.LoginView) &&
+                name != nameof(TenantSelectionView) &&
                 !await AuthenticationService.IsAuthenticatedAsync())
             {
+                // Redirect to login page
                 regionNavigationService
                     .RequestNavigate(GlobalConstants.LoginView);
             }

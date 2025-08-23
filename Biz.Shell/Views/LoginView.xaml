@@ -4,6 +4,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
     xmlns:views="clr-namespace:Biz.Shell.Views"
@@ -14,101 +15,107 @@
     x:DataType="vm:LoginViewModel"
     mc:Ignorable="d">
 
-    <Grid ColumnDefinitions="*" RowDefinitions="*,Auto,*">
+    <Grid>
+        <Grid Margin="{OnFormFactor Default='0,0,50,0', Mobile='0'}" RowDefinitions="*,Auto">
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="12">
+                <TextBlock
+                    Margin="0,0,0,30"
+                    HorizontalAlignment="Center"
+                    Classes="Header"
+                    Text="Sign In to Get Started" />
 
-        <!--  Welcome  -->
-        <StackPanel
-            Grid.Row="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Spacing="0">
+                <!--  Google Login Button  -->
+                <Button
+                    Classes="Large"
+                    Command="{Binding LoginWithGoogleCommand}"
+                    IsEnabled="{Binding IsNotBusy}">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Center"
+                            Text="Continue with Google" />
+                    </Grid>
+                </Button>
+
+                <!--  Microsoft Login Button  -->
+                <Button
+                    Classes="Large"
+                    Command="{Binding LoginWithMicrosoftCommand}"
+                    IsEnabled="{Binding IsNotBusy}">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Center"
+                            Text="Continue with Microsoft" />
+                    </Grid>
+                </Button>
+
+                <!--  Facebook Login Button  -->
+                <Button
+                    Classes="Large"
+                    Command="{Binding LoginWithFacebookCommand}"
+                    IsEnabled="{Binding IsNotBusy}">
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
+                        <TextBlock Margin="5,0,0,0" Text="Continue with Facebook" />
+                    </StackPanel>
+                </Button>
+
+                <!--  Apple Login Button  -->
+                <Button
+                    Classes="Large"
+                    Command="{Binding LoginWithAppleCommand}"
+                    IsEnabled="{Binding IsNotBusy}">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Center"
+                            Text="Continue with Apple" />
+                    </Grid>
+                </Button>
+            </StackPanel>
+
+
+            <!--  Footer  -->
             <Label
+                Grid.Row="1"
                 HorizontalAlignment="Center"
-                Content="Welcome to Biz"
-                FontSize="32"
-                FontWeight="Bold" />
-            <Label
+                VerticalAlignment="Bottom"
+                Content="By continuing, you agree to our Terms of Service and Privacy Policy"
+                FontSize="12"
+                Opacity="0.7" />
+        </Grid>
+
+        <!--  Busy Indicator and Background  -->
+        <Border Background="{DynamicResource BusyAreaOverlayColor}" IsVisible="{Binding IsBusy}">
+
+            <StackPanel
                 HorizontalAlignment="Center"
-                Content="Sign In to Get Started"
-                FontSize="16"
-                Opacity="0.8" />
-        </StackPanel>
+                VerticalAlignment="Center"
+                IsVisible="{Binding IsBusy}">
 
-        <!--  Login Buttons  -->
-        <StackPanel
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Spacing="10">
-
-            <!--  Google Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithGoogleCommand}"
-                Content="Continue with Google"
-                FontWeight="Bold"
-                IsEnabled="{Binding IsNotBusy}" />
-
-            <!--  Microsoft Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithMicrosoftCommand}"
-                Content="Continue with Microsoft"
-                FontWeight="Bold"
-                IsEnabled="{Binding IsNotBusy}" />
-
-            <!--  Facebook Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithFacebookCommand}"
-                Content="Continue with Facebook"
-                FontWeight="Bold"
-                IsEnabled="{Binding IsNotBusy}" />
-
-            <!--  Apple Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithAppleCommand}"
-                Content="Continue with Apple"
-                FontWeight="Bold"
-                IsEnabled="{Binding IsNotBusy}" />
-        </StackPanel>
-
-        <!--  Footer  -->
-
-        <Label
-            Grid.Row="2"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            Content="By continuing, you agree to our Terms of Service and Privacy Policy"
-            FontSize="12"
-            Opacity="0.7" />
-
-        <Border
-            Grid.Row="0"
-            Grid.RowSpan="3"
-            Background="{DynamicResource BusyAreaOverlayColor}"
-            IsVisible="{Binding IsBusy}" />
-
-        <StackPanel
-            Grid.Row="0"
-            Grid.RowSpan="3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsVisible="{Binding IsBusy}">
-
-            <!--  Loading Indicator  -->
-            <progRing:ProgressRing
-                Margin="0,0,0,20"
-                HorizontalAlignment="Center"
-                IsActive="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}" />
-            <Button
-                HorizontalAlignment="Center"
-                Classes="Action"
-                Command="{Binding CancelLoginCommand}"
-                Content="Cancel Login" />
-
-        </StackPanel>
+                <!--  Loading Indicator  -->
+                <progRing:ProgressRing
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    IsActive="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}" />
+                <Button
+                    HorizontalAlignment="Center"
+                    Classes="Primary"
+                    Command="{Binding CancelLoginCommand}"
+                    Content="Cancel Login" />
+            </StackPanel>
+        </Border>
     </Grid>
+
 </views:FormFactorAwareUserControl>

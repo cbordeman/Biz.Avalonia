@@ -1,76 +1,122 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
-using Android.Content;
-using AndroidX.Security.Crypto;
 using Biz.Core.Services;
 using Microsoft.Extensions.Logging;
+using Xamarin.Google.Crypto.Tink;
+using Xamarin.Google.Crypto.Tink.Aead;
+using Xamarin.Google.Crypto.Tink.Integration.Android;
 
 namespace Biz.Shell.Android.Services;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 public class AndroidSafeStorage : ISafeStorage
 {
-    readonly ILogger<AndroidSafeStorage> logger;
-    readonly ISharedPreferences prefs;
+    private readonly ILogger<AndroidSafeStorage> logger;
+    private readonly Java.IO.File backingFile;
+    private readonly Lock syncRoot = new();
+
+    private readonly IAead aead;
 
     public AndroidSafeStorage(ILogger<AndroidSafeStorage> logger)
     {
-        this.logger = logger;
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        backingFile = new Java.IO.File(MainActivity.Context.FilesDir, "secure_store.json");
+
         try
         {
-            var masterKeyAlias = new MasterKey.Builder(MainActivity.Context)
-                .SetKeyScheme(MasterKey.KeyScheme.Aes256Gcm!)
-                .Build();
+            // Register Tink AEAD
+            AeadConfig.Register();
 
-            Debug.Assert(EncryptedSharedPreferences.PrefKeyEncryptionScheme.Aes256Siv != null);
-            Debug.Assert(EncryptedSharedPreferences.PrefValueEncryptionScheme.Aes256Gcm != null);
-
-            prefs = EncryptedSharedPreferences.Create(
-                MainActivity.Context,
-                "biz_secure_prefs",
-                masterKeyAlias,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.Aes256Siv,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.Aes256Gcm);
+            // Generate or retrieve a Tink key stored in Android Keystore
+            var handle = new AndroidKeysetManager.Builder()
+                .WithSharedPref(MainActivity.Context, "tink_keyset", "tink_prefs")!
+                .WithKeyTemplate(AeadKeyTemplates.Aes256Gcm)!
+                .WithMasterKeyUri("android-keystore://tink_master_key")!
+                .Build()!
+                .KeysetHandle;
+            if (handle != null)
+                aead = (IAead)handle.GetPrimitive(Java.Lang.Class.FromType(typeof(IAead)))!;
+            if (aead == null) 
+                throw new Exception("Failed to initialize AEAD.");
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"Failed to construct {nameof(EncryptedSharedPreferences)}");
+            logger.LogError(e, "Failed to initialize Tink secure storage");
             throw;
+        }
+    }
+
+    private Dictionary<string, string> LoadAll()
+    {
+        lock (syncRoot)
+        {
+            if (!backingFile.Exists()) return new Dictionary<string, string>();
+            try
+            {
+                var bytes = File.ReadAllBytes(backingFile.AbsolutePath);
+                var decrypted = aead.Decrypt(bytes, null);
+                var json = Encoding.UTF8.GetString(decrypted!);
+                return JsonSerializer.Deserialize<Dictionary<string, string>>(json)
+                       ?? new Dictionary<string, string>();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to decrypt storage file.");
+                return new Dictionary<string, string>();
+            }
+        }
+    }
+
+    private void SaveAll(Dictionary<string, string> dict)
+    {
+        lock (syncRoot)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(dict);
+                var plainBytes = Encoding.UTF8.GetBytes(json);
+                var cipherBytes = aead.Encrypt(plainBytes, null)!;
+
+                File.WriteAllBytes(path: backingFile.AbsolutePath, cipherBytes);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to encrypt storage file.");
+                throw;
+            }
         }
     }
 
     public Task<string?> GetAsync(string key)
     {
-        return Task.FromResult(prefs.GetString(key, null));
+        var dict = LoadAll();
+        dict.TryGetValue(key, out var value);
+        return Task.FromResult(value);
     }
 
     public Task SetAsync(string key, string value)
     {
-        var editor = prefs.Edit();
-        Debug.Assert(editor != null);
-        editor.PutString(key, value);
-        editor.Apply();
+        var dict = LoadAll();
+        dict[key] = value;
+        SaveAll(dict);
         return Task.CompletedTask;
     }
 
     public bool Remove(string key)
     {
-        if (prefs.Contains(key))
-        {
-            var editor = prefs.Edit();
-            Debug.Assert(editor != null);
-            editor.Remove(key);
-            editor.Apply();
-            return true;
-        }
+        var dict = LoadAll();
+        if (dict.Remove(key)) { SaveAll(dict); return true; }
         return false;
     }
 
     public void RemoveAll()
     {
-        var editor = prefs.Edit();
-        Debug.Assert(editor != null);
-        editor.Clear();
-        editor.Apply();
+        SaveAll(new Dictionary<string, string>());
     }
 }

@@ -2,6 +2,7 @@
 using Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Services.Controllers;
+using Shouldly;
 
 namespace Services.Auth;
 
@@ -104,7 +105,7 @@ public static partial class Auth
             }
 
             // If requested internal tenant exists for user and user is active in it, succeed.
-            Debug.Assert(user.TenantUsers != null, "user.TenantUsers was null");
+            user.TenantUsers.ShouldNotBeNull();
             foreach (var tu in user.TenantUsers)
                 if (tu.TenantId == requestedInternalTenantId && tu.IsActive)
                 {
