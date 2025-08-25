@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -20,11 +21,13 @@ namespace Biz.Shell.Android;
 public class MainActivity : AvaloniaMainActivity<App>
 {
     public static Context Context = null!;
+    public static Func<Activity>? GetActivity;
     
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         PlatformHelper.PlatformService = new AndroidPlatformService();
-
+        GetActivity = () => this;
+        
         Context = this.ApplicationContext!;
         
         base.OnCreate(savedInstanceState);

@@ -6,14 +6,21 @@ using JetBrains.Annotations;
 namespace ServiceClients;
 
 [UsedImplicitly]
-public class ServicesAuthHeaderHandler(IAuthDataStore authTokenStore)
+public class ServicesAuthHeaderHandler
     : DelegatingHandler
 {
+    private readonly IAuthDataStore authDataStore;
+    public ServicesAuthHeaderHandler(IAuthDataStore authDataStore)
+    {
+        this.authDataStore = authDataStore;
+        InnerHandler = new HttpClientHandler();
+    }
+    
     protected override async Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request, 
         CancellationToken cancellationToken)
     {
-        var tokenAndProvider = await authTokenStore.GetTokenAndProvider();
+        var tokenAndProvider = await authDataStore.GetTokenAndProvider();
         
         if (tokenAndProvider == null)
         {

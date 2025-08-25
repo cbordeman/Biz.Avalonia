@@ -106,7 +106,7 @@ namespace Prism.Navigation.Regions
                 MvvmHelpers.AutowireViewModel(newRegionItem);
                 return newRegionItem;
             }
-            catch (ContainerResolutionException)
+            catch (ContainerResolutionException ex)
             {
                 throw;
             }

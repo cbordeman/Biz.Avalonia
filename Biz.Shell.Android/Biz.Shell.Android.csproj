@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" Version="11.3.2" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.76.0" />
     <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
     
   </ItemGroup>

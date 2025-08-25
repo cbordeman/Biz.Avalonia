@@ -1,9 +1,12 @@
-﻿using Biz.Core.Services;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Biz.Core.Services;
 using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Services;
+using Microsoft.Identity.Client;
 using Prism.Ioc;
 
 namespace Biz.Shell.iOS.Services;
@@ -26,5 +29,11 @@ public class iOsPlatformService : IPlatformService
     public void InitializePlatform(IContainerProvider containerProvider)
     {
         
+    }
+ 
+    public AcquireTokenInteractiveParameterBuilder PrepareMsalTokenRequest(AcquireTokenInteractiveParameterBuilder builder)
+    {
+        // TODO: Implement.
+        return builder;
     }
 }

@@ -1,7 +1,10 @@
-﻿using Biz.Core.Services;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Biz.Core.Services;
 using Biz.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Services;
+using Microsoft.Identity.Client;
 using Prism.Ioc;
 using ShadUI;
 
@@ -24,5 +27,11 @@ public class WindowsPlatformService : IPlatformService
         var dialogService = container.Resolve<DialogManager>();
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
+    }
+ 
+    public AcquireTokenInteractiveParameterBuilder PrepareMsalTokenRequest(AcquireTokenInteractiveParameterBuilder builder)
+    {
+        // Don't need anything.
+        return builder;   
     }
 }

@@ -56,6 +56,7 @@ public class App : PrismApplication
 
         // Register services.
         containerRegistry
+            .RegisterInstance<IPlatformService>(PlatformHelper.PlatformService)
             .RegisterSingleton<IConfigurationService, ConfigurationService>()
             .RegisterSingleton<IAuthenticationService, AuthenticationService>()
             .RegisterSingleton<IAuthDataStore, SecureStorageAuthDataStore>()

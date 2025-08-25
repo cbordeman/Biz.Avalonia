@@ -1,3 +1,5 @@
+using Microsoft.Identity.Client;
+
 namespace Biz.Shell.Infrastructure;
 
 public interface IPlatformService

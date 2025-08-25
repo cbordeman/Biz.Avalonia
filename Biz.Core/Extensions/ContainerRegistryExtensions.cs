@@ -13,20 +13,13 @@ public static class ContainerRegistryExtensions
         where TApi : class
         where TDelegatingHandler : DelegatingHandler
     {
-        // Register factory for making the HttpClient.
-        containerRegistry.RegisterSingleton<TApi>(provider =>
-        {
-            var handler = provider.Resolve<TDelegatingHandler>();
-            var httpClient = new HttpClient(handler);
-            httpClient.BaseAddress = new Uri(baseUrl);
-            return httpClient;
-        });
-            
         // Register factory for making the API, which resolves
         // the HttpClient instance using the container.
         containerRegistry.RegisterSingleton<TApi>(provider =>
         {
-            var httpClient = provider.Resolve<HttpClient>();
+            var handler = provider.Resolve<TDelegatingHandler>();
+            var httpClient = new HttpClient(handler: handler);
+            httpClient.BaseAddress = new Uri(baseUrl);
             return RestService.For<TApi>(httpClient);
         });
         

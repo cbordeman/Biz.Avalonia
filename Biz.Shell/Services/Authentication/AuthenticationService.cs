@@ -1,6 +1,3 @@
-#if ANDROID
-using Android.Util;
-#endif
 using System.Net.Http;
 using System.Text.Json;
 using Biz.Models;
@@ -21,17 +18,19 @@ public class AuthenticationService : IAuthenticationService
     readonly IPublicClientApplication msalClient;
     readonly IConfigurationService configurationService;
     readonly IAuthDataStore authDataStore;
+    private readonly IPlatformMsalService platformMsalService;
     readonly ITenantsApi tenantsApi;
     readonly ILogger<AuthenticationService> logger;
 
     public event EventHandler<bool>? AuthenticationStateChanged;
 
     public AuthenticationService(IConfigurationService configurationService,
-        IAuthDataStore authDataStore,
+        IAuthDataStore authDataStore, IPlatformMsalService platformMsalService,
         ITenantsApi tenantsApi, ILogger<AuthenticationService> logger)
     {
         this.configurationService = configurationService;
         this.authDataStore = authDataStore;
+        this.platformMsalService = platformMsalService;
         this.tenantsApi = tenantsApi;
         this.logger = logger;
 
@@ -42,13 +41,13 @@ public class AuthenticationService : IAuthenticationService
         msalClient = PublicClientApplicationBuilder
             .Create(this.configurationService.Authentication.Microsoft.ClientId)
             .WithTenantId(this.configurationService.Authentication.Microsoft.TenantId)
-            // ReSharper disable once StringLiteralTypo
-            .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
+            
 #if ANDROID 
             // Android only supports redirect URIs with custom schemes
-            .WithParentActivityOrWindow(() => Platform.CurrentActivity)
             .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
 #elif IOS
+            // ReSharper disable once StringLiteralTypo
+            .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
             // iOS only supports redirect URIs with custom schemes
             .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
 #else // Windows, Mac
@@ -70,9 +69,9 @@ public class AuthenticationService : IAuthenticationService
                             _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
                         },
                         message);
-#if ANDROID
-                    Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
-#endif
+// #if ANDROID
+//                     Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
+// #endif
                 },
                 LogLevel.Info,
 #if DEBUG
@@ -135,37 +134,18 @@ public class AuthenticationService : IAuthenticationService
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants)> 
         LoginWithMicrosoftAsync(CancellationToken ct)
     {
-        AuthenticationResult? result= null;
         try
         {
             await InternalLogout(false);
-
-            var accounts = await msalClient.GetAccountsAsync();
-            var scopes = configurationService.Authentication.Microsoft.Scopes;
-            try
-            {
-                result = await msalClient
-                    .AcquireTokenSilent(scopes, accounts.FirstOrDefault())
-                    .ExecuteAsync(ct);
-            }
-            catch (MsalUiRequiredException)
-            {
-                result = await msalClient.AcquireTokenInteractive(scopes)
-#if ANDROID
-                    .WithUseEmbeddedWebView(true)
-#endif
-                    .ExecuteAsync(ct);
-            }
         }
-        catch (OperationCanceledException)
+        catch (Exception e)
         {
-            throw;
+            logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
+            return (false, null);
         }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, $"ERROR: Microsoft login failed: {ex.GetType().Name} {ex.Message}");
-        }
-
+        
+        var result = await platformMsalService.LoginUsingMsal(ct);
+        
         try
         {
             if (result != null)
@@ -186,7 +166,6 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception e)
         {
             logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
-            throw;
         }
 
         return (false, null);
@@ -343,27 +322,35 @@ public class AuthenticationService : IAuthenticationService
     {
         if (authDataStore.Data != null)
         {
-            switch (authDataStore.Data.LoginProvider)
+            try
             {
-                case LoginProvider.Google:
-                    break;
-                case LoginProvider.Microsoft:
-                    foreach (var acct in await msalClient.GetAccountsAsync())
-                        await msalClient.RemoveAsync(acct);
-                    break;
-                case LoginProvider.Facebook:
-                    break;
-                case LoginProvider.Apple:
-                    break;
-                case null:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (authDataStore.Data.LoginProvider)
+                {
+                    case LoginProvider.Google:
+                        break;
+                    case LoginProvider.Microsoft:
+                        foreach (var acct in await msalClient.GetAccountsAsync())
+                            await msalClient.RemoveAsync(acct);
+                        break;
+                    case LoginProvider.Facebook:
+                        break;
+                    case LoginProvider.Apple:
+                        break;
+                    case null:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+                authDataStore.RemoveAuthData();
+                logger.LogInformation("User logged out.");
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"ERROR: Failed to log out: {e.Message}");
             }
         }
 
-        authDataStore.RemoveAuthData();
-        logger.LogInformation("User logged out.");
         if (invokeEvent)
             AuthenticationStateChanged?.Invoke(this, false);
     }

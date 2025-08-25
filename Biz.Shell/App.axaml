@@ -47,5 +47,6 @@
 
     <Application.Styles>
         <StyleInclude Source="/Styles/index.axaml" />
+        <StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml" />
     </Application.Styles>
 </dryIoc:PrismApplication>

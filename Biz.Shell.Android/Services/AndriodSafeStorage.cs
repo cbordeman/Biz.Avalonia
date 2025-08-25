@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Runtime;
 using Biz.Core.Services;
 using Microsoft.Extensions.Logging;
 using Xamarin.Google.Crypto.Tink;
@@ -33,21 +34,28 @@ public class AndroidSafeStorage : ISafeStorage
             // Register Tink AEAD
             AeadConfig.Register();
 
-            // Generate or retrieve a Tink key stored in Android Keystore
             var handle = new AndroidKeysetManager.Builder()
                 .WithSharedPref(MainActivity.Context, "tink_keyset", "tink_prefs")!
                 .WithKeyTemplate(AeadKeyTemplates.Aes256Gcm)!
                 .WithMasterKeyUri("android-keystore://tink_master_key")!
                 .Build()!
                 .KeysetHandle;
+
             if (handle != null)
-                aead = (IAead)handle.GetPrimitive(Java.Lang.Class.FromType(typeof(IAead)))!;
-            if (aead == null) 
+            {
+                var tmp = handle.GetPrimitive(Java.Lang.Class.FromType(typeof(IAead)));
+                if (tmp == null)
+                    throw new Exception("Failed to get AEAD primitive.");
+
+                aead = tmp.JavaCast<IAead>();
+            }
+
+            if (aead == null)
                 throw new Exception("Failed to initialize AEAD.");
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Failed to initialize Tink secure storage");
+            logger.LogError(e, "Failed to initialize secure storage");
             throw;
         }
     }
