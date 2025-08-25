@@ -3,7 +3,6 @@ using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
-using Microsoft.Maui.Storage;
 using Prism.Container.DryIoc;
 using Prism.DryIoc;
 using ServiceClients;
@@ -56,7 +55,6 @@ public class App : PrismApplication
 
         // Register services.
         containerRegistry
-            .RegisterInstance<IPlatformService>(PlatformHelper.PlatformService)
             .RegisterSingleton<IConfigurationService, ConfigurationService>()
             .RegisterSingleton<IAuthenticationService, AuthenticationService>()
             .RegisterSingleton<IAuthDataStore, SecureStorageAuthDataStore>()

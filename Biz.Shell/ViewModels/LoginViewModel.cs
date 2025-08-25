@@ -221,10 +221,11 @@ public class LoginViewModel : PageViewModelBase
     Task GoToTenantSelectionPage(Tenant[] availableTenants)
     {
         NavigationService.RequestNavigate(
-            GlobalConstants.TenantSelectionView,
+            nameof(TenantSelectionView),
             new NavigationParameters
             {
-                { "availableTenants", availableTenants }
+                { nameof(TenantSelectionViewModel.AvailableTenants), 
+                    availableTenants }
             });
         return Task.CompletedTask;
     }

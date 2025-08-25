@@ -3,7 +3,7 @@
     <!--  basic colors  -->
     <Color x:Key="ForegroundColor">#E5E5E5</Color>
     <Color x:Key="ForegroundLeadColor">#A1A1AA</Color>
-    <Color x:Key="BackgroundColor">Black</Color>
+    <Color x:Key="BackgroundColor">Transparent</Color>
     <Color x:Key="MutedColor">#A0A0A9</Color>
     <Color x:Key="BorderColor">#454545</Color>
     <Color x:Key="BorderColor60">#262626</Color>

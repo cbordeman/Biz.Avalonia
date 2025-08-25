@@ -1,5 +1,6 @@
 ﻿using Biz.Shell.ViewModels.Toolbar;
 using Biz.Modules.Dashboard;
+using Biz.Shell.Services.Authentication;
 using ShadUI;
 using IContainer = DryIoc.IContainer;
 
@@ -157,4 +158,15 @@ public abstract class MainViewModelBase
         // Go to the dashboard initially.
         ExecuteGoToPageCommand(DashboardConstants.DashboardView);
     }
+    
+    #region LogoutCommand
+    AsyncDelegateCommand? logoutCommand;
+    public AsyncDelegateCommand LogoutCommand => logoutCommand ??= new AsyncDelegateCommand(ExecuteLogoutCommand, CanLogoutCommand);
+    static bool CanLogoutCommand() => true;
+    async Task ExecuteLogoutCommand()
+    {
+        var authService = Container.Resolve<IAuthenticationService>();
+        await authService.Logout();
+    }
+    #endregion LogoutCommand
 }

@@ -2,6 +2,7 @@
 
 public static class ResourceNames
 {
+    public const string Leave = "leave";
     public const string ArrowReply = "arrow_reply";
     public const string Hamburger = "hamburger";
     public const string Home = "home";

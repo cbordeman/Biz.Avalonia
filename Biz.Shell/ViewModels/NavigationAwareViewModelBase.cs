@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Reflection;
 using Prism.Navigation;
 using Prism.Navigation.Regions;
+using Shouldly;
 
 namespace Biz.Shell.ViewModels;
 
@@ -44,33 +46,51 @@ public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
     }
     
     /// <summary>Called when the implementer has been navigated to.</summary>
-    /// <param name="navigationContext">The navigation context.</param>
-    public virtual void OnNavigatedTo(NavigationContext navigationContext)
+    /// <param name="ctx">The navigation context.</param>
+    public virtual void OnNavigatedTo(NavigationContext ctx)
     {
-        NavigationService = navigationContext.NavigationService;
+        NavigationService = ctx.NavigationService;
+        
+        if (ctx.Parameters == null || ctx.Parameters.Count == 0)
+            return;
+        
+        // Public non-static properties with a setter. 
+        var properties = this.GetType().GetProperties(
+                BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanWrite && p.SetMethod != null && p.SetMethod.IsPublic);
+        {
+            properties.ShouldNotBeNull();
+            foreach (var p in ctx.Parameters)
+            {
+                var foundProp = properties.FirstOrDefault(prop => prop.Name == p.Key);
+                if (foundProp == null)
+                    throw new InvalidOperationException($"There is no property on {this.GetType().FullName} named \"{p.Key}\".");
+                foundProp.SetValue(this, p.Value);
+            }
+        }
     }
     
-    public Task NavigateToAsync(string area, INavigationParameters? parameters = null)
-    {
-        if (NavigationService != null)
-        {
-            var taskCompletionSource = new TaskCompletionSource<bool>();
-            NavigationService!.RequestNavigate(
-                new Uri(area),
-                (NavigationResult args) =>
-                {
-                    if (args.Cancelled)
-                        taskCompletionSource.SetCanceled();
-                    else if (args.Exception != null)
-                        taskCompletionSource.SetException(args.Exception);
-                    else if (args.Success)
-                        taskCompletionSource.SetResult(true);
-                },
-                parameters);
-            return taskCompletionSource.Task;
-        }
-        return Task.FromException(new InvalidOperationException("Initialize() has not been called."));
-    }
+    // public Task NavigateToAsync(string area, INavigationParameters? parameters = null)
+    // {
+    //     if (NavigationService != null)
+    //     {
+    //         var taskCompletionSource = new TaskCompletionSource<bool>();
+    //         NavigationService!.RequestNavigate(
+    //             new Uri(area),
+    //             (NavigationResult args) =>
+    //             {
+    //                 if (args.Cancelled)
+    //                     taskCompletionSource.SetCanceled();
+    //                 else if (args.Exception != null)
+    //                     taskCompletionSource.SetException(args.Exception);
+    //                 else if (args.Success)
+    //                     taskCompletionSource.SetResult(true);
+    //             },
+    //             parameters);
+    //         return taskCompletionSource.Task;
+    //     }
+    //     return Task.FromException(new InvalidOperationException("Initialize() has not been called."));
+    // }
     
     /// <summary>Navigation validation checker.</summary>
     /// <remarks>Override for Prism 7.2's IsNavigationTarget.</remarks>

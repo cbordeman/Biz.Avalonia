@@ -1,4 +1,11 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="TextBlock.Footer">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="{StaticResource ManropeFont}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+    </Style>
     <Style Selector="TextBlock.LucideIcon">
         <Setter Property="Height" Value="18" />
         <Setter Property="Width" Value="18" />

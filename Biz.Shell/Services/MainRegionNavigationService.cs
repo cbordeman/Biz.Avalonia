@@ -1,6 +1,6 @@
-﻿using Biz.Shell.Services.Authentication;
+﻿using Biz.Modules.Dashboard;
+using Biz.Shell.Services.Authentication;
 using Microsoft.Extensions.Logging;
-using Prism.Common;
 
 namespace Biz.Shell.Services;
 
@@ -12,17 +12,23 @@ public class MainContentRegionNavigationService :
     IAuthenticationService AuthenticationService => ContainerLocator.Current.Resolve<IAuthenticationService>();
     readonly IRegionManager regionManager;
     readonly ILogger<MainContentRegionNavigationService> logger;
+    readonly IAuthenticationService authenticationService;
 
+    // this is the full page url
     public string? CurrentPage { get; private set; }
+    
+    // this is just the first bit
     public string? CurrentArea { get; private set; }
 
     public event NotifyPageChanged? PageChanged;
 
     public MainContentRegionNavigationService(IRegionManager regionManager,
-        ILogger<MainContentRegionNavigationService> logger)
+        ILogger<MainContentRegionNavigationService> logger,
+        IAuthenticationService authenticationService)
     {
         this.regionManager = regionManager;
         this.logger = logger;
+        this.authenticationService = authenticationService;
     }
 
     /// <summary>
@@ -35,50 +41,45 @@ public class MainContentRegionNavigationService :
         if (initialized)
             return;
 
-        if (!this.regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
+        if (!regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
             throw new InvalidOperationException(
                 $"MainContentRegion not found.  Could not initialize {nameof(MainContentRegionNavigationService)}.");
 
-        var mainRegion = this.regionManager.Regions[RegionNames.MainContentRegion];
+        var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
         regionNavigationService = mainRegion.NavigationService;
-
+        
         regionNavigationService.Navigated += Navigated;
         regionNavigationService.NavigationFailed += NavigationFailed;
 
+        authenticationService.AuthenticationStateChanged += AuthStateChanged;
+        
         initialized = true;
-        return;
+    }
+    private async void AuthStateChanged(object? sender, bool e)
+    {
+        try
+        {
+            if (!await authenticationService.IsAuthenticatedAsync())
+                RequestNavigate(nameof(LoginView), null);
+            else
+            {
+                // TODO: Maybe this should ga back in the navigation stack
+                // or do something smarter.
+                RequestNavigate(nameof(DashboardConstants.DashboardView), null);
+            }
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));       
+        }
     }
 
-    void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args)
-    {
+    void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args) =>
         logger.LogError(args.Error, $"Navigation failed: {args.Uri}");
-    }
 
     // ReSharper disable once AsyncVoidMethod
     async void Navigated(object? sender, RegionNavigationEventArgs args)
     {
-        try
-        {
-            var name = args.NavigationContext.Uri.OriginalString;
-            if (name != nameof(GlobalConstants.LoginView) &&
-                name != nameof(TenantSelectionView) &&
-                !await AuthenticationService.IsAuthenticatedAsync())
-            {
-                // Redirect to login page
-                regionNavigationService
-                    .RequestNavigate(GlobalConstants.LoginView);
-            }
-        }
-        catch (Exception e)
-        {
-            logger.LogError(
-                e, 
-                "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
-                nameof(MainContentRegionNavigationService), nameof(Navigated), 
-                args.Uri, e.Message);
-            return;
-        }
-        
         try
         {
             CurrentPage = args.Uri.OriginalString;
@@ -103,10 +104,48 @@ public class MainContentRegionNavigationService :
         {
             logger.LogError(
                 e, 
+                "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
+                nameof(MainContentRegionNavigationService), nameof(Navigated), 
+                args.Uri, e.Message);
+        }
+        
+        try
+        {
+            var name = args.NavigationContext.Uri.OriginalString;
+            if (name != nameof(LoginView) &&
+                name != nameof(TenantSelectionView) &&
+                !await AuthenticationService.IsAuthenticatedAsync())
+            {
+                // Redirect to login page
+                regionNavigationService
+                    .RequestNavigate(nameof(LoginView));
+            }
+        }
+        catch (Exception e)
+        {
+            logger.LogError(
+                e, 
                 "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
                 nameof(MainContentRegionNavigationService), nameof(Navigated), 
                 args.Uri, e.Message);
         }
+    }
+
+    public void ClearHistory()
+    {
+        if (!initialized)
+            throw new InvalidOperationException("Not initialized.");
+        regionNavigationService!.Journal.Clear();        
+    }
+    
+    public void RequestNavigate(string area, INavigationParameters? navigationParameters)
+    {
+        if (!initialized)
+            throw new InvalidOperationException("Not initialized.");
+        if (navigationParameters == null)
+            regionNavigationService!.RequestNavigate(area);
+        else
+            regionNavigationService!.RequestNavigate(area, navigationParameters);       
     }
 
     public void Dispose()

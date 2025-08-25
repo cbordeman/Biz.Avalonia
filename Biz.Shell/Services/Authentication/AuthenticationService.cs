@@ -21,18 +21,21 @@ public class AuthenticationService : IAuthenticationService
     private readonly IPlatformMsalService platformMsalService;
     readonly ITenantsApi tenantsApi;
     readonly ILogger<AuthenticationService> logger;
+    private readonly IRegionManager regionManager;
 
     public event EventHandler<bool>? AuthenticationStateChanged;
 
     public AuthenticationService(IConfigurationService configurationService,
         IAuthDataStore authDataStore, IPlatformMsalService platformMsalService,
-        ITenantsApi tenantsApi, ILogger<AuthenticationService> logger)
+        ITenantsApi tenantsApi, ILogger<AuthenticationService> logger,
+        IRegionManager regionManager)
     {
         this.configurationService = configurationService;
         this.authDataStore = authDataStore;
         this.platformMsalService = platformMsalService;
         this.tenantsApi = tenantsApi;
         this.logger = logger;
+        this.regionManager = regionManager;
 
         //bool useSystemBrowser = App.Current.IsSystemWebViewAvailable();
 
@@ -320,6 +323,10 @@ public class AuthenticationService : IAuthenticationService
     //  Clears existing login data, plus any provider-specific cleanup.
     async Task InternalLogout(bool invokeEvent)
     {
+        // Clear history
+        var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
+        mainRegion.NavigationService.Journal.Clear();
+
         if (authDataStore.Data != null)
         {
             try
@@ -559,6 +566,4 @@ public class AuthenticationService : IAuthenticationService
         public string Type { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
     }
-
-
 }

@@ -24,11 +24,11 @@ public class MainLargeViewModel : MainViewModelBase
                         "Dashboard", 
                         ResourceNames.Home,
                         DashboardConstants.ModuleName),
-                    new SideBarNavigationItemViewModel(
-                        "SettingsView",
-                        "Settings",
-                        ResourceNames.Gear,
-                        null!)
+                    // new SideBarNavigationItemViewModel(
+                    //     "SettingsView",
+                    //     "Settings",
+                    //     ResourceNames.Gear,
+                    //     null!)
                 ]
             }
         ];

@@ -8,4 +8,8 @@ public interface IMainRegionNavigationService
     event NotifyPageChanged? PageChanged;
 
     void Initialize();
+
+    void ClearHistory();
+    
+    void RequestNavigate(string area, INavigationParameters? navigationParameters = null);
 }

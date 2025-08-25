@@ -1,4 +1,5 @@
-﻿using Biz.Models;
+﻿using System.Reflection;
+using Biz.Models;
 
 namespace Biz.Shell.ViewModels;
 
@@ -15,9 +16,9 @@ public class TenantSelectionViewModel : PageViewModelBase
 
     public TenantSelectionViewModel(IContainer container) : base(container)
     {
-        Title = "Select Tenant";
+        Title = "Login";
     }
-    
+
     #region SelectCommand
     AsyncDelegateCommand<Tenant>? selectCommand;
     public AsyncDelegateCommand<Tenant> SelectCommand => selectCommand ??= new AsyncDelegateCommand<Tenant>(ExecuteSelectCommand, CanSelectCommand);
@@ -33,16 +34,10 @@ public class TenantSelectionViewModel : PageViewModelBase
     public AsyncDelegateCommand CancelLoginCommand => cancelLoginCommand ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
     Task ExecuteCancelLoginCommand()
     {
-        NavigationService.RequestNavigate(GlobalConstants.LoginView);
+        NavigationService.RequestNavigate(nameof(LoginView));
         return Task.CompletedTask;
     }
     #endregion CancelLoginCommand
 
-    protected void OnNavigatedToAsync(INavigationParameters parameters)
-    {
-        if (parameters.ContainsKey("availableTenants"))
-            AvailableTenants = parameters.GetValue<Tenant[]>("availableTenants");
-    }
-    
     public override bool PersistInHistory() => false;
 }

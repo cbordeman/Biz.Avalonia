@@ -5,98 +5,67 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Biz.Models;assembly=Biz.Models"
     xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
     xmlns:views="clr-namespace:Biz.Shell.Views"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
     x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:CompileBindings="True"
     x:DataType="vm:TenantSelectionViewModel"
     mc:Ignorable="d">
 
-    <Grid ColumnDefinitions="*" RowDefinitions="*,Auto,Auto,*">
+    <Grid RowDefinitions="*,Auto">
+        <StackPanel
+            Margin="0,50,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <TextBlock
+                Margin="0,0,0,50"
+                HorizontalAlignment="Center"
+                Classes="Header"
+                Text="Select Organization" />
 
-        <!--  Welcome Section  -->
-        <StackPanel Grid.Row="0" VerticalAlignment="Center">
-            <Label
+            <!--  Tenant Buttons  -->
+            <ItemsControl
+                Grid.Row="1"
                 HorizontalAlignment="Center"
-                Content="Welcome to Biz"
-                FontSize="32"
-                FontWeight="Bold" />
-            <Label
+                VerticalAlignment="Center"
+                ItemsSource="{Binding AvailableTenants}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="20" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type models:Tenant}">
+                        <Button
+                            Classes="Large"
+                            Command="{Binding #Root.DataContext.SelectCommand}"
+                            CommandParameter="{Binding .}"
+                            Content="{Binding Name}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!--  Back button  -->
+            <Button
+                Grid.Row="0"
+                Margin="0,20,0,0"
                 HorizontalAlignment="Center"
-                Content="Select Organization"
-                FontSize="16"
-                Opacity="0.8" />
+                Classes="Secondary"
+                Command="{Binding CancelLoginCommand}"
+                Content="Back" />
+
         </StackPanel>
-
-        <!--  Tenant Buttons  -->
-        <ItemsControl
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            ItemsSource="{Binding AvailableTenants}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Spacing="10" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type vm:TenantSelectionViewModel}">
-                    <Button
-                        Classes="Large"
-                        Command="{Binding #Root.DataContext.SelectCommand}"
-                        CommandParameter="{Binding .}"
-                        Content="{Binding Name}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <!--  Back button  -->
-        <Button
-            Grid.Row="2"
-            Margin="0,30,0,0"
-            HorizontalAlignment="Center"
-            Classes="Primary"
-            Command="{Binding CancelLoginCommand}"
-            Content="Back" />
 
         <!--  Footer  -->
-        <StackPanel
-            Grid.Row="3"
+        <TextBlock
+            Grid.Row="1"
             HorizontalAlignment="Center"
-            VerticalAlignment="Bottom">
-            <Label
-                HorizontalAlignment="Center"
-                Content="By continuing, you agree to our Terms of Service and Privacy Policy"
-                FontSize="12"
-                Opacity="0.7" />
-        </StackPanel>
+            Classes="Footer"
+            Text="By continuing, you agree to our Terms of Service and Privacy Policy" />
 
-        <Border
-            Grid.Row="0"
-            Grid.RowSpan="3"
-            Background="{DynamicResource BusyAreaOverlayColor}"
-            IsVisible="{Binding IsBusy}" />
-
-        <StackPanel
-            Grid.Row="0"
-            Grid.RowSpan="3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsVisible="{Binding IsBusy}">
-
-            <!--  Loading Indicator  -->
-            <progRing:ProgressRing
-                Margin="0,0,0,20"
-                HorizontalAlignment="Center"
-                IsActive="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}" />
-            <Button
-                HorizontalAlignment="Center"
-                Classes="Action"
-                Command="{Binding CancelLoginCommand}"
-                Content="Cancel Login" />
-        </StackPanel>
+        <views:ProgressBorder Grid.Row="0" />
     </Grid>
 </views:FormFactorAwareUserControl>
