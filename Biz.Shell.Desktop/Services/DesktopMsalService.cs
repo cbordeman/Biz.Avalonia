@@ -2,22 +2,21 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Util;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 
-namespace Biz.Shell.Android.Services;
+namespace Biz.Shell.Desktop.Services;
 
-public class AndroidMsalService : IPlatformMsalService
+public class DesktopMsalService : IPlatformMsalService
 {
     readonly IConfigurationService configurationService;
-    readonly ILogger<AndroidMsalService> logger;
-    private IPublicClientApplication msalClient;
+    readonly ILogger<DesktopMsalService> logger;
+    readonly IPublicClientApplication msalClient;
     
-    public AndroidMsalService(IConfigurationService configurationService,
-        ILogger<AndroidMsalService> logger)
+    public DesktopMsalService(IConfigurationService configurationService,
+        ILogger<DesktopMsalService> logger)
     {
         this.configurationService = configurationService;
         this.logger = logger;
@@ -27,11 +26,7 @@ public class AndroidMsalService : IPlatformMsalService
             .Create(this.configurationService.Authentication.Microsoft.ClientId)
             .WithTenantId(this.configurationService.Authentication.Microsoft.TenantId)
 
-            // Android requires this.
-            .WithParentActivityOrWindow(() => MainActivity.GetActivity!())
-
-            // Android only supports redirect URIs with custom schemes
-            .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
+            .WithRedirectUri(this.configurationService.Authentication.Microsoft.DesktopRedirectUri)
 
             .WithLogging(
                 (level, message, _) =>
@@ -47,7 +42,6 @@ public class AndroidMsalService : IPlatformMsalService
                             _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
                         },
                         message);
-                    Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
                 },
                 Microsoft.Identity.Client.LogLevel.Info,
 #if DEBUG
@@ -56,8 +50,6 @@ public class AndroidMsalService : IPlatformMsalService
                 enableDefaultPlatformLogging: true)
             .Build();
     }
-    
-    
     
     public async Task<AuthenticationResult?> LoginUsingMsal(CancellationToken ct)
     {
@@ -76,7 +68,6 @@ public class AndroidMsalService : IPlatformMsalService
             catch (MsalUiRequiredException)
             {
                 result = await builder
-                    .WithUseEmbeddedWebView(true)
                     .ExecuteAsync(ct);
             }
         }

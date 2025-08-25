@@ -15,7 +15,7 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        PlatformHelper.PlatformService = new WindowsPlatformService();
+        PlatformHelper.PlatformService = new DesktopPlatformService();
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);

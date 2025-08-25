@@ -10,7 +10,7 @@ using ShadUI;
 
 namespace Biz.Shell.Desktop.Services;
 
-public class WindowsPlatformService : IPlatformService
+public class DesktopPlatformService : IPlatformService
 {
     public void RegisterPlatformTypes(IContainerRegistry containerRegistry)
     {
@@ -19,6 +19,7 @@ public class WindowsPlatformService : IPlatformService
         containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
         containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
         containerRegistry.RegisterSingleton<ISafeStorage, WindowsSafeStorage>();
+        containerRegistry.RegisterSingleton<IPlatformMsalService, DesktopMsalService>();
     }
     
     public void InitializePlatform(IContainerProvider container)
@@ -27,11 +28,5 @@ public class WindowsPlatformService : IPlatformService
         var dialogService = container.Resolve<DialogManager>();
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
-    }
- 
-    public AcquireTokenInteractiveParameterBuilder PrepareMsalTokenRequest(AcquireTokenInteractiveParameterBuilder builder)
-    {
-        // Don't need anything.
-        return builder;   
     }
 }
