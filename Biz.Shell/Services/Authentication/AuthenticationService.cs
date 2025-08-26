@@ -330,6 +330,9 @@ public class AuthenticationService : IAuthenticationService
         var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
         mainRegion.NavigationService.Journal.Clear();
 
+        foreach (var acct in await msalClient.GetAccountsAsync())
+            await msalClient.RemoveAsync(acct);
+        
         if (authDataStore.Data != null)
         {
             try
@@ -339,8 +342,6 @@ public class AuthenticationService : IAuthenticationService
                     case LoginProvider.Google:
                         break;
                     case LoginProvider.Microsoft:
-                        foreach (var acct in await msalClient.GetAccountsAsync())
-                            await msalClient.RemoveAsync(acct);
                         break;
                     case LoginProvider.Facebook:
                         break;
