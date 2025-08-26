@@ -65,10 +65,4 @@
     <ItemGroup>
       <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Biz.Core">
-        <HintPath>..\Biz.Shell.Desktop\bin\Debug\net9.0\Biz.Core.dll</HintPath>
-      </Reference>
-    </ItemGroup>
 </Project>

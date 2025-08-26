@@ -179,7 +179,7 @@ public abstract class MainViewModelBase
     AsyncDelegateCommand? logoutCommand;
     public AsyncDelegateCommand LogoutCommand => logoutCommand ??= new AsyncDelegateCommand(ExecuteLogoutCommand, CanLogoutCommand);
     static bool CanLogoutCommand() => true;
-    async Task ExecuteLogoutCommand()
+    Task ExecuteLogoutCommand()
     {
         AuthService.Logout(true);
         
@@ -187,6 +187,7 @@ public abstract class MainViewModelBase
         // Must set to non-null or the property change doesn't trigger
         // properly.
         CurrentArea = "STUPID BUG";
+        return Task.CompletedTask;
     }
     #endregion LogoutCommand
 }

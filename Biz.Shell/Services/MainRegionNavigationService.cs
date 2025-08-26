@@ -55,21 +55,23 @@ public class MainContentRegionNavigationService :
         
         initialized = true;
     }
-    async void AuthStateChanged(object? sender, bool e)
+    void AuthStateChanged(object? sender, bool e)
     {
         try
         {
-            if (!await authenticationService.IsAuthenticatedAsync())
+            if (!authenticationService.IsAuthenticated)
+                // Redirect to login page
                 RequestNavigate(nameof(LoginView), null);
             else
-            {
-                // TODO: Maybe this should ga back in the navigation stack
-                // or do something smarter.
+                // Go to dashboard.  Note that the region journal has been
+                // emptied so there's no back history to go to.
                 RequestNavigate(nameof(DashboardConstants.DashboardView), null);
-            }
         }
         catch (Exception exception)
         {
+            // If we don't redirect to Login because of an exception, it isn't
+            // the end of the world.  Server operations will fail because of
+            // lack of a token.
             logger.LogError(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));       
         }
     }
@@ -78,7 +80,7 @@ public class MainContentRegionNavigationService :
         logger.LogError(args.Error, $"Navigation failed: {args.Uri}");
 
     // ReSharper disable once AsyncVoidMethod
-    async void Navigated(object? sender, RegionNavigationEventArgs args)
+    void Navigated(object? sender, RegionNavigationEventArgs args)
     {
         try
         {
@@ -114,7 +116,7 @@ public class MainContentRegionNavigationService :
             var name = args.NavigationContext.Uri.OriginalString;
             if (name != nameof(LoginView) &&
                 name != nameof(TenantSelectionView) &&
-                !await AuthenticationService.IsAuthenticatedAsync())
+                !AuthenticationService.IsAuthenticated)
             {
                 // Redirect to login page
                 regionNavigationService

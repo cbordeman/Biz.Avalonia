@@ -4,11 +4,11 @@ using Avalonia.Interactivity;
 
 namespace Biz.Shell.Views;
 
-public abstract class UserControlEx<TViewModel> 
+public class UserControlEx<TViewModel> 
     : UserControl 
     where TViewModel : class
 {
-    protected UserControlEx()
+    protected UserControlEx() : base()
     {
         DataContextChanged += (_, _) =>
         {

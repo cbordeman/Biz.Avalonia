@@ -2,7 +2,7 @@
 
 namespace Biz.Shell.Views;
 
-public abstract class FormFactorAwareUserControl<TViewModel> 
+public class FormFactorAwareUserControl<TViewModel> 
     : UserControlEx<TViewModel>, IDisposable 
     where TViewModel : class
 {

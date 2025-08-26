@@ -10,7 +10,7 @@ public static class TaskExtensions
         {
             logger ??= ContainerLocator.Container.Resolve<ILogger<object>>();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // We'll fall back to Debug logging.
         }

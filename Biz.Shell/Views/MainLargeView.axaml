@@ -350,7 +350,7 @@
                         Width="28"
                         VerticalAlignment="Stretch"
                         IsVisible="{Binding CurrentPage.TitleGeometryResourceName,
-                                            Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}">
+                                            Converter={x:Static converters:StringConverters.NotNullOrEmpty}}">
                         <PathIcon Data="{Binding CurrentPage.TitleGeometryResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}}" />
                     </Viewbox>
                     <TextBlock
@@ -397,7 +397,7 @@
                                         VerticalAlignment="Center"
                                         Classes="Small"
                                         IsVisible="{Binding Text,
-                                                            Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}"
+                                                            Converter={x:Static converters:StringConverters.NotNullOrEmpty}}"
                                         Text="{Binding Text}" />
                                 </StackPanel>
                             </Button>

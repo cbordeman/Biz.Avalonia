@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Biz.Core.Services;
+using Microsoft.Extensions.Logging;
 using ServiceClients;
 
 namespace Biz.Shell.Services.Authentication;
@@ -7,14 +8,17 @@ namespace Biz.Shell.Services.Authentication;
 class SecureStorageAuthDataStore : IAuthDataStore
 {
     readonly ISafeStorage secureStorage;
+    readonly ILogger<SecureStorageAuthDataStore> logger;
 
     const string AuthDataKey = "auth_data"; // Key for SecureStorage
 
     public AuthData? Data { get; set; }
 
-    public SecureStorageAuthDataStore(ISafeStorage secureStorage)
+    public SecureStorageAuthDataStore(ISafeStorage secureStorage, 
+        ILogger<SecureStorageAuthDataStore> logger)
     {
         this.secureStorage = secureStorage;
+        this.logger = logger;
     }
     
     public async Task RestoreAuthDataAsync()
@@ -38,7 +42,7 @@ class SecureStorageAuthDataStore : IAuthDataStore
         }
         catch (Exception e)
         {
-            
+            logger.LogError(e, "Error restoring auth data");;
         }
     }
 

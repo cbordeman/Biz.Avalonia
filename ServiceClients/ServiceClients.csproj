@@ -24,10 +24,4 @@
     <ProjectReference Include="..\Prism\src\Prism.Core\Prism.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Biz.Core">
-      <HintPath>..\Biz.Shell.Desktop\bin\Debug\net9.0\Biz.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

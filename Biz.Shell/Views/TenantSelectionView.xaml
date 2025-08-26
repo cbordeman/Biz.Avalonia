@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<views:FormFactorAwareUserControl
+<views:TenantSelectionViewBase
     x:Class="Biz.Shell.Views.TenantSelectionView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Biz.Models;assembly=Biz.Models"
-    xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
     xmlns:views="clr-namespace:Biz.Shell.Views"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
     x:Name="Root"
@@ -29,7 +28,6 @@
 
             <!--  Tenant Buttons  -->
             <ItemsControl
-                Grid.Row="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 ItemsSource="{Binding AvailableTenants}">
@@ -42,7 +40,7 @@
                     <DataTemplate x:DataType="{x:Type models:Tenant}">
                         <Button
                             Classes="Large"
-                            Command="{Binding #Root.DataContext.SelectCommand}"
+                            Command="{Binding #Root.ViewModel.SelectCommand}"
                             CommandParameter="{Binding .}"
                             Content="{Binding Name}" />
                     </DataTemplate>
@@ -50,7 +48,6 @@
             </ItemsControl>
             <!--  Back button  -->
             <Button
-                Grid.Row="0"
                 Margin="0,20,0,0"
                 HorizontalAlignment="Center"
                 Classes="Secondary"
@@ -68,4 +65,4 @@
 
         <views:ProgressBorder Grid.Row="0" />
     </Grid>
-</views:FormFactorAwareUserControl>
+</views:TenantSelectionViewBase>

@@ -2,6 +2,7 @@
 
 public static class StringConverters
 {
+    [UsedImplicitly]
     public static readonly IValueConverter ToSelectionMode =
         new FuncValueConverter<string, SelectionMode>(mode => mode switch
         {
@@ -9,7 +10,8 @@ public static class StringConverters
             "Multiple" => SelectionMode.Multiple,
             "Toggle" => SelectionMode.Toggle,
             "Always Selected" => SelectionMode.AlwaysSelected,
-            _ => SelectionMode.Single
+            _ => throw new ArgumentOutOfRangeException(nameof(SelectionMode), mode,
+                "Expected Single, Multiple, Toggle, or Always Selected.")
         });
     public static readonly IValueConverter AppResource =
         new FuncValueConverter<string, object?>(key =>
@@ -25,8 +27,8 @@ public static class StringConverters
                 return null;
             return AppHelpers.GetAppStyleResource<object>(key);
         });
-    public static readonly IValueConverter NullOrEmptyToTrue =
+    [UsedImplicitly] public static readonly IValueConverter NullOrEmpty =
         new FuncValueConverter<string, bool>(string.IsNullOrEmpty);
-    public static readonly IValueConverter NotNullOrEmptyToTrue =
+    [UsedImplicitly] public static readonly IValueConverter NotNullOrEmpty =
         new FuncValueConverter<string, bool>(str => !string.IsNullOrEmpty(str));
 }
