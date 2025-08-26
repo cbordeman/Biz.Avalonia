@@ -316,12 +316,11 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public void Logout()
+    public void Logout(bool invokeEvent)
     {
-        if (IsAuthenticatedAsync().Result)
-            InternalLogout(invokeEvent: true).LogException(
-                $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
-                logger);
+        InternalLogout(invokeEvent).LogException(
+            $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
+            logger);
     }
 
     //  Clears existing login data, plus any provider-specific cleanup.

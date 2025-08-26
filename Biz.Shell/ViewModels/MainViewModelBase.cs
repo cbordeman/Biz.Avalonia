@@ -166,7 +166,7 @@ public abstract class MainViewModelBase
     async Task ExecuteLogoutCommand()
     {
         var authService = Container.Resolve<IAuthenticationService>();
-        authService.Logout();
+        authService.Logout(true);
         
         // Can't set to null because of a bug in the sidebar control.
         // Must set to non-null or the property change doesn't trigger
