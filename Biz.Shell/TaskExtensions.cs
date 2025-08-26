@@ -16,52 +16,45 @@ public static class TaskExtensions
             // We'll fall back to Debug logging.
         }
 
-        try
+        task.ContinueWith(t =>
         {
-            task.WaitAsync(TimeSpan.FromSeconds(30)).ContinueWith(ContinuationFunction);
-
-            void ContinuationFunction(Task t)
+            if (!t.IsFaulted)
+                return;
+            t.Exception?.Handle(e =>
             {
-                if (!t.IsFaulted)
-                    return;
-                t.Exception?.Handle(e =>
+                if (e is TimeoutException)
                 {
-                    if (e is TimeoutException)
-                    {
-                        if (logger != null)
-                            logger.LogError(e, "Task timed out.  " + "Task Description: {TaskDescription}, " + "Exception type: {ExceptionType}",
-                                taskDescription, e.GetType().Name);
-                        else
-                            Debug.WriteLine($"Task timed out: {taskDescription}");
-                    }
-                    else if (e is OperationCanceledException)
-                    {
-                        if (logger != null)
-                            logger.LogInformation("Operation cancelled.  " + "Task Description: {TaskDescription}, " + "Exception type: {ExceptionType}",
-                                taskDescription, e.GetType().Name);
-                        else
-                            Debug.WriteLine($"Operation cancelled: {taskDescription}");
-                    }
+                    if (logger != null)
+                        logger.LogError(e, "Task timed out.  " + "Task Description: {TaskDescription}, " + "Exception type: {ExceptionType}",
+                            taskDescription, e.GetType().Name);
                     else
-                    {
-                        if (logger != null)
-                            logger.LogError(e,
-                                "Exception thrown during task.  " +
-                                "Task description: {TaskDescription}: {Message}",
-                                taskDescription, e.Message);
-                        else
-                            Debug.WriteLine(
-                                $"Task threw an exception: {taskDescription}.  " +
-                                $"Exception: ({e.GetType().Name}) {e}");
-                    }
-                    return true;
-                });
-            }
-        }
-        catch (Exception e)
-        {
+                        Debug.WriteLine($"Task timed out: {taskDescription}");
+                }
+                else if (e is OperationCanceledException)
+                {
+                    if (logger != null)
+                        logger.LogInformation("Operation cancelled.  " + "Task Description: {TaskDescription}, " + "Exception type: {ExceptionType}",
+                            taskDescription, e.GetType().Name);
+                    else
+                        Debug.WriteLine($"Operation cancelled: {taskDescription}");
+                }
+                else
+                {
+                    if (logger != null)
+                        logger.LogError(e,
+                            "Exception thrown during task.  " +
+                            "Task description: {TaskDescription}: {Message}",
+                            taskDescription, e.Message);
+                    else
+                        Debug.WriteLine(
+                            $"Task threw an exception: {taskDescription}.  " +
+                            $"Exception: ({e.GetType().Name}) {e}");
+                }
+                return true;
+            });
+                
             // shouldn't get here.
-            throw new Exception("Unexpected exception.", e);
-        }
+            throw new Exception("Unexpected exception.  Shouldn't get here!");
+        });
     }
 }
