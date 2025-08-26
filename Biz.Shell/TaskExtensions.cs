@@ -24,9 +24,7 @@ public static class TaskExtensions
             {
                 if (!t.IsFaulted)
                     return;
-                t.Exception?.Handle(ExceptionHandler);
-
-                bool ExceptionHandler(Exception e)
+                t.Exception?.Handle(e =>
                 {
                     if (e is TimeoutException)
                     {
@@ -57,7 +55,7 @@ public static class TaskExtensions
                                 $"Exception: ({e.GetType().Name}) {e}");
                     }
                     return true;
-                }
+                });
             }
         }
         catch (Exception e)
