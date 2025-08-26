@@ -11,37 +11,38 @@
     xmlns:toolbar="clr-namespace:Biz.Shell.ViewModels.Toolbar;assembly=Biz.Shell"
     xmlns:views="clr-namespace:Biz.Shell.Views"
     xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:CompileBindings="True"
     x:DataType="vm:MainLargeViewModel"
+    x:TypeArguments="vm:MainLargeViewModel"
     mc:Ignorable="d">
-    <UserControl.Styles>
-        <!-- <Style x:Key="NoSelect" Selector="shadui|SidebarItem:checked /template/ #SelectedBackground"> -->
-        <!--     <Setter Property="Opacity" Value="0" /> -->
-        <!-- </Style> -->
-    </UserControl.Styles>
     <Panel>
         <Grid ColumnDefinitions="Auto,*">
             <shadui:Sidebar
                 Grid.Column="0"
                 Width="220"
                 MinWidth="60"
-                Padding="{Binding #Toggler.IsChecked, Converter={x:Static converters:BooleanConverters.SidebarPadding}}"
+                Padding="{Binding #Toggler.IsChecked,
+                                  Converter={x:Static converters:BooleanConverters.SidebarPadding}}"
                 BorderBrush="{DynamicResource BorderColor30}"
                 BorderThickness="0,0,1,0"
                 CurrentRoute="{Binding CurrentArea}"
-                Expanded="{Binding IsDrawerOpen, Mode=TwoWay}">
+                Expanded="{Binding IsDrawerOpen,
+                                   Mode=TwoWay}">
                 <shadui:Sidebar.Header>
                     <ToggleButton
                         Name="Toggler"
                         Width="36"
                         Height="36"
                         Padding="8"
-                        HorizontalAlignment="{Binding IsDrawerOpen, Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
+                        HorizontalAlignment="{Binding IsDrawerOpen,
+                                                      Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
                         CornerRadius="{DynamicResource LgCornerRadius}"
                         Cursor="Hand"
-                        IsChecked="{Binding IsDrawerOpen, Mode=TwoWay}"
+                        IsChecked="{Binding IsDrawerOpen,
+                                            Mode=TwoWay}"
                         Theme="{DynamicResource SideTogglerTheme}">
                         <PathIcon Data="{Binding IsDrawerOpen, Converter={x:Static converters:BooleanConverters.SidebarToggleIcon}}" />
                     </ToggleButton>
@@ -64,7 +65,8 @@
 
                                     <shadui:SidebarItemLabel
                                         AsSeparator="True"
-                                        IsVisible="{Binding Header, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                        IsVisible="{Binding Header,
+                                                            Converter={x:Static ObjectConverters.IsNotNull}}"
                                         Text="{Binding Header}" />
 
                                     <!--  Children  -->
@@ -80,8 +82,11 @@
                                                     Command="{Binding Command}"
                                                     CommandParameter="{Binding}"
                                                     Content="{Binding DisplayName}"
+                                                    IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"
                                                     Route="{Binding ViewName}"
-                                                    ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='{Binding DisplayName}'}">
+                                                    ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
+                                                                          Converter={x:Static converters:BooleanConverters.NullOrString},
+                                                                          ConverterParameter='{Binding DisplayName}'}">
                                                     <shadui:SidebarItem.Icon>
                                                         <PathIcon Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}" />
                                                     </shadui:SidebarItem.Icon>
@@ -96,13 +101,15 @@
                 </ScrollViewer>
 
                 <shadui:Sidebar.Footer>
-                    <StackPanel Spacing="0">
+                    <StackPanel>
                         <!--  Settings  -->
                         <shadui:SidebarItem
                             Command="{Binding NavigateSettingsCommand}"
                             Content="Settings"
                             Route="Settings"
-                            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Settings'}">
+                            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
+                                                  Converter={x:Static converters:BooleanConverters.NullOrString},
+                                                  ConverterParameter='Settings'}">
                             <shadui:SidebarItem.Icon>
                                 <PathIcon Data="{StaticResource gear}" />
                             </shadui:SidebarItem.Icon>
@@ -112,8 +119,12 @@
                         <shadui:SidebarItem
                             Command="{Binding LogoutCommand}"
                             Content="Sign Out"
+                            IsVisible="{Binding IsLoggedIn,
+                                                Converter={x:Static converters:BooleanConverters.Reverse}}"
                             Route="NO"
-                            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Sign Out'}">
+                            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
+                                                  Converter={x:Static converters:BooleanConverters.NullOrString},
+                                                  ConverterParameter='Sign Out'}">
                             <shadui:SidebarItem.Icon>
                                 <PathIcon Data="{StaticResource leave}" />
                             </shadui:SidebarItem.Icon>
@@ -135,7 +146,8 @@
                                             CornerRadius="{DynamicResource LgCornerRadius}"
                                             Fallback="CN"
                                             IsVisible="{Binding !$parent[shadui:Sidebar].Expanded}"
-                                            Opacity="{Binding !$parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.Opaque}}"
+                                            Opacity="{Binding !$parent[shadui:Sidebar].Expanded,
+                                                              Converter={x:Static converters:BooleanConverters.Opaque}}"
                                             Source="../../Assets/user.png">
                                             <shadui:Avatar.Transitions>
                                                 <Transitions>
@@ -337,13 +349,15 @@
                     <Viewbox
                         Width="28"
                         VerticalAlignment="Stretch"
-                        IsVisible="{Binding CurrentPage.TitleGeometryResourceName, Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}">
+                        IsVisible="{Binding CurrentPage.TitleGeometryResourceName,
+                                            Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}">
                         <PathIcon Data="{Binding CurrentPage.TitleGeometryResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}}" />
                     </Viewbox>
                     <TextBlock
                         VerticalAlignment="Center"
                         Classes="Header"
-                        IsVisible="{Binding CurrentPage.Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        IsVisible="{Binding CurrentPage.Title,
+                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                         Text="{Binding CurrentPage.Title}" />
                 </StackPanel>
 
@@ -377,11 +391,13 @@
                                     <PathIcon
                                         VerticalAlignment="Center"
                                         Data="{Binding Geometry}"
-                                        IsVisible="{Binding Geometry, Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
+                                        IsVisible="{Binding Geometry,
+                                                            Converter={x:Static converters:ObjectConverters.NonNullToTrue}}" />
                                     <TextBlock
                                         VerticalAlignment="Center"
                                         Classes="Small"
-                                        IsVisible="{Binding Text, Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}"
+                                        IsVisible="{Binding Text,
+                                                            Converter={x:Static converters:StringConverters.NotNullOrEmptyToTrue}}"
                                         Text="{Binding Text}" />
                                 </StackPanel>
                             </Button>

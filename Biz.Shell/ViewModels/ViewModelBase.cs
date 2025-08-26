@@ -13,8 +13,7 @@ public abstract class ViewModelBase : BindableBase,
     protected readonly IRegionManager? RegionManager;
     
     #region INotifyDataErrorInfo
-    
-    private readonly Dictionary<string, List<string>> errors = new();
+    readonly Dictionary<string, List<string>> errors = new();
     
     public bool HasErrors => errors.Count != 0;
     
@@ -74,7 +73,7 @@ public abstract class ViewModelBase : BindableBase,
             OnErrorsChanged(property);
     }
 
-    private void OnErrorsChanged(string propertyName)
+    void OnErrorsChanged(string propertyName)
     {
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }

@@ -1,8 +1,8 @@
 ﻿namespace Biz.Shell.Views;
 
-public partial class LoginView : FormFactorAwareUserControl
+public partial class LoginView : FormFactorAwareUserControl<LoginViewModel>
 {
-    public LoginView()
+    public LoginView() : base()
     {
         InitializeComponent();
     }

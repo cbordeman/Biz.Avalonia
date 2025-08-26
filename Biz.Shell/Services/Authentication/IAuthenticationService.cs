@@ -4,7 +4,7 @@ namespace Biz.Shell.Services.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<bool> IsAuthenticatedAsync();
+        bool IsAuthenticated { get; }
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithGoogleAsync(CancellationToken ct);
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithMicrosoftAsync(CancellationToken ct);
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithFacebookAsync(CancellationToken ct);

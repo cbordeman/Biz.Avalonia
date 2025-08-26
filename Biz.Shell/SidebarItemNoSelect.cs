@@ -19,10 +19,9 @@ public class SidebarItemNoSelect : SidebarItem
         //if (selectedBackgroundBorder != null)
         //    selectedBackgroundBorder.IsVisible = false; // or Visibility = Visibility.Collapsed;
     }
-    
-     
 
-    private T? FindVisualChildByName<T>(Visual parent, string name) 
+
+    T? FindVisualChildByName<T>(Visual parent, string name) 
         where T : Visual
     {
         foreach (var child in parent.GetVisualChildren())

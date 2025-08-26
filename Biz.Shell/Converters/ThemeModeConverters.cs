@@ -4,7 +4,7 @@ namespace Biz.Shell.Converters;
 
 public static class ThemeModeConverters
 {
-    private static readonly Dictionary<ThemeMode, string> Icons = new()
+    static readonly Dictionary<ThemeMode, string> Icons = new()
     {
         { ThemeMode.System, "\uE2B2" },
         { ThemeMode.Light, "\uE2B1" },

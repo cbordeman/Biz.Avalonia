@@ -29,11 +29,6 @@ public class MainSmallViewModel : MainViewModelBase
                 "Dashboard",
                 ResourceNames.Home,
                 DashboardConstants.ModuleName),
-            new SideBarNavigationItemViewModel(
-                "SettingsView",
-                "Settings",
-                ResourceNames.Gear,
-                null!)
         ];
     }
     

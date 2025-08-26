@@ -19,11 +19,11 @@ namespace Biz.Shell.Views
         {
             base.OnLoaded(e);
 
-            if (this.DataContext is IOnViewLoaded onViewLoaded)
+            if (DataContext is IOnViewLoaded onViewLoaded)
                 onViewLoaded.OnViewLoaded();
         }
 
-        private void OnFullScreen(object? sender, RoutedEventArgs e)
+        void OnFullScreen(object? sender, RoutedEventArgs e)
         {
             if (WindowState == WindowState.FullScreen)
             {
@@ -37,7 +37,7 @@ namespace Biz.Shell.Views
             }
         }
 
-        private void OnClosing(object? sender, WindowClosingEventArgs e)
+        void OnClosing(object? sender, WindowClosingEventArgs e)
         {
             e.Cancel = true;
 

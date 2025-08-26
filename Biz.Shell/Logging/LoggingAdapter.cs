@@ -6,9 +6,9 @@ namespace Biz.Shell.Logging;
 /// Logging adapter.
 /// </summary>
 /// <typeparam name="T">Logger category.</typeparam>
-internal class LoggingAdapter<T> : ILogger<T>
+class LoggingAdapter<T> : ILogger<T>
 {
-    private readonly ILogger adaptee;          
+    readonly ILogger adaptee;          
 
     public LoggingAdapter(ILoggerFactory factory)
     {

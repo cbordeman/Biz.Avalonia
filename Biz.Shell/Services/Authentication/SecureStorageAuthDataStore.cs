@@ -4,7 +4,7 @@ using ServiceClients;
 
 namespace Biz.Shell.Services.Authentication;
 
-internal class SecureStorageAuthDataStore : IAuthDataStore
+class SecureStorageAuthDataStore : IAuthDataStore
 {
     readonly ISafeStorage secureStorage;
 

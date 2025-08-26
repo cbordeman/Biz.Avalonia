@@ -52,11 +52,13 @@
                 <Panel>
                     <TextBlock
                         Classes="LucideIcon"
-                        IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsNotFullScreen}}"
+                        IsVisible="{Binding #Window.WindowState,
+                                            Converter={x:Static converters:WindowStateConverters.IsNotFullScreen}}"
                         Text="&#58681;" />
                     <TextBlock
                         Classes="LucideIcon"
-                        IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsFullScreen}}"
+                        IsVisible="{Binding #Window.WindowState,
+                                            Converter={x:Static converters:WindowStateConverters.IsFullScreen}}"
                         Text="&#57631;" />
                 </Panel>
             </Button>

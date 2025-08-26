@@ -13,7 +13,8 @@ namespace Biz.Shell.ViewModels;
 public abstract class MainViewModelBase 
     : NavigationAwareViewModelBase, IOnViewLoaded
 {
-    readonly IMainRegionNavigationService mainContentRegionNavigationService;
+    protected readonly IMainRegionNavigationService MainContentRegionNavigationService;
+    protected readonly IAuthenticationService AuthService;
 
     #region IsDrawerOpen
     public bool IsDrawerOpen
@@ -23,6 +24,15 @@ public abstract class MainViewModelBase
     }
     bool isDrawerOpen;        
     #endregion IsDrawerOpen
+    
+    #region IsLoggedIn
+    public bool IsLoggedIn
+    {
+        get => isLoggedIn;
+        set => SetProperty(ref isLoggedIn, value);
+    }
+    bool isLoggedIn;        
+    #endregion IsLoggedIn
     
     #region CurrentArea
     public string? CurrentArea
@@ -57,9 +67,16 @@ public abstract class MainViewModelBase
     {
         ToastManager = container.Resolve<ToastManager>();
 
-        mainContentRegionNavigationService = 
+        AuthService = container.Resolve<IAuthenticationService>();
+        AuthService.AuthenticationStateChanged += (sender, b) =>
+        {
+            IsLoggedIn = b;
+        };
+        IsLoggedIn = AuthService.IsAuthenticated;
+        
+        MainContentRegionNavigationService = 
             container.Resolve<IMainRegionNavigationService>();
-        mainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
+        MainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
     }
     
     void MainContentRegionNavigationServiceOnPageChanged(
@@ -141,14 +158,14 @@ public abstract class MainViewModelBase
     public override void Dispose()
     {
         base.Dispose();
-        mainContentRegionNavigationService.PageChanged -=
+        MainContentRegionNavigationService.PageChanged -=
             MainContentRegionNavigationServiceOnPageChanged;
     }
     
     public void OnViewLoaded()
     {
         // This executes after regions are loaded.
-        mainContentRegionNavigationService.Initialize();
+        MainContentRegionNavigationService.Initialize();
         
         // Have to load the module if it's not already loaded.
         var mm = Container.Resolve<ModuleManager>();
@@ -164,8 +181,7 @@ public abstract class MainViewModelBase
     static bool CanLogoutCommand() => true;
     async Task ExecuteLogoutCommand()
     {
-        var authService = Container.Resolve<IAuthenticationService>();
-        authService.Logout(true);
+        AuthService.Logout(true);
         
         // Can't set to null because of a bug in the sidebar control.
         // Must set to non-null or the property change doesn't trigger

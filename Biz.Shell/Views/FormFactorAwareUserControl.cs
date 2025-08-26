@@ -2,22 +2,24 @@
 
 namespace Biz.Shell.Views;
 
-public class FormFactorAwareUserControl : UserControlEx, IDisposable
+public abstract class FormFactorAwareUserControl<TViewModel> 
+    : UserControlEx<TViewModel>, IDisposable 
+    where TViewModel : class
 {
     IFormFactorService? formFactorService;
     TopLevel? topLevel;
     
     protected override void OnDataContextChanged(EventArgs e)
     {
-        if (this.formFactorService == null && DataContext is IFormFactorService service)
-            this.formFactorService = service;
+        if (formFactorService == null && DataContext is IFormFactorService service)
+            formFactorService = service;
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
 
-        topLevel = TopLevel.GetTopLevel((Visual)this.Parent!);
+        topLevel = TopLevel.GetTopLevel((Visual)Parent!);
         if (topLevel == null) return;
 
         // Use topLevel.Bounds.Size here for initial layout decisions
@@ -34,10 +36,10 @@ public class FormFactorAwareUserControl : UserControlEx, IDisposable
         notifyService.SetHostWindow(TopLevel.GetTopLevel(this)!);
     }
 
-    private void TopLevel_SizeChanged(object? sender, SizeChangedEventArgs e)
+    void TopLevel_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        if (e.WidthChanged && this.formFactorService != null)
-            this.formFactorService.NotifyWidthChanged(e.NewSize.Width);
+        if (e.WidthChanged && formFactorService != null)
+            formFactorService.NotifyWidthChanged(e.NewSize.Width);
     }
 
     // private void InsetsManager_SafeAreaChanged(object? sender, SafeAreaChangedArgs e)

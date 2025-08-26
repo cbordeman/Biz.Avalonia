@@ -42,7 +42,7 @@ public class StringToColor : IValueConverter
         return null;
     }
 
-    private static Color? GetNamedColor(string colorName)
+    static Color? GetNamedColor(string colorName)
     {
         return colorName.ToLowerInvariant() switch
         {

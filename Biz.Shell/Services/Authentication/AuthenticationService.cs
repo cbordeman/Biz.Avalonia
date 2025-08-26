@@ -15,10 +15,10 @@ public class AuthenticationService : IAuthenticationService
 {
     readonly IConfigurationService configurationService;
     readonly IAuthDataStore authDataStore;
-    private readonly IPlatformMsalService platformMsalService;
+    readonly IPlatformMsalService platformMsalService;
     readonly ITenantsApi tenantsApi;
     readonly ILogger<AuthenticationService> logger;
-    private readonly IRegionManager regionManager;
+    readonly IRegionManager regionManager;
 
     public event EventHandler<bool>? AuthenticationStateChanged;
 
@@ -81,22 +81,27 @@ public class AuthenticationService : IAuthenticationService
 //             .Build();
     }
 
-    public async Task<bool> IsAuthenticatedAsync()
+    public bool IsAuthenticated
     {
-        if (authDataStore.Data == null)
-            await authDataStore.RestoreAuthDataAsync();
-        if (authDataStore.Data == null)
-            return false;
-        if (authDataStore.Data.Tenant == null || authDataStore.Data.Tenant.TenantId < 1)
-            return false;
+        get
+        {
+            if (authDataStore.Data == null)
+                authDataStore.RestoreAuthDataAsync().LogException(
+                    "Restoring auth data",
+                    logger);
+            if (authDataStore.Data == null)
+                return false;
+            if (authDataStore.Data.Tenant == null || authDataStore.Data.Tenant.TenantId < 1)
+                return false;
 
-        // If it's a Facebook token, validate it
-        if (authDataStore.Data.LoginProvider == LoginProvider.Facebook)
-            return await ValidateFacebookTokenAsync(authDataStore.Data.AccessToken!);
+            // If it's a Facebook token, validate it
+            // if (authDataStore.Data.LoginProvider == LoginProvider.Facebook)
+            //     return await ValidateFacebookTokenAsync(authDataStore.Data.AccessToken!);
 
-        if (authDataStore.Data.ExpiresAt <= DateTimeOffset.UtcNow.AddMinutes(-5))
-            return false;
-        return true;
+            if (authDataStore.Data.ExpiresAt <= DateTimeOffset.UtcNow.AddMinutes(-5))
+                return false;
+            return true;
+        }
     }
 
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 

@@ -4,8 +4,8 @@ namespace Biz.Shell.Services
 {
     public class NotificationService : INotificationService
     {
-        private int _notificationTimeout = 10;
-        private WindowNotificationManager? _notificationManager;
+        int _notificationTimeout = 10;
+        WindowNotificationManager? _notificationManager;
 
         public int NotificationTimeout
         {

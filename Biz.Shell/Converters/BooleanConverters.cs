@@ -7,6 +7,9 @@ public static class BooleanConverters
     public static readonly IValueConverter NullOrString =
         new FuncValueConverter<bool, string?, string?>((value, param) => value ? null : param);
 
+    public static readonly IValueConverter Reverse =
+        new FuncValueConverter<bool, bool>(value => !value);
+    
     public static readonly IValueConverter Opaque =
         new FuncValueConverter<bool, int>(value => value ? 1 : 0);
 

@@ -7,8 +7,8 @@ public class NavigationCommand : AsyncDelegateCommand
 {
     readonly string? moduleName;
     readonly string viewName;
-    
-    private NavigationCommand(
+
+    NavigationCommand(
         string? moduleName, string viewName,
         Func<Task> execute)
         : base(execute)
@@ -30,8 +30,8 @@ public class NavigationCommand : AsyncDelegateCommand
             moduleName, viewName, 
             instance.LoadModuleAndNavigate);
     }
-    
-    private Task LoadModuleAndNavigate()
+
+    Task LoadModuleAndNavigate()
     {
         // Will be null if it's a primary module that
         // doesn't need to be loaded.

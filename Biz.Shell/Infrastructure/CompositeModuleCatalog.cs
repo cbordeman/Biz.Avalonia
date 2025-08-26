@@ -2,9 +2,9 @@
 
 public class CompositeModuleCatalog : IModuleCatalog
 {
-    private readonly List<IModuleCatalog> catalogs = [];
-    private readonly List<IModuleInfo> localModules = [];
-    private bool isInitialized;
+    readonly List<IModuleCatalog> catalogs = [];
+    readonly List<IModuleInfo> localModules = [];
+    bool isInitialized;
 
     public IEnumerable<IModuleInfo> Modules
     {
@@ -50,7 +50,7 @@ public class CompositeModuleCatalog : IModuleCatalog
         return completed;
     }
 
-    private void AddModuleAndDependencies(IModuleInfo module, List<IModuleInfo> allModules, List<IModuleInfo> collected)
+    void AddModuleAndDependencies(IModuleInfo module, List<IModuleInfo> allModules, List<IModuleInfo> collected)
     {
         if (collected.Contains(module))
             return;

@@ -4,9 +4,9 @@ namespace Biz.Shell.ViewModels;
 
 public class SettingsSubViewModel : PageViewModelBase
 {
-    private IRegionNavigationJournal? journal;
-    private string? messageText = string.Empty;
-    private string? messageNumber = string.Empty;
+    IRegionNavigationJournal? journal;
+    string? messageText = string.Empty;
+    string? messageNumber = string.Empty;
 
     public SettingsSubViewModel(IContainer container)
         : base(container)
