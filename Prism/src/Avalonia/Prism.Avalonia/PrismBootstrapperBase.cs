@@ -1,6 +1,4 @@
 using System;
-using Avalonia;
-using Avalonia.Controls;
 using Prism.Common;
 using Prism.Ioc;
 using Prism.Modularity;

@@ -1,7 +1,4 @@
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Styling;
-using Prism.Extensions;
 
 namespace Prism.Dialogs
 {

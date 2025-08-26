@@ -1,7 +1,4 @@
-﻿using Avalonia.Controls;
-using Biz.Shell.Services;
-
-namespace Biz.Shell.Services;
+﻿namespace Biz.Shell.Services;
 
 public class ViewControlService : IFormFactorService
 {

@@ -1,4 +1,3 @@
-using Avalonia;
 using Prism.Common;
 using System.Collections;
 using System.Collections.Specialized;

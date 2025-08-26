@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Prism.Common;
-using Prism.Navigation;
 
 namespace Prism.Navigation.Regions
 {

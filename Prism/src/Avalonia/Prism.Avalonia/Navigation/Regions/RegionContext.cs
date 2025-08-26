@@ -1,6 +1,5 @@
 using System;
 using Prism.Common;
-using Prism.Navigation.Regions.Behaviors;
 #if AVALONIA
 using BindRegionContextToDependencyObjectBehavior = Prism.Navigation.Regions.Behaviors.BindRegionContextToAvaloniaObjectBehavior;
 #endif

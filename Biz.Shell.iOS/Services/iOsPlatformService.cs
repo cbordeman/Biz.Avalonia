@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Biz.Core.Services;
+﻿using Biz.Core.Services;
 using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;

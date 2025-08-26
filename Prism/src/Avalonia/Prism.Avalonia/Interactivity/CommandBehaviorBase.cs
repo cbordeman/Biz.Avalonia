@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Input;
 #if AVALONIA
-using Avalonia.Controls;
 #endif
 
 namespace Prism.Interactivity

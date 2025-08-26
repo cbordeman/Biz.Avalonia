@@ -1,7 +1,4 @@
 using System.ComponentModel;
-using Prism.Extensions;
-using Avalonia;
-using Avalonia.Controls;
 
 namespace Prism.Common
 {

@@ -1,6 +1,4 @@
-﻿using ShadUI;
-
-namespace Biz.Shell.Services;
+﻿namespace Biz.Shell.Services;
 
 public interface IPlatformDialogService
 {

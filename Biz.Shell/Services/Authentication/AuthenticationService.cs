@@ -4,18 +4,15 @@ using Biz.Models;
 using Biz.Services.Config;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Client;
 using Microsoft.Maui.Authentication;
 using ServiceClients;
 using Shouldly;
-using LogLevel = Microsoft.Identity.Client.LogLevel;
 
 namespace Biz.Shell.Services.Authentication;
 
 [UsedImplicitly]
 public class AuthenticationService : IAuthenticationService
 {
-    readonly IPublicClientApplication msalClient;
     readonly IConfigurationService configurationService;
     readonly IAuthDataStore authDataStore;
     private readonly IPlatformMsalService platformMsalService;
@@ -39,49 +36,49 @@ public class AuthenticationService : IAuthenticationService
 
         //bool useSystemBrowser = App.Current.IsSystemWebViewAvailable();
 
-
-        // Initialize MSAL client for Microsoft authentication
-        msalClient = PublicClientApplicationBuilder
-            .Create(this.configurationService.Authentication.Microsoft.ClientId)
-            .WithTenantId(this.configurationService.Authentication.Microsoft.TenantId)
-            
-#if ANDROID 
-            // Android only supports redirect URIs with custom schemes
-            .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
-#elif IOS
-            // ReSharper disable once StringLiteralTypo
-            .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
-            // iOS only supports redirect URIs with custom schemes
-            .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
-#else // Windows, Mac
-            // Desktop only supports loopback URIs
-            .WithRedirectUri(this.configurationService.Authentication.Microsoft.DesktopRedirectUri)
-#endif
-
-            .WithLogging(
-                (level, message, _) =>
-                {
-                    logger.Log(
-                        level switch
-                        {
-                            LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
-                            LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
-                            LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
-                            LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
-                            LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
-                            _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
-                        },
-                        message);
-// #if ANDROID
-//                     Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
+//
+//         // Initialize MSAL client for Microsoft authentication
+//         msalClient = PublicClientApplicationBuilder
+//             .Create(this.configurationService.Authentication.Microsoft.ClientId)
+//             .WithTenantId(this.configurationService.Authentication.Microsoft.TenantId)
+//             
+// #if ANDROID 
+//             // Android only supports redirect URIs with custom schemes
+//             .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
+// #elif IOS
+//             // ReSharper disable once StringLiteralTypo
+//             .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
+//             // iOS only supports redirect URIs with custom schemes
+//             .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
+// #else // Windows, Mac
+//             // Desktop only supports loopback URIs
+//             .WithRedirectUri(this.configurationService.Authentication.Microsoft.DesktopRedirectUri)
 // #endif
-                },
-                LogLevel.Info,
-#if DEBUG
-                enablePiiLogging: true,  // Personally Identifiable Information 
-#endif
-                enableDefaultPlatformLogging: true)
-            .Build();
+//
+//             .WithLogging(
+//                 (level, message, _) =>
+//                 {
+//                     logger.Log(
+//                         level switch
+//                         {
+//                             LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
+//                             LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
+//                             LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
+//                             LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
+//                             LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
+//                             _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
+//                         },
+//                         message);
+// // #if ANDROID
+// //                     Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
+// // #endif
+//                 },
+//                 LogLevel.Info,
+// #if DEBUG
+//                 enablePiiLogging: true,  // Personally Identifiable Information 
+// #endif
+//                 enableDefaultPlatformLogging: true)
+//             .Build();
     }
 
     public async Task<bool> IsAuthenticatedAsync()
@@ -139,7 +136,7 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            await InternalLogout(false);
+            await LogoutAsync(false);
         }
         catch (Exception e)
         {
@@ -318,21 +315,21 @@ public class AuthenticationService : IAuthenticationService
 
     public void Logout(bool invokeEvent)
     {
-        InternalLogout(invokeEvent).LogException(
+        LogoutAsync(invokeEvent).LogException(
             $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
             logger);
     }
 
     //  Clears existing login data, plus any provider-specific cleanup.
-    async Task InternalLogout(bool invokeEvent)
+    public async Task LogoutAsync(bool invokeEvent)
     {
         // Clear history
         var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
         mainRegion.NavigationService.Journal.Clear();
-
-        foreach (var acct in await msalClient.GetAccountsAsync())
-            await msalClient.RemoveAsync(acct);
         
+        // Clear MSAL
+        await platformMsalService.ClearCache();
+
         if (authDataStore.Data != null)
         {
             try

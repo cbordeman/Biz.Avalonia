@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls.Presenters;
-using Avalonia.Controls.Primitives;
+﻿using Avalonia.Controls.Primitives;
 using ShadUI;
 using Avalonia.VisualTree; // for GetVisualChildren extension
 

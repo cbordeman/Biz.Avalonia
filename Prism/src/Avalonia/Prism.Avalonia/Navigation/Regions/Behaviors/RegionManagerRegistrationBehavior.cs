@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel;
 #if AVALONIA
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.VisualTree;
 #endif
 using Prism.Properties;

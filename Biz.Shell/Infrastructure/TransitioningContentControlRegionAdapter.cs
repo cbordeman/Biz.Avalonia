@@ -1,6 +1,4 @@
-﻿using Avalonia.Controls;
-
-namespace Biz.Shell.Infrastructure;
+﻿namespace Biz.Shell.Infrastructure;
 
 public class TransitioningContentControlRegionAdapter : ContentControlRegionAdapter
 {

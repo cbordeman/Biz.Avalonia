@@ -11,6 +11,7 @@ namespace Biz.Shell.Services.Authentication
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithAppleAsync(CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);
         void Logout(bool invokeEvent);
+        Task LogoutAsync(bool invokeEvent);
         Task<User?> GetCurrentUserAsync();
         event EventHandler<bool> AuthenticationStateChanged;
     }

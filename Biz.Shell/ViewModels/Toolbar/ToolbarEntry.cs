@@ -1,5 +1,4 @@
 ﻿using Avalonia.Media;
-using Prism.Mvvm;
 
 namespace Biz.Shell.ViewModels.Toolbar;
 

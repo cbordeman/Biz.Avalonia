@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using Prism.Navigation;
-using Prism.Navigation.Regions;
+﻿using System.Reflection;
 using Shouldly;
 
 namespace Biz.Shell.ViewModels;

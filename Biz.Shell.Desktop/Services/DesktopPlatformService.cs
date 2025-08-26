@@ -1,10 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Biz.Core.Services;
+﻿using Biz.Core.Services;
 using Biz.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Services;
-using Microsoft.Identity.Client;
 using Prism.Ioc;
 using ShadUI;
 

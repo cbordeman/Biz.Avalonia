@@ -1,5 +1,4 @@
-﻿using Biz.Shell.ViewModels.Toolbar;
-using Biz.Modules.Dashboard;
+﻿using Biz.Modules.Dashboard;
 using Biz.Shell.Services.Authentication;
 using ShadUI;
 using IContainer = DryIoc.IContainer;

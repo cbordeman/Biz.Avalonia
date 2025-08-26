@@ -7,7 +7,6 @@ using Prism.Ioc;
 using Prism.Properties;
 
 #if AVALONIA
-using Avalonia;
 #endif
 
 namespace Prism.Navigation.Regions

@@ -1,4 +1,3 @@
-using Avalonia.Data;
 using Avalonia.Interactivity;
 
 namespace Biz.Shell.Views

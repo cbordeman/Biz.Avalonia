@@ -1,8 +1,3 @@
-using System;
-using System.ComponentModel;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-
 namespace Prism.Dialogs
 {
     /// <summary>Prism's default dialog host.</summary>

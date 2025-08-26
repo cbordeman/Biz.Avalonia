@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.Content;
-using Biz.Shell.Services.Config;
 using Microsoft.Identity.Client;
 
 namespace Biz.Shell.Android;

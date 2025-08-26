@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
-namespace Biz.Shell.Infrastructure;
+﻿namespace Biz.Shell.Infrastructure;
 
 public static class PlatformHelper
 {

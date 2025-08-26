@@ -36,18 +36,21 @@ public class AndroidMsalService : IPlatformMsalService
             .WithLogging(
                 (level, message, _) =>
                 {
-                    logger.Log(
-                        level switch
-                        {
-                            Microsoft.Identity.Client.LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
-                            Microsoft.Identity.Client.LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
-                            Microsoft.Identity.Client.LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
-                            Microsoft.Identity.Client.LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
-                            Microsoft.Identity.Client.LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
-                            _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
-                        },
-                        message);
-                    Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
+                    if (message != null)
+                    {
+                        logger.Log(
+                            level switch
+                            {
+                                Microsoft.Identity.Client.LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
+                                Microsoft.Identity.Client.LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
+                                Microsoft.Identity.Client.LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
+                                Microsoft.Identity.Client.LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
+                                Microsoft.Identity.Client.LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
+                                _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
+                            },
+                            message);
+                        Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
+                    }
                 },
                 Microsoft.Identity.Client.LogLevel.Info,
 #if DEBUG
@@ -57,7 +60,11 @@ public class AndroidMsalService : IPlatformMsalService
             .Build();
     }
     
-    
+    public async Task ClearCache()
+    {
+        foreach (var acct in await msalClient.GetAccountsAsync())
+            await msalClient.RemoveAsync(acct);
+    }
     
     public async Task<AuthenticationResult?> LoginUsingMsal(CancellationToken ct)
     {
