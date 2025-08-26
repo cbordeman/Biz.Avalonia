@@ -68,10 +68,11 @@ public class LoginViewModel : PageViewModelBase
             var result = await AuthenticationService.LoginWithMicrosoftAsync(loginCancellationTokenSource.Token);
             if (!result.isLoggedIn)
             {
-                if (result.availableTenants == null)
+                if (result.availableTenants == null || result.error != null)
                 {
                     await DialogService.Confirm("Cannot Login",
-                        "Error logging in.  Please try again.",
+                        "Error logging in.  Please try again." +
+                        (result.error == null ? "" : $"\n\nError: {result.error}"),
                         cancelText: null);
                     IsBusy = false;
                     return;
@@ -84,8 +85,8 @@ public class LoginViewModel : PageViewModelBase
                     IsBusy = false;
                     return;
                 }
-                await GoToTenantSelectionPage(result.availableTenants);
                 IsBusy = false;
+                await GoToTenantSelectionPage(result.availableTenants);
             }
             else
                 IsBusy = false;
@@ -218,16 +219,25 @@ public class LoginViewModel : PageViewModelBase
         Title = "Sign In to Biz";
     }
 
-    Task GoToTenantSelectionPage(Tenant[] availableTenants)
+    Task GoToTenantSelectionPage(Tenant[]? availableTenants)
     {
         NavigationService.RequestNavigate(
             nameof(TenantSelectionView),
             new NavigationParameters
             {
-                { nameof(TenantSelectionViewModel.AvailableTenants), 
-                    availableTenants }
+                {
+                    nameof(TenantSelectionViewModel.AvailableTenants), 
+                    availableTenants!
+                }
             });
         return Task.CompletedTask;
+    }
+
+    public override void OnNavigatedTo(NavigationContext ctx)
+    {
+        base.OnNavigatedTo(ctx);
+        
+        AuthenticationService.Logout();
     }
 
     public override bool PersistInHistory() => false;

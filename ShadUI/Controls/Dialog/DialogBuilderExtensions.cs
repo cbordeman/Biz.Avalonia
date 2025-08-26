@@ -150,7 +150,7 @@ public static class DialogBuilderExtensions
     /// <param name="callback">The method that is called once the button is clicked</param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Outline" /></param>
     /// <returns>The modified <see cref="SimpleDialogBuilder" /> instance</returns>
-    public static SimpleDialogBuilder WithCancelButton(this SimpleDialogBuilder builder, string text, Action callback,
+    public static SimpleDialogBuilder WithCancelButton(this SimpleDialogBuilder builder, string? text, Action callback,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Outline)
     {
         builder.CancelButtonText = text;

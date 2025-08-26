@@ -49,7 +49,6 @@
 
     <ItemGroup>
       <None Remove="Styles\General.xaml" />
-      <AvaloniaXaml Include="Styles\General.axaml" />
       <None Remove="Views\LoginView.xaml" />
       <AvaloniaXaml Include="Views\LoginView.xaml" />
       <None Remove="Views\TenantSelectionView.xaml" />

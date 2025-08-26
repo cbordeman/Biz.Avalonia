@@ -166,7 +166,12 @@ public abstract class MainViewModelBase
     async Task ExecuteLogoutCommand()
     {
         var authService = Container.Resolve<IAuthenticationService>();
-        await authService.Logout();
+        authService.Logout();
+        
+        // Can't set to null because of a bug in the sidebar control.
+        // Must set to non-null or the property change doesn't trigger
+        // properly.
+        CurrentArea = "STUPID BUG";
     }
     #endregion LogoutCommand
 }

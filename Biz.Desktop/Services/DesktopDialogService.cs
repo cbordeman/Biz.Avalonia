@@ -16,13 +16,10 @@ public class DesktopDialogService(DialogManager dialogManager)
         var dlg = ((DialogManager)DialogHost)
             .CreateDialog(title, message)
             .WithPrimaryButton(okText, () => tcs.SetResult(true))
+            .WithCancelButton(cancelText, () => tcs.SetResult(false))
             .WithMinWidth(300)
             .WithMaxWidth(600);
-
-        if (cancelText != null) 
-            dlg = dlg.WithCancelButton(
-                cancelText, () => tcs.SetResult(false),
-                buttonStyle: DialogButtonStyle.Secondary);
+        
         dlg.Show();
         
         return tcs.Task;

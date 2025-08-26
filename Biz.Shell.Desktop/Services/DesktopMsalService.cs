@@ -75,6 +75,11 @@ public class DesktopMsalService : IPlatformMsalService
         {
             throw;
         }
+        catch (MsalClientException ex) 
+            when (ex.ErrorCode == "authentication_canceled")
+        {
+            throw new OperationCanceledException("Microsoft login was canceled.", ex);
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, "ERROR: Microsoft login failed: {Name} {ExMessage}", ex.GetType().Name, ex.Message);

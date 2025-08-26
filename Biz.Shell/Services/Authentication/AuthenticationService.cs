@@ -102,7 +102,7 @@ public class AuthenticationService : IAuthenticationService
         return true;
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants)>
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
         LoginWithGoogleAsync(CancellationToken ct)
     {
         try
@@ -121,7 +121,7 @@ public class AuthenticationService : IAuthenticationService
             };
             await authDataStore.SaveAuthDataAsync();
             AuthenticationStateChanged?.Invoke(this, true);
-            return (true, null);
+            return (true, null, null);
         }
         catch (OperationCanceledException)
         {
@@ -130,11 +130,11 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             logger.LogWarning(ex, $"Google login failed: {ex.Message}");
-            return (false, null);
+            return (false, null, ex.Message);
         }
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants)> 
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
         LoginWithMicrosoftAsync(CancellationToken ct)
     {
         try
@@ -144,7 +144,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception e)
         {
             logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
-            return (false, null);
+            return (false, null, e.Message);
         }
         
         var result = await platformMsalService.LoginUsingMsal(ct);
@@ -165,17 +165,18 @@ public class AuthenticationService : IAuthenticationService
             }
 
             logger.LogDebug("ERROR: result was NULL.");
+            return (false, null, "Login failed");
         }
         catch (Exception e)
         {
             logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
+            return (false, null, e.Message);
         }
 
-        return (false, null);
     }
 
     // Called by LoginWithXXXAsync methods.
-    async Task<(bool isLoggedIn, Tenant[]? availableTenants)>
+    async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         SaveAuthenticationResultAndGetTenants(
         LoginProvider loginProvider, 
         string userId, string accessToken, 
@@ -192,7 +193,7 @@ public class AuthenticationService : IAuthenticationService
         authDataStore.Data.Name = name;
         authDataStore.Data.Email = email;
         authDataStore.Data.IsMfa = isMfa;
-        // Note that Tenant is not set here, it will be set later.
+        // Note that Tenant is not set here; it will be set later.
 
         await authDataStore.SaveAuthDataAsync();
 
@@ -203,14 +204,14 @@ public class AuthenticationService : IAuthenticationService
             case 0:
                 logger.LogWarning("No available tenants found for user {UserId}", authDataStore.Data.Id);
                 // No tenants available, no login.
-                return (false, null);
+                return (false, null, "No tenants available");
             case 1:
                 // Just one tenant available, complete login immediately.
                 await CompleteLogin(availableTenants[0]);
-                return (true, [availableTenants[0]]);
+                return (true, [availableTenants[0]], null);
             default:
                 // Caller must show a tenant selection UI then call
-                return (false, availableTenants);
+                return (false, availableTenants, null);
         }
     }
     
@@ -223,7 +224,7 @@ public class AuthenticationService : IAuthenticationService
         AuthenticationStateChanged?.Invoke(this, true);
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants)> 
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
         LoginWithFacebookAsync(CancellationToken ct)
     {
         try
@@ -234,19 +235,19 @@ public class AuthenticationService : IAuthenticationService
             if (string.IsNullOrEmpty(authCode))
             {
                 logger.LogInformation("Facebook authentication was cancelled by user");
-                return (false, null);
+                return (false, null, null);
             }
             var accessToken = await ExchangeCodeForTokenAsync(authCode, facebookConfig);
             if (string.IsNullOrEmpty(accessToken))
             {
                 logger.LogWarning("Failed to obtain Facebook access token");
-                return (false, null);
+                return (false, null, "Failed to obtain token.");
             }
             var facebookUserProfile = await GetFacebookUserProfileAsync(accessToken);
             if (facebookUserProfile == null)
             {
                 logger.LogError("Failed to retrieve Facebook user profile");
-                return (false, null);
+                return (false, null, "Failed to retrieve user profile.");
             }
 
             var name = facebookUserProfile.Name;
@@ -268,7 +269,7 @@ public class AuthenticationService : IAuthenticationService
 
             await authDataStore.SaveAuthDataAsync();
             AuthenticationStateChanged?.Invoke(this, true);
-            return (true, null);
+            return (true, null, null);
         }
         catch (OperationCanceledException)
         {
@@ -277,11 +278,11 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             logger.LogWarning(ex, $"Facebook login failed: {ex.Message}");
-            return (false, null);
+            return (false, null, ex.Message);
         }
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants)> 
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
         LoginWithAppleAsync(CancellationToken ct)
     {
         try
@@ -302,7 +303,7 @@ public class AuthenticationService : IAuthenticationService
 
             await authDataStore.SaveAuthDataAsync();
             AuthenticationStateChanged?.Invoke(this, true);
-            return (true, null);
+            return (true, null, null);
         }
         catch (OperationCanceledException)
         {
@@ -311,13 +312,16 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             logger.LogWarning(ex, $"Apple login failed: {ex.Message}");
-            return (false, null);
+            return (false, null, ex.Message);
         }
     }
 
-    public async Task Logout()
+    public void Logout()
     {
-        await InternalLogout(invokeEvent: true);
+        if (IsAuthenticatedAsync().Result)
+            InternalLogout(invokeEvent: true).LogException(
+                $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
+                logger);
     }
 
     //  Clears existing login data, plus any provider-specific cleanup.
