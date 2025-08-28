@@ -8,47 +8,45 @@ namespace Biz.Shell.ViewModels;
 public abstract class PageViewModelBase : NavigationAwareViewModelBase
 {
     protected IAuthenticationService AuthenticationService { get; }
+    
+    // This must be public so MainWindow can bind to its DialogHost property.
     public IPlatformDialogService DialogService { get; }
     
     #region Title
     public string? Title
     {
-        get => title;
-        set => SetProperty(ref title, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    string? title;        
     #endregion Title
 
     #region TitleGeometryResourceName
     public string? TitleGeometryResourceName
     {
-        get => titleGeometryResourceName;
-        set => SetProperty(ref titleGeometryResourceName, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    string? titleGeometryResourceName;        
     #endregion TitleGeometryResourceName
     
     #region IsMinimalUi
     public bool IsMinimalUi
     {
-        get => isMinimalUi;
+        get => field;
         set
         {
-            if (SetProperty(ref isMinimalUi, value))
+            if (SetProperty(ref field, value))
                 RaisePropertyChanged(nameof(IsFullUi));
         }
     }
-    bool isMinimalUi;
     public bool IsFullUi => !IsMinimalUi;
     #endregion MinimalUi
     
     #region CurrentUser
     public User? CurrentUser
     {
-        get => currentUser;
-        set => SetProperty(ref currentUser, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    User? currentUser;        
     #endregion CurrentUser
 
     public ObservableCollection<IToolbarEntry> ToolbarEntries { get; } = [];

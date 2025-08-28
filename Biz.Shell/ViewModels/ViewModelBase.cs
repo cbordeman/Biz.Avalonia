@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -93,13 +94,12 @@ public abstract class ViewModelBase : BindableBase,
     #endregion INotifyDataErrorInfo
 
     #region IsBusy
-    bool isBusy;
     public bool IsBusy
     {
-        get => isBusy;
+        get;
         set
         {
-            if (SetProperty(ref isBusy, value)) 
+            if (SetProperty(ref field, value))
                 RaisePropertyChanged(nameof(IsNotBusy));
         }
     }
@@ -125,8 +125,8 @@ public abstract class ViewModelBase : BindableBase,
     }
 
     #region OpenUrlCommand
-    AsyncDelegateCommandWithParam<string>? openUrlCommand;
-    public AsyncDelegateCommandWithParam<string> OpenUrlCommand => openUrlCommand ??= new AsyncDelegateCommandWithParam<string>(ExecuteOpenUrlCommand, CanOpenUrlCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommandWithParam<string> OpenUrlCommand => field ??= new AsyncDelegateCommandWithParam<string>(ExecuteOpenUrlCommand, CanOpenUrlCommand);
     bool CanOpenUrlCommand(string url) => true;
     Task ExecuteOpenUrlCommand(string url)
     {

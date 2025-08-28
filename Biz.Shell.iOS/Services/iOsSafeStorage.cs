@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Biz.Core.Services;
+using Biz.Shell.Services;
 using Security;
 using Foundation;
 

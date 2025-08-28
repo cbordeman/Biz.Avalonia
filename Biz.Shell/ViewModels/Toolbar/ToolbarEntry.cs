@@ -1,4 +1,5 @@
-﻿using Avalonia.Media;
+﻿using System.Diagnostics.CodeAnalysis;
+using Avalonia.Media;
 
 namespace Biz.Shell.ViewModels.Toolbar;
 
@@ -10,24 +11,22 @@ public class ToolbarEntry : BindableBase, IToolbarEntry
     #region Geometry
     public Geometry? Geometry
     {
-        get => geometry;
-        set => SetProperty(ref geometry, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    Geometry? geometry;        
     #endregion Geometry
     
     #region Text
     public string? Text
     {
-        get => text;
-        init => SetProperty(ref text, value);
+        get;
+        init => SetProperty(ref field, value);
     }
-    string? text;        
     #endregion Text
 
     #region Command
-    AsyncDelegateCommandWithParam<object?>? command;
-    public AsyncDelegateCommandWithParam<object?> Command => command ??= 
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommandWithParam<object?> Command => field ??= 
         new AsyncDelegateCommandWithParam<object?>(ExecuteCommand, CanExecute);
     bool CanExecute(object? p) => canExecute?.Invoke(p) ?? true;
     Task ExecuteCommand(object? p)
@@ -39,10 +38,9 @@ public class ToolbarEntry : BindableBase, IToolbarEntry
     #region IsVisible
     public bool IsVisible
     {
-        get => isVisible;
-        set => SetProperty(ref isVisible, value);
-    }
-    bool isVisible = true;
+        get;
+        set => SetProperty(ref field, value);
+    } = true;
     #endregion IsVisible
     
     public ToolbarEntry(string? text = null,
@@ -51,9 +49,9 @@ public class ToolbarEntry : BindableBase, IToolbarEntry
         Func<object?, bool>? canExecute = null)
     {
         if (geometryStyleResourceName is not null)
-            this.geometry = AppHelpers.GetAppStyleResource<Geometry>(geometryStyleResourceName);
+            this.Geometry = AppHelpers.GetAppStyleResource<Geometry>(geometryStyleResourceName);
         this.execute = execute;
         this.canExecute = canExecute;
-        this.text = text;
+        this.Text = text;
     }
 }

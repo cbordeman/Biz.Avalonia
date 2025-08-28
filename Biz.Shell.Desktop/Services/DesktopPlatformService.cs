@@ -1,5 +1,4 @@
-﻿using Biz.Core.Services;
-using Biz.Desktop.Services;
+﻿using Biz.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Services;
 using Prism.Ioc;

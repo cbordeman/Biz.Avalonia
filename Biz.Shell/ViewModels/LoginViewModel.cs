@@ -1,4 +1,5 @@
-﻿using Biz.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using Biz.Models;
 
 namespace Biz.Shell.ViewModels;
 
@@ -7,8 +8,8 @@ public class LoginViewModel : PageViewModelBase
     CancellationTokenSource? loginCancellationTokenSource;
     
     #region LoginWithCoogleCommand
-    AsyncDelegateCommand? loginWithGoogleCommand;
-    public AsyncDelegateCommand LoginWithGoogleCommand => loginWithGoogleCommand ??= new AsyncDelegateCommand(ExecuteLoginWithGoogleCommand, CanLoginWithGoogleCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand LoginWithGoogleCommand => field ??= new AsyncDelegateCommand(ExecuteLoginWithGoogleCommand, CanLoginWithGoogleCommand);
     bool CanLoginWithGoogleCommand() => true;
     async Task ExecuteLoginWithGoogleCommand()
     {
@@ -57,8 +58,8 @@ public class LoginViewModel : PageViewModelBase
     #endregion LoginWithCoogleCommand
 
     #region LoginWithMicrosoftCommand
-    AsyncDelegateCommand? loginWithMicrosoftCommand;
-    public AsyncDelegateCommand LoginWithMicrosoftCommand => loginWithMicrosoftCommand ??= new AsyncDelegateCommand(ExecuteLoginWithMicrosoftCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand LoginWithMicrosoftCommand => field ??= new AsyncDelegateCommand(ExecuteLoginWithMicrosoftCommand);
     async Task ExecuteLoginWithMicrosoftCommand()
     {
         try
@@ -108,8 +109,8 @@ public class LoginViewModel : PageViewModelBase
     #endregion LoginWithMicrosoftCommand
     
     #region LoginWithFacebookCommand
-    AsyncDelegateCommand? loginWithFacebookCommand;
-    public AsyncDelegateCommand LoginWithFacebookCommand => loginWithFacebookCommand ??= new AsyncDelegateCommand(ExecuteLoginWithFacebookCommand, CanLoginWithFacebookCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand LoginWithFacebookCommand => field ??= new AsyncDelegateCommand(ExecuteLoginWithFacebookCommand, CanLoginWithFacebookCommand);
     bool CanLoginWithFacebookCommand() => true;
     async Task ExecuteLoginWithFacebookCommand()
     {
@@ -156,8 +157,8 @@ public class LoginViewModel : PageViewModelBase
     #endregion LoginWithFacebookCommand
 
     #region LoginWithAppleCommand
-    AsyncDelegateCommand? loginWithAppleCommand;
-    public AsyncDelegateCommand LoginWithAppleCommand => loginWithAppleCommand ??= new AsyncDelegateCommand(ExecuteLoginWithAppleCommand, CanLoginWithAppleCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand LoginWithAppleCommand => field ??= new AsyncDelegateCommand(ExecuteLoginWithAppleCommand, CanLoginWithAppleCommand);
     bool CanLoginWithAppleCommand() => true;
     async Task ExecuteLoginWithAppleCommand()
     {
@@ -204,8 +205,8 @@ public class LoginViewModel : PageViewModelBase
     #endregion LoginWithAppleCommand
     
     #region CancelLoginCommand
-    AsyncDelegateCommand? cancelLoginCommand;
-    public AsyncDelegateCommand CancelLoginCommand => cancelLoginCommand ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand CancelLoginCommand => field ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
     Task ExecuteCancelLoginCommand()
     {
         loginCancellationTokenSource?.Cancel();

@@ -1,5 +1,4 @@
-﻿using Biz.Core.Services;
-using Biz.Mobile.Services;
+﻿using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Shell.Infrastructure;

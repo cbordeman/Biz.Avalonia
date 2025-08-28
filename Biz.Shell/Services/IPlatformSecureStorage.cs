@@ -1,5 +1,8 @@
-﻿namespace Biz.Core.Services;
+﻿namespace Biz.Shell.Services;
 
+/// <summary>
+/// A secure storage API, implemented differently for each OS platform.
+/// </summary>
 public interface ISafeStorage
 {
     /// <summary>
@@ -24,7 +27,7 @@ public interface ISafeStorage
     bool Remove(string key);
 
     /// <summary>
-    /// Removes all of the stored encrypted key/value pairs.
+    /// Removes all the stored encrypted key/value pairs.
     /// </summary>
     void RemoveAll();
 }

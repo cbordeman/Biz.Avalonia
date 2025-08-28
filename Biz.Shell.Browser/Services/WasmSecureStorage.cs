@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Biz.Core.Services;
+using Biz.Shell.Services;
 using CloudNimble.BlazorEssentials.IndexedDb;
 using JetBrains.Annotations;
 using Microsoft.JSInterop;

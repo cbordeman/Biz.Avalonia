@@ -1,10 +1,11 @@
 ﻿using Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) 
-    : DbContext(options)
+    : IdentityDbContext(options)
 {
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<AppUser> AppUsers { get; set; }

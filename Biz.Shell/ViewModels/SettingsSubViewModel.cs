@@ -5,8 +5,6 @@ namespace Biz.Shell.ViewModels;
 public class SettingsSubViewModel : PageViewModelBase
 {
     IRegionNavigationJournal? journal;
-    string? messageText = string.Empty;
-    string? messageNumber = string.Empty;
 
     public SettingsSubViewModel(IContainer container)
         : base(container)
@@ -24,9 +22,17 @@ public class SettingsSubViewModel : PageViewModelBase
                 DashboardConstants.DashboardView);
     });
 
-    public string? MessageText { get => messageText; set => SetProperty(ref messageText, value); }
+    public string? MessageText
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = string.Empty;
 
-    public string? MessageNumber { get => messageNumber; set => SetProperty(ref messageNumber, value); }
+    public string? MessageNumber
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = string.Empty;
 
     /// <summary>Navigation completed successfully.</summary>
     /// <param name="navigationContext">Navigation context.</param>

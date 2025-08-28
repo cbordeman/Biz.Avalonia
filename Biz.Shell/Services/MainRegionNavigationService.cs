@@ -55,7 +55,7 @@ public class MainContentRegionNavigationService :
         
         initialized = true;
     }
-    void AuthStateChanged(object? sender, bool e)
+    void AuthStateChanged()
     {
         try
         {

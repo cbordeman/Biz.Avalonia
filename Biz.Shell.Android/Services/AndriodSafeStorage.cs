@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Biz.Core.Services;
+using Biz.Shell.Services;
 using Microsoft.Extensions.Logging;
 using Xamarin.Google.Crypto.Tink;
 using Xamarin.Google.Crypto.Tink.Aead;

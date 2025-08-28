@@ -1,4 +1,5 @@
-﻿using Biz.Modules.Dashboard;
+﻿using System.Diagnostics.CodeAnalysis;
+using Biz.Modules.Dashboard;
 using Biz.Shell.Services.Authentication;
 using ShadUI;
 using IContainer = DryIoc.IContainer;
@@ -19,46 +20,41 @@ public abstract class MainViewModelBase
     #region IsDrawerOpen
     public bool IsDrawerOpen
     {
-        get => isDrawerOpen;
-        set => SetProperty(ref isDrawerOpen, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    bool isDrawerOpen;        
     #endregion IsDrawerOpen
     
     #region IsLoggedIn
     public bool IsLoggedIn
     {
-        get => isLoggedIn;
-        set => SetProperty(ref isLoggedIn, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    bool isLoggedIn;        
     #endregion IsLoggedIn
     
     #region CurrentArea
     public string? CurrentArea
     {
-        get => currentArea;
-        set => SetProperty(ref currentArea, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    string? currentArea;        
     #endregion CurrentArea
     
     #region CurrentPage
     public PageViewModelBase? CurrentPage
     {
-        get => currentPage;
-        set => SetProperty(ref currentPage, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    PageViewModelBase? currentPage;        
     #endregion CurrentPage
     
     #region CurrentMode
     public ThemeMode CurrentTheme
     {
-        get => currentTheme;
-        set => SetProperty(ref currentTheme, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    ThemeMode currentTheme;        
     #endregion CurrentTheme
     
     public ToastManager ToastManager { get; }
@@ -68,9 +64,9 @@ public abstract class MainViewModelBase
         ToastManager = container.Resolve<ToastManager>();
 
         AuthService = container.Resolve<IAuthenticationService>();
-        AuthService.AuthenticationStateChanged += (sender, b) =>
+        AuthService.AuthenticationStateChanged += () =>
         {
-            IsLoggedIn = b;
+            IsLoggedIn = AuthService.IsAuthenticated;
         };
         IsLoggedIn = AuthService.IsAuthenticated;
         
@@ -87,8 +83,8 @@ public abstract class MainViewModelBase
     }
 
     #region SwitchThemeCommand
-    AsyncDelegateCommand? switchThemeCommand;
-    public AsyncDelegateCommand SwitchThemeCommand => switchThemeCommand ??= new AsyncDelegateCommand(ExecuteSwitchThemeCommand, CanSwitchThemeCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand SwitchThemeCommand => field ??= new AsyncDelegateCommand(ExecuteSwitchThemeCommand, CanSwitchThemeCommand);
     bool CanSwitchThemeCommand() => true;
     Task ExecuteSwitchThemeCommand()
     {
@@ -118,8 +114,8 @@ public abstract class MainViewModelBase
     #endregion SwitchThemeCommand
     
     #region ToggleIsDrawerOpenCommand
-    AsyncDelegateCommand? toggleIsDrawerOpenCommand;
-    public AsyncDelegateCommand ToggleIsDrawerOpenCommand => toggleIsDrawerOpenCommand ??= new AsyncDelegateCommand(ExecuteToggleIsDrawerOpenCommand, CanToggleIsDrawerOpenCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand ToggleIsDrawerOpenCommand => field ??= new AsyncDelegateCommand(ExecuteToggleIsDrawerOpenCommand, CanToggleIsDrawerOpenCommand);
     static bool CanToggleIsDrawerOpenCommand() => true;
 
     Task ExecuteToggleIsDrawerOpenCommand()
@@ -130,8 +126,8 @@ public abstract class MainViewModelBase
     #endregion ToggleIsDrawerOpenCommand
     
     #region NavigateSettingsCommand
-    AsyncDelegateCommand? navigateSettingsCommand;
-    public AsyncDelegateCommand NavigateSettingsCommand => navigateSettingsCommand ??=
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand NavigateSettingsCommand => field ??=
         new AsyncDelegateCommand(ExecuteNavigateSettingsCommand, CanNavigateSettingsCommand);
     static bool CanNavigateSettingsCommand() => true;
     Task ExecuteNavigateSettingsCommand()
@@ -142,8 +138,8 @@ public abstract class MainViewModelBase
     #endregion NavigateSettingsCommand
     
     #region GoToPageCommand
-    AsyncDelegateCommandWithParam<string>? goToPageCommand;
-    public AsyncDelegateCommandWithParam<string> GoToPageCommand => goToPageCommand 
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommandWithParam<string> GoToPageCommand => field 
         ??= new AsyncDelegateCommandWithParam<string>
         (ExecuteGoToPageCommand, CanGoToPageCommand);
     static bool CanGoToPageCommand(string area) => true;
@@ -176,8 +172,8 @@ public abstract class MainViewModelBase
     }
     
     #region LogoutCommand
-    AsyncDelegateCommand? logoutCommand;
-    public AsyncDelegateCommand LogoutCommand => logoutCommand ??= new AsyncDelegateCommand(ExecuteLogoutCommand, CanLogoutCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand LogoutCommand => field ??= new AsyncDelegateCommand(ExecuteLogoutCommand, CanLogoutCommand);
     static bool CanLogoutCommand() => true;
     Task ExecuteLogoutCommand()
     {

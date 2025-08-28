@@ -1,16 +1,16 @@
-﻿using Biz.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using Biz.Models;
 
 namespace Biz.Shell.ViewModels;
 
 public class TenantSelectionViewModel : PageViewModelBase
 {
     #region AvailableTenants
-    Tenant[] availableTenants = null!;
     public Tenant[] AvailableTenants
     {
-        get => availableTenants;
-        set => SetProperty(ref availableTenants, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = null!;
     #endregion AvailableTenants
 
     public TenantSelectionViewModel(IContainer container) : base(container)
@@ -19,8 +19,8 @@ public class TenantSelectionViewModel : PageViewModelBase
     }
 
     #region SelectCommand
-    AsyncDelegateCommand<Tenant>? selectCommand;
-    public AsyncDelegateCommand<Tenant> SelectCommand => selectCommand ??= new AsyncDelegateCommand<Tenant>(ExecuteSelectCommand, CanSelectCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand<Tenant> SelectCommand => field ??= new AsyncDelegateCommand<Tenant>(ExecuteSelectCommand, CanSelectCommand);
     static bool CanSelectCommand(Tenant t) => true;
     async Task ExecuteSelectCommand(Tenant t)
     {
@@ -29,8 +29,8 @@ public class TenantSelectionViewModel : PageViewModelBase
     #endregion SelectCommand
 
     #region CancelLoginCommand
-    AsyncDelegateCommand? cancelLoginCommand;
-    public AsyncDelegateCommand CancelLoginCommand => cancelLoginCommand ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncDelegateCommand CancelLoginCommand => field ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
     Task ExecuteCancelLoginCommand()
     {
         NavigationService.RequestNavigate(nameof(LoginView));

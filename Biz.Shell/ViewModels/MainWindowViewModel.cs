@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Biz.Shell.ViewModels
 {
     [UsedImplicitly]
@@ -6,24 +8,22 @@ namespace Biz.Shell.ViewModels
         #region Main
         public MainLargeViewModel Main
         {
-            get => main;
-            set => SetProperty(ref main, value);
+            get;
+            set => SetProperty(ref field, value);
         }
-        MainLargeViewModel main;
-        
         #endregion Main
 
         public MainWindowViewModel(IContainer container, 
             MainLargeViewModel mainLargeViewModel)
             : base(container)
         {
-            main = mainLargeViewModel;
+            Main = mainLargeViewModel;
             Title = "Shell (Window)";
         }
         
         #region TryCloseCommand
-        AsyncDelegateCommand? tryCloseCommand;
-        public AsyncDelegateCommand TryCloseCommand => tryCloseCommand ??= new AsyncDelegateCommand(ExecuteTryCloseCommand, CanTryCloseCommand);
+        [field: AllowNull, MaybeNull]
+        public AsyncDelegateCommand TryCloseCommand => field ??= new AsyncDelegateCommand(ExecuteTryCloseCommand, CanTryCloseCommand);
         bool CanTryCloseCommand() => true;
         async Task ExecuteTryCloseCommand()
         {

@@ -9,46 +9,41 @@ public abstract class FormFactorAwareViewModel : ViewModelBase, IDisposable
     #region CurrentFormFactor
     public FormFactor CurrentFormFactor
     {
-        get => currentFormFactor;
-        set => SetProperty(ref currentFormFactor, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    FormFactor currentFormFactor;        
     #endregion CurrentFormFactor
     
     #region IsPhone
     public bool IsPhone
     {
-        get => isPhone;
-        set => SetProperty(ref isPhone, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    bool isPhone;        
     #endregion IsPhone
 
     #region IsTablet
     public bool IsTablet
     {
-        get => isTablet;
-        set => SetProperty(ref isTablet, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    bool isTablet;        
     #endregion IsTablet
 
     #region IsDesktop
     public bool IsDesktop
     {
-        get => isDesktop;
-        set => SetProperty(ref isDesktop, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    bool isDesktop;        
     #endregion IsDesktop
 
     #region IsTabletOrDesktop
     public bool IsTabletOrDesktop
     {
-        get => isTabletOrDesktop;
-        set => SetProperty(ref isTabletOrDesktop, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    bool isTabletOrDesktop;        
     #endregion IsTabletOrDesktop
     
     protected FormFactorAwareViewModel(DryIoc.IContainer container) : base(container)

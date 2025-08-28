@@ -12,10 +12,9 @@ public class MainSmallViewModel : MainViewModelBase
     #region CurrentItem
     public SidebarItemViewModel? CurrentItem
     {
-        get => currentItem;
-        set => SetProperty(ref currentItem, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    SidebarItemViewModel? currentItem;
     #endregion CurrentItem
     
     public MainSmallViewModel(IContainer container) : base(container)
