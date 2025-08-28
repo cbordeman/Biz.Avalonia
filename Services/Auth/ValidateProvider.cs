@@ -35,13 +35,17 @@ public static partial class Auth
                 .ThenInclude(tu => tu.Tenant)
                 .FirstOrDefaultAsync(x => x.Id == internalUserId);
         }
-
+        
         if (user == null)
         {
+            // For local accounts, the user has to have existed or the token couldn't
+            // be validated.  Let's assert this to be certain.
+            loginProvider.ShouldNotBe(LoginProvider.Local);
+            
             // User does not exist at all, create a new one in default tenant.
 
             var name = context.Principal?.FindFirst("name")?.Value ?? string.Empty;
-            string email;
+            string? email;
             switch (loginProvider)
             {
                 case LoginProvider.Microsoft:

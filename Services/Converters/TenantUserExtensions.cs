@@ -13,7 +13,7 @@ public static class TenantUserExtensions
     public static User ConvertToExternalUser(this Data.Models.TenantUser tu)
     {
         return new User(
-            tu.AppUserId, tu.AppUser.Name, tu.AppUser.Email,
+            tu.AppUserId, tu.AppUser.Name, tu.AppUser.Email!,
             tu.IsActive,
             tu.AppUser.LoginProvider,
             new Tenant(

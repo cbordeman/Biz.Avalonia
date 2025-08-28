@@ -54,9 +54,7 @@ try
     dbContext.Database.Migrate();
 }
 // ReSharper disable once RedundantCatchClause
-#pragma warning disable CS0168 // Variable is declared but never used
-catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
+catch (Exception)
 {
     throw;
 }

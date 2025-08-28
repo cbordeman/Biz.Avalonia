@@ -15,7 +15,7 @@ public static class DatabaseSettingsExtensions
                 builder.UseSqlServer(settings.MsSql);
                 break;
             case DatabaseProvider.PostgreSql:
-                builder.UseNpgsql(settings.PostgreSQL);
+                builder.UseNpgsql(settings.PostgreSql);
                 break;
             default:
                 throw new InvalidOperationException($"Unsupported database backend: {settings.Backend}");
