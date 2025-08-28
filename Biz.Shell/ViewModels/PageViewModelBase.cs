@@ -57,7 +57,7 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
     {
         DialogService = Container.Resolve<IPlatformDialogService>();
         AuthenticationService = Container.Resolve<IAuthenticationService>();
-        AuthenticationService.AuthenticationStateChanged += (sender, b) =>
+        AuthenticationService.AuthenticationStateChanged += () =>
         {
             var logger = Container.Resolve<ILogger<PageViewModelBase>>();
             CurrentUser = AuthenticationService.GetCurrentUserAsync()

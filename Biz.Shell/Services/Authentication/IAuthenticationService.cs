@@ -2,6 +2,9 @@ using Biz.Models;
 
 namespace Biz.Shell.Services.Authentication
 {
+    // Like EventHandler, but no unnecessary sender or payload.
+    public delegate void ChangeHandler();
+    
     public interface IAuthenticationService
     {
         bool IsAuthenticated { get; }
@@ -13,6 +16,6 @@ namespace Biz.Shell.Services.Authentication
         void Logout(bool invokeEvent);
         Task LogoutAsync(bool invokeEvent);
         Task<User?> GetCurrentUserAsync();
-        event EventHandler<bool> AuthenticationStateChanged;
+        event ChangeHandler AuthenticationStateChanged;
     }
-} 
+}

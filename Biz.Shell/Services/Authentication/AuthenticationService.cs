@@ -1,12 +1,14 @@
 using System.Net.Http;
 using System.Text.Json;
 using Biz.Models;
-using Biz.Services.Config;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Authentication;
 using ServiceClients;
 using Shouldly;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Biz.Shell.Services.Authentication;
 
@@ -20,7 +22,7 @@ public class AuthenticationService : IAuthenticationService
     readonly ILogger<AuthenticationService> logger;
     readonly IRegionManager regionManager;
 
-    public event EventHandler<bool>? AuthenticationStateChanged;
+    public event ChangeHandler? AuthenticationStateChanged;
 
     public AuthenticationService(IConfigurationService configurationService,
         IAuthDataStore authDataStore, IPlatformMsalService platformMsalService,
@@ -35,8 +37,7 @@ public class AuthenticationService : IAuthenticationService
         this.regionManager = regionManager;
 
         //bool useSystemBrowser = App.Current.IsSystemWebViewAvailable();
-
-//
+        
 //         // Initialize MSAL client for Microsoft authentication
 //         msalClient = PublicClientApplicationBuilder
 //             .Create(this.configurationService.Authentication.Microsoft.ClientId)
@@ -122,7 +123,7 @@ public class AuthenticationService : IAuthenticationService
                 IsMfa = false // TODO: set MFA status if applicable
             };
             await authDataStore.SaveAuthDataAsync();
-            AuthenticationStateChanged?.Invoke(this, true);
+            AuthenticationStateChanged?.Invoke();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -223,7 +224,7 @@ public class AuthenticationService : IAuthenticationService
         authDataStore.Data.Tenant = selectedTenant;
         await authDataStore.SaveAuthDataAsync();
 
-        AuthenticationStateChanged?.Invoke(this, true);
+        AuthenticationStateChanged?.Invoke();
     }
 
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
@@ -270,7 +271,7 @@ public class AuthenticationService : IAuthenticationService
             };
 
             await authDataStore.SaveAuthDataAsync();
-            AuthenticationStateChanged?.Invoke(this, true);
+            AuthenticationStateChanged?.Invoke();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -304,7 +305,7 @@ public class AuthenticationService : IAuthenticationService
             };
 
             await authDataStore.SaveAuthDataAsync();
-            AuthenticationStateChanged?.Invoke(this, true);
+            AuthenticationStateChanged?.Invoke();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -365,7 +366,7 @@ public class AuthenticationService : IAuthenticationService
         }
 
         if (invokeEvent)
-            AuthenticationStateChanged?.Invoke(this, false);
+            AuthenticationStateChanged?.Invoke();
     }
 
     public async Task<User?> GetCurrentUserAsync()
@@ -507,6 +508,7 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
+    [UsedImplicitly]
     async Task<bool> ValidateFacebookTokenAsync(string accessToken)
     {
         try
