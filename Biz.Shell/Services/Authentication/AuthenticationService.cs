@@ -86,7 +86,7 @@ public class AuthenticationService : IAuthenticationService
         get
         {
             if (authDataStore.Data == null)
-                authDataStore.RestoreAuthDataAsync().LogException(
+                authDataStore.RestoreAuthDataAsync().LogExceptionsAndForget(
                     "Restoring auth data",
                     logger);
             if (authDataStore.Data == null)
@@ -320,7 +320,7 @@ public class AuthenticationService : IAuthenticationService
 
     public void Logout(bool invokeEvent)
     {
-        LogoutAsync(invokeEvent).LogException(
+        LogoutAsync(invokeEvent).LogExceptionsAndForget(
             $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
             logger);
     }
@@ -370,6 +370,9 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<User?> GetCurrentUserAsync()
     {
+        if (!IsAuthenticated)
+            return null;
+        
         if (authDataStore.Data == null)
             await authDataStore.RestoreAuthDataAsync();
         if (authDataStore.Data != null)

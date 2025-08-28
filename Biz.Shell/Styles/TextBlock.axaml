@@ -1,4 +1,8 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource ManropeFont}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
     <Style Selector="TextBlock.Footer">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextAlignment" Value="Center" />

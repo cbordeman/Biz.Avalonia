@@ -4,7 +4,13 @@ namespace Biz.Shell;
 
 public static class TaskExtensions
 {
-    public static void LogException(this Task task, string taskDescription, ILogger? logger = null)
+    public static T? LogExceptionsBlockAndGetResult<T>(this Task<T> task, string taskDescription, ILogger? logger = null)
+    {
+        task.LogExceptionsAndForget(taskDescription, logger = null);    
+        return task.Result;
+    }
+
+    public static void LogExceptionsAndForget(this Task task, string taskDescription, ILogger? logger = null)
     {
         try
         {
@@ -51,9 +57,6 @@ public static class TaskExtensions
                 }
                 return true;
             });
-                
-            // shouldn't get here.
-            throw new Exception("Unexpected exception.  Shouldn't get here!");
         });
     }
 }

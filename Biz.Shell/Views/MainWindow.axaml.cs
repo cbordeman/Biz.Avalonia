@@ -43,7 +43,7 @@ namespace Biz.Shell.Views
 
             if (DataContext is MainWindowViewModel viewModel)
             {
-                viewModel.TryCloseCommand.Execute().LogException("MainWindow.OnClosing dialog");
+                viewModel.TryCloseCommand.Execute().LogExceptionsAndForget("MainWindow.OnClosing dialog");
             }
         }
     }

@@ -29,18 +29,17 @@ public class UserControlEx<TViewModel>
     public static readonly DirectProperty<UserControlEx<TViewModel>, TViewModel?> 
         ViewModelProperty =
             AvaloniaProperty.RegisterDirect<UserControlEx<TViewModel>, TViewModel?>(
-                nameof(ViewModel),
-            o => o.ViewModel,
-            (o, v) => o.ViewModel = v);
+                nameof(ViewModel), 
+                (UserControlEx<TViewModel> o) => (TViewModel)o.DataContext!,
+                (UserControlEx<TViewModel> o, TViewModel? v) => 
+                    o.ViewModel = (TViewModel)v!);
     public TViewModel? ViewModel
     {
         get;
         set
         {
-            if (field == value)
-                return;
-            SetAndRaise(ViewModelProperty, ref field, value);
-            DataContext = value;
+            if (SetAndRaise(ViewModelProperty, ref field, value))
+                DataContext = value;
         }
     }
     #endregion ViewModel

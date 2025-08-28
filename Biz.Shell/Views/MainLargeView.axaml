@@ -119,8 +119,7 @@
                         <shadui:SidebarItem
                             Command="{Binding LogoutCommand}"
                             Content="Sign Out"
-                            IsVisible="{Binding IsLoggedIn,
-                                                Converter={x:Static converters:BooleanConverters.Reverse}}"
+                            IsVisible="{Binding IsLoggedIn}"
                             Route="NO"
                             ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
                                                   Converter={x:Static converters:BooleanConverters.NullOrString},
