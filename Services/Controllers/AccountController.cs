@@ -28,7 +28,7 @@ public class AccountController : ControllerBase, IAccountApi
     }
 
     [HttpPost(IAccountApi.LoginPath)]
-    public async Task<string> Login(LoginModel model)
+    public async Task<string> Login([FromBody] LoginModel model)
     {
         var user = await userManager.FindByNameAsync(model.Username);
         if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
