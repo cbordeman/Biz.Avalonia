@@ -37,7 +37,6 @@
                 await context.Response.WriteAsJsonAsync(ex.ToString());
 #endif
             }
-            // You can catch other exceptions here as needed
         }
     }
 

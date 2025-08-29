@@ -2,17 +2,34 @@ using Data.Config;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Scalar.AspNetCore;
 using Services.Auth;
+using Services.Auth.Jwt;
 using Services.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Register configuration objects.
+builder.Services.AddSingleton<DatabaseSettings>(provider =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+    var dbSettings = new DatabaseSettings();
+    config.GetSection("Database").Bind(dbSettings);
+    return dbSettings;
+});
+builder.Services.AddSingleton<JwtIssuerSettings>(provider =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+    var jwtIssuerSettings = new JwtIssuerSettings();
+    config.GetSection("JwtIssuer").Bind(jwtIssuerSettings);
+    return jwtIssuerSettings;
+});
+
+builder.Services.AddSingleton<IJwtTokenIssuer, JwtTokenIssuer>();
+
 // Register DbContextFactory based on configuration
 builder.Services.AddSingleton<IDbContextFactory<AppDbContext>>(provider =>
 {
-    IConfiguration config = provider.GetRequiredService<IConfiguration>();
-    var dbSettings = new DatabaseSettings();
-    config.GetSection("Database").Bind(dbSettings);
-
+    var dbSettings = provider.GetRequiredService<DatabaseSettings>();
+    
     var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
     optionsBuilder.ApplyDatabaseProvider(dbSettings)
         // Must apply this here instead of on AppDbContext for some reason,
@@ -22,6 +39,9 @@ builder.Services.AddSingleton<IDbContextFactory<AppDbContext>>(provider =>
 
     return new PooledDbContextFactory<AppDbContext>(optionsBuilder.Options);
 });
+
+
+
 
 // Register ExternalAuthSettings from configuration
 //builder.Services.Configure<ExternalAuthSettings>(

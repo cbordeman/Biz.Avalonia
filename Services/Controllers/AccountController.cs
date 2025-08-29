@@ -1,17 +1,46 @@
-﻿using Services.Converters;
+﻿using Biz.Models;
+using Biz.Models.Account;
+using Data.Models;
+using Microsoft.AspNetCore.Identity;
+using Services.Auth.Jwt;
+using Services.Converters;
+
+// ReSharper disable UnusedParameter.Global
 
 namespace Services.Controllers;
 
 [Route("[controller]")]
 [ApiController]
 [Authorize]
-//[Authorize(AuthenticationSchemes = "Microsoft")]
-public class AccountController(
-    IDbContextFactory<AppDbContext> dbContextFactory)
-    : ControllerBase, IAccountApi
+public class AccountController : ControllerBase, IAccountApi
 {
+    readonly UserManager<AppUser> userManager;
+    readonly JwtTokenIssuer jwtTokenService;
+    readonly IDbContextFactory<AppDbContext> dbContextFactory;
+    
+    public AccountController(UserManager<AppUser> userManager, 
+        JwtTokenIssuer jwtTokenService,
+        IDbContextFactory<AppDbContext> dbContextFactory)
+    {
+        this.dbContextFactory = dbContextFactory;
+        this.userManager = userManager;
+        this.jwtTokenService = jwtTokenService;
+    }
+
+    [HttpPost(IAccountApi.LoginPath)]
+    public async Task<string> Login(LoginModel model)
+    {
+        var user = await userManager.FindByNameAsync(model.Username);
+        if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
+            throw new UnauthorizedAccessException();
+        var roles = await userManager.GetRolesAsync(user);
+        var token = jwtTokenService.GenerateJwtToken(user, roles);
+        
+        return token;
+    }
+    
     [HttpGet(IAccountApi.GetMyUserInfoPath)]
-    public Task<Biz.Models.User> GetMyUserInfo()
+    public Task<User> GetMyUserInfo()
     {
         var c = dbContextFactory.CreateDbContext();
         var u = User.VerifyTenantUserIsActive(c);
