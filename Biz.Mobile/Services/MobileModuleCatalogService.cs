@@ -1,4 +1,5 @@
 ﻿using Biz.Modules.Dashboard;
+using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Infrastructure;
 using Prism.Modularity;
 

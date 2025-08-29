@@ -1,4 +1,5 @@
-﻿using Prism.Ioc;
+﻿using Biz.Modules.Dashboard.Core;
+using Prism.Ioc;
 using Prism.Modularity;
 
 namespace Biz.Modules.Dashboard;

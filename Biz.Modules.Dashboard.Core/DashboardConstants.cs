@@ -1,7 +1,7 @@
-﻿namespace Biz.Modules.Dashboard;
+﻿namespace Biz.Modules.Dashboard.Core;
 
 public static class DashboardConstants
 {
     public const string ModuleName = "DashboardModule";
-    public const string DashboardView = "DashboardView";
+    public const string DashboardView = nameof(DashboardView);
 }

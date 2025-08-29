@@ -55,7 +55,7 @@ public static IServiceCollection ConfigureAuthentication(
     })
     .AddJwtBearer("LocalJwt", options =>
     {
-        options.Authority = externalAuthSettings.Local.Authority; // your local issuer URL if any
+        options.Authority = externalAuthSettings.Local.Authority;
         options.Audience = externalAuthSettings.Local.Audience;
         externalAuthSettings.Local.SigningKey.ShouldNotBeNullOrWhiteSpace();
         options.TokenValidationParameters = new TokenValidationParameters
@@ -65,7 +65,9 @@ public static IServiceCollection ConfigureAuthentication(
             ValidateAudience = true,
             ValidAudience = externalAuthSettings.Local.Audience,
             ValidateLifetime = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(externalAuthSettings.Local.SigningKey))
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(externalAuthSettings.Local.SigningKey)),
         };
         options.Events = new JwtBearerEvents
         {

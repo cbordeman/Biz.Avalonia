@@ -28,11 +28,14 @@ public class AccountController : ControllerBase, IAccountApi
     }
 
     [HttpPost(IAccountApi.LoginPath)]
+    [AllowAnonymous]
     public async Task<string> Login([FromBody] LoginModel model)
     {
         var user = await userManager.FindByNameAsync(model.Username);
         if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
-            throw new UnauthorizedAccessException();
+            throw new UnauthorizedAccessException(
+                $"User {model.Username} is not registered or " +
+                $"password is incorrect.");
         var roles = await userManager.GetRolesAsync(user);
         var token = jwtTokenService.GenerateJwtToken(user, roles);
         

@@ -1,4 +1,5 @@
 using Biz.Modules.Dashboard;
+using Biz.Modules.Dashboard.Core;
 
 namespace Biz.Shell.ViewModels;
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Biz.Modules.Dashboard;
+using Biz.Modules.Dashboard.Core;
 using IContainer = DryIoc.IContainer;
 
 namespace Biz.Shell.ViewModels;

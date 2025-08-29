@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Biz.Modules.Dashboard;
+using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
 using ShadUI;
 using IContainer = DryIoc.IContainer;
