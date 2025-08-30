@@ -9,11 +9,6 @@ using ServiceClients.Models;
 
 namespace Services.Auth.Jwt;
 
-public interface IJwtTokenIssuer
-{
-    TokenWithExpiry GenerateAccessToken(AppUser user, IList<string> roles);
-}
-
 public class JwtTokenIssuer(JwtIssuerSettings settings,
     IDbContextFactory<AppDbContext> dbContextFactory) 
     : IJwtTokenIssuer, IDisposable
@@ -23,13 +18,13 @@ public class JwtTokenIssuer(JwtIssuerSettings settings,
 
     public TokenWithExpiry GenerateAccessToken(AppUser user)
     {
-        var claims = new List<Claim>
-        {
+        Claim[] claims =
+        [
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email!),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Name, user.UserName!)
-        };
+        ];
 
         // // Add roles as claims
         // foreach (var role in roles)

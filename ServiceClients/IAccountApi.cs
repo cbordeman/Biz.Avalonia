@@ -10,16 +10,16 @@ public interface IAccountApi
     const string Base = "Account";
     public const string GetMyUserInfoPath = $"/{Base}/users/myinfo";
     public const string LoginPath = $"/{Base}/login";
-    public const string RefreshAccessTokenPath = $"/{Base}/refresh-access-token";
+    public const string RefreshTokensPath = $"/{Base}/refresh-tokens";
 
     [Get(GetMyUserInfoPath)]
     Task<User> GetMyUserInfo();
 
     [Post(LoginPath)]
-    Task<LoginResponse> Login([Body] LoginModel loginModel);
+    Task<TokenResponse> Login([Body] LoginModel loginModel);
     
-    [Post(RefreshAccessTokenPath)]
-    Task<string> RefreshAccessToken([Body] string refreshToken);
+    [Post(RefreshTokensPath)]
+    Task<TokenResponse> RefreshTokens([Body] string refreshToken);
     
     //[Get("/posts/{id}")]
     //Task<Post> GetPostAsync(int id);

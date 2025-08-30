@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Models;
 
+[Index(nameof(Token), IsUnique = true)]
 public class RefreshToken
 {
+    [Key]
     public int Id { get; set; }
     
     [Required]
@@ -21,6 +24,6 @@ public class RefreshToken
     [Required]
     public DateTime? ExpiryDate { get; set; }
     
-    [Required]
-    public bool IsRevoked { get; set; }
+    // [Required]
+    // public bool IsRevoked { get; set; }
 }

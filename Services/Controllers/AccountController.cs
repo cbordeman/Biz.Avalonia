@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using ServiceClients.Models;
 using Services.Auth.Jwt;
 using Services.Converters;
+using Shouldly;
 
 // ReSharper disable UnusedParameter.Global
 
@@ -32,63 +33,47 @@ public class AccountController : ControllerBase, IAccountApi
 
     [HttpPost(IAccountApi.LoginPath)]
     [AllowAnonymous]
-    public async Task<LoginResponse> Login([FromBody] LoginModel model)
+    public async Task<TokenResponse> Login([FromBody] LoginModel model)
     {
         var user = await userManager.FindByNameAsync(model.Username);
         if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
             throw new UnauthorizedAccessException(
-                $"User {model.Username} is not registered or " +
-                $"password is incorrect.");
+                $"User or password is incorrect.");
         var accessToken = jwtTokenService.GenerateAccessToken(user);
         var refreshToken = await jwtTokenService.GenerateAndStoreRefreshToken(user);
 
-        return new LoginResponse(accessToken, refreshToken);
+        return new TokenResponse(accessToken, refreshToken);
     }
 
-    [HttpPost(IAccountApi.RefreshAccessTokenPath)]
-    public async Task<string> RefreshAccessToken([FromBody] string requestRefreshToken)
+    [HttpPost(IAccountApi.RefreshTokensPath)]
+    public async Task<TokenResponse> RefreshTokens([FromBody] string requestRefreshToken)
     {
         var user = await userManager.GetUserAsync(HttpContext.User);
+        user.ShouldNotBeNull();
         
         // Find the refresh token record
         var dbContext = dbContextFactory.CreateDbContext();
         var storedToken = await dbContext.RefreshTokens
-            .Include(rt => rt.User)
-            .FirstOrDefaultAsync(rt => rt.Token == requestRefreshToken);
+            .FirstOrDefaultAsync(rt => rt.Token == requestRefreshToken &&
+                                       rt.UserId == user.Id);
 
-        if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiryDate < DateTime.UtcNow)
+        if (storedToken == null || //storedToken.IsRevoked || 
+            storedToken.ExpiryDate < DateTime.UtcNow)
             throw new UnauthorizedAccessException("Invalid or expired refresh token");
 
-        if (storedToken.User == null || storedToken.User.Id != user.Id)
+        if (storedToken.UserId != user.Id)
             throw new UnauthorizedAccessException("Refresh token belongs to another user.");
 
-        // Revoke old refresh token
-        storedToken.IsRevoked = true;
+        // Remove old refresh token
+        dbContext.RefreshTokens.Remove(storedToken);
+        //storedToken.IsRevoked = true;
         await dbContext.SaveChangesAsync();
 
         // Generate new tokens
-        var newAccessToken = jwtTokenService.GenerateAccessToken(user, roles);
+        var newAccessToken = jwtTokenService.GenerateAccessToken(user);
         var newRefreshToken = await jwtTokenService.GenerateAndStoreRefreshToken(user);
         
-        // Store new refresh token
-        var refreshTokenEntity = new RefreshToken
-        {
-            Token = newRefreshToken,
-            UserId = user.Id,
-            ExpiryDate = newRefreshTokenExpiry,
-            CreatedAt = DateTime.UtcNow,
-            IsRevoked = false,
-        };
-        dbContext.RefreshTokens.Add(refreshTokenEntity);
-        await dbContext.SaveChangesAsync();
-
-        return Ok(new TokenResponse
-        {
-            AccessToken = newAccessToken,
-            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes),
-            RefreshToken = newRefreshToken,
-            RefreshTokenExpiresAt = newRefreshTokenExpiry,
-        });
+        return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
     [HttpGet(IAccountApi.GetMyUserInfoPath)]

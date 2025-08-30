@@ -12,6 +12,11 @@
         <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Views\RegisterLocalAccountView.xaml" />
+      <AvaloniaXaml Include="Views\RegisterLocalAccountView.xaml" />
+    </ItemGroup>
+
     <!--  The next PropertyGroup and Target goes in every module csproj.  -->
     <PropertyGroup>
         <ModulesOutputPath>$(SolutionDir)Biz.Shell.Desktop\bin\$(Configuration)\$(TargetFramework)\Modules</ModulesOutputPath>

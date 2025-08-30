@@ -1,6 +1,6 @@
 ﻿namespace ServiceClients.Models;
 
-public class LoginResponse(
+public class TokenResponse(
     TokenWithExpiry AccessToken,
     TokenWithExpiry RefreshToken);
 
