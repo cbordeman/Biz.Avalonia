@@ -11,16 +11,11 @@ public class AppDbContext : IdentityDbContext<AppUser> // Specify AppUser as gen
     {
     }
 
-    public DbSet<Tenant> Tenants { get; set; }
-    public DbSet<AppUser> AppUsers { get; set; }
-    public DbSet<TenantUserClaim> TenantUserClaims { get; set; }
-    public DbSet<TenantUser> TenantUsers { get; set; }
-    public DbSet<TenantRole> TenantRoles { get; set; }
-    public DbSet<AppRole> AppRoles { get; set; }
-
-    // Optionally override OnModelCreating if customization needed
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     base.OnModelCreating(modelBuilder);
-    // }
+    public DbSet<Tenant> Tenants { get; set; } = null!;
+    public DbSet<AppUser> AppUsers { get; set; } = null!;
+    public DbSet<TenantUserClaim> TenantUserClaims { get; set; } = null!;
+    public DbSet<TenantUser> TenantUsers { get; set; } = null!;
+    public DbSet<TenantRole> TenantRoles { get; set; } = null!;
+    public DbSet<AppRole> AppRoles { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 }

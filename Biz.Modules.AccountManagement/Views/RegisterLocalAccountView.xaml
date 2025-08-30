@@ -1,0 +1,153 @@
+﻿<UserControl
+    x:Class="Biz.Modules.AccountManagement.Views.RegisterLocalAccountView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Biz.Modules.AccountManagement.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:viewModels="clr-namespace:Biz.Modules.AccountManagement.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <viewModels:RegisterLocalAccountViewModel />
+    </UserControl.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  Header  -->
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,20"
+            FontSize="24"
+            FontWeight="SemiBold"
+            Text="Register New Account" />
+
+        <!--  Username Field  -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,15">
+            <TextBlock
+                Margin="0,0,0,5"
+                FontWeight="Medium"
+                Text="Username" />
+
+            <shadui:TextBox
+                x:Name="UsernameTextBox"
+                Width="350"
+                HorizontalAlignment="Left"
+                MaxLength="50"
+                Placeholder="Enter your username"
+                Text="{Binding Username,
+                               UpdateSourceTrigger=PropertyChanged,
+                               ValidatesOnDataErrors=True}" />
+
+            <TextBlock
+                Margin="0,3,0,0"
+                Foreground="Red"
+                Text="{Binding ErrorMessages[Username]}"
+                Visibility="{Binding HasUsernameError,
+                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+
+        <!--  Password Field  -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,15">
+            <TextBlock
+                Margin="0,0,0,5"
+                FontWeight="Medium"
+                Text="Password" />
+
+            <shadui:PasswordBox
+                x:Name="PasswordBox"
+                Width="350"
+                HorizontalAlignment="Left"
+                Password="{Binding Password,
+                                   Mode=TwoWay,
+                                   UpdateSourceTrigger=PropertyChanged}"
+                Placeholder="Enter your password" />
+
+            <TextBlock
+                Margin="0,3,0,0"
+                Foreground="Red"
+                Text="{Binding ErrorMessages[Password]}"
+                Visibility="{Binding HasPasswordError,
+                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+
+        <!--  Confirm Password Field  -->
+        <StackPanel Grid.Row="3" Margin="0,0,0,15">
+            <TextBlock
+                Margin="0,0,0,5"
+                FontWeight="Medium"
+                Text="Confirm Password" />
+
+            <shadui:PasswordBox
+                x:Name="ConfirmPasswordBox"
+                Width="350"
+                HorizontalAlignment="Left"
+                Password="{Binding ConfirmPassword,
+                                   Mode=TwoWay,
+                                   UpdateSourceTrigger=PropertyChanged}"
+                Placeholder="Confirm your password" />
+
+            <TextBlock
+                Margin="0,3,0,0"
+                Foreground="Red"
+                Text="{Binding ErrorMessages[ConfirmPassword]}"
+                Visibility="{Binding HasConfirmPasswordError,
+                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+
+        <!--  Password Requirements  -->
+        <StackPanel Grid.Row="4" Margin="0,0,0,20">
+            <TextBlock
+                Margin="0,0,0,5"
+                FontStyle="Italic"
+                Text="Password must:" />
+            <TextBlock Margin="10,0,0,3" Text="• Be at least 8 characters long" />
+            <TextBlock Margin="10,0,0,3" Text="• Contain at least one uppercase letter" />
+            <TextBlock Margin="10,0,0,3" Text="• Contain at least one lowercase letter" />
+            <TextBlock Margin="10,0,0,3" Text="• Contain at least one number" />
+            <TextBlock Margin="10,0,0,3" Text="• Contain at least one special character" />
+        </StackPanel>
+
+        <!--  Action Buttons  -->
+        <StackPanel
+            Grid.Row="6"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <shadui:Button
+                Width="100"
+                Margin="0,0,10,0"
+                Command="{Binding CancelCommand}"
+                Content="Cancel"
+                Style="{StaticResource shadui:ButtonStyles.Secondary}" />
+
+            <shadui:Button
+                Width="100"
+                Command="{Binding RegisterCommand}"
+                Content="Register"
+                IsEnabled="{Binding CanRegister}" />
+        </StackPanel>
+
+        <!--  Processing Indicator  -->
+        <shadui:Spinner
+            Grid.Row="0"
+            Grid.RowSpan="7"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{Binding IsProcessing,
+                                 Converter={StaticResource BooleanToVisibilityConverter}}" />
+    </Grid>
+</UserControl>

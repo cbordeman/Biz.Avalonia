@@ -1,6 +1,7 @@
 using Biz.Models;
 using Biz.Models.Account;
 using Refit;
+using ServiceClients.Models;
 
 namespace ServiceClients;
 
@@ -9,12 +10,16 @@ public interface IAccountApi
     const string Base = "Account";
     public const string GetMyUserInfoPath = $"/{Base}/users/myinfo";
     public const string LoginPath = $"/{Base}/login";
+    public const string RefreshAccessTokenPath = $"/{Base}/refresh-access-token";
 
     [Get(GetMyUserInfoPath)]
     Task<User> GetMyUserInfo();
 
     [Post(LoginPath)]
-    Task<string> Login([Body] LoginModel loginModel);
+    Task<LoginResponse> Login([Body] LoginModel loginModel);
+    
+    [Post(RefreshAccessTokenPath)]
+    Task<string> RefreshAccessToken([Body] string refreshToken);
     
     //[Get("/posts/{id}")]
     //Task<Post> GetPostAsync(int id);
