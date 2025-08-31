@@ -19,7 +19,7 @@
             {
                 await next(context);
             }
-            catch (HttpNotFoundObjectException badex)
+            catch (BadHttpRequestException badex)
             {
                 // If we throw BadHttpRequestException, return 400 to
                 // the client.
