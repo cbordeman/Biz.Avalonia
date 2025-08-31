@@ -22,6 +22,13 @@ builder.Services.AddSingleton<JwtIssuerSettings>(provider =>
     config.GetSection("JwtIssuer").Bind(jwtIssuerSettings);
     return jwtIssuerSettings;
 });
+builder.Services.AddSingleton<AzureSettings>(provider =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+    var azureSettings = new AzureSettings();
+    config.GetSection("Azure").Bind(azureSettings);
+    return azureSettings;
+});
 
 builder.Services.AddSingleton<IJwtTokenIssuer, JwtTokenIssuer>();
 
@@ -40,9 +47,6 @@ builder.Services.AddSingleton<IDbContextFactory<AppDbContext>>(provider =>
     return new PooledDbContextFactory<AppDbContext>(optionsBuilder.Options);
 });
 
-
-
-
 // Register ExternalAuthSettings from configuration
 //builder.Services.Configure<ExternalAuthSettings>(
 //    builder.Configuration.GetSection("Authentication"));
@@ -57,9 +61,9 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Logging.AddConsole(); // Already present in most templates
-builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Debug);
-builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization", LogLevel.Debug);
+builder.Logging.AddConsole();
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Information);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization", LogLevel.Information);
 // Wider ASP.Net logs.
 //builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Information);
 

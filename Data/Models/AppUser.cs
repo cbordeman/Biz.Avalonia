@@ -40,10 +40,12 @@ public class AppUser : IdentityUser
     }
     string id;
     
+    [ProtectedPersonalData]
     [Required]
     [StringLength(100)]
     public string Name { get; set; }
 
+    [ProtectedPersonalData]
     [Required]
     [StringLength(100)]
     public override string? Email
@@ -54,6 +56,15 @@ public class AppUser : IdentityUser
     string? email;
 
     [ProtectedPersonalData]
+    [Required]
+    [Phone]
+    [StringLength(20)]
+    public override string? PhoneNumber { get; set; }
+    
+    [ProtectedPersonalData]
+    [Required]
+    [StringLength(8)]
+    public string? Extension { get; set; }
     
     [Required]
     public LoginProvider? LoginProvider { get; set; }

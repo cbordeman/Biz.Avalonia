@@ -19,13 +19,16 @@
             {
                 await next(context);
             }
-            catch (BadHttpRequestException badex)
+            catch (HttpNotFoundObjectException badex)
             {
                 // If we throw BadHttpRequestException, return 400 to
                 // the client.
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.ContentType = "application/json";
-                var response = new { message = badex.Message ?? "Bad Request" };
+                var response = new
+                {
+                    message = badex.Message ?? "Bad Request"
+                };
                 await context.Response.WriteAsJsonAsync(response);
             }
             catch (UnauthorizedAccessException ex)
@@ -34,7 +37,20 @@
                 // the client.
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
-                var response = new { message = ex.Message ?? "Unauthorized" };
+                var response = new
+                {
+                    message = ex.Message ?? "Unauthorized"
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (HttpNotFoundObjectException nfoex)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = nfoex.Message ?? "Not Found"
+                };
                 await context.Response.WriteAsJsonAsync(response);
             }
             catch (Exception ex)
@@ -48,5 +64,4 @@
             }
         }
     }
-
 }
