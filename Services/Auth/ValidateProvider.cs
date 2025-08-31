@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Services.Controllers;
 using Shouldly;
 
@@ -91,6 +92,17 @@ public static partial class Auth
 
         // User exists.
 
+        if (loginProvider == LoginProvider.Local)
+        {
+            // For local, enforce email confirmation.
+            user.ShouldNotBeNull();
+            if (!user.EmailConfirmed)
+            {
+                context.Fail("Email not confirmed.");
+                return;
+            }
+        }
+       
         // Get requested internal tenant ID from HTTP header and put it into Claims in
         //  TenantUser.  ClaimsPrincipal.GetInternalTenantId() can be used in
         // Controllers to retrieve the value, and it is guaranteed to belong to the user.

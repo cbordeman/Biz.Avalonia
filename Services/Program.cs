@@ -50,7 +50,8 @@ builder.Services.AddSingleton<IDbContextFactory<AppDbContext>>(provider =>
 var externalAuthSettings = new ExternalAuthSettings();
 builder.Configuration.GetSection("Authentication").Bind(externalAuthSettings);
 
-builder.Services.ConfigureAuthentication(externalAuthSettings);
+builder.Services
+    .ConfigureAuthentication(externalAuthSettings);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

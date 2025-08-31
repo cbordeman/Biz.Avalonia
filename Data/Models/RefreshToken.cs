@@ -10,7 +10,7 @@ public class RefreshToken
     public int Id { get; set; }
     
     [Required]
-    [StringLength(64)]
+    [StringLength(100)]
     public string Token { get; set; } = string.Empty;
 
     [Required]

@@ -19,6 +19,15 @@
             {
                 await next(context);
             }
+            catch (BadHttpRequestException badex)
+            {
+                // If we throw BadHttpRequestException, return 400 to
+                // the client.
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+                var response = new { message = badex.Message ?? "Bad Request" };
+                await context.Response.WriteAsJsonAsync(response);
+            }
             catch (UnauthorizedAccessException ex)
             {
                 // If we throw UnauthorizedAccessException, return 401 to

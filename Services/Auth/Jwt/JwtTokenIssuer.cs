@@ -47,15 +47,17 @@ public class JwtTokenIssuer(JwtIssuerSettings settings,
         return new TokenWithExpiry(accessTokenValue, token.ValidTo);
     }
 
-    public async Task<TokenWithExpiry> 
-        GenerateAndStoreRefreshToken(AppUser user)
+    /// <summary>
+    /// Removes old refresh token and generates and stores a new one.
+    /// </summary>
+    public async Task<TokenWithExpiry> GenerateAndSwapRefreshToken(AppUser user, 
+        AppDbContext dbContext, RefreshToken? storedRefreshToken = null)
     {
         var randomNumber = new byte[64];
         
         rng.GetBytes(randomNumber);
         var tokenValue = Convert.ToBase64String(randomNumber);
         
-        var dbContext = dbContextFactory.CreateDbContext();
         var refreshToken = new RefreshToken
         {
             Token = tokenValue,
@@ -65,6 +67,8 @@ public class JwtTokenIssuer(JwtIssuerSettings settings,
                 settings.RefreshTokenExpirationDays)
         };
 
+        if (storedRefreshToken != null)
+            dbContext.RefreshTokens.Remove(storedRefreshToken);
         dbContext.RefreshTokens.Add(refreshToken);
         await dbContext.SaveChangesAsync();
 
