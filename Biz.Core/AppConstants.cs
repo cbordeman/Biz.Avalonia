@@ -1,7 +1,11 @@
 ﻿namespace Biz.Core;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 public static class AppConstants
 {
+    public const string AppVersion = "0.0.1";
+    
     // This is what is used 99% of the time to refer to the product.
     // The shorter, the better.  You can change this as you want.
     // Mixed case, since the user will see this.
@@ -23,17 +27,19 @@ public static class AppConstants
     public const string CompanyInternalName = "mycompany";
     public const string AppInternalName = "biz";
     
-    // A custom Uri like "biz:path" used to invoke the
-    // app's functionality when it's not running,
-    // such as from an email link.  Allows the app
+    // A custom Uri like "biz:path" allows the app
     // to be invoked from other apps, like a browser.
-    const string WindowsRegistryCustomUriScheme = 
-        AppConstants.AppInternalName;
+    // This is the prefix part before the colon.
+    public const string CustomUriSchemeName = AppInternalName;
     
     // This should not change, either, though the rules for what
-    // it contains is not so strict.
-    const string WindowsRegistryCustomUriProtocolFriendlyName = 
-        $"{AppConstants.AppShortName} Protocol";
+    // it contains is not as strict.
+    public const string CustomUriProtocolFriendlyName = 
+        $"{AppShortName} Protocol";
+
+    public const string ConfirmEmailLinkFormat =
+        $"{CustomUriSchemeName}:/confirm-email?email={{email}}&token={{token}}";
     
-    public const string AppVersion = "0.0.1";
+    public const string ResetPasswordLinkFormat =
+        $"{CustomUriSchemeName}:/reset-password?email={{email}}&token={{token}}";
 }

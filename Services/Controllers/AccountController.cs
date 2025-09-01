@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Biz.Core;
 using Biz.Models;
 using Biz.Models.Account;
 using Data.Models;
@@ -235,11 +236,9 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ForgotPassword(ForgotPasswordRequest model)
     {
         if (!ModelState.IsValid)
-        {
             throw new BadHttpRequestException("Invalid forgot password request.");
-        }
 
-        var user = await userManager.FindByEmailAsync(model.Email);
+        var user = await userManager.FindByEmailAsync(model.Email!);
         if (user == null || !await userManager.IsEmailConfirmedAsync(user))
         {
             // Do not reveal whether the user exists or if email confirmed
@@ -248,14 +247,12 @@ public class AccountController(UserManager<AppUser> userManager,
         }
 
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
-        var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+        var encodedToken = WebEncoders.Base64UrlEncode(
+            Encoding.UTF8.GetBytes(token));
 
-        // Construct reset link to send via email
-        var baseUrl = configuration["AppSettings:BaseUrl"]; // Your frontend URL or reset page URL
-        var resetLink = $"{baseUrl}/reset-password?email={user.Email}&token={encodedToken}";
-
-        // Send the password reset email (implement your own email service)
-        await emailService.SendPasswordResetEmailAsync(user.Email, user.UserName, resetLink);
+        // Send the password reset email
+        await emailService.SendPasswordResetEmailAsync(
+            user, encodedToken);
     }
 
     // This one is linked to in the password reset email.

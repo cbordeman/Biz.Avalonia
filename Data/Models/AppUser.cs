@@ -48,7 +48,7 @@ public class AppUser : IdentityUser
     
     [ProtectedPersonalData]
     [Required]
-    [StringLength(100)]
+    [StringLength(75)]
     public string Name { get; set; }
 
     [ProtectedPersonalData]

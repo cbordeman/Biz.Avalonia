@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Communication.Email;
+using Biz.Core;
 using Data.Models;
 using Services.Config;
 using Shouldly;
@@ -8,18 +9,40 @@ namespace Services.Services;
 
 public interface IEmailService
 {
-    Task SendConfirmationEmailAsync(AppUser user, string returnUrl);
+    Task SendConfirmationEmailAsync(AppUser user, string emailToken);
+    Task SendPasswordResetEmailAsync(AppUser user, string emailToken);
 }
 
 public class AzureEmailService(AzureSettings settings,
     ILogger<AzureEmailService> logger) : IEmailService
 {
-    public Task SendConfirmationEmailAsync(AppUser user, string returnUrl)
+    public Task SendConfirmationEmailAsync(AppUser user, string emailToken)
     {
+        // Construct reset link to send via email
+        var link = string.Format(
+            AppConstants.ConfirmEmailLinkFormat,
+            user.Email!, user.Email);
+        
+        // TODO: insert links for email confirmation
         return SendEmailAsync(user.Email!,
             "Confirm your email address",
-            "Please click <a>here</a> to confirm your email address and activate your Biz account!",
-            "Please go to confirm your email address and activate your Biz account!");
+            $"Please click <a href\"{link}\">here</a> to confirm your email " +
+            $"address and activate your {AppConstants.AppShortName} account!",
+            $"Please go to {link} to confirm your email address and activate your Biz account!");
+    }
+    
+    public Task SendPasswordResetEmailAsync(AppUser user, string emailToken)
+    {
+        // Construct reset link to send via email
+        var link = string.Format(
+            AppConstants.ResetPasswordLinkFormat,
+            user.Email!, user.Email);
+
+        return SendEmailAsync(user.Email!,
+            "Password reset confirmation",
+            $"Please click <a href=\"{link}\">here</a> to reset " +
+            $"your {AppConstants.AppShortName} password.",
+            $"Please go to {link} to reset your password.");
     }
     
     private async Task SendEmailAsync(string recipient,

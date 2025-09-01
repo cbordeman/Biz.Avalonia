@@ -6,7 +6,6 @@ using Biz.Shell.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using JetBrains.Annotations;
 using Microsoft.Win32;
-using Shouldly;
 
 namespace Biz.Shell.Desktop;
 
@@ -20,7 +19,10 @@ sealed class Program
     public static void Main(string[] args)
     {
         PlatformHelper.PlatformService = new DesktopPlatformService();
-
+        
+        // Register biz:... links
+        RegisterCustomUriSchemeIfMissing();
+        
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
@@ -33,28 +35,34 @@ sealed class Program
             .WithInterFont()
             .LogToTrace();
 
-    public static void RegisterSchemeIfMissing()
+    static void RegisterCustomUriSchemeIfMissing()
     {
-        Registry.CurrentUser.ShouldNotBeNull();
-
+        // Customize this by modifying AppConstants.
+        
 #pragma warning disable CA1416 // unimportant platform warning
-        using var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Classes\" + SchemeName);
-
+        var schemeKey = 
+            @"SOFTWARE\Classes\" +
+            AppConstants.CustomUriSchemeName;
+        
+        using var key = Registry.CurrentUser.OpenSubKey(schemeKey);
+        
         if (key != null)
             return; // Already registered, do nothing
 
-        using var newKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Classes\" + SchemeName);
-        newKey.SetValue("", $"URL:{AppConstants.AppInternalName}");
+        using var newKey = Registry.CurrentUser.CreateSubKey(schemeKey);
+        
+        newKey.SetValue("", $"URL:{
+            AppConstants.CustomUriProtocolFriendlyName}");
         newKey.SetValue("URL Protocol", "");
 
         // Set icon (optional)
         var exePath = Assembly.GetEntryAssembly()!.Location;
-        using (var iconKey = newKey.CreateSubKey("DefaultIcon"))
-            iconKey.SetValue("", exePath + ",1");
+        using var iconKey = newKey.CreateSubKey("DefaultIcon");
+        iconKey.SetValue("", exePath + ",1");
 
         // Set shell\open\command handler
-        using (var commandKey = newKey.CreateSubKey(@"shell\open\command"))
-            commandKey.SetValue("", $"\"{exePath}\" \"%1\"");
+        using var commandKey = newKey.CreateSubKey(@"shell\open\command");
+        commandKey.SetValue("", $"\"{exePath}\" \"%1\"");
 #pragma warning restore CA1416
     }
 }

@@ -52,7 +52,6 @@ public interface IAccountApi
 
     [Put(PasswordResetPath)]
     Task PasswordReset(ChangePasswordRequest model);
-
     
     //[Get("/posts/{id}")]
     //Task<Post> GetPostAsync(int id);
