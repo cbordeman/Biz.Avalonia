@@ -11,12 +11,12 @@ public interface IAccountApi
     public const string GetMyUserInfoPath = $"/{Base}/users/myinfo";
     public const string LoginPath = $"/{Base}/login";
     public const string RefreshTokensPath = $"/{Base}/refresh-tokens";
-    public const string RegisterLocalAccountPath = $"/{Base}/register-local-account";
-    public const string ChangeLocalUserEmailPath = $"/{Base}/change-local-email";
-    public const string ConfirmLocalEmailChangePath = $"/{Base}/confirm-local-email-change";
-    public const string ChangeLocalPasswordPath = $"/{Base}/change-local-password";
-    public const string ChangeLocalNamePath = $"/{Base}/change-local-name";
-    public const string ChangeLocalPhonePath = $"/{Base}/change-local-phone";
+    public const string RegisterAccountPath = $"/{Base}/register--account";
+    public const string ChangeUserEmailPath = $"/{Base}/change--email";
+    public const string ConfirmEmailChangePath = $"/{Base}/confirm--email-change";
+    public const string ChangePasswordPath = $"/{Base}/change--password";
+    public const string ChangeNamePath = $"/{Base}/change--name";
+    public const string ChangePhonePath = $"/{Base}/change--phone";
     public const string ForgotPasswordPath = $"/{Base}/forgot-password";
     public const string ResetPasswordPath = $"/{Base}/reset-password";
     
@@ -29,23 +29,23 @@ public interface IAccountApi
     [Post(RefreshTokensPath)]
     Task<TokenResponse> RefreshTokens([Body] string refreshToken);
 
-    [Post(RegisterLocalAccountPath)]
-    Task RegisterLocalUser([Body] RegisterRequest model);
+    [Post(RegisterAccountPath)]
+    Task RegisterUser([Body] RegisterRequest model);
     
-    [Post(ChangeLocalUserEmailPath)]
-    Task ChangeLocalUserEmail([Body] ChangeEmailRequest model);
+    [Post(ChangeUserEmailPath)]
+    Task ChangeUserEmail([Body] ChangeEmailRequest model);
 
-    [Post(ConfirmLocalEmailChangePath)]
-    Task ConfirmLocalEmailChange(string userId, string email, string token);
+    [Post(ConfirmEmailChangePath)]
+    Task ConfirmEmailChange(string userId, string email, string token);
     
-    [Put(ChangeLocalPasswordPath)]
-    Task ChangeLocalUserPassword([Body] ChangePasswordRequest model);
+    [Put(ChangePasswordPath)]
+    Task ChangeUserPassword([Body] ChangePasswordRequest model);
 
-    [Put(ChangeLocalNamePath)]
-    Task ChangeLocalName([Body] ChangeNameRequest model);
+    [Put(ChangeNamePath)]
+    Task ChangeName([Body] ChangeNameRequest model);
 
-    [Put(ChangeLocalPhonePath)]
-    Task ChangeLocalPhone([Body] ChangePhoneRequest model);
+    [Put(ChangePhonePath)]
+    Task ChangePhone([Body] ChangePhoneRequest model);
 
     [Put(ForgotPasswordPath)]
     Task ForgotPassword(ForgotPasswordRequest model);

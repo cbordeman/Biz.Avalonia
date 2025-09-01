@@ -16,7 +16,7 @@ namespace Services.Controllers;
 
 // TODO: Restrict most of these endpoints to the BizAdmin,
 // TenantAdmin, or the authenticated user.
- 
+
 [Route("[controller]")]
 [ApiController]
 [Authorize]
@@ -71,8 +71,8 @@ public class AccountController(UserManager<AppUser> userManager,
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
-    [HttpPost(IAccountApi.RegisterLocalAccountPath)]
-    public async Task RegisterLocalUser([FromBody] RegisterRequest model)
+    [HttpPost(IAccountApi.RegisterAccountPath)]
+    public async Task RegisterUser([FromBody] RegisterRequest model)
     {
         if (!ModelState.IsValid)
             throw new HttpNotFoundObjectException("Invalid model state.");
@@ -108,8 +108,8 @@ public class AccountController(UserManager<AppUser> userManager,
         await emailService.SendConfirmationEmailAsync(user, emailToken);
     }
 
-    [HttpPost(IAccountApi.ChangeLocalUserEmailPath)]
-    public async Task ChangeLocalUserEmail([FromBody] ChangeEmailRequest model)
+    [HttpPost(IAccountApi.ChangeUserEmailPath)]
+    public async Task ChangeUserEmail([FromBody] ChangeEmailRequest model)
     {
         if (!ModelState.IsValid)
             throw new BadHttpRequestException("Invalid model state.");
@@ -132,9 +132,9 @@ public class AccountController(UserManager<AppUser> userManager,
         }
     }
 
-    [HttpPost(IAccountApi.ConfirmLocalEmailChangePath)]
+    [HttpPost(IAccountApi.ConfirmEmailChangePath)]
     [AllowAnonymous]
-    public async Task ConfirmLocalEmailChange(string userId, string email, string token)
+    public async Task ConfirmEmailChange(string userId, string email, string token)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
             throw new BadHttpRequestException("Invalid email confirmation request.");
@@ -176,8 +176,8 @@ public class AccountController(UserManager<AppUser> userManager,
 
     // For when the user knows their password, called
     // from an Account Profile page.
-    [HttpPut(IAccountApi.ChangeLocalPasswordPath)]
-    public async Task ChangeLocalUserPassword([FromBody] ChangePasswordRequest model)
+    [HttpPut(IAccountApi.ChangePasswordPath)]
+    public async Task ChangeUserPassword([FromBody] ChangePasswordRequest model)
     {
         if (!ModelState.IsValid)
             throw new BadHttpRequestException("Invalid model state.");
@@ -198,8 +198,8 @@ public class AccountController(UserManager<AppUser> userManager,
         }
     }
 
-    [HttpPut(IAccountApi.ChangeLocalNamePath)]
-    public async Task ChangeLocalName([FromBody] ChangeNameRequest model)
+    [HttpPut(IAccountApi.ChangeNamePath)]
+    public async Task ChangeName([FromBody] ChangeNameRequest model)
     {
         if (!ModelState.IsValid)
             throw new BadHttpRequestException("Invalid model state.");
@@ -212,8 +212,8 @@ public class AccountController(UserManager<AppUser> userManager,
         await userManager.UpdateAsync(user);
     }
 
-    [HttpPut(IAccountApi.ChangeLocalPhonePath)]
-    public async Task ChangeLocalPhone([FromBody] ChangePhoneRequest model)
+    [HttpPut(IAccountApi.ChangePhonePath)]
+    public async Task ChangePhone([FromBody] ChangePhoneRequest model)
     {
         if (!ModelState.IsValid)
             throw new BadHttpRequestException("Invalid model state.");
@@ -230,6 +230,7 @@ public class AccountController(UserManager<AppUser> userManager,
     // Called to send as password reset email when the
     // user has forgotten their password.
     [HttpPut(IAccountApi.ForgotPasswordPath)]
+    [AllowAnonymous]
     public async Task ForgotPassword([FromBody] ForgotPasswordRequest model)
     {
         if (!ModelState.IsValid)
@@ -254,6 +255,7 @@ public class AccountController(UserManager<AppUser> userManager,
 
     // This one is linked to in the password reset email.
     [HttpPut(IAccountApi.ResetPasswordPath)]
+    [AllowAnonymous]
     public async Task ResetPassword([FromBody] ResetPasswordRequest model)
     {
         if (!ModelState.IsValid)
@@ -268,7 +270,7 @@ public class AccountController(UserManager<AppUser> userManager,
         var tokenBytes = WebEncoders.Base64UrlDecode(model.Token!);
         var decodedToken = Encoding.UTF8.GetString(tokenBytes);
 
-        var result = await userManager.ResetPasswordAsync(user, decodedToken, model.Password);
+        var result = await userManager.ResetPasswordAsync(user, decodedToken, model.Password!);
         if (!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
