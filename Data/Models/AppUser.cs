@@ -1,8 +1,13 @@
 ﻿using Biz.Core.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Models;
 
+[Index(nameof(UserName), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
+[Index(nameof(Name))]
+[Index(nameof(PhoneNumber))]
 public class AppUser : IdentityUser
 {
     public AppUser()
@@ -33,6 +38,7 @@ public class AppUser : IdentityUser
     [Required]
     [ProtectedPersonalData]
     [StringLength(100)]
+    [Key]
     public override string Id
     {
         get => id;

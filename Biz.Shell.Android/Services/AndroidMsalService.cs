@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Android.Util;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;

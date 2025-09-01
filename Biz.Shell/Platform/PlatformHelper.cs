@@ -1,4 +1,6 @@
-﻿namespace Biz.Shell.Infrastructure;
+﻿using Biz.Shell.Platform;
+
+namespace Biz.Shell.Infrastructure;
 
 public static class PlatformHelper
 {

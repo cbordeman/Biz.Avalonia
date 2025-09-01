@@ -1,4 +1,5 @@
 using Biz.Shell.Logging;
+using Biz.Shell.Platform;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;

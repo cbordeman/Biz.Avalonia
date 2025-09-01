@@ -1,6 +1,7 @@
 ﻿using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 using Prism.Modularity;
 
 namespace Biz.Mobile.Services;

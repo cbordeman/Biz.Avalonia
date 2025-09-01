@@ -2,6 +2,7 @@
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Prism.Ioc;
 

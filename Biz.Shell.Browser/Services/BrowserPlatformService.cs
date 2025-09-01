@@ -1,6 +1,7 @@
 ﻿using Biz.Desktop.Services;
 using Biz.Mobile.Services;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Microsoft.Identity.Client;
 using Prism.Ioc;

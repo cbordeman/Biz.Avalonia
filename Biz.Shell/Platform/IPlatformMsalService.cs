@@ -1,6 +1,6 @@
 ﻿using Microsoft.Identity.Client;
 
-namespace Biz.Shell.Infrastructure;
+namespace Biz.Shell.Platform;
 
 public interface IPlatformMsalService
 {

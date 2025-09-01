@@ -1,5 +1,5 @@
 ﻿using Biz.Desktop.Services;
-using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Prism.Ioc;
 using ShadUI;

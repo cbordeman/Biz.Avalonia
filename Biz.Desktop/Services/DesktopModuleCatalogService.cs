@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 using Prism.Modularity;
 
 namespace Biz.Desktop.Services;

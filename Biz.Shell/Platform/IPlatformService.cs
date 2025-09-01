@@ -1,4 +1,4 @@
-namespace Biz.Shell.Infrastructure;
+namespace Biz.Shell.Platform;
 
 public interface IPlatformService
 {

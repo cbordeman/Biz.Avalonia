@@ -79,3 +79,26 @@ public class ChangePhoneRequest
     [StringLength(8)]
     public string? NewExtension { get; set; }
 }
+
+public class ForgotPasswordRequest
+{
+    [Required]
+    [EmailAddress]
+    [StringLength(100)]
+    public string? Email { get; set; }
+}
+
+public class ResetPasswordModel
+{
+    [Required]
+    [StringLength(100)]
+    public string? Email { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string? Token { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string? Password { get; set; }
+}

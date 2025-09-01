@@ -17,6 +17,8 @@ public interface IAccountApi
     public const string ChangeLocalPasswordPath = $"/{Base}/change-local-password";
     public const string ChangeLocalNamePath = $"/{Base}/change-local-name";
     public const string ChangeLocalPhonePath = $"/{Base}/change-local-phone";
+    public const string ForgotPasswordPath = $"/{Base}/forgot-password";
+    public const string PasswordResetPath = $"/{Base}/password-reset";
     
     [Get(GetMyUserInfoPath)]
     Task<User> GetMyUserInfo();
@@ -44,6 +46,13 @@ public interface IAccountApi
 
     [Put(ChangeLocalPhonePath)]
     Task ChangeLocalPhone([Body] ChangePhoneRequest model);
+
+    [Put(ForgotPasswordPath)]
+    Task ForgotPassword(ForgotPasswordRequest model);
+
+    [Put(PasswordResetPath)]
+    Task PasswordReset(ChangePasswordRequest model);
+
     
     //[Get("/posts/{id}")]
     //Task<Post> GetPostAsync(int id);

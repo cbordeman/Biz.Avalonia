@@ -49,7 +49,7 @@ public class AccountController(UserManager<AppUser> userManager,
     {
         var user = await userManager.GetUserAsync(HttpContext.User);
         user.ShouldNotBeNull();
-        
+
         // Find the refresh token record
         var dbContext = dbContextFactory.CreateDbContext();
         var storedRefreshToken = await dbContext.RefreshTokens
@@ -67,7 +67,7 @@ public class AccountController(UserManager<AppUser> userManager,
         var newAccessToken = jwtTokService.GenerateAccessToken(user);
         var newRefreshToken = await jwtTokService.GenerateAndSwapRefreshToken(
             user, dbContext, storedRefreshToken);
-        
+
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
@@ -79,7 +79,7 @@ public class AccountController(UserManager<AppUser> userManager,
         // TODO: Consider removing this message fore security reasons.
         if (await userManager.FindByNameAsync(model.Email!) != null)
             throw new HttpNotFoundObjectException("User already exists.");
-        
+
         var user = new AppUser
         {
             Id = Guid.NewGuid().ToString(),
@@ -106,10 +106,10 @@ public class AccountController(UserManager<AppUser> userManager,
         // TODO: Send SMS or email confirmation.
         var emailToken = await userManager.GenerateChangeEmailTokenAsync(
             user, model.Email!);
-        
+
         await emailService.SendConfirmationEmailAsync(user, emailToken);
     }
-    
+
     [HttpPost(IAccountApi.ChangeLocalUserEmailPath)]
     public async Task ChangeLocalUserEmail([FromBody] ChangeEmailRequest model)
     {
@@ -140,7 +140,7 @@ public class AccountController(UserManager<AppUser> userManager,
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
             throw new BadHttpRequestException("Invalid email confirmation request.");
-        
+
         var user = await userManager.FindByIdAsync(userId);
         if (user == null)
             throw new HttpNotFoundObjectException("User not found.");
@@ -175,13 +175,15 @@ public class AccountController(UserManager<AppUser> userManager,
                 string.Join(", ", ModelState.Values.SelectMany(x => x.Errors)));
         }
     }
-    
+
+    // For when the user knows their password, called
+    // from an Account Profile page.
     [HttpPut(IAccountApi.ChangeLocalPasswordPath)]
     public async Task ChangeLocalUserPassword([FromBody] ChangePasswordRequest model)
     {
         if (!ModelState.IsValid)
             throw new BadHttpRequestException("Invalid model state.");
-    
+
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
             throw new HttpNotFoundObjectException("User not found.");
@@ -197,7 +199,7 @@ public class AccountController(UserManager<AppUser> userManager,
                 string.Join(", ", ModelState.Values.SelectMany(x => x.Errors)));
         }
     }
-    
+
     [HttpPut(IAccountApi.ChangeLocalNamePath)]
     public async Task ChangeLocalName([FromBody] ChangeNameRequest model)
     {
@@ -226,7 +228,63 @@ public class AccountController(UserManager<AppUser> userManager,
         user.Email = model.NewExtension!;
         await userManager.UpdateAsync(user);
     }
-    
+
+    // Called to send as password reset email when the
+    // user has forgotten their password.
+    [HttpPut(IAccountApi.ForgotPasswordPath)]
+    public async Task ForgotPassword(ForgotPasswordRequest model)
+    {
+        if (!ModelState.IsValid)
+        {
+            throw new BadHttpRequestException("Invalid forgot password request.");
+        }
+
+        var user = await userManager.FindByEmailAsync(model.Email);
+        if (user == null || !await userManager.IsEmailConfirmedAsync(user))
+        {
+            // Do not reveal whether the user exists or if email confirmed
+            // to prevent email enumeration attacks.
+            return;
+        }
+
+        var token = await userManager.GeneratePasswordResetTokenAsync(user);
+        var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+        // Construct reset link to send via email
+        var baseUrl = configuration["AppSettings:BaseUrl"]; // Your frontend URL or reset page URL
+        var resetLink = $"{baseUrl}/reset-password?email={user.Email}&token={encodedToken}";
+
+        // Send the password reset email (implement your own email service)
+        await emailService.SendPasswordResetEmailAsync(user.Email, user.UserName, resetLink);
+    }
+
+    // This one is linked to in the password reset email.
+    [HttpPut(IAccountApi.PasswordResetPath)]
+    public async Task ResetPassword(ChangePasswordRequest model)
+    {
+        if (!ModelState.IsValid)
+        {
+            throw new BadHttpRequestException("Invalid password reset request.");
+        }
+
+        var user = await userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+        {
+            // To prevent email enumeration, treat non-existent user same as valid and return success
+            return;
+        }
+
+        var tokenBytes = WebEncoders.Base64UrlDecode(model.Token);
+        var decodedToken = Encoding.UTF8.GetString(tokenBytes);
+
+        var result = await userManager.ResetPasswordAsync(user, decodedToken, model.Password);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new BadHttpRequestException("Password reset failed: " + errors);
+        }
+    }
+
     [HttpGet(IAccountApi.GetMyUserInfoPath)]
     public Task<User> GetMyUserInfo()
     {

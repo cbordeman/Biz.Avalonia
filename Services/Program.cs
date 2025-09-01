@@ -4,6 +4,7 @@ using Scalar.AspNetCore;
 using Services.Auth;
 using Services.Auth.Jwt;
 using Services.Config;
+using Services.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddSignalR();
+
 builder.Logging.AddConsole();
 builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Information);
 builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization", LogLevel.Information);
@@ -94,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.MapHub<NotificationHub>("/hubs/notification");
 
 //app.UseHttpsRedirection();
 
