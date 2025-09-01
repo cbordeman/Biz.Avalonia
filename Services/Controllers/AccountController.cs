@@ -16,7 +16,7 @@ namespace Services.Controllers;
 
 // TODO: Restrict most of these endpoints to the BizAdmin,
 // TenantAdmin, or the authenticated user.
-
+ 
 [Route("[controller]")]
 [ApiController]
 [Authorize]
