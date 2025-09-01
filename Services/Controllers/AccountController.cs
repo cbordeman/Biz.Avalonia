@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Biz.Core;
 using Biz.Models;
 using Biz.Models.Account;
 using Data.Models;
@@ -77,9 +76,8 @@ public class AccountController(UserManager<AppUser> userManager,
     {
         if (!ModelState.IsValid)
             throw new HttpNotFoundObjectException("Invalid model state.");
-        // TODO: Consider removing this message fore security reasons.
         if (await userManager.FindByNameAsync(model.Email!) != null)
-            throw new HttpNotFoundObjectException("User already exists.");
+            return;
 
         var user = new AppUser
         {
@@ -104,7 +102,6 @@ public class AccountController(UserManager<AppUser> userManager,
                 string.Join(", ", result.Errors));
         }
 
-        // TODO: Send SMS or email confirmation.
         var emailToken = await userManager.GenerateChangeEmailTokenAsync(
             user, model.Email!);
 
@@ -233,7 +230,7 @@ public class AccountController(UserManager<AppUser> userManager,
     // Called to send as password reset email when the
     // user has forgotten their password.
     [HttpPut(IAccountApi.ForgotPasswordPath)]
-    public async Task ForgotPassword(ForgotPasswordRequest model)
+    public async Task ForgotPassword([FromBody] ForgotPasswordRequest model)
     {
         if (!ModelState.IsValid)
             throw new BadHttpRequestException("Invalid forgot password request.");
@@ -241,8 +238,8 @@ public class AccountController(UserManager<AppUser> userManager,
         var user = await userManager.FindByEmailAsync(model.Email!);
         if (user == null || !await userManager.IsEmailConfirmedAsync(user))
         {
-            // Do not reveal whether the user exists or if email confirmed
-            // to prevent email enumeration attacks.
+            // To prevent email enumeration, treat non-existent user same as valid
+            // and return success.
             return;
         }
 
@@ -256,22 +253,19 @@ public class AccountController(UserManager<AppUser> userManager,
     }
 
     // This one is linked to in the password reset email.
-    [HttpPut(IAccountApi.PasswordResetPath)]
-    public async Task ResetPassword(ChangePasswordRequest model)
+    [HttpPut(IAccountApi.ResetPasswordPath)]
+    public async Task ResetPassword([FromBody] ResetPasswordRequest model)
     {
         if (!ModelState.IsValid)
-        {
             throw new BadHttpRequestException("Invalid password reset request.");
-        }
 
-        var user = await userManager.FindByEmailAsync(model.Email);
+        var user = await userManager.FindByEmailAsync(model.Email!);
+        // To prevent email enumeration, treat non-existent user same as valid
+        // and return success.
         if (user == null)
-        {
-            // To prevent email enumeration, treat non-existent user same as valid and return success
             return;
-        }
 
-        var tokenBytes = WebEncoders.Base64UrlDecode(model.Token);
+        var tokenBytes = WebEncoders.Base64UrlDecode(model.Token!);
         var decodedToken = Encoding.UTF8.GetString(tokenBytes);
 
         var result = await userManager.ResetPasswordAsync(user, decodedToken, model.Password);

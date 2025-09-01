@@ -88,7 +88,7 @@ public class ForgotPasswordRequest
     public string? Email { get; set; }
 }
 
-public class ResetPasswordModel
+public class ResetPasswordRequest
 {
     [Required]
     [StringLength(100)]
