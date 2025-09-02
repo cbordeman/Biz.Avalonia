@@ -4,8 +4,6 @@ using Scalar.AspNetCore;
 using Services.Auth;
 using Services.Auth.Jwt;
 using Services.Config;
-using Services.Hubs;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Register configuration objects.
@@ -98,7 +96,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.MapHub<NotificationHub>("/hubs/notification");
+//app.MapHub<NotificationHub>("/hubs/notification");
 
 //app.UseHttpsRedirection();
 

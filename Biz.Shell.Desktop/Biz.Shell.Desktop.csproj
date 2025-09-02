@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj" />
     <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
+    <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
   </ItemGroup>
 </Project>

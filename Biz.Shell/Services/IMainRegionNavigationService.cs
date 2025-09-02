@@ -10,6 +10,7 @@ public interface IMainRegionNavigationService
     void Initialize();
 
     void ClearHistory();
-    
-    void RequestNavigate(string area, INavigationParameters? navigationParameters = null);
+
+    void RequestNavigate(string? module, string area, 
+        INavigationParameters? navigationParameters);
 }

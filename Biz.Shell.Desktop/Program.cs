@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Biz.Core;
+using Biz.Core.Extensions;
 using Biz.Shell.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
@@ -48,7 +49,7 @@ sealed class Program
 
         // Handle URI if app started by link
         if (args.Length > 1)
-            HandleUri(args[1]);
+            PlatformHandleUri(args[1]);
 
         PlatformHelper.PlatformService = new DesktopPlatformService();
 
@@ -142,7 +143,7 @@ sealed class Program
                     if (!string.IsNullOrEmpty(uri))
                     {
                         Avalonia.Threading.Dispatcher.UIThread.Post(
-                            () => HandleUri(uri));
+                            () => PlatformHandleUri(uri));
                     }
                 }
             }
@@ -160,25 +161,33 @@ sealed class Program
         }
     }
 
-
     static ILogger? GetLogger()
     {
-        ILogger<Program>? logger = null;
         try
         {
-            logger = ContainerLocator.Container.Resolve<ILogger<Program>>();
+            return ContainerLocator.Container.Resolve<ILogger<Program>>();
         }
         catch (Exception)
         {
-            // We'll fall back to Debug logging.
+            return null;
         }
-        return logger;
     }
 
-    static void HandleUri(string uriString)
+    static async void PlatformHandleUri(string uriString)
     {
-        var customUriHandler = ContainerLocator.Container
-            .Resolve<IPlatformAppCustomUriHandler>();
-        customUriHandler.HandleUri(uriString);
+        try
+        {
+            var uriHandler = ContainerLocator.Container
+                .Resolve<PlatformAppCustomUriHandlerBase>();
+            await uriHandler.HandleUri(uriString);
+        }
+        catch (Exception e)
+        {
+            var logger = GetLogger();
+            if (logger == null)
+                Console.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+            else
+                logger.LogError(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+        }
     }
 }

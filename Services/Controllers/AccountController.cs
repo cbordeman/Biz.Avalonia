@@ -1,8 +1,10 @@
 ﻿using System.Text;
+using Biz.Core.Extensions;
 using Biz.Models;
 using Biz.Models.Account;
 using Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using ServiceClients.Models;
 using Services.Auth.Jwt;
@@ -23,10 +25,10 @@ namespace Services.Controllers;
 public class AccountController(UserManager<AppUser> userManager,
     JwtTokenIssuer jwtTokService,
     IDbContextFactory<AppDbContext> dbContextFactory,
-    IEmailService emailService)
+    IEmailService emailService,
+    ILogger<AccountController> logger)
     : ControllerBase, IAccountApi
 {
-
     [HttpPost(IAccountApi.LoginPath)]
     [AllowAnonymous]
     public async Task<TokenResponse> Login([FromBody] LoginModel model)
@@ -44,6 +46,7 @@ public class AccountController(UserManager<AppUser> userManager,
     }
 
     [HttpPost(IAccountApi.RefreshTokensPath)]
+    [AllowAnonymous]
     public async Task<TokenResponse> RefreshTokens(
         [FromBody] string requestRefreshToken)
     {
@@ -72,6 +75,7 @@ public class AccountController(UserManager<AppUser> userManager,
     }
 
     [HttpPost(IAccountApi.RegisterAccountPath)]
+    [AllowAnonymous]
     public async Task RegisterUser([FromBody] RegisterRequest model)
     {
         if (!ModelState.IsValid)
@@ -108,11 +112,55 @@ public class AccountController(UserManager<AppUser> userManager,
         await emailService.SendConfirmationEmailAsync(user, emailToken);
     }
 
+    [HttpPost(IAccountApi.ConfirmRegisteredEmailPath)]
+    [AllowAnonymous]
+    public async Task ConfirmRegisteredEmail(string email, string token)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+            throw new BadHttpRequestException(ModelState.Serialize());
+
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
+            return;
+
+        // The token from the query string is usually Base64 URL encoded, so decode it
+        var tokenBytes = WebEncoders.Base64UrlDecode(token);
+        var decodedToken = Encoding.UTF8.GetString(tokenBytes);
+
+        var result = await userManager.ChangeEmailAsync(user, email, decodedToken);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+            logger.LogWarning(
+                "1 Failed email confirmation {Email}: {Model}.", 
+                email, ModelState.Serialize());
+            return;
+        }
+
+        // Optionally update username to match new email (if your app uses
+        // email as username).  Can comment this code (and fix the Register
+        // endpoint to set username from the model) if you don't want
+        // this behavior.  Also, the model would have to be extended
+        // to include the Username.
+        user.UserName = email;
+        var updateResult = await userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            foreach (var error in updateResult.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+            logger.LogWarning(
+                "2 Failed email confirmation {Email}: {Model}.", 
+                email, ModelState.Serialize());
+
+        }
+    }
+    
     [HttpPost(IAccountApi.ChangeUserEmailPath)]
     public async Task ChangeUserEmail([FromBody] ChangeEmailRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException("Invalid model state.");
+            throw new BadHttpRequestException(ModelState.Serialize());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -126,9 +174,9 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            throw new BadHttpRequestException(
-                "Bad request: " +
-                string.Join(", ", ModelState.Values.SelectMany(x => x.Errors)));
+            logger.LogWarning(
+                "3 Failed change email {ModelUserId} {ModelNewEmail}: {Model}.", 
+                model.UserId, model.NewEmail, ModelState.Serialize());
         }
     }
 
@@ -137,7 +185,9 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ConfirmEmailChange(string userId, string email, string token)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
-            throw new BadHttpRequestException("Invalid email confirmation request.");
+            throw new BadHttpRequestException(
+                $"Invalid email confirmation request.  " +
+                $"userId: {userId}, email: {email}, token: {token}.");
 
         var user = await userManager.FindByIdAsync(userId);
         if (user == null)
@@ -152,9 +202,10 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            throw new BadHttpRequestException(
-                "Bad request: " +
-                string.Join(", ", ModelState.Values.SelectMany(x => x.Errors)));
+            logger.LogWarning(
+                "4 Failed change email {UserId} {NewEmail}: {Model}.", 
+                userId, email, ModelState.Serialize());
+            return;
         }
 
         // Optionally update username to match new email (if your app uses
@@ -168,9 +219,9 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in updateResult.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            throw new BadHttpRequestException(
-                "Bad request: " +
-                string.Join(", ", ModelState.Values.SelectMany(x => x.Errors)));
+            logger.LogWarning(
+                "5 Failed change email {UserId} {Email}: {Model}.", 
+                userId, email, ModelState.Serialize());
         }
     }
 
@@ -180,7 +231,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ChangeUserPassword([FromBody] ChangePasswordRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException("Invalid model state.");
+            throw new BadHttpRequestException(ModelState.Serialize());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -192,17 +243,15 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            throw new BadHttpRequestException(
-                "Bad request: " +
-                string.Join(", ", ModelState.Values.SelectMany(x => x.Errors)));
-        }
+            throw new BadHttpRequestException(ModelState.Serialize());
+        } 
     }
 
     [HttpPut(IAccountApi.ChangeNamePath)]
     public async Task ChangeName([FromBody] ChangeNameRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException("Invalid model state.");
+            throw new BadHttpRequestException(ModelState.Serialize());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -216,7 +265,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ChangePhone([FromBody] ChangePhoneRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException("Invalid model state.");
+            throw new BadHttpRequestException(ModelState.Serialize());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -234,7 +283,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ForgotPassword([FromBody] ForgotPasswordRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException("Invalid forgot password request.");
+            throw new BadHttpRequestException(ModelState.Serialize());
 
         var user = await userManager.FindByEmailAsync(model.Email!);
         if (user == null || !await userManager.IsEmailConfirmedAsync(user))
@@ -259,7 +308,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ResetPassword([FromBody] ResetPasswordRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException("Invalid password reset request.");
+            throw new BadHttpRequestException(ModelState.Serialize());
 
         var user = await userManager.FindByEmailAsync(model.Email!);
         // To prevent email enumeration, treat non-existent user same as valid
@@ -273,8 +322,9 @@ public class AccountController(UserManager<AppUser> userManager,
         var result = await userManager.ResetPasswordAsync(user, decodedToken, model.Password!);
         if (!result.Succeeded)
         {
-            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new BadHttpRequestException("Password reset failed: " + errors);
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+            throw new BadHttpRequestException(ModelState.Serialize());
         }
     }
 

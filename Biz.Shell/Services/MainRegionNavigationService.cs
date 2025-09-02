@@ -14,6 +14,7 @@ public class MainContentRegionNavigationService :
     readonly IRegionManager regionManager;
     readonly ILogger<MainContentRegionNavigationService> logger;
     readonly IAuthenticationService authenticationService;
+    readonly IModuleManager moduleManager;
 
     // this is the full page url
     public string? CurrentPage { get; private set; }
@@ -25,11 +26,13 @@ public class MainContentRegionNavigationService :
 
     public MainContentRegionNavigationService(IRegionManager regionManager,
         ILogger<MainContentRegionNavigationService> logger,
-        IAuthenticationService authenticationService)
+        IAuthenticationService authenticationService,
+        IModuleManager moduleManager)
     {
         this.regionManager = regionManager;
         this.logger = logger;
         this.authenticationService = authenticationService;
+        this.moduleManager = moduleManager;
     }
 
     /// <summary>
@@ -141,10 +144,15 @@ public class MainContentRegionNavigationService :
         regionNavigationService!.Journal.Clear();        
     }
     
-    public void RequestNavigate(string area, INavigationParameters? navigationParameters)
+    public void RequestNavigate(string? module, string area, 
+        INavigationParameters? navigationParameters)
     {
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
+        
+        if (module != null)
+            moduleManager.LoadModule(module);
+        
         if (navigationParameters == null)
             regionNavigationService!.RequestNavigate(area);
         else

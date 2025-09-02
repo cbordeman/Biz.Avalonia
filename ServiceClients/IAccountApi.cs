@@ -11,12 +11,13 @@ public interface IAccountApi
     public const string GetMyUserInfoPath = $"/{Base}/users/myinfo";
     public const string LoginPath = $"/{Base}/login";
     public const string RefreshTokensPath = $"/{Base}/refresh-tokens";
-    public const string RegisterAccountPath = $"/{Base}/register--account";
-    public const string ChangeUserEmailPath = $"/{Base}/change--email";
-    public const string ConfirmEmailChangePath = $"/{Base}/confirm--email-change";
-    public const string ChangePasswordPath = $"/{Base}/change--password";
-    public const string ChangeNamePath = $"/{Base}/change--name";
-    public const string ChangePhonePath = $"/{Base}/change--phone";
+    public const string RegisterAccountPath = $"/{Base}/register-account";
+    public const string ConfirmRegisteredEmailPath = $"/{Base}/confirm-registered-email";
+    public const string ChangeUserEmailPath = $"/{Base}/change-email";
+    public const string ConfirmEmailChangePath = $"/{Base}/confirm-email-change";
+    public const string ChangePasswordPath = $"/{Base}/change-password";
+    public const string ChangeNamePath = $"/{Base}/change-name";
+    public const string ChangePhonePath = $"/{Base}/change-phone";
     public const string ForgotPasswordPath = $"/{Base}/forgot-password";
     public const string ResetPasswordPath = $"/{Base}/reset-password";
     
@@ -31,6 +32,9 @@ public interface IAccountApi
 
     [Post(RegisterAccountPath)]
     Task RegisterUser([Body] RegisterRequest model);
+    
+    [Post(ConfirmRegisteredEmailPath)]
+    Task ConfirmRegisteredEmail(string email, string token);
     
     [Post(ChangeUserEmailPath)]
     Task ChangeUserEmail([Body] ChangeEmailRequest model);

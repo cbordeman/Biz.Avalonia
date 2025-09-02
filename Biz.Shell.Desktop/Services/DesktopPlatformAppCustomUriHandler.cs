@@ -1,49 +1,51 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Biz.Modules.AccountManagement.Core;
+using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
+using Biz.Shell.Services;
 using Microsoft.Extensions.Logging;
 using Prism.Ioc;
+using Prism.Navigation;
+using Prism.Navigation.Regions;
+using ServiceClients;
 
 namespace Biz.Shell.Desktop.Services;
 
-public class DesktopPlatformAppCustomUriHandler
-    : IPlatformAppCustomUriHandler
+public class DesktopPlatformAppCustomUriHandler(
+    ILogger<DesktopPlatformAppCustomUriHandler> logger,
+    IMainRegionNavigationService navService,
+    IAccountApi accountApi)
+    : PlatformAppCustomUriHandlerBase(logger)
 {
-    readonly ILogger<DesktopPlatformAppCustomUriHandler> logger;
-    public DesktopPlatformAppCustomUriHandler(
-        ILogger<DesktopPlatformAppCustomUriHandler> logger)
+    readonly ILogger<DesktopPlatformAppCustomUriHandler> logger = logger;
+    readonly IMainRegionNavigationService navService = navService;
+    readonly IAccountApi accountApi = accountApi;
+
+    protected override async Task HandleConfirmUserRegistration(
+        string token, string email)
     {
-        this.logger = logger;
+        await accountApi.ConfirmRegisteredEmail(email, token);
     }
 
-    public async Task HandleUri(string uriString)
+    protected override Task HandleConfirmForgotPassword(
+        string token, string email)
     {
-        try
-        {
-            var uri = new Uri(uriString);
-            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-
-            string? token = query["token"];
-            string? email = query["email"];
-
-            // TODO: Open views
-            switch (uri.Host)
+        // Opens the page that hits the service and 
+        // confirms to the user the account is activated.
+        navService.RequestNavigate(
+            AccountManagementConstants.ModuleName,
+            AccountManagementConstants.ResetPasswordAfterEmailConfirmationView,
+            new NavigationParameters
             {
-                case IPlatformAppCustomUriHandler.ShowUiForForgotPassword:
-                    
-                    break;
-                case IPlatformAppCustomUriHandler.ShowUiForRegisterUser:
-                    break;
-                
-                default:
-                    throw new Exception($"Unknown URI: {uri.Host}");
-                
-            }
-
-        }
-        catch (Exception e)
-        {
-            logger.LogError(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
-        }
+                {
+                    nameof(ResetPasswordAfterEmailConfirmationViewModel.Token), 
+                    token!
+                },
+                {
+                    nameof(ResetPasswordAfterEmailConfirmationViewModel.Email),
+                    email
+                }
+            });
     }
 }

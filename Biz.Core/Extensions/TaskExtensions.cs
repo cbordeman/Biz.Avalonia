@@ -1,15 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Diagnostics;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
+using Prism.Ioc;
 
-namespace Biz.Shell;
+namespace Biz.Core.Extensions;
 
 public static class TaskExtensions
 {
-    public static T? LogExceptionsBlockAndGetResult<T>(this Task<T> task, string taskDescription, ILogger? logger = null)
+    [UsedImplicitly]
+    public static T LogExceptionsBlockAndGetResult<T>(this Task<T> task, string taskDescription, ILogger? logger = null)
     {
-        task.LogExceptionsAndForget(taskDescription, logger = null);    
+        task.LogExceptionsAndForget(taskDescription, logger);    
         return task.Result;
     }
 
+    [UsedImplicitly]
     public static void LogExceptionsAndForget(this Task task, string taskDescription, ILogger? logger = null)
     {
         try

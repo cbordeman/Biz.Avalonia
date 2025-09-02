@@ -1,4 +1,5 @@
 using Avalonia.Interactivity;
+using Biz.Core.Extensions;
 
 namespace Biz.Shell.Views
 {

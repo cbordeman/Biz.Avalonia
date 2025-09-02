@@ -16,7 +16,7 @@ public class DesktopPlatformService : IPlatformService
         containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
         containerRegistry.RegisterSingleton<ISafeStorage, WindowsSafeStorage>();
         containerRegistry.RegisterSingleton<IPlatformMsalService, DesktopMsalService>();
-        containerRegistry.RegisterSingleton<IPlatformAppCustomUriHandler, DesktopPlatformAppCustomUriHandler>();
+        containerRegistry.RegisterSingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
     }
     
     public void InitializePlatform(IContainerProvider container)
