@@ -209,10 +209,9 @@ public class AccountController(UserManager<AppUser> userManager,
         }
 
         // Optionally update username to match new email (if your app uses
-        // email as username).  Can comment this code (and fix the Register
-        // endpoint to set username from the model) if you don't want
-        // this behavior.  Also, the model would have to be extended
-        // to include the Username.
+        // email as username).  Can comment this code and similar code
+        // elsewhere if you don't want this behavior.  Also, some
+        // models would have to be extended to include the UserName.
         user.UserName = email;
         var updateResult = await userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)

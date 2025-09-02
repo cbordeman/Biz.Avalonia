@@ -26,8 +26,9 @@ public class App : PrismApplication
         switch (ApplicationLifetime)
         {
             case IClassicDesktopStyleApplicationLifetime:
-                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+                // Avoid duplicate validations from both Avalonia and the
+                // CommunityToolkit.  More info:
+                // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
                 return Container.Resolve<MainWindow>();
 
@@ -99,10 +100,8 @@ public class App : PrismApplication
         // Views - Region Navigation
         containerRegistry
             .RegisterForNavigation<SettingsView, SettingsViewModel>()
-            .RegisterForNavigation<SettingsSubView, SettingsSubViewModel>()
-            .RegisterForNavigation<LoginView, LoginViewModel>()
-            .RegisterForNavigation<TenantSelectionView, TenantSelectionViewModel>();
-
+            .RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
+        
         // Accessibility
         containerRegistry
             .RegisterInstance(SemanticScreenReader.Default);

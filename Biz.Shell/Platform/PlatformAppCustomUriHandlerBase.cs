@@ -7,8 +7,10 @@ public abstract class PlatformAppCustomUriHandlerBase(
 {
     readonly ILogger<PlatformAppCustomUriHandlerBase> logger = logger;
 
-    protected abstract Task HandleConfirmForgotPassword(string token, string email);
-    protected abstract Task HandleConfirmUserRegistration(string token, string email);
+    protected abstract Task HandleConfirmUserRegistration(
+        string token, string email);
+    protected abstract Task HandleConfirmForgotPassword(
+        string token, string email);
 
     public async Task HandleUri(string uriString)
     {

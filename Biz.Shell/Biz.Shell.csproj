@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
     <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
     <ProjectReference Include="..\Prism\src\Avalonia\Prism.DryIoc.Avalonia\Prism.DryIoc.Avalonia.csproj" />
     <ProjectReference Include="..\Prism\src\Prism.Core\Prism.Core.csproj" />
@@ -50,9 +51,7 @@
     <ItemGroup>
       <None Remove="Styles\General.xaml" />
       <None Remove="Views\LoginView.xaml" />
-      <AvaloniaXaml Include="Views\LoginView.xaml" />
       <None Remove="Views\TenantSelectionView.xaml" />
-      <AvaloniaXaml Include="Views\TenantSelectionView.xaml" />
     </ItemGroup>
 
     <ItemGroup>

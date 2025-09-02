@@ -7,7 +7,7 @@ namespace Biz.Modules.Dashboard;
 // Module attributes are necessary for directory loading scenario.
 [Module(ModuleName = DashboardConstants.ModuleName, OnDemand = true)]
 //[ModuleDependency()]
-public class DashboardModule : IModule
+public class Module : IModule
 {
     public void RegisterTypes(IContainerRegistry containerRegistry)
     { 

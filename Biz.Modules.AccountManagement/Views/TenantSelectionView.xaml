@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<views:TenantSelectionViewBase
-    x:Class="Biz.Shell.Views.TenantSelectionView"
+<views:FormFactorAwareUserControl
+    x:Class="Biz.Modules.AccountManagement.Views.TenantSelectionView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Biz.Models;assembly=Biz.Models"
-    xmlns:views="clr-namespace:Biz.Shell.Views"
-    xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    xmlns:viewModels="clr-namespace:Biz.Modules.AccountManagement.ViewModels"
+    xmlns:views="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
     x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:CompileBindings="True"
-    x:DataType="vm:TenantSelectionViewModel"
+    x:DataType="viewModels:TenantSelectionViewModel"
+    x:TypeArguments="viewModels:TenantSelectionViewModel"
     mc:Ignorable="d">
 
     <Grid RowDefinitions="*,Auto">
@@ -65,4 +65,4 @@
 
         <views:ProgressBorder Grid.Row="0" />
     </Grid>
-</views:TenantSelectionViewBase>
+</views:FormFactorAwareUserControl>

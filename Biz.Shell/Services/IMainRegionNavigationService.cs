@@ -11,6 +11,9 @@ public interface IMainRegionNavigationService
 
     void ClearHistory();
 
-    void RequestNavigate(string? module, string area, 
-        INavigationParameters? navigationParameters);
+    Task NavigateAsync(string module, string area, 
+        INavigationParameters? navigationParameters = null);
+    
+    void RequestNavigate(string module, string area,
+        INavigationParameters? navigationParameters = null);
 }

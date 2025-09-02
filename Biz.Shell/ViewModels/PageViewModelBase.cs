@@ -1,4 +1,5 @@
-﻿using Biz.Models;
+﻿using Biz.Core.Extensions;
+using Biz.Models;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.ViewModels.Toolbar;
 using Microsoft.Extensions.Logging;

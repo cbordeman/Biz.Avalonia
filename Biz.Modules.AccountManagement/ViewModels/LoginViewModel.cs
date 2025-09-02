@@ -1,7 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Biz.Models;
+using Biz.Modules.AccountManagement.Core;
+using DryIoc;
+using Prism.Commands;
+using Prism.Navigation;
+using Prism.Navigation.Regions;
 
-namespace Biz.Shell.ViewModels;
+namespace Biz.Modules.AccountManagement.ViewModels;
 
 public class LoginViewModel : PageViewModelBase
 {
@@ -216,14 +221,15 @@ public class LoginViewModel : PageViewModelBase
 
     public LoginViewModel(IContainer container) 
         : base(container)
-    {
+    { 
         Title = "Sign In to Biz";
     }
 
-    Task GoToTenantSelectionPage(Tenant[]? availableTenants)
+    async Task GoToTenantSelectionPage(Tenant[]? availableTenants)
     {
-        NavigationService.RequestNavigate(
-            nameof(TenantSelectionView),
+        await NavigationService!.NavigateAsync(
+            AccountManagementConstants.ModuleName,
+            AccountManagementConstants.TenantSelectionView,
             new NavigationParameters
             {
                 {
@@ -231,7 +237,6 @@ public class LoginViewModel : PageViewModelBase
                     availableTenants!
                 }
             });
-        return Task.CompletedTask;
     }
 
     public override void OnNavigatedTo(NavigationContext ctx)

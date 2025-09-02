@@ -1,8 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Biz.Models;
+using Biz.Modules.AccountManagement.Core;
+using DryIoc;
+using JetBrains.Annotations;
+using Prism.Commands;
 
-namespace Biz.Shell.ViewModels;
+namespace Biz.Modules.AccountManagement.ViewModels;
 
+[UsedImplicitly]
 public class TenantSelectionViewModel : PageViewModelBase
 {
     #region AvailableTenants
@@ -31,10 +36,11 @@ public class TenantSelectionViewModel : PageViewModelBase
     #region CancelLoginCommand
     [field: AllowNull, MaybeNull]
     public AsyncDelegateCommand CancelLoginCommand => field ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
-    Task ExecuteCancelLoginCommand()
+    async Task ExecuteCancelLoginCommand()
     {
-        NavigationService.RequestNavigate(nameof(LoginView));
-        return Task.CompletedTask;
+        await NavigationService!.NavigateAsync(
+            AccountManagementConstants.ModuleName,
+            AccountManagementConstants.LoginView);
     }
     #endregion CancelLoginCommand
 

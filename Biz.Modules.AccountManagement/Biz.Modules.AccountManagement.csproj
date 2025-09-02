@@ -13,7 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <AvaloniaXaml Include="Views\TenantSelectionView.xaml" />
       <None Remove="Views\RegisterLocalAccountView.xaml" />
+      <AvaloniaXaml Include="Views\LoginView.xaml" />
       <AvaloniaXaml Include="Views\ResetPasswordAfterEmailConfirmationView.xaml" />
       <AvaloniaXaml Include="Views\RegisterLocalAccountView.xaml" />
     </ItemGroup>

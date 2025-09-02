@@ -1,17 +1,17 @@
 <views:FormFactorAwareUserControl
-    x:Class="Biz.Shell.Views.LoginView"
+    x:Class="Biz.Modules.AccountManagement.Views.LoginView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure"
+    xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure;assembly=Biz.Shell"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:views="clr-namespace:Biz.Shell.Views"
-    xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    xmlns:viewModels="clr-namespace:Biz.Modules.AccountManagement.ViewModels"
+    xmlns:views="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:CompileBindings="True"
-    x:DataType="vm:LoginViewModel"
-    x:TypeArguments="vm:LoginViewModel"
+    x:DataType="viewModels:LoginViewModel"
+    x:TypeArguments="viewModels:LoginViewModel"
     mc:Ignorable="d">
 
     <Grid RowDefinitions="*,Auto">

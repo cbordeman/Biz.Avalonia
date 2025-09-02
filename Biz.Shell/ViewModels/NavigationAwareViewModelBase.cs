@@ -3,13 +3,13 @@ using Shouldly;
 
 namespace Biz.Shell.ViewModels;
 
-public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
+public abstract class NavigationAwareViewModelBase(IContainer container)
     : FormFactorAwareViewModel(container),
     INavigationAware,
     IJournalAware,
     IConfirmNavigationRequest
 {
-    protected IRegionNavigationService? NavigationService = null!;
+    protected readonly IMainRegionNavigationService? NavigationService = null!;
 
     /// <summary>
     ///   Called to determine if this instance can handle the navigation request.
@@ -46,7 +46,7 @@ public abstract class NavigationAwareViewModelBase(DryIoc.IContainer container)
     /// <param name="ctx">The navigation context.</param>
     public virtual void OnNavigatedTo(NavigationContext ctx)
     {
-        NavigationService = ctx.NavigationService;
+        //NavigationService = ctx.NavigationService;
         
         if (ctx.Parameters == null || ctx.Parameters.Count == 0)
             return;

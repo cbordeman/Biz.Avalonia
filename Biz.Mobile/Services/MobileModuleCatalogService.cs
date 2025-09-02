@@ -14,7 +14,7 @@ public class MobileModuleCatalogService : IPlatformModuleCatalogService
         // scenario.  Only desktop supports directory loading.
         moduleCatalog.AddModule(
             DashboardConstants.ModuleName,
-            typeof(DashboardModule).AssemblyQualifiedName,
+            typeof(Module).AssemblyQualifiedName,
             initializationMode: InitializationMode.OnDemand);
     }
 }

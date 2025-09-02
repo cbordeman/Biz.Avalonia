@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Text.Json;
+using Biz.Core.Extensions;
 using Biz.Models;
 using Biz.Shell.Platform;
 using Biz.Shell.Services.Config;
@@ -88,7 +89,8 @@ public class AuthenticationService : IAuthenticationService
         get
         {
             if (authDataStore.Data == null)
-                authDataStore.RestoreAuthDataAsync().LogExceptionsAndForget(
+                authDataStore.RestoreAuthDataAsync()
+                    .LogExceptionsAndForget(
                     "Restoring auth data",
                     logger);
             if (authDataStore.Data == null)

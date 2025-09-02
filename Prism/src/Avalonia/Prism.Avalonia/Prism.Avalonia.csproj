@@ -78,4 +78,9 @@ Prism.Avalonia helps you more easily design and build rich, flexible, and easy t
   <ItemGroup>
     <ProjectReference Include="..\..\Prism.Core\Prism.Core.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3245</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+
 </Project>

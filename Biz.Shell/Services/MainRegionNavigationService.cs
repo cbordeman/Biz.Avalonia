@@ -1,4 +1,4 @@
-﻿using Biz.Modules.Dashboard;
+﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
 using Microsoft.Extensions.Logging;
@@ -65,17 +65,21 @@ public class MainContentRegionNavigationService :
         {
             if (!authenticationService.IsAuthenticated)
                 // Redirect to login page
-                RequestNavigate(nameof(LoginView), null);
+                RequestNavigate(
+                    AccountManagementConstants.ModuleName,
+                    AccountManagementConstants.LoginView);
             else
                 // Go to dashboard.  Note that the region journal has been
                 // emptied so there's no back history to go to.
-                RequestNavigate(nameof(DashboardConstants.DashboardView), null);
+                RequestNavigate(
+                    DashboardConstants.ModuleName,
+                    nameof(DashboardConstants.DashboardView));
         }
         catch (Exception exception)
         {
-            // If we don't redirect to Login because of an exception, it isn't
-            // the end of the world.  Server operations will fail because of
-            // lack of a token.
+            // If we don't redirect to Login because of an exception, it
+            // isn't catastrophic.  Server operations will simply fail
+            // because of the lack of a token.
             logger.LogError(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));       
         }
     }
@@ -118,13 +122,13 @@ public class MainContentRegionNavigationService :
         try
         {
             var name = args.NavigationContext.Uri.OriginalString;
-            if (name != nameof(LoginView) &&
-                name != nameof(TenantSelectionView) &&
+            if (name != AccountManagementConstants.LoginView &&
+                name != AccountManagementConstants.TenantSelectionView &&
                 !AuthenticationService.IsAuthenticated)
             {
                 // Redirect to login page
                 regionNavigationService
-                    .RequestNavigate(nameof(LoginView));
+                    .RequestNavigate(AccountManagementConstants.LoginView);
             }
         }
         catch (Exception e)
@@ -144,19 +148,50 @@ public class MainContentRegionNavigationService :
         regionNavigationService!.Journal.Clear();        
     }
     
-    public void RequestNavigate(string? module, string area, 
-        INavigationParameters? navigationParameters)
+    public Task NavigateAsync(string module, string area,
+        INavigationParameters? navigationParameters = null)
     {
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
         
-        if (module != null)
-            moduleManager.LoadModule(module);
+        TaskCompletionSource<bool> tcs = new();
         
+        moduleManager.LoadModule(module);
+
+        if (navigationParameters == null)
+            regionNavigationService!.RequestNavigate(area,
+                NavigationCallback);
+        else
+            regionNavigationService!.RequestNavigate(area, 
+                NavigationCallback,
+                navigationParameters);
+
+        return tcs.Task;
+        
+        void NavigationCallback(NavigationResult nr)
+        {
+            if (nr.Success)
+                tcs.SetResult(true);
+            else if (nr.Exception != null)
+                tcs.SetException(nr.Exception);
+            else
+                tcs.SetCanceled();
+        }
+    }
+
+    public void RequestNavigate(string module, string area,
+        INavigationParameters? navigationParameters = null)
+    {
+        if (!initialized)
+            throw new InvalidOperationException("Not initialized.");
+        
+        moduleManager.LoadModule(module);
+
         if (navigationParameters == null)
             regionNavigationService!.RequestNavigate(area);
         else
-            regionNavigationService!.RequestNavigate(area, navigationParameters);       
+            regionNavigationService!.RequestNavigate(area, 
+                navigationParameters);
     }
 
     public void Dispose()
