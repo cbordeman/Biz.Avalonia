@@ -19,7 +19,7 @@ public class SettingsSubViewModel : PageViewModelBase
         if (journal != null && journal.CanGoBack)
             journal.GoBack();
         else
-            RegionManager.RequestNavigate(RegionNames.MainContentRegion, 
+            NavigationService.RequestNavigate(RegionNames.MainContentRegion, 
                 DashboardConstants.DashboardView);
     });
 

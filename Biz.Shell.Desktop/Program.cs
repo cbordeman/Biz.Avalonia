@@ -45,7 +45,7 @@ sealed class Program
         }
 
         // Start IPC server to listen for URI messages from future instances
-        Task.Run(IpcServer).LogExceptionsAndForget("IpcServer process");
+        Task.Run(IpcServer);
 
         // Handle URI if app started by link
         if (args.Length > 1)

@@ -26,6 +26,7 @@ public class FormFactorAwareUserControl<TViewModel>
 
         topLevel.SizeChanged -= TopLevel_SizeChanged;
         topLevel.SizeChanged += TopLevel_SizeChanged;
+        
         // if (topLevel.InsetsManager != null)
         // {
         //     topLevel.InsetsManager.SafeAreaChanged += InsetsManager_SafeAreaChanged;

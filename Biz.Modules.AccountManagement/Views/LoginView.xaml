@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Biz.Modules.AccountManagement.ViewModels"
     xmlns:views="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
+    xmlns:views1="clr-namespace:Biz.Modules.AccountManagement.Views"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:CompileBindings="True"
@@ -15,61 +16,7 @@
     mc:Ignorable="d">
 
     <Grid RowDefinitions="*,Auto">
-        <StackPanel
-            Margin="0,50,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Spacing="20">
-            <TextBlock
-                Margin="0,0,0,30"
-                HorizontalAlignment="Center"
-                Classes="Header"
-                Text="Sign In to Get Started" />
-
-            <!--  Google Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithGoogleCommand}"
-                IsEnabled="{Binding IsNotBusy}">
-                <StackPanel Orientation="Horizontal">
-                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
-                    <TextBlock Margin="7,0,0,0" Text="Continue with Google" />
-                </StackPanel>
-            </Button>
-
-            <!--  Microsoft Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithMicrosoftCommand}"
-                IsEnabled="{Binding IsNotBusy}">
-                <StackPanel Orientation="Horizontal">
-                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
-                    <TextBlock Margin="7,0,0,0" Text="Continue with Microsoft" />
-                </StackPanel>
-            </Button>
-
-            <!--  Facebook Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithFacebookCommand}"
-                IsEnabled="{Binding IsNotBusy}">
-                <StackPanel Orientation="Horizontal">
-                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
-                    <TextBlock Margin="7,0,0,0" Text="Continue with Facebook" />
-                </StackPanel>
-            </Button>
-
-            <!--  Apple Login Button  -->
-            <Button
-                Classes="Large"
-                Command="{Binding LoginWithAppleCommand}"
-                IsEnabled="{Binding IsNotBusy}">
-                <StackPanel Orientation="Horizontal">
-                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
-                    <TextBlock Margin="7,0,0,0" Text="Continue with Apple" />
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        <views1:SocialLoginsView Margin="0,50,0,0" DataContext="{Binding SocialLogins}" />
 
         <!--  Footer  -->
         <TextBlock

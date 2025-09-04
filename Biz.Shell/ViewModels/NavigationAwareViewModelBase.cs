@@ -9,8 +9,6 @@ public abstract class NavigationAwareViewModelBase(IContainer container)
     IJournalAware,
     IConfirmNavigationRequest
 {
-    protected readonly IMainRegionNavigationService? NavigationService = null!;
-
     /// <summary>
     ///   Called to determine if this instance can handle the navigation request.
     /// </summary>

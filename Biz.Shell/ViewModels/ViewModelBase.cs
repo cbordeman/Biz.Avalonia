@@ -11,7 +11,11 @@ public abstract class ViewModelBase : BindableBase,
     IRegionMemberLifetime, INotifyDataErrorInfo
 {
     protected readonly DryIoc.IContainer Container;
-    protected readonly IRegionManager? RegionManager;
+    protected IMainRegionNavigationService NavigationService
+    {
+        get;
+        private set;
+    }
     
     #region INotifyDataErrorInfo
     readonly Dictionary<string, List<string>> errors = new();
@@ -94,6 +98,7 @@ public abstract class ViewModelBase : BindableBase,
     #endregion INotifyDataErrorInfo
 
     #region IsBusy
+    // ReSharper disable once MemberCanBeProtected.Global
     public bool IsBusy
     {
         get;
@@ -109,7 +114,7 @@ public abstract class ViewModelBase : BindableBase,
     protected ViewModelBase(DryIoc.IContainer container)
     {
         this.Container = container;
-        this.RegionManager = container.Resolve<IRegionManager>();
+        this.NavigationService = container.Resolve<IMainRegionNavigationService>();
     }
     
     protected override bool SetProperty<T>(ref T storage, T value, 

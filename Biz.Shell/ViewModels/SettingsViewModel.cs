@@ -1,3 +1,5 @@
+using Biz.Core;
+
 namespace Biz.Shell.ViewModels
 {
     public class SettingsViewModel : PageViewModelBase
@@ -16,8 +18,8 @@ namespace Biz.Shell.ViewModels
                 { "key2", 999 }
             };
 
-            RegionManager.RequestNavigate(
-                RegionNames.MainContentRegion,
+            NavigationService.RequestNavigate(
+                null,
                 nameof(SettingsSubView),
                 navParams);
         });

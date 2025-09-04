@@ -14,6 +14,6 @@ public interface IMainRegionNavigationService
     Task NavigateAsync(string module, string area, 
         INavigationParameters? navigationParameters = null);
     
-    void RequestNavigate(string module, string area,
+    void RequestNavigate(string? module, string area,
         INavigationParameters? navigationParameters = null);
 }

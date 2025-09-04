@@ -14,8 +14,8 @@ public class Module : IModule
     { 
         containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>(
             AccountManagementConstants.LoginView);
-        containerRegistry.RegisterForNavigation<TenantSelectionView, LoginViewModel>(
-            AccountManagementConstants.LoginView);
+        containerRegistry.RegisterForNavigation<TenantSelectionView, TenantSelectionViewModel>(
+            AccountManagementConstants.TenantSelectionView);
     }
     
     public void OnInitialized(IContainerProvider containerProvider)

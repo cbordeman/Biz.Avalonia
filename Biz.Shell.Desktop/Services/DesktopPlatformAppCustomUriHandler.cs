@@ -14,6 +14,7 @@ public class DesktopPlatformAppCustomUriHandler(
     IPlatformDialogService dialogService)
     : PlatformAppCustomUriHandlerBase(logger)
 {
+    // ReSharper disable once UnusedMember.Local
     readonly ILogger<DesktopPlatformAppCustomUriHandler> logger = logger;
     readonly IAccountApi accountApi = accountApi;
     readonly IPlatformDialogService dialogService = dialogService;

@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Biz.Core;
+using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
@@ -133,7 +135,9 @@ public abstract class MainViewModelBase
     static bool CanNavigateSettingsCommand() => true;
     Task ExecuteNavigateSettingsCommand()
     {
-        this.RegionManager.RequestNavigate(RegionNames.MainContentRegion, nameof(SettingsView));
+        this.NavigationService.RequestNavigate(
+            null,
+            nameof(SettingsView));
         return Task.CompletedTask;
     }
     #endregion NavigateSettingsCommand
@@ -147,7 +151,8 @@ public abstract class MainViewModelBase
     Task ExecuteGoToPageCommand(string area)
     {
         if (CurrentArea != area)
-            RegionManager.RequestNavigate(RegionNames.MainContentRegion, area);
+            NavigationService.RequestNavigate(
+                AccountManagementConstants.ModuleName, area);
         return Task.CompletedTask;
     }
     #endregion GoToPageCommand

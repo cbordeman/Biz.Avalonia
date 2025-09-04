@@ -5,7 +5,7 @@
 public static class AppConstants
 {
     public const string AppVersion = "0.0.1";
-    
+
     // This is what is used 99% of the time to refer to the product.
     // The shorter, the better.  You can change this as you want.
     // Mixed case, since the user will see this.

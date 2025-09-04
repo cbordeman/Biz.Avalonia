@@ -1,7 +1,9 @@
-﻿using Biz.Modules.AccountManagement.Core;
+﻿using Biz.Core;
+using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
 using Microsoft.Extensions.Logging;
+using Shouldly;
 
 namespace Biz.Shell.Services;
 
@@ -179,14 +181,19 @@ public class MainContentRegionNavigationService :
         }
     }
 
-    public void RequestNavigate(string module, string area,
+    public void RequestNavigate(string? module, string area,
         INavigationParameters? navigationParameters = null)
     {
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
         
-        moduleManager.LoadModule(module);
-
+        if (module != null)
+            moduleManager.LoadModule(module);
+#if DEBUG
+        else
+            logger.LogWarning("{MethodName}(null, {Area}) called with null module.", nameof(RequestNavigate), area);
+#endif
+        
         if (navigationParameters == null)
             regionNavigationService!.RequestNavigate(area);
         else
