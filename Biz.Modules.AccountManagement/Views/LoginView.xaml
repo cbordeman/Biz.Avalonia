@@ -18,13 +18,21 @@
     <Grid RowDefinitions="*,Auto">
         <StackPanel
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Spacing="20">
             <TextBlock
                 Margin="0,0,0,30"
                 HorizontalAlignment="Center"
                 Classes="Header"
                 Text="Sign In to Get Started" />
+
+            <Grid ColumnDefinitions="Auto,100,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
+                <TextBox Text="{Binding Email}" Watermark="Email" />
+                <TextBox
+                    PasswordChar="*"
+                    RevealPassword="True"
+                    Text="{Binding Password}" />
+            </Grid>
 
             <!--  Google Login Button  -->
             <Button

@@ -43,5 +43,5 @@ public static class AppConstants
     public const string ResetPasswordLinkFormat =
         $"{CustomUriSchemeName}:/reset-password?email={{email}}&token={{token}}";
     
-    public const string IpcPipeName = $"{AppShortName}_IpcPipe";
+    public const string EmailRegex = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
 }

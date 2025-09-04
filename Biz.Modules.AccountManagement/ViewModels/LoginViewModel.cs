@@ -1,4 +1,5 @@
-﻿using Biz.Core;
+﻿using System.ComponentModel.DataAnnotations;
+using Biz.Core;
 using Biz.Models;
 using Biz.Modules.AccountManagement.Core;
 using Biz.Shell.Services;
@@ -16,6 +17,30 @@ public class LoginViewModel : PageViewModelBase
     readonly IPlatformDialogService dialogService;
     readonly IAuthenticationService authenticationService;
 
+    #region Email
+    [Required(ErrorMessage = "Required.")]
+    [StringLength(100, ErrorMessage = "Too long.")]
+    [RegularExpression(AppConstants.EmailRegex, ErrorMessage = "Invalid email address.")]
+    public string? Email
+    {
+        get => email;
+        set => SetProperty(ref email, value);
+    }
+    string? email;        
+    #endregion Email
+
+    #region Password
+    [Required]
+    [StringLength(50, MinimumLength = 8, ErrorMessage = "Not a good password.")]
+    public string? Password
+    {
+        get => password;
+        set => SetProperty(ref password, value);
+    }
+    string? password;        
+    #endregion Password
+
+    
     public LoginViewModel(IContainer container)
         : base(container)
     {

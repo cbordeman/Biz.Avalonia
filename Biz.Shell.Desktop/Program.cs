@@ -23,6 +23,8 @@ namespace Biz.Shell.Desktop;
 [UsedImplicitly]
 sealed class Program
 {
+    const string IpcPipeName = $"{AppConstants.AppInternalName}.Shell.IpcPipe";
+    
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -102,8 +104,8 @@ sealed class Program
         try
         {
             using var client = new NamedPipeClientStream(".",
-                AppConstants.IpcPipeName, PipeDirection.Out);
-            client.Connect(5000); // 2-second timeout
+                IpcPipeName, PipeDirection.Out);
+            client.Connect(2000); // 2-second timeout
 
             using var writer = new StreamWriter(client);
             writer.WriteLine(uri);
@@ -122,7 +124,7 @@ sealed class Program
             try
             {
                 await using var server = new NamedPipeServerStream(
-                    AppConstants.IpcPipeName,
+                    IpcPipeName,
                     PipeDirection.In,
                     1,
                     PipeTransmissionMode.Message, PipeOptions.Asynchronous);
