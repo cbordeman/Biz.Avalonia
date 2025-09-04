@@ -16,7 +16,60 @@
     mc:Ignorable="d">
 
     <Grid RowDefinitions="*,Auto">
-        <views1:SocialLoginsView Margin="0,50,0,0" DataContext="{Binding SocialLogins}" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Spacing="20">
+            <TextBlock
+                Margin="0,0,0,30"
+                HorizontalAlignment="Center"
+                Classes="Header"
+                Text="Sign In to Get Started" />
+
+            <!--  Google Login Button  -->
+            <Button
+                Classes="Large"
+                Command="{CompiledBinding LoginWithGoogleCommand}"
+                IsEnabled="{CompiledBinding IsNotBusy}">
+                <StackPanel Orientation="Horizontal">
+                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
+                    <TextBlock Margin="7,0,0,0" Text="Continue with Google" />
+                </StackPanel>
+            </Button>
+
+            <!--  Microsoft Login Button  -->
+            <Button
+                Classes="Large"
+                Command="{CompiledBinding LoginWithMicrosoftCommand}"
+                IsEnabled="{CompiledBinding IsNotBusy}">
+                <StackPanel Orientation="Horizontal">
+                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
+                    <TextBlock Margin="7,0,0,0" Text="Continue with Microsoft" />
+                </StackPanel>
+            </Button>
+
+            <!--  Facebook Login Button  -->
+            <Button
+                Classes="Large"
+                Command="{CompiledBinding LoginWithFacebookCommand}"
+                IsEnabled="{CompiledBinding IsNotBusy}">
+                <StackPanel Orientation="Horizontal">
+                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
+                    <TextBlock Margin="7,0,0,0" Text="Continue with Facebook" />
+                </StackPanel>
+            </Button>
+
+            <!--  Apple Login Button  -->
+            <Button
+                Classes="Large"
+                Command="{CompiledBinding LoginWithAppleCommand}"
+                IsEnabled="{CompiledBinding IsNotBusy}">
+                <StackPanel Orientation="Horizontal">
+                    <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
+                    <TextBlock Margin="7,0,0,0" Text="Continue with Apple" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
 
         <!--  Footer  -->
         <TextBlock
@@ -25,7 +78,11 @@
             Classes="Footer"
             Text="By continuing, you agree to our Terms of Service and Privacy Policy" />
 
-        <views:ProgressBorder Grid.Row="0" />
+        <views:ProgressBorder
+            Grid.Row="0"
+            CancelCommand="{Binding CancelLoginCommand}"
+            CancelContent="Cancel Login"
+            IsBusy="{Binding IsBusy}" />
     </Grid>
 
 </views:FormFactorAwareUserControl>

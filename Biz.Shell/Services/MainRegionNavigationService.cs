@@ -1,9 +1,7 @@
-﻿using Biz.Core;
-using Biz.Modules.AccountManagement.Core;
+﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
 using Microsoft.Extensions.Logging;
-using Shouldly;
 
 namespace Biz.Shell.Services;
 
@@ -22,6 +20,7 @@ public class MainContentRegionNavigationService :
     public string? CurrentPage { get; private set; }
     
     // this is just the first bit
+    // ReSharper disable once MemberCanBePrivate.Global
     public string? CurrentArea { get; private set; }
 
     public event NotifyPageChanged? PageChanged;
@@ -129,8 +128,8 @@ public class MainContentRegionNavigationService :
                 !AuthenticationService.IsAuthenticated)
             {
                 // Redirect to login page
-                regionNavigationService
-                    .RequestNavigate(AccountManagementConstants.LoginView);
+                RequestNavigate(AccountManagementConstants.ModuleName,
+                    AccountManagementConstants.LoginView);
             }
         }
         catch (Exception e)
