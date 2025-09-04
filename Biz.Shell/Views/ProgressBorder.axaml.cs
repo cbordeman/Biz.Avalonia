@@ -19,10 +19,10 @@ public partial class ProgressBorder : UserControl
     #endregion IsBusy
     
     #region CancelCommand
-    private ICommand cancelCommand;
-    public static readonly DirectProperty<ProgressBorder, ICommand> CancelCommandProperty = AvaloniaProperty.RegisterDirect<ProgressBorder, ICommand>(
+    private ICommand? cancelCommand;
+    public static readonly DirectProperty<ProgressBorder, ICommand?> CancelCommandProperty = AvaloniaProperty.RegisterDirect<ProgressBorder, ICommand?>(
         nameof(CancelCommand), o => o.CancelCommand, (o, v) => o.CancelCommand = v);
-    public ICommand CancelCommand
+    public ICommand? CancelCommand
     {
         get => cancelCommand;
         set => SetAndRaise(CancelCommandProperty, ref cancelCommand, value);
@@ -30,14 +30,13 @@ public partial class ProgressBorder : UserControl
     #endregion CancelCommand
     
     #region CancelContent
-    private object cancelContent;
-    public static readonly DirectProperty<ProgressBorder, object> cancelContentProperty = AvaloniaProperty.RegisterDirect<ProgressBorder, object>(
+    private object? cancelContent;
+    public static readonly DirectProperty<ProgressBorder, object?> cancelContentProperty = AvaloniaProperty.RegisterDirect<ProgressBorder, object?>(
         nameof(CancelContent), o => o.CancelContent, (o, v) => o.CancelContent = v);
-    public object CancelContent
+    public object? CancelContent
     {
         get => cancelContent;
         set => SetAndRaise(cancelContentProperty, ref cancelContent, value);
     }
     #endregion CancelContent
 }
-

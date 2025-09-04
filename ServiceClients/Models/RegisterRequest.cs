@@ -15,6 +15,7 @@ public class RegisterRequest
     
     [Required]
     [StringLength(100)]
+    // Actual name, e.g. John Doe
     public string? Name { get; set; }
     
     [Required]

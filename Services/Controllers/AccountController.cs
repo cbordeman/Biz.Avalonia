@@ -4,7 +4,6 @@ using Biz.Models;
 using Biz.Models.Account;
 using Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using ServiceClients.Models;
 using Services.Auth.Jwt;
@@ -33,8 +32,11 @@ public class AccountController(UserManager<AppUser> userManager,
     [AllowAnonymous]
     public async Task<TokenResponse> Login([FromBody] LoginModel model)
     {
-        var user = await userManager.FindByNameAsync(model.Username);
-        if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
+        if (!ModelState.IsValid)
+            throw new HttpNotFoundObjectException("Invalid model state.");
+        
+        var user = await userManager.FindByNameAsync(model.Email!);
+        if (user == null || !await userManager.CheckPasswordAsync(user, model.Password!))
             throw new UnauthorizedAccessException(
                 "User or password is incorrect.");
         var accessToken = jwtTokService.GenerateAccessToken(user);
@@ -50,6 +52,9 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task<TokenResponse> RefreshTokens(
         [FromBody] string requestRefreshToken)
     {
+        if (!ModelState.IsValid)
+            throw new HttpNotFoundObjectException("Invalid model state.");
+        
         var user = await userManager.GetUserAsync(HttpContext.User);
         user.ShouldNotBeNull();
 
@@ -87,12 +92,12 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             Id = Guid.NewGuid().ToString(),
             Email = model.Email,
-            // Username and Email are the same,
-            // but could easily add UserName to the RegisterModel.
+            // Username and Email are the same and kept in sync.
+            UserName = model.Email,
+            // E.g. John Doe
             Name = model.Name!,
             PhoneNumber = model.PhoneNumber,
-            Extension = model.Extension,
-            UserName = model.Email
+            Extension = model.Extension
         };
 
         var result = await userManager.CreateAsync(user, model.Password!);
@@ -138,21 +143,17 @@ public class AccountController(UserManager<AppUser> userManager,
             return;
         }
 
-        // Optionally update username to match new email (if your app uses
-        // email as username).  Can comment this code (and fix the Register
-        // endpoint to set username from the model) if you don't want
-        // this behavior.  Also, the model would have to be extended
-        // to include the Username.
+        // Update username to match new email.
+        var oldUserName = user.UserName;
         user.UserName = email;
         var updateResult = await userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
         {
             foreach (var error in updateResult.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogWarning(
-                "2 Failed email confirmation {Email}: {Model}.", 
-                email, ModelState.Serialize());
-
+            logger.LogCritical(
+                "2 Failed to update username = email during email registration confirmation {Username} = {Email}.", 
+                oldUserName, email);
         }
     }
     
@@ -208,19 +209,17 @@ public class AccountController(UserManager<AppUser> userManager,
             return;
         }
 
-        // Optionally update username to match new email (if your app uses
-        // email as username).  Can comment this code and similar code
-        // elsewhere if you don't want this behavior.  Also, some
-        // models would have to be extended to include the UserName.
+        // Update username to match new email
+        var oldUserName = user.UserName;
         user.UserName = email;
         var updateResult = await userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
         {
             foreach (var error in updateResult.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogWarning(
-                "5 Failed change email {UserId} {Email}: {Model}.", 
-                userId, email, ModelState.Serialize());
+            logger.LogCritical(
+                "5 Failed to update username = email during email change confirmation {Username} = {Email}.", 
+                oldUserName, email);
         }
     }
 
@@ -243,7 +242,7 @@ public class AccountController(UserManager<AppUser> userManager,
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
             throw new BadHttpRequestException(ModelState.Serialize());
-        } 
+        }
     }
 
     [HttpPut(IAccountApi.ChangeNamePath)]
