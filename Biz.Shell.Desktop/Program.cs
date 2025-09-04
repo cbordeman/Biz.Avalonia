@@ -6,8 +6,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Threading;
 using Biz.Core;
-using Biz.Core.Extensions;
 using Biz.Shell.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
@@ -31,10 +31,11 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        // ReSharper disable once UnusedVariable
         var singleInstanceMutex =
             new Mutex(
                 true,
-                $"{AppConstants.AppShortName}SingletonMutex",
+                $"{AppConstants.AppShortName}.SingletonMutex",
                 out bool createdNew);
 
         if (!createdNew)
@@ -113,7 +114,11 @@ sealed class Program
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("Failed to send IPC message: " + ex.Message);
+            var logger = GetLogger();
+            if (logger == null)
+                Debug.WriteLine($"Failed to send IPC message \"{uri}\": {ex.Message}");
+            else
+                logger.LogError(ex, "Failed to send IPC message \"{Uri}\": {ExMessage}", uri, ex.Message);
         }
     }
 
@@ -144,7 +149,7 @@ sealed class Program
 
                     if (!string.IsNullOrEmpty(uri))
                     {
-                        Avalonia.Threading.Dispatcher.UIThread.Post(
+                        Dispatcher.UIThread.Post(
                             () => PlatformHandleUri(uri));
                     }
                 }
@@ -153,7 +158,7 @@ sealed class Program
             {
                 var logger = GetLogger();
                 if (logger == null)
-                    Console.WriteLine($"IPC server error: {ex}");
+                    Debug.WriteLine($"IPC server error: {ex}");
                 else
                     logger.LogError("IPC server error: {Exception}", ex);
 
@@ -161,6 +166,7 @@ sealed class Program
                 await Task.Delay(1000);
             }
         }
+        // ReSharper disable once FunctionNeverReturns
     }
 
     static ILogger? GetLogger()
@@ -187,7 +193,7 @@ sealed class Program
         {
             var logger = GetLogger();
             if (logger == null)
-                Console.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+                Debug.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
             else
                 logger.LogError(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
         }
