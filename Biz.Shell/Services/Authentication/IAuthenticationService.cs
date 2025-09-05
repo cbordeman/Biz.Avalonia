@@ -1,4 +1,5 @@
 using Biz.Models;
+using Biz.Shell.ClientLoginProviders;
 
 namespace Biz.Shell.Services.Authentication
 {
@@ -8,14 +9,14 @@ namespace Biz.Shell.Services.Authentication
     public interface IAuthenticationService
     {
         bool IsAuthenticated { get; }
-        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithGoogleAsync(CancellationToken ct);
-        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithMicrosoftAsync(CancellationToken ct);
-        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithFacebookAsync(CancellationToken ct);
-        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithAppleAsync(CancellationToken ct);
+        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
+            LoginWithProviderAsync(
+            IClientLoginProvider provider, CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);
         void Logout(bool invokeEvent, bool clearBrowserCache);
         Task LogoutAsync(bool invokeEvent, bool clearBrowserCache);
         Task<User?> GetCurrentUserAsync();
         event ChangeHandler AuthenticationStateChanged;
+        IClientLoginProvider CurrentProvider { get; }
     }
 }

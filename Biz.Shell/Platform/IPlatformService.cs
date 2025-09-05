@@ -9,12 +9,12 @@ public interface IPlatformService
     /// </summary>
     /// <param name="containerRegistry"></param>
     void RegisterPlatformTypes(IContainerRegistry containerRegistry);
-    
+
     /// <summary>
     /// Called after container has been built, in App.OnInitialized.
     /// </summary>
     /// <param name="containerProvider"></param>
+    /// <param name="authProviderRegistry"></param>
     void InitializePlatform(IContainerProvider containerProvider,
-        AuthenticationProviderRegistry authProviderRegistry
-        );
+        AuthenticationProviderRegistry authProviderRegistry);
 }

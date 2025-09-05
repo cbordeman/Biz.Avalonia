@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Text.Json;
 using Biz.Core.Extensions;
 using Biz.Models;
+using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Platform;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
@@ -19,69 +20,27 @@ public class AuthenticationService : IAuthenticationService
 {
     readonly IConfigurationService configurationService;
     readonly IAuthDataStore authDataStore;
-    readonly IPlatformMsalService platformMsalService;
     readonly ITenantsApi tenantsApi;
     readonly ILogger<AuthenticationService> logger;
     readonly IRegionManager regionManager;
+    readonly AuthenticationProviderRegistry authProviderRegistry;
 
     public event ChangeHandler? AuthenticationStateChanged;
 
+    public IClientLoginProvider? CurrentProvider { get; private set; }
+    
     public AuthenticationService(IConfigurationService configurationService,
         IAuthDataStore authDataStore, IPlatformMsalService platformMsalService,
         ITenantsApi tenantsApi, ILogger<AuthenticationService> logger,
-        IRegionManager regionManager)
+        IRegionManager regionManager,
+        AuthenticationProviderRegistry authProviderRegistry)
     {
         this.configurationService = configurationService;
         this.authDataStore = authDataStore;
-        this.platformMsalService = platformMsalService;
         this.tenantsApi = tenantsApi;
         this.logger = logger;
         this.regionManager = regionManager;
-
-        //bool useSystemBrowser = App.Current.IsSystemWebViewAvailable();
-        
-//         // Initialize MSAL client for Microsoft authentication
-//         msalClient = PublicClientApplicationBuilder
-//             .Create(this.configurationService.Authentication.Microsoft.ClientId)
-//             .WithTenantId(this.configurationService.Authentication.Microsoft.TenantId)
-//             
-// #if ANDROID 
-//             // Android only supports redirect URIs with custom schemes
-//             .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
-// #elif IOS
-//             // ReSharper disable once StringLiteralTypo
-//             .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
-//             // iOS only supports redirect URIs with custom schemes
-//             .WithRedirectUri(this.configurationService.Authentication.Microsoft.MobileRedirectUri)
-// #else // Windows, Mac
-//             // Desktop only supports loopback URIs
-//             .WithRedirectUri(this.configurationService.Authentication.Microsoft.DesktopRedirectUri)
-// #endif
-//
-//             .WithLogging(
-//                 (level, message, _) =>
-//                 {
-//                     logger.Log(
-//                         level switch
-//                         {
-//                             LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
-//                             LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
-//                             LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
-//                             LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
-//                             LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
-//                             _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
-//                         },
-//                         message);
-// // #if ANDROID
-// //                     Log.Debug("MSAL-VERBOSE", $"[{level}] {message}");
-// // #endif
-//                 },
-//                 LogLevel.Info,
-// #if DEBUG
-//                 enablePiiLogging: true,  // Personally Identifiable Information 
-// #endif
-//                 enableDefaultPlatformLogging: true)
-//             .Build();
+        this.authProviderRegistry = authProviderRegistry;
     }
 
     public bool IsAuthenticated
@@ -140,12 +99,15 @@ public class AuthenticationService : IAuthenticationService
         }
     }
     
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
-        LoginWithMicrosoftAsync(CancellationToken ct)
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, 
+            string? error)> LoginWithProviderAsync(
+        IClientLoginProvider provider, 
+        CancellationToken ct)
     {
         try
         {
-            await LogoutAsync(false, false);
+            authDataStore.RemoveAuthData();
+            await provider.LogoutAsync(false);
         }
         catch (Exception e)
         {
@@ -153,18 +115,17 @@ public class AuthenticationService : IAuthenticationService
             return (false, null, e.Message);
         }
 
-        var result = await platformMsalService.LoginUsingMsal(ct);
+        var (result, internalUserId) = await provider.LoginAsync(ct);
 
         try
         {
             if (result != null)
             {
-                var userId = result.Account.HomeAccountId.Identifier
-                    .GetInternalId(LoginProvider.Microsoft);
                 //var allclaims = string.Join(", ", result.ClaimsPrincipal.Claims.Select(c => c.Type));
                 var isMfa = result.ClaimsPrincipal.Claims.Any(c =>
                     c.Type == "mfr" && c.Value.Split().Contains("mfa"));
-                return await SaveAuthenticationResultAndGetTenants(LoginProvider.Microsoft, userId,
+                return await SaveAuthenticationResultAndGetTenants(
+                    provider, internalUserId,
                     result.AccessToken, result.ExpiresOn,
                     result.Account.Username, result.Account.Username,
                     isMfa);
@@ -184,23 +145,26 @@ public class AuthenticationService : IAuthenticationService
     // Called by LoginWithXXXAsync methods.
     async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         SaveAuthenticationResultAndGetTenants(
-        LoginProvider loginProvider, 
-        string userId, string accessToken, 
+        IClientLoginProvider provider, 
+        string internalUserId, string accessToken, 
         DateTimeOffset expiresOn,
         string name, string email, bool isMfa)
     {
+        CurrentProvider.ShouldNotBeNull();
+        
         authDataStore.RemoveAuthData();
         
         authDataStore.Data.ShouldNotBeNull("authDataStore.Data was null");
-        authDataStore.Data.Id = userId;
+        authDataStore.Data.Id = internalUserId;
         authDataStore.Data.AccessToken = accessToken;
         authDataStore.Data.ExpiresAt = expiresOn;
-        authDataStore.Data.LoginProvider = loginProvider;
+        authDataStore.Data.LoginProvider = CurrentProvider.LoginProvider;
         authDataStore.Data.Name = name;
         authDataStore.Data.Email = email;
         authDataStore.Data.IsMfa = isMfa;
         // Note that Tenant is not set here; it will be set later.
-
+        authDataStore.Data.Tenant = null;
+        
         await authDataStore.SaveAuthDataAsync();
 
         // Fetch available tenants for the user.
@@ -220,7 +184,7 @@ public class AuthenticationService : IAuthenticationService
                 return (false, availableTenants, null);
         }
     }
-    
+
     public async Task CompleteLogin(Tenant selectedTenant)
     {
         authDataStore.Data.ShouldNotBeNull("authDataStore.Data was null");
@@ -338,7 +302,7 @@ public class AuthenticationService : IAuthenticationService
         mainRegion.NavigationService.Journal.Clear();
 
         // Clear MSAL
-        await platformMsalService.ClearCache(clearBrowserCache);
+        await CurrentProvider?.ClearCache(clearBrowserCache);
 
         if (authDataStore.Data != null)
         {

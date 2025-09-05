@@ -15,7 +15,7 @@ public static class StringExtensions
             case LoginProvider.Google:
                 return $"G-{id}";
             case LoginProvider.Microsoft:
-                return $"M-{id}";
+                ;
             case LoginProvider.Facebook:
                 return $"M-{id}";
             case LoginProvider.Apple:

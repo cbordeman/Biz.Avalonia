@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Biz.Core.Extensions;
+using Biz.Core.Models;
 using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
@@ -17,17 +18,13 @@ public class MicrosoftLoginProvider : IClientLoginProvider
 {
     readonly IConfigurationService configurationService;
     readonly IPublicClientApplication msalClient;
-    readonly IAuthDataStore authDataStore;
-    
     readonly ILogger<MicrosoftLoginProvider> logger;
 
     public MicrosoftLoginProvider(ILogger<MicrosoftLoginProvider> logger,
-        IConfigurationService configurationService,
-        IAuthDataStore authDataStore)
+        IConfigurationService configurationService)
     {
         this.logger = logger;
         this.configurationService = configurationService;
-        this.authDataStore = authDataStore;
 
         // Initialize MSAL client for Microsoft authentication
         msalClient = PublicClientApplicationBuilder
@@ -36,7 +33,6 @@ public class MicrosoftLoginProvider : IClientLoginProvider
 
             // Potentially different per platform
             .WithRedirectUri(this.configurationService.Authentication.Microsoft.DesktopRedirectUri)
-
             .WithLogging(
                 (level, message, _) =>
                 {
@@ -58,17 +54,17 @@ public class MicrosoftLoginProvider : IClientLoginProvider
                 LogLevel.Info,
 #if DEBUG
                 // Personally Identifiable Information
-                enablePiiLogging: true,  
+                enablePiiLogging: true,
 #endif
                 enableDefaultPlatformLogging: true)
             .Build();
     }
 
-    public async Task ClearCache(bool clearBrowserCache)
+    private async Task ClearCachedCredentials(bool clearBrowserCache)
     {
         foreach (var acct in await msalClient.GetAccountsAsync())
             await msalClient.RemoveAsync(acct);
-        
+
         // If you don't want the browser to appear when logging
         // out, remove this code.  The consequence is the next
         // time the client authenticates through the browser,
@@ -94,7 +90,10 @@ public class MicrosoftLoginProvider : IClientLoginProvider
         }
     }
 
-    public async Task<AuthenticationResult?> LoginAsync(CancellationToken ct)
+    public LoginProvider LoginProvider => LoginProvider.Microsoft;
+    
+    public async Task<(AuthenticationResult? authenticationResult,
+        string? internalUserId)> LoginAsync(CancellationToken ct)
     {
         AuthenticationResult? result = null;
         try
@@ -118,7 +117,7 @@ public class MicrosoftLoginProvider : IClientLoginProvider
         {
             throw;
         }
-        catch (MsalClientException ex) 
+        catch (MsalClientException ex)
             when (ex.ErrorCode == "authentication_canceled")
         {
             throw new OperationCanceledException("Microsoft login was canceled.", ex);
@@ -128,9 +127,10 @@ public class MicrosoftLoginProvider : IClientLoginProvider
             logger.LogError(ex, "ERROR: Microsoft login failed: {Name} {ExMessage}", ex.GetType().Name, ex.Message);
         }
 
-        return result;
+        var internalUserId = result == null ? null : $"M-{result.Account.HomeAccountId.Identifier}";
+        return (result, internalUserId);
     }
-    
+
     public void Logout(bool clearBrowserCache)
     {
         LogoutAsync(clearBrowserCache)
@@ -142,19 +142,15 @@ public class MicrosoftLoginProvider : IClientLoginProvider
     //  Clears existing login data, plus any provider-specific cleanup.
     public async Task LogoutAsync(bool clearBrowserCache)
     {
-        await ClearCache(clearBrowserCache);
+        await ClearCachedCredentials(clearBrowserCache);
 
-        if (authDataStore.Data != null)
+        try
         {
-            try
-            {
-                authDataStore.RemoveAuthData();
-                logger.LogInformation($"User logged out: {nameof(MicrosoftLoginProvider)}");
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, "Failed to log out: {EMessage}", e.Message);
-            }
+            logger.LogInformation($"User logged out: {nameof(MicrosoftLoginProvider)}");
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to log out: {EMessage}", e.Message);
         }
     }
 }

@@ -4,8 +4,11 @@ namespace Biz.Shell.ClientLoginProviders;
 
 public interface IClientLoginProvider
 {
-    Task<AuthenticationResult?> LoginAsync(CancellationToken ct);
-    Task ClearCache(bool clearBrowserCache);
+    LoginProvider LoginProvider { get; }
+    Task<(AuthenticationResult? authenticationResult, 
+            string? internalUserId)> 
+        LoginAsync(CancellationToken ct);
+    //Task ClearCachedCredentials(bool clearBrowserCache);
     void Logout(bool clearBrowserCache);
     Task LogoutAsync(bool clearBrowserCache);
 }
