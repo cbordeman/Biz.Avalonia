@@ -61,10 +61,12 @@ public class AndroidMsalService : IPlatformMsalService
             .Build();
     }
     
-    public async Task ClearCache()
+    public async Task ClearCache(bool alsoClearBrowserCache)
     {
         foreach (var acct in await msalClient.GetAccountsAsync())
             await msalClient.RemoveAsync(acct);
+        
+        // TODO: clear browser cache if requested
     }
     
     public async Task<AuthenticationResult?> LoginUsingMsal(CancellationToken ct)

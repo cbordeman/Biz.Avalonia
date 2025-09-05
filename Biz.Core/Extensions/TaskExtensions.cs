@@ -26,7 +26,7 @@ public static class TaskExtensions
         {
             // We'll fall back to Debug logging.
         }
-
+        
         task.ContinueWith(t =>
         {
             if (!t.IsFaulted)

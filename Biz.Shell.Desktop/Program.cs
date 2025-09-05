@@ -24,43 +24,51 @@ namespace Biz.Shell.Desktop;
 sealed class Program
 {
     const string IpcPipeName = $"{AppConstants.AppInternalName}.Shell.IpcPipe";
-    
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
-        // ReSharper disable once UnusedVariable
-        var singleInstanceMutex =
-            new Mutex(
-                true,
-                $"{AppConstants.AppShortName}.SingletonMutex",
-                out bool createdNew);
-
-        if (!createdNew)
+        try
         {
-            // Another instance is running, send args[1] (the URI) via IPC to it
+            // ReSharper disable once UnusedVariable
+            var singleInstanceMutex =
+                new Mutex(
+                    true,
+                    $"{AppConstants.AppShortName}.SingletonMutex",
+                    out bool createdNew);
+
+            if (!createdNew)
+            {
+                // Another instance is running, send args[1] (the URI) via IPC to it
+                if (args.Length > 1)
+                    SendUriToRunningInstance(args[1]);
+                // Exit this new instance
+                return;
+            }
+
+            // Start IPC server to listen for URI messages from future instances
+            Task.Run(IpcServer);
+
+            // Handle URI if app started by link
             if (args.Length > 1)
-                SendUriToRunningInstance(args[1]);
-            // Exit this new instance
-            return;
+                PlatformHandleUri(args[1]);
+
+            PlatformHelper.PlatformService = new DesktopPlatformService();
+
+            // Register biz:... links
+            RegisterCustomUriSchemeIfMissing();
+
+            BuildAvaloniaApp()
+                .StartWithClassicDesktopLifetime(args);
         }
-
-        // Start IPC server to listen for URI messages from future instances
-        Task.Run(IpcServer);
-
-        // Handle URI if app started by link
-        if (args.Length > 1)
-            PlatformHandleUri(args[1]);
-
-        PlatformHelper.PlatformService = new DesktopPlatformService();
-
-        // Register biz:... links
-        RegisterCustomUriSchemeIfMissing();
-
-        BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -140,7 +148,7 @@ sealed class Program
                 // Read in a loop until client disconnects
                 while (true)
                 {
-                    // Note that this line waits asyncronously for input
+                    // This line waits asyncronously for input
                     // and doesn't return without data, so no need
                     // to introduce a delay.
                     var uri = await reader.ReadLineAsync();

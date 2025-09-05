@@ -1,4 +1,5 @@
-﻿using Biz.Core.Models;
+﻿using Biz.Core;
+using Biz.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,6 @@ public class AppUser : IdentityUser
         // Default constructor for EF
         Name = string.Empty;
         id = string.Empty; 
-        email = string.Empty;
         TenantUsers = new List<TenantUser>();
     }
 
@@ -62,13 +62,12 @@ public class AppUser : IdentityUser
     string? email;
 
     [ProtectedPersonalData]
-    [Required]
     [Phone]
     [StringLength(20)]
+    [RegularExpression(AppConstants.PhoneRegex)]
     public override string? PhoneNumber { get; set; }
     
     [ProtectedPersonalData]
-    [Required]
     [StringLength(8)]
     public string? Extension { get; set; }
     

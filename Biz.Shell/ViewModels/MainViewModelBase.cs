@@ -178,12 +178,13 @@ public abstract class MainViewModelBase
     }
     
     #region LogoutCommand
-    [field: AllowNull, MaybeNull]
     public AsyncDelegateCommand LogoutCommand => field ??= new AsyncDelegateCommand(ExecuteLogoutCommand, CanLogoutCommand);
     static bool CanLogoutCommand() => true;
     Task ExecuteLogoutCommand()
     {
-        AuthService.Logout(true);
+        // Opens browser to the sign out page to ensure cookies
+        // are cleared and provider actions can execute.
+        AuthService.Logout(true, true);
         
         // Can't set to null because of a bug in the sidebar control.
         // Must set to non-null or the property change doesn't trigger

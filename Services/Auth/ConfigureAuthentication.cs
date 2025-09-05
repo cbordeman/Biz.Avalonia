@@ -38,7 +38,7 @@ public static IServiceCollection ConfigureAuthentication(
             {
                 return parsedProvider switch
                 {
-                    LoginProvider.Local => "LocalJwt",
+                    LoginProvider.Local => "Local",
                     LoginProvider.Google => "Google",
                     LoginProvider.Microsoft => "Microsoft",
                     LoginProvider.Facebook => "Facebook",
@@ -54,7 +54,7 @@ public static IServiceCollection ConfigureAuthentication(
     {
         // No options needed for anonymous
     })
-    .AddJwtBearer("LocalJwt", options =>
+    .AddJwtBearer("Local", options =>
     {
         options.Authority = externalAuthSettings.Local.Authority;
         options.Audience = externalAuthSettings.Local.Audience;
@@ -129,7 +129,10 @@ public static IServiceCollection ConfigureAuthentication(
                 }
                 return Task.CompletedTask;
             },
-            OnForbidden = _ => Task.CompletedTask
+            OnForbidden = context =>
+            {
+                return Task.CompletedTask;
+            }
         };
     })
     .AddJwtBearer("Facebook", options =>

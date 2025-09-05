@@ -1,9 +1,10 @@
 ﻿using System.Security.Claims;
+using Biz.Models;
 using Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Services.Controllers;
 using Shouldly;
+using Tenant = Biz.Models.Tenant;
 
 namespace Services.Auth;
 
@@ -127,9 +128,9 @@ public static partial class Auth
                 {
                     // Success
                     await context.Response.WriteAsJsonAsync(
-                        new Biz.Models.User(user.Id, user.Name, user.Email,
+                        new User(user.Id, user.Name, user.Email!,
                             true, user.LoginProvider,
-                            new Biz.Models.Tenant(
+                            new Tenant(
                                 tu.Tenant.Id, tu.Tenant.Name)));
 
                     // Add a new identity with new claim for our

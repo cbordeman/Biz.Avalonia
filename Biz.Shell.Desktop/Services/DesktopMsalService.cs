@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,10 +57,21 @@ public class DesktopMsalService : IPlatformMsalService
             .Build();
     }
 
-    public async Task ClearCache()
+    public async Task ClearCache(bool alsoClearBrowserCache)
     {
         foreach (var acct in await msalClient.GetAccountsAsync())
             await msalClient.RemoveAsync(acct);
+        
+        if (alsoClearBrowserCache)
+        {
+            // Open system browser to Microsoft's universal logout page
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "https://login.microsoftonline.com/common/oauth2/v2.0/logout",
+                UseShellExecute = true
+            };
+            System.Diagnostics.Process.Start(psi);
+        }
     }
     
     public async Task<AuthenticationResult?> LoginUsingMsal(CancellationToken ct)

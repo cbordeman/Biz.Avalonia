@@ -145,7 +145,7 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            await LogoutAsync(false);
+            await LogoutAsync(false, false);
         }
         catch (Exception e)
         {
@@ -322,22 +322,29 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public void Logout(bool invokeEvent)
+    /// <summary>
+    /// Any UI code after this call must be manually
+    /// marshalled to the UI thread.  Code is executed
+    /// on a thread to prevent deadlocks. 
+    /// </summary>
+    /// <param name="invokeEvent"></param>
+    public void Logout(bool invokeEvent, bool clearBrowserCache)
     {
-        LogoutAsync(invokeEvent).LogExceptionsAndForget(
+        LogoutAsync(invokeEvent, clearBrowserCache)
+            .LogExceptionsAndForget(
             $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
             logger);
     }
 
     //  Clears existing login data, plus any provider-specific cleanup.
-    public async Task LogoutAsync(bool invokeEvent)
+    public async Task LogoutAsync(bool invokeEvent, bool clearBrowserCache)
     {
         // Clear history
         var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
         mainRegion.NavigationService.Journal.Clear();
         
         // Clear MSAL
-        await platformMsalService.ClearCache();
+        await platformMsalService.ClearCache(clearBrowserCache);
 
         if (authDataStore.Data != null)
         {

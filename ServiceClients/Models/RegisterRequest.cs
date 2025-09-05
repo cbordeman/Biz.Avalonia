@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Biz.Core;
 
 namespace ServiceClients.Models;
 
@@ -11,6 +12,7 @@ public class RegisterRequest
     
     [Required]
     [StringLength(50)]
+    [RegularExpression(AppConstants.PasswordRegex)]
     public string? Password { get; set; }
     
     [Required]
@@ -51,6 +53,7 @@ public class ChangePasswordRequest
     
     [Required]
     [StringLength(50)]
+    [RegularExpression(AppConstants.PasswordRegex)]
     public string? NewPassword { get; set; }
 }
 
@@ -100,6 +103,7 @@ public class ResetPasswordRequest
     public string? Token { get; set; }
 
     [Required]
-    [StringLength(50)]
+    [StringLength(50, MinimumLength = 8)]
+    [RegularExpression(AppConstants.PasswordRegex)]
     public string? Password { get; set; }
 }

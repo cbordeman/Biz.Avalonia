@@ -5,5 +5,5 @@ namespace Biz.Shell.Platform;
 public interface IPlatformMsalService
 {
     Task<AuthenticationResult?> LoginUsingMsal(CancellationToken ct);
-    Task ClearCache();
+    Task ClearCache(bool alsoClearBrowserCache);
 }

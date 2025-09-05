@@ -13,8 +13,8 @@ namespace Biz.Shell.Services.Authentication
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithFacebookAsync(CancellationToken ct);
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> LoginWithAppleAsync(CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);
-        void Logout(bool invokeEvent);
-        Task LogoutAsync(bool invokeEvent);
+        void Logout(bool invokeEvent, bool clearBrowserCache);
+        Task LogoutAsync(bool invokeEvent, bool clearBrowserCache);
         Task<User?> GetCurrentUserAsync();
         event ChangeHandler AuthenticationStateChanged;
     }

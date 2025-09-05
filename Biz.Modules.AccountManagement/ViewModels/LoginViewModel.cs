@@ -275,7 +275,7 @@ public class LoginViewModel : PageViewModelBase
     {
         base.OnNavigatedTo(ctx);
 
-        AuthenticationService.Logout(false);
+        AuthenticationService.Logout(false, false);
     }
 
     public override bool PersistInHistory() => false;
