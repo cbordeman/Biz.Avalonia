@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net.Http;
-using Prism.Ioc;
+﻿using System.Net.Http;
 using Refit;
 
-namespace Biz.Core.Extensions;
+namespace Biz.Shell.ClientLoginProviders;
 
 public static class ContainerRegistryExtensions
 {

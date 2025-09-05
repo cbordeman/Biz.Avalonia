@@ -139,8 +139,8 @@ public class AuthenticationService : IAuthenticationService
             return (false, null, ex.Message);
         }
     }
-
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
+    
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         LoginWithMicrosoftAsync(CancellationToken ct)
     {
         try
@@ -152,9 +152,9 @@ public class AuthenticationService : IAuthenticationService
             logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
             return (false, null, e.Message);
         }
-        
+
         var result = await platformMsalService.LoginUsingMsal(ct);
-        
+
         try
         {
             if (result != null)
@@ -164,7 +164,7 @@ public class AuthenticationService : IAuthenticationService
                 //var allclaims = string.Join(", ", result.ClaimsPrincipal.Claims.Select(c => c.Type));
                 var isMfa = result.ClaimsPrincipal.Claims.Any(c =>
                     c.Type == "mfr" && c.Value.Split().Contains("mfa"));
-                return await SaveAuthenticationResultAndGetTenants(LoginProvider.Microsoft, userId, 
+                return await SaveAuthenticationResultAndGetTenants(LoginProvider.Microsoft, userId,
                     result.AccessToken, result.ExpiresOn,
                     result.Account.Username, result.Account.Username,
                     isMfa);
@@ -322,18 +322,12 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    /// <summary>
-    /// Any UI code after this call must be manually
-    /// marshalled to the UI thread.  Code is executed
-    /// on a thread to prevent deadlocks. 
-    /// </summary>
-    /// <param name="invokeEvent"></param>
     public void Logout(bool invokeEvent, bool clearBrowserCache)
     {
         LogoutAsync(invokeEvent, clearBrowserCache)
             .LogExceptionsAndForget(
-            $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
-            logger);
+                $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
+                logger);
     }
 
     //  Clears existing login data, plus any provider-specific cleanup.
@@ -342,7 +336,7 @@ public class AuthenticationService : IAuthenticationService
         // Clear history
         var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
         mainRegion.NavigationService.Journal.Clear();
-        
+
         // Clear MSAL
         await platformMsalService.ClearCache(clearBrowserCache);
 
@@ -365,7 +359,7 @@ public class AuthenticationService : IAuthenticationService
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                
+
                 authDataStore.RemoveAuthData();
                 logger.LogInformation("User logged out.");
             }
@@ -378,7 +372,7 @@ public class AuthenticationService : IAuthenticationService
         if (invokeEvent)
             AuthenticationStateChanged?.Invoke();
     }
-
+    
     public async Task<User?> GetCurrentUserAsync()
     {
         if (!IsAuthenticated)

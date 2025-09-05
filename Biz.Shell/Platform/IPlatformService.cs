@@ -1,3 +1,5 @@
+using Biz.Shell.Services.Authentication;
+
 namespace Biz.Shell.Platform;
 
 public interface IPlatformService
@@ -12,5 +14,7 @@ public interface IPlatformService
     /// Called after container has been built, in App.OnInitialized.
     /// </summary>
     /// <param name="containerProvider"></param>
-    void InitializePlatform(IContainerProvider containerProvider);
+    void InitializePlatform(IContainerProvider containerProvider,
+        AuthenticationProviderRegistry authProviderRegistry
+        );
 }

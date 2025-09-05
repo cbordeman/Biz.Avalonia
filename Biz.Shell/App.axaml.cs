@@ -96,6 +96,7 @@ public class App : PrismApplication
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
         containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
+        containerRegistry.RegisterSingleton<AuthenticationProviderRegistry>();
 
         // Views - Region Navigation
         containerRegistry
@@ -131,7 +132,10 @@ public class App : PrismApplication
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
         ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
 
-        PlatformHelper.PlatformService?.InitializePlatform(Container);
+        var authProviderRegistry = Container.Resolve<AuthenticationProviderRegistry>();
+        
+        PlatformHelper.PlatformService?.InitializePlatform(Container,
+            authProviderRegistry);
     }
 
     /// <summary>Custom region adapter mappings.</summary>
