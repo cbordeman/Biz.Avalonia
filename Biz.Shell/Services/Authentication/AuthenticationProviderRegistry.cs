@@ -24,7 +24,7 @@ public class AuthenticationProviderRegistry
             new LoginProviderDescriptor(
                 name, geomertyResourceKey, typeof(T)));
     }
-    
-    public IEnumerable<LoginProviderDescriptor> Descriptors =>
-        loginProviders.Values;
+
+    public ReadOnlyDictionary<LoginProvider, LoginProviderDescriptor> 
+        Descriptors => loginProviders.AsReadOnly();
 }

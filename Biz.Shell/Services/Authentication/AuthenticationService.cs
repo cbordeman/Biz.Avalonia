@@ -24,16 +24,19 @@ public class AuthenticationService : IAuthenticationService
     readonly ILogger<AuthenticationService> logger;
     readonly IRegionManager regionManager;
     readonly AuthenticationProviderRegistry authProviderRegistry;
+    readonly IContainer container;
 
     public event ChangeHandler? AuthenticationStateChanged;
 
     public IClientLoginProvider? CurrentProvider { get; private set; }
+    public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
     
     public AuthenticationService(IConfigurationService configurationService,
         IAuthDataStore authDataStore, IPlatformMsalService platformMsalService,
         ITenantsApi tenantsApi, ILogger<AuthenticationService> logger,
         IRegionManager regionManager,
-        AuthenticationProviderRegistry authProviderRegistry)
+        AuthenticationProviderRegistry authProviderRegistry,
+        IContainer container)
     {
         this.configurationService = configurationService;
         this.authDataStore = authDataStore;
@@ -41,6 +44,7 @@ public class AuthenticationService : IAuthenticationService
         this.logger = logger;
         this.regionManager = regionManager;
         this.authProviderRegistry = authProviderRegistry;
+        this.container = container;
     }
 
     public bool IsAuthenticated
@@ -101,13 +105,28 @@ public class AuthenticationService : IAuthenticationService
     
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants, 
             string? error)> LoginWithProviderAsync(
-        IClientLoginProvider provider, 
+        LoginProvider providerEnum, 
         CancellationToken ct)
     {
         try
         {
+            CurrentProviderDescriptor = 
+                authProviderRegistry.Descriptors[providerEnum];
+            CurrentProvider = (IClientLoginProvider)container.Resolve(
+                CurrentProviderDescriptor.ProviderType);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, 
+                "No registered login provider for {LoginProvider}: " +
+                "{EMessage}", providerEnum, e.Message);
+            throw;
+        }
+        
+        try
+        {
             authDataStore.RemoveAuthData();
-            await provider.LogoutAsync(false);
+            await CurrentProvider.LogoutAsync(false);
         }
         catch (Exception e)
         {
@@ -115,23 +134,28 @@ public class AuthenticationService : IAuthenticationService
             return (false, null, e.Message);
         }
 
-        var (result, internalUserId) = await provider.LoginAsync(ct);
+        var (result, internalUserId) = 
+            await CurrentProvider.LoginAsync(ct);
 
         try
         {
             if (result != null)
             {
+                internalUserId.ShouldNotBeNullOrEmpty();
+                
                 //var allclaims = string.Join(", ", result.ClaimsPrincipal.Claims.Select(c => c.Type));
                 var isMfa = result.ClaimsPrincipal.Claims.Any(c =>
                     c.Type == "mfr" && c.Value.Split().Contains("mfa"));
                 return await SaveAuthenticationResultAndGetTenants(
-                    provider, internalUserId,
-                    result.AccessToken, result.ExpiresOn,
-                    result.Account.Username, result.Account.Username,
+                    internalUserId,
+                    result.AccessToken, 
+                    result.ExpiresOn,
+                    result.Account.Username, 
+                    result.Account.Username,
                     isMfa);
             }
 
-            logger.LogDebug("ERROR: result was NULL.");
+            logger.LogError("Result was NULL.");
             return (false, null, "Login failed");
         }
         catch (Exception e)
@@ -145,7 +169,6 @@ public class AuthenticationService : IAuthenticationService
     // Called by LoginWithXXXAsync methods.
     async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         SaveAuthenticationResultAndGetTenants(
-        IClientLoginProvider provider, 
         string internalUserId, string accessToken, 
         DateTimeOffset expiresOn,
         string name, string email, bool isMfa)
@@ -294,45 +317,18 @@ public class AuthenticationService : IAuthenticationService
                 logger);
     }
 
-    //  Clears existing login data, plus any provider-specific cleanup.
     public async Task LogoutAsync(bool invokeEvent, bool clearBrowserCache)
     {
         // Clear history
         var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
         mainRegion.NavigationService.Journal.Clear();
 
-        // Clear MSAL
-        await CurrentProvider?.ClearCache(clearBrowserCache);
+        if (CurrentProvider != null)
+            await CurrentProvider.LogoutAsync(clearBrowserCache);
 
-        if (authDataStore.Data != null)
-        {
-            try
-            {
-                switch (authDataStore.Data.LoginProvider)
-                {
-                    case LoginProvider.Google:
-                        break;
-                    case LoginProvider.Microsoft:
-                        break;
-                    case LoginProvider.Facebook:
-                        break;
-                    case LoginProvider.Apple:
-                        break;
-                    case null:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                authDataStore.RemoveAuthData();
-                logger.LogInformation("User logged out.");
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"ERROR: Failed to log out: {e.Message}");
-            }
-        }
-
+        CurrentProviderDescriptor = null;
+        CurrentProvider = null;
+        
         if (invokeEvent)
             AuthenticationStateChanged?.Invoke();
     }

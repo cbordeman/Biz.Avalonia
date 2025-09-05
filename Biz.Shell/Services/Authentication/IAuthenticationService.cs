@@ -11,12 +11,13 @@ namespace Biz.Shell.Services.Authentication
         bool IsAuthenticated { get; }
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
             LoginWithProviderAsync(
-            IClientLoginProvider provider, CancellationToken ct);
+            LoginProvider providerEnum, CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);
         void Logout(bool invokeEvent, bool clearBrowserCache);
         Task LogoutAsync(bool invokeEvent, bool clearBrowserCache);
         Task<User?> GetCurrentUserAsync();
         event ChangeHandler AuthenticationStateChanged;
-        IClientLoginProvider CurrentProvider { get; }
+        IClientLoginProvider? CurrentProvider { get; }
+        LoginProviderDescriptor? CurrentProviderDescriptor { get; }
     }
 }
