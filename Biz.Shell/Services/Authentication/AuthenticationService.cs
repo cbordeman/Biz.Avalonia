@@ -44,8 +44,6 @@ public class AuthenticationService(IConfigurationService configurationService,
             CurrentProvider = (IClientLoginProvider)
                 container.Resolve(descriptor.ProviderType);
         }
-        
-        isInitialized = true;
     }
     
     public bool IsAuthenticated
