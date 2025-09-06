@@ -7,7 +7,7 @@ public record LoginProviderDescriptor(
     string GeomertyResourceKey,
     Type ProviderType);
 
-public class AuthenticationProviderRegistry
+public class LoginProviderRegistry
 {
     readonly Dictionary<LoginProvider, LoginProviderDescriptor> 
         loginProviders = new();

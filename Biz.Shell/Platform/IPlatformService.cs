@@ -16,5 +16,5 @@ public interface IPlatformService
     /// <param name="containerProvider"></param>
     /// <param name="authProviderRegistry"></param>
     void InitializePlatform(IContainerProvider containerProvider,
-        AuthenticationProviderRegistry authProviderRegistry);
+        LoginProviderRegistry authProviderRegistry);
 }

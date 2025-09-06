@@ -3,6 +3,7 @@ using Biz.Mobile.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
+using Biz.Shell.Services.Authentication;
 using Microsoft.Identity.Client;
 using Prism.Ioc;
 
@@ -19,7 +20,8 @@ public class BrowserPlatformService : IPlatformService
         containerRegistry.RegisterSingleton<ISafeStorage, WasmSecureStorage>();
     }
     
-    public void InitializePlatform(IContainerProvider container)
+    public void InitializePlatform(IContainerProvider container, 
+        LoginProviderRegistry authProviderRegistry)
     {
     }
     

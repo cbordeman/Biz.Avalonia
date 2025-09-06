@@ -3,7 +3,6 @@ using System.Text.Json;
 using Biz.Core.Extensions;
 using Biz.Models;
 using Biz.Shell.ClientLoginProviders;
-using Biz.Shell.Platform;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Authentication;
@@ -15,15 +14,16 @@ using Shouldly;
 
 namespace Biz.Shell.Services.Authentication;
 
-[UsedImplicitly]
 public class AuthenticationService : IAuthenticationService
 {
+    bool isInitialized;
+    
     readonly IConfigurationService configurationService;
     readonly IAuthDataStore authDataStore;
     readonly ITenantsApi tenantsApi;
     readonly ILogger<AuthenticationService> logger;
     readonly IRegionManager regionManager;
-    readonly AuthenticationProviderRegistry authProviderRegistry;
+    readonly LoginProviderRegistry authProviderRegistry;
     readonly IContainer container;
 
     public event ChangeHandler? AuthenticationStateChanged;
@@ -32,10 +32,10 @@ public class AuthenticationService : IAuthenticationService
     public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
     
     public AuthenticationService(IConfigurationService configurationService,
-        IAuthDataStore authDataStore, IPlatformMsalService platformMsalService,
+        IAuthDataStore authDataStore, 
         ITenantsApi tenantsApi, ILogger<AuthenticationService> logger,
         IRegionManager regionManager,
-        AuthenticationProviderRegistry authProviderRegistry,
+        LoginProviderRegistry authProviderRegistry,
         IContainer container)
     {
         this.configurationService = configurationService;
@@ -47,6 +47,25 @@ public class AuthenticationService : IAuthenticationService
         this.container = container;
     }
 
+    public async Task InitializeAsync()
+    {
+        if (authDataStore.Data == null)
+            await authDataStore.RestoreAuthDataAsync();
+        if (authDataStore.Data == null ||
+            authDataStore.Data.LoginProvider == null)
+            return;
+        if (authProviderRegistry.Descriptors
+            .TryGetValue(authDataStore.Data.LoginProvider.Value, 
+                out var descriptor))
+        {
+            CurrentProviderDescriptor = descriptor;
+            CurrentProvider = (IClientLoginProvider)
+                container.Resolve(descriptor.ProviderType);
+        }
+        
+        isInitialized = true;
+    }
+    
     public bool IsAuthenticated
     {
         get
@@ -56,8 +75,9 @@ public class AuthenticationService : IAuthenticationService
                     .LogExceptionsAndForget(
                     "Restoring auth data",
                     logger);
-            if (authDataStore.Data == null)
+            if (authDataStore.Data == null || authDataStore.Data.LoginProvider == null)
                 return false;
+            
             if (authDataStore.Data.Tenant == null || authDataStore.Data.Tenant.TenantId < 1)
                 return false;
 
@@ -108,6 +128,9 @@ public class AuthenticationService : IAuthenticationService
         LoginProvider providerEnum, 
         CancellationToken ct)
     {
+        if (IsAuthenticated)
+            await LogoutAsync(false, false);
+        
         try
         {
             CurrentProviderDescriptor = 
@@ -326,6 +349,9 @@ public class AuthenticationService : IAuthenticationService
         if (CurrentProvider != null)
             await CurrentProvider.LogoutAsync(clearBrowserCache);
 
+        authDataStore.Data = null;
+        await authDataStore.SaveAuthDataAsync();
+        
         CurrentProviderDescriptor = null;
         CurrentProvider = null;
         

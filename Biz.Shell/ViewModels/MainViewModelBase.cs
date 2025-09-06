@@ -71,7 +71,6 @@ public abstract class MainViewModelBase
         {
             IsLoggedIn = AuthService.IsAuthenticated;
         };
-        IsLoggedIn = AuthService.IsAuthenticated;
         
         MainContentRegionNavigationService = 
             container.Resolve<IMainRegionNavigationService>();
@@ -166,6 +165,8 @@ public abstract class MainViewModelBase
     
     public void OnViewLoaded()
     {
+        IsLoggedIn = AuthService.IsAuthenticated;
+        
         // This executes after regions are loaded.
         MainContentRegionNavigationService.Initialize();
         

@@ -4,6 +4,7 @@ using Biz.Mobile.Views;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
+using Biz.Shell.Services.Authentication;
 using Microsoft.Identity.Client;
 using Prism.Ioc;
 
@@ -24,7 +25,8 @@ public class iOsPlatformService : IPlatformService
         containerRegistry.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
     }
 
-    public void InitializePlatform(IContainerProvider containerProvider)
+    public void InitializePlatform(IContainerProvider containerProvider,
+        LoginProviderRegistry authProviderRegistry)
     {
         
     }

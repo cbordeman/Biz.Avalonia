@@ -96,7 +96,7 @@ public class App : PrismApplication
         containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
         containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
-        containerRegistry.RegisterSingleton<AuthenticationProviderRegistry>();
+        containerRegistry.RegisterSingleton<LoginProviderRegistry>();
 
         // Views - Region Navigation
         containerRegistry
@@ -121,21 +121,32 @@ public class App : PrismApplication
             BindingPlugins.DataValidators.Remove(plugin);
     }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        // Register Views to the Region it will appear in. Don't register them in the ViewModel.
-        //var regionManager = Container.Resolve<IRegionManager>();
+        try
+        {
+            // Register Views to the Region it will appear in. Don't register them in the ViewModel.
+            //var regionManager = Container.Resolve<IRegionManager>();
 
-        // WARNING: Prism v11.0.0-prev4
-        // - DataTemplates MUST define a DataType, or else an XAML error will be thrown
-        // - Error: DataTemplate inside DataTemplates must have a DataType set
-        ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
-        ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
-
-        var authProviderRegistry = Container.Resolve<AuthenticationProviderRegistry>();
-        
-        PlatformHelper.PlatformService?.InitializePlatform(Container,
-            authProviderRegistry);
+            // WARNING: Prism v11.0.0-prev4
+            // - DataTemplates MUST define a DataType, or else an XAML error will be thrown
+            // - Error: DataTemplate inside DataTemplates must have a DataType set
+            ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
+            ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
+            
+            var authProviderRegistry = Container.Resolve<LoginProviderRegistry>();
+            PlatformHelper.PlatformService?.InitializePlatform(Container,
+                authProviderRegistry);
+            
+            var authService = Container.Resolve<IAuthenticationService>();
+            await authService.InitializeAsync();
+        }
+        catch (Exception e)
+        {
+            var logger = Container.Resolve<ILogger<App>>();
+            logger.LogError(e, "Failed to initialize application: {EMessage}",
+                e.Message);
+        }
     }
 
     /// <summary>Custom region adapter mappings.</summary>

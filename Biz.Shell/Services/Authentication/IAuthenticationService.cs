@@ -8,6 +8,7 @@ namespace Biz.Shell.Services.Authentication
     
     public interface IAuthenticationService
     {
+        Task InitializeAsync();
         bool IsAuthenticated { get; }
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
             LoginWithProviderAsync(

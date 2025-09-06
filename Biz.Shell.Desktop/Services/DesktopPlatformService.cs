@@ -1,7 +1,6 @@
 ﻿using Biz.Core.Models;
 using Biz.Desktop.Services;
 using Biz.Shell.ClientLoginProviders;
-using Biz.Shell.Desktop.Services.Auth;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
@@ -21,18 +20,18 @@ public class DesktopPlatformService : IPlatformService
         containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
         containerRegistry.RegisterSingleton<ISafeStorage, WindowsSafeStorage>();
         containerRegistry.RegisterSingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
-        containerRegistry.RegisterSingleton<IClientLoginProvider, MicrosoftLoginProvider>();
+        containerRegistry.RegisterSingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
     }
     
     public void InitializePlatform(IContainerProvider container,
-        AuthenticationProviderRegistry authProviderRegistry)
+        LoginProviderRegistry authProviderRegistry)
     {
         // ShadUI dialog registration.
         var dialogService = container.Resolve<DialogManager>();
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
         
-        authProviderRegistry.RegisterLoginProvider<MicrosoftLoginProvider>(
+        authProviderRegistry.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
             LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
     }
 }
