@@ -14,38 +14,20 @@ using Shouldly;
 
 namespace Biz.Shell.Services.Authentication;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService(IConfigurationService configurationService,
+    IAuthDataStore authDataStore,
+    ITenantsApi tenantsApi,
+    ILogger<AuthenticationService> logger,
+    IRegionManager regionManager,
+    LoginProviderRegistry loginProviderRegistry,
+    IContainer container)
+    : IAuthenticationService
 {
-    bool isInitialized;
-    
-    readonly IConfigurationService configurationService;
-    readonly IAuthDataStore authDataStore;
-    readonly ITenantsApi tenantsApi;
-    readonly ILogger<AuthenticationService> logger;
-    readonly IRegionManager regionManager;
-    readonly LoginProviderRegistry authProviderRegistry;
-    readonly IContainer container;
 
     public event ChangeHandler? AuthenticationStateChanged;
 
     public IClientLoginProvider? CurrentProvider { get; private set; }
     public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
-    
-    public AuthenticationService(IConfigurationService configurationService,
-        IAuthDataStore authDataStore, 
-        ITenantsApi tenantsApi, ILogger<AuthenticationService> logger,
-        IRegionManager regionManager,
-        LoginProviderRegistry authProviderRegistry,
-        IContainer container)
-    {
-        this.configurationService = configurationService;
-        this.authDataStore = authDataStore;
-        this.tenantsApi = tenantsApi;
-        this.logger = logger;
-        this.regionManager = regionManager;
-        this.authProviderRegistry = authProviderRegistry;
-        this.container = container;
-    }
 
     public async Task InitializeAsync()
     {
@@ -54,7 +36,7 @@ public class AuthenticationService : IAuthenticationService
         if (authDataStore.Data == null ||
             authDataStore.Data.LoginProvider == null)
             return;
-        if (authProviderRegistry.Descriptors
+        if (loginProviderRegistry.Descriptors
             .TryGetValue(authDataStore.Data.LoginProvider.Value, 
                 out var descriptor))
         {
@@ -134,7 +116,7 @@ public class AuthenticationService : IAuthenticationService
         try
         {
             CurrentProviderDescriptor = 
-                authProviderRegistry.Descriptors[providerEnum];
+                loginProviderRegistry.Descriptors[providerEnum];
             CurrentProvider = (IClientLoginProvider)container.Resolve(
                 CurrentProviderDescriptor.ProviderType);
         }
@@ -368,11 +350,11 @@ public class AuthenticationService : IAuthenticationService
             await authDataStore.RestoreAuthDataAsync();
         if (authDataStore.Data != null)
         {
-            Debug.Assert(authDataStore.Data.Id != null);
-            Debug.Assert(authDataStore.Data.Name != null);
-            Debug.Assert(authDataStore.Data.Email != null);
-            Debug.Assert(authDataStore.Data.LoginProvider != null);
-            Debug.Assert(authDataStore.Data.Tenant != null);
+            authDataStore.Data.Id.ShouldNotBeNullOrEmpty();
+            authDataStore.Data.Name.ShouldNotBeNullOrEmpty();
+            authDataStore.Data.Email.ShouldNotBeNullOrEmpty();
+            authDataStore.Data.LoginProvider.ShouldNotBeNull();
+            authDataStore.Data.Tenant.ShouldNotBeNull();
 
             var user = new User(
                 authDataStore.Data.Id,
