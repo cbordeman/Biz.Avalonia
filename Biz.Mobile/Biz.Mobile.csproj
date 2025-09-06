@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Biz.Modules.AccountManagement\Biz.Modules.AccountManagement.csproj" />
       <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
       <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
     </ItemGroup>

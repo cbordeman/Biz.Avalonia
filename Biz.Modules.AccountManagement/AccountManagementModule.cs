@@ -8,7 +8,7 @@ namespace Biz.Modules.AccountManagement;
 // Module attributes are necessary for directory loading scenario.
 [Module(ModuleName = AccountManagementConstants.ModuleName, OnDemand = true)]
 //[ModuleDependency()]
-public class Module : IModule
+public class AccountManagementModule : IModule
 {
     public void RegisterTypes(IContainerRegistry containerRegistry)
     { 

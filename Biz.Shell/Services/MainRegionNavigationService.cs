@@ -128,7 +128,8 @@ public class MainContentRegionNavigationService :
                 !AuthenticationService.IsAuthenticated)
             {
                 // Redirect to login page
-                RequestNavigate(AccountManagementConstants.ModuleName,
+                RequestNavigate(
+                    AccountManagementConstants.ModuleName,
                     AccountManagementConstants.LoginView);
             }
         }

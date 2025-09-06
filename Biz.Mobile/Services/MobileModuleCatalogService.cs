@@ -1,4 +1,6 @@
-﻿using Biz.Modules.Dashboard;
+﻿using Biz.Modules.AccountManagement;
+using Biz.Modules.AccountManagement.Core;
+using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
@@ -14,7 +16,11 @@ public class MobileModuleCatalogService : IPlatformModuleCatalogService
         // scenario.  Only desktop supports directory loading.
         moduleCatalog.AddModule(
             DashboardConstants.ModuleName,
-            typeof(Module).AssemblyQualifiedName,
+            typeof(DashboardModule).AssemblyQualifiedName,
+            initializationMode: InitializationMode.OnDemand);
+        moduleCatalog.AddModule(
+            AccountManagementConstants.ModuleName,
+            typeof(AccountManagementModule).AssemblyQualifiedName,
             initializationMode: InitializationMode.OnDemand);
     }
 }

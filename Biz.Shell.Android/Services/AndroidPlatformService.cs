@@ -1,4 +1,5 @@
-﻿using Biz.Mobile.Services;
+﻿using Biz.Core.Models;
+using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Shell.ClientLoginProviders;
@@ -28,5 +29,7 @@ public class AndroidPlatformService : IPlatformService
     public void InitializePlatform(IContainerProvider container, 
         LoginProviderRegistry authProviderRegistry)
     {
+        authProviderRegistry.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
+            LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
     }
 }

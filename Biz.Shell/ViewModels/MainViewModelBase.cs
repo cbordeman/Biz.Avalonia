@@ -171,8 +171,8 @@ public abstract class MainViewModelBase
         MainContentRegionNavigationService.Initialize();
         
         // Have to load the module if it's not already loaded.
-        var mm = Container.Resolve<ModuleManager>();
-        mm.LoadModule(DashboardConstants.ModuleName);
+        // var mm = Container.Resolve<ModuleManager>();
+        // mm.LoadModule(DashboardConstants.ModuleName);
         
         // Go to the dashboard initially.
         ExecuteGoToPageCommand(DashboardConstants.DashboardView);
