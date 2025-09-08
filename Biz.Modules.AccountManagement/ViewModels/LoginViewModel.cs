@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Biz.Core;
+using Biz.Core.DataAnnotations;
 using Biz.Core.Models;
 using Biz.Models;
 using Biz.Modules.AccountManagement.Core;
@@ -21,8 +22,7 @@ public class LoginViewModel : PageViewModelBase
 
     #region Email
     [Required(ErrorMessage = "Required.")]
-    [StringLength(100, ErrorMessage = "Too long.")]
-    [RegularExpression(AppConstants.EmailRegex, ErrorMessage = "Invalid email address.")]
+    [EmailAddressCustom]
     public string? Email
     {
         get => email;
@@ -32,16 +32,16 @@ public class LoginViewModel : PageViewModelBase
     #endregion Email
 
     #region Password
-    [Required]
-    [StringLength(50, MinimumLength = 8, ErrorMessage = "Not a good password.")]
+    [Required(ErrorMessage = "Reqired")]
+    [StringLength(50, MinimumLength = 8, ErrorMessage = "Too short.")]
+    [RegularExpression(AppConstants.PasswordRegex, 
+        ErrorMessage = "Too weak.")]
     public string? Password
     {
-        get => password;
-        set => SetProperty(ref password, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    string? password;        
     #endregion Password
-
     
     public LoginViewModel(IContainer container)
         : base(container)
@@ -49,6 +49,7 @@ public class LoginViewModel : PageViewModelBase
         dialogService = container.Resolve<IPlatformDialogService>();
         authenticationService = container.Resolve<IAuthenticationService>();
         Title = $"Sign In to {AppConstants.AppShortName}";
+        IsValidating = true;
     }
 
     #region LoginCommand
@@ -136,5 +137,25 @@ public class LoginViewModel : PageViewModelBase
         AuthenticationService.Logout(false, false);
     }
 
+    #region RegisterCommand
+    AsyncDelegateCommand? registerCommand;
+    public AsyncDelegateCommand RegisterCommand => registerCommand ??= new AsyncDelegateCommand(ExecuteRegisterCommand, CanRegisterCommand);
+    static bool CanRegisterCommand() => true;
+    async Task ExecuteRegisterCommand()
+    {
+        
+    }
+    #endregion RegisterCommand
+    
+    #region ForgotPasswordCommand
+    AsyncDelegateCommand? forgotPasswordCommand;
+    public AsyncDelegateCommand ForgotPasswordCommand => forgotPasswordCommand ??= new AsyncDelegateCommand(ExecuteForgotPasswordCommand, CanForgotPasswordCommand);
+    static bool CanForgotPasswordCommand() => true;
+    async Task ExecuteForgotPasswordCommand()
+    {
+
+    }
+    #endregion ForgotPasswordCommand
+    
     public override bool PersistInHistory() => false;
 }

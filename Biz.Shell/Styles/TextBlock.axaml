@@ -5,6 +5,7 @@
     </Style>
     <Style Selector="TextBlock.Footer">
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,1" />
         <Setter Property="TextAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="{StaticResource ManropeFont}" />
         <Setter Property="FontSize" Value="12" />

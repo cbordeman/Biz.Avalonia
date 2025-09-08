@@ -46,4 +46,6 @@ public static class AppConstants
     public const string EmailRegex = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
     public const string PasswordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[^\s]{8,50}$";
     public const string PhoneRegex = @"^\+?[1-9]\d{1,14}$";
+
+    public const char PasswordChar = '●';
 }

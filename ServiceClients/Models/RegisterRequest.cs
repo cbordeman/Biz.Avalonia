@@ -11,7 +11,7 @@ public class RegisterRequest
     public string? Email { get; set; }
     
     [Required]
-    [StringLength(50)]
+    [StringLength(50, MinimumLength = 8)]
     [RegularExpression(AppConstants.PasswordRegex)]
     public string? Password { get; set; }
     
