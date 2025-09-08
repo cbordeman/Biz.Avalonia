@@ -38,7 +38,7 @@ public class SideBarNavigationItemViewModel : SidebarItemViewModel
         string viewName,
         string displayName,
         string geometryStyleResourceName,
-        string? moduleName) 
+        string moduleName) 
         : base(viewName, displayName, 
             geometryStyleResourceName, moduleName, 
             null!, viewName)

@@ -150,7 +150,7 @@ public class MainContentRegionNavigationService :
         regionNavigationService!.Journal.Clear();        
     }
     
-    public Task NavigateAsync(string module, string area,
+    public Task NavigateAsync(string? module, string area,
         INavigationParameters? navigationParameters = null)
     {
         if (!initialized)
@@ -158,7 +158,8 @@ public class MainContentRegionNavigationService :
         
         TaskCompletionSource<bool> tcs = new();
         
-        moduleManager.LoadModule(module);
+        if (module != null)
+            moduleManager.LoadModule(module);
 
         if (navigationParameters == null)
             regionNavigationService!.RequestNavigate(area,

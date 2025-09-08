@@ -41,46 +41,55 @@ namespace Prism.Navigation.Regions
         /// <exception cref="ArgumentException">when a new view cannot be created for the navigation request.</exception>
         public object LoadContent(IRegion region, NavigationContext navigationContext)
         {
-            if (region == null)
-                throw new ArgumentNullException(nameof(region));
-
-            if (navigationContext == null)
-                throw new ArgumentNullException(nameof(navigationContext));
-
-            string candidateTargetContract = GetContractFromNavigationContext(navigationContext);
-
-            var candidates = GetCandidatesFromRegion(region, candidateTargetContract);
-
-            var acceptingCandidates =
-                candidates.Where(
-                    v =>
-                    {
-                        if (v is IRegionAware navigationAware && !navigationAware.IsNavigationTarget(navigationContext))
-                        {
-                            return false;
-                        }
-
-                        if (!(v is FrameworkElement frameworkElement))
-                        {
-                            return true;
-                        }
-
-                        navigationAware = frameworkElement.DataContext as IRegionAware;
-                        return navigationAware == null || navigationAware.IsNavigationTarget(navigationContext);
-                    });
-
-            var view = acceptingCandidates.FirstOrDefault();
-
-            if (view != null)
+            try
             {
+                if (region == null)
+                    throw new ArgumentNullException(nameof(region));
+
+                if (navigationContext == null)
+                    throw new ArgumentNullException(nameof(navigationContext));
+
+                string candidateTargetContract = GetContractFromNavigationContext(navigationContext);
+
+                var candidates = GetCandidatesFromRegion(region, candidateTargetContract);
+
+                var acceptingCandidates =
+                    candidates.Where(
+                        v =>
+                        {
+                            if (v is IRegionAware navigationAware && !navigationAware.IsNavigationTarget(navigationContext))
+                            {
+                                return false;
+                            }
+
+                            if (!(v is FrameworkElement frameworkElement))
+                            {
+                                return true;
+                            }
+
+                            navigationAware = frameworkElement.DataContext as IRegionAware;
+                            return navigationAware == null || navigationAware.IsNavigationTarget(navigationContext);
+                        });
+
+                var view = acceptingCandidates.FirstOrDefault();
+
+                if (view != null)
+                {
+                    return view;
+                }
+
+                view = CreateNewRegionItem(candidateTargetContract);
+
+                AddViewToRegion(region, view);
+
                 return view;
             }
-
-            view = CreateNewRegionItem(candidateTargetContract);
-
-            AddViewToRegion(region, view);
-
-            return view;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
         /// <summary>
@@ -140,30 +149,38 @@ namespace Prism.Navigation.Regions
         /// <returns>An enumerable of candidate objects from the <see cref="IRegion"/></returns>
         protected virtual IEnumerable<object> GetCandidatesFromRegion(IRegion region, string candidateNavigationContract)
         {
-            if (region is null)
+            try
             {
-                throw new ArgumentNullException(nameof(region));
-            }
-
-            if (string.IsNullOrEmpty(candidateNavigationContract))
-            {
-                throw new ArgumentNullException(nameof(candidateNavigationContract));
-            }
-
-            var contractCandidates = GetCandidatesFromRegionViews(region, candidateNavigationContract);
-
-            if (!contractCandidates.Any())
-            {
-                Type matchingType = _container.GetRegistrationType(candidateNavigationContract);
-                if (matchingType is null)
+                if (region is null)
                 {
-                    return Array.Empty<object>();
+                    throw new ArgumentNullException(nameof(region));
                 }
 
-                return GetCandidatesFromRegionViews(region, matchingType.FullName);
-            }
+                if (string.IsNullOrEmpty(candidateNavigationContract))
+                {
+                    throw new ArgumentNullException(nameof(candidateNavigationContract));
+                }
 
-            return contractCandidates;
+                var contractCandidates = GetCandidatesFromRegionViews(region, candidateNavigationContract);
+
+                if (!contractCandidates.Any())
+                {
+                    Type matchingType = _container.GetRegistrationType(candidateNavigationContract);
+                    if (matchingType is null)
+                    {
+                        return Array.Empty<object>();
+                    }
+
+                    return GetCandidatesFromRegionViews(region, matchingType.FullName);
+                }
+
+                return contractCandidates;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private IEnumerable<object> GetCandidatesFromRegionViews(IRegion region, string candidateNavigationContract)

@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Biz.Core;
 using Biz.Modules.AccountManagement.Core;
-using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
 using ShadUI;
@@ -14,7 +12,7 @@ namespace Biz.Shell.ViewModels;
 /// the MainContentRegion, which hosts pages.  Desktop clients
 /// do have a window above this view, though.
 /// </summary>
-public abstract class MainViewModelBase 
+public abstract class MainViewModelBase
     : NavigationAwareViewModelBase, IOnViewLoaded
 {
     protected readonly IMainRegionNavigationService MainContentRegionNavigationService;
@@ -27,7 +25,7 @@ public abstract class MainViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion IsDrawerOpen
-    
+
     #region IsLoggedIn
     public bool IsLoggedIn
     {
@@ -35,7 +33,7 @@ public abstract class MainViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion IsLoggedIn
-    
+
     #region CurrentArea
     public string? CurrentArea
     {
@@ -43,7 +41,7 @@ public abstract class MainViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion CurrentArea
-    
+
     #region CurrentPage
     public PageViewModelBase? CurrentPage
     {
@@ -51,7 +49,7 @@ public abstract class MainViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion CurrentPage
-    
+
     #region CurrentMode
     public ThemeMode CurrentTheme
     {
@@ -59,9 +57,9 @@ public abstract class MainViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion CurrentTheme
-    
+
     public ToastManager ToastManager { get; }
-    
+
     protected MainViewModelBase(IContainer container) : base(container)
     {
         ToastManager = container.Resolve<ToastManager>();
@@ -71,12 +69,12 @@ public abstract class MainViewModelBase
         {
             IsLoggedIn = AuthService.IsAuthenticated;
         };
-        
-        MainContentRegionNavigationService = 
+
+        MainContentRegionNavigationService =
             container.Resolve<IMainRegionNavigationService>();
         MainContentRegionNavigationService.PageChanged += MainContentRegionNavigationServiceOnPageChanged;
     }
-    
+
     void MainContentRegionNavigationServiceOnPageChanged(
         string area, PageViewModelBase pageVm)
     {
@@ -107,14 +105,14 @@ public abstract class MainViewModelBase
                 break;
         }
 
-        Dispatcher.UIThread.Invoke(() => 
+        Dispatcher.UIThread.Invoke(() =>
             Application.Current!.RequestedThemeVariant = variant);
         //themeWatcher.SwitchTheme(CurrentTheme);
-            
+
         return Task.CompletedTask;
     }
     #endregion SwitchThemeCommand
-    
+
     #region ToggleIsDrawerOpenCommand
     [field: AllowNull, MaybeNull]
     public AsyncDelegateCommand ToggleIsDrawerOpenCommand => field ??= new AsyncDelegateCommand(ExecuteToggleIsDrawerOpenCommand, CanToggleIsDrawerOpenCommand);
@@ -126,7 +124,7 @@ public abstract class MainViewModelBase
         return Task.CompletedTask;
     }
     #endregion ToggleIsDrawerOpenCommand
-    
+
     #region NavigateSettingsCommand
     [field: AllowNull, MaybeNull]
     public AsyncDelegateCommand NavigateSettingsCommand => field ??=
@@ -140,21 +138,22 @@ public abstract class MainViewModelBase
         return Task.CompletedTask;
     }
     #endregion NavigateSettingsCommand
-    
-    #region GoToPageCommand
-    [field: AllowNull, MaybeNull]
-    public AsyncDelegateCommandWithParam<string> GoToPageCommand => field 
-        ??= new AsyncDelegateCommandWithParam<string>
-        (ExecuteGoToPageCommand, CanGoToPageCommand);
-    static bool CanGoToPageCommand(string area) => true;
-    Task ExecuteGoToPageCommand(string area)
-    {
-        if (CurrentArea != area)
-            NavigationService.RequestNavigate(
-                AccountManagementConstants.ModuleName, area);
-        return Task.CompletedTask;
-    }
-    #endregion GoToPageCommand
+
+    // #region GoToPageCommand
+    // [field: AllowNull, MaybeNull]
+    // public AsyncDelegateCommandWithParam<string> 
+    //     GoToPageCommand => field 
+    //     ??= new AsyncDelegateCommandWithParam<string>
+    //     (ExecuteGoToPageCommand, CanGoToPageCommand);
+    // static bool CanGoToPageCommand(string area) => true;
+    // Task ExecuteGoToPageCommand(string area)
+    // {
+    //     if (CurrentArea != area)
+    //         NavigationService.RequestNavigate(
+    //             null, area);
+    //     return Task.CompletedTask;
+    // }
+    // #endregion GoToPageCommand
 
     public override void Dispose()
     {
@@ -162,22 +161,19 @@ public abstract class MainViewModelBase
         MainContentRegionNavigationService.PageChanged -=
             MainContentRegionNavigationServiceOnPageChanged;
     }
-    
+
     public void OnViewLoaded()
     {
         IsLoggedIn = AuthService.IsAuthenticated;
-        
+
         // This executes after regions are loaded.
         MainContentRegionNavigationService.Initialize();
-        
-        // Have to load the module if it's not already loaded.
-        // var mm = Container.Resolve<ModuleManager>();
-        // mm.LoadModule(DashboardConstants.ModuleName);
-        
-        // Go to the dashboard initially.
-        ExecuteGoToPageCommand(DashboardConstants.DashboardView);
+
+        NavigationService.RequestNavigate(
+            DashboardConstants.ModuleName,
+            DashboardConstants.DashboardView);
     }
-    
+
     #region LogoutCommand
     public AsyncDelegateCommand LogoutCommand => field ??= new AsyncDelegateCommand(ExecuteLogoutCommand, CanLogoutCommand);
     static bool CanLogoutCommand() => true;
@@ -186,7 +182,7 @@ public abstract class MainViewModelBase
         // Opens browser to the sign out page to ensure cookies
         // are cleared and provider actions can execute.
         AuthService.Logout(true, true);
-        
+
         // Can't set to null because of a bug in the sidebar control.
         // Must set to non-null or the property change doesn't trigger
         // properly.

@@ -26,7 +26,7 @@ public class MainSmallViewModel : MainViewModelBase
         [
             new SideBarNavigationItemViewModel(
                 DashboardConstants.DashboardView,
-                "Dashboard",
+                DashboardConstants.DashboardView,
                 ResourceNames.Home,
                 DashboardConstants.ModuleName),
         ];

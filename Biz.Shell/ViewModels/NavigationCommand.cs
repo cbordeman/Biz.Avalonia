@@ -5,11 +5,11 @@
 /// </summary>
 public class NavigationCommand : AsyncDelegateCommand
 {
-    readonly string? moduleName;
+    readonly string moduleName;
     readonly string viewName;
 
     NavigationCommand(
-        string? moduleName, string viewName,
+        string moduleName, string viewName,
         Func<Task> execute)
         : base(execute)
     {
@@ -22,7 +22,7 @@ public class NavigationCommand : AsyncDelegateCommand
     /// non-static contexts in the constructor.
     /// </summary>
     public static NavigationCommand Create(
-        string? moduleName, string viewName)
+        string moduleName, string viewName)
     {
         var instance = new NavigationCommand(moduleName, viewName, null!);
         
@@ -35,15 +35,12 @@ public class NavigationCommand : AsyncDelegateCommand
     {
         // Will be null if it's a primary module that
         // doesn't need to be loaded.
-        if (moduleName != null)
-        {
-            var moduleManager = ContainerLocator.Current.Resolve<IModuleManager>();
-            moduleManager.LoadModule(moduleName);
-        }
+        var moduleManager = ContainerLocator.Current.Resolve<IModuleManager>();
+        moduleManager.LoadModule(moduleName);
         
         var regionManager = ContainerLocator.Current.Resolve<IRegionManager>();
         regionManager.RequestNavigate(RegionNames.MainContentRegion, viewName);
         
-        return Task.CompletedTask;
+         return Task.CompletedTask;
     }
 }
