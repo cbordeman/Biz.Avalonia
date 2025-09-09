@@ -9,8 +9,6 @@ public interface IMainRegionNavigationService
 
     void Initialize();
 
-    void ClearHistory();
-
     Task NavigateAsync(string module, string area, 
         INavigationParameters? navigationParameters = null);
     

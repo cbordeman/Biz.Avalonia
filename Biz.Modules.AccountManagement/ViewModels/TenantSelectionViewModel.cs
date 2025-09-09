@@ -36,11 +36,12 @@ public class TenantSelectionViewModel : PageViewModelBase
     #region CancelLoginCommand
     [field: AllowNull, MaybeNull]
     public AsyncDelegateCommand CancelLoginCommand => field ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
-    async Task ExecuteCancelLoginCommand()
+    Task ExecuteCancelLoginCommand()
     {
-        await NavigationService!.NavigateAsync(
+        NavigationService!.RequestNavigate(
             AccountManagementConstants.ModuleName,
             AccountManagementConstants.LoginView);
+        return Task.CompletedTask;
     }
     #endregion CancelLoginCommand
 

@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Biz.Core;
+using Biz.Core.DataAnnotations;
 
 namespace ServiceClients.Models;
 
 public class RegisterRequest
 {
     [Required]
-    [EmailAddress]
+    [EmailAddressCustom]
     [StringLength(100)]
     public string? Email { get; set; }
     

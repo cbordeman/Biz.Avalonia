@@ -143,13 +143,6 @@ public class MainContentRegionNavigationService :
         }
     }
 
-    public void ClearHistory()
-    {
-        if (!initialized)
-            throw new InvalidOperationException("Not initialized.");
-        regionNavigationService!.Journal.Clear();        
-    }
-    
     public Task NavigateAsync(string? module, string area,
         INavigationParameters? navigationParameters = null)
     {
