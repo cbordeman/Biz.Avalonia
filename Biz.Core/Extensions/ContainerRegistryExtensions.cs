@@ -22,7 +22,7 @@ public static class ContainerRegistryExtensions
             httpClient.BaseAddress = new Uri(baseUrl);
             return RestService.For<TApi>(httpClient);
         });
-        
+
         return containerRegistry;
     }
 }

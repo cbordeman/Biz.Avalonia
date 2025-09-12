@@ -5,22 +5,49 @@ using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
 using Prism.Container.DryIoc;
-using Prism.DryIoc;
 using ServiceClients;
 using Shouldly;
+using Splat;
 using IFormFactorService = Biz.Shell.Services.IFormFactorService;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Biz.Shell;
 
-public class App : PrismApplication
+public class App : Application
 {
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-
         base.Initialize();
     }
 
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the
+            // CommunityToolkit.  More info:
+            // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+            
+            var mainViewModel = Locator.Current.GetService<MainWindow>();
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = mainViewModel
+            };
+        }
+        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
+        {
+            singleView.MainView = new MainView
+            {
+                DataContext = mainViewModel
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    
     protected override AvaloniaObject CreateShell()
     {
         switch (ApplicationLifetime)

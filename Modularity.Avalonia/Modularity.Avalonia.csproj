@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="Avalonia" Version="11.3.5" />
+      <PackageReference Include="Splat" Version="16.2.1" />
     </ItemGroup>
 
 </Project>

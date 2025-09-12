@@ -3,7 +3,7 @@ using Modularity.Exceptions;
 
 namespace Modularity;
 
-public class ModuleDirectory : IModuleDirectory
+public class StandardModuleDirectory : IModuleDirectory
 {
     readonly List<ModuleData> modules = new();
 

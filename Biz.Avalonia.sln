@@ -62,7 +62,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Modules.AccountManageme
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modularity", "Modularity\Modularity.csproj", "{D66EA7CB-D523-4E74-8390-910ADBB570C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modularity.Avalonia", "Modularity.Avalonia\Modularity.Avalonia.csproj", "{548EDBF3-0284-42E0-9475-C1A0C210F77B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CompositeFramework", "CompositeFramework", "{1FE82D0C-528D-4234-BB2D-F535E1BAE9E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,10 +158,6 @@ Global
 		{D66EA7CB-D523-4E74-8390-910ADBB570C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D66EA7CB-D523-4E74-8390-910ADBB570C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D66EA7CB-D523-4E74-8390-910ADBB570C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{548EDBF3-0284-42E0-9475-C1A0C210F77B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{548EDBF3-0284-42E0-9475-C1A0C210F77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{548EDBF3-0284-42E0-9475-C1A0C210F77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{548EDBF3-0284-42E0-9475-C1A0C210F77B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,6 +178,7 @@ Global
 		{B6D3B0A0-3B83-4E7E-B27D-4F1FD687EDF6} = {1AAD0ADA-3008-46D1-B020-BC47F32B48CD}
 		{5C08EE2B-68BE-44BA-91F7-5CF8CBC46E90} = {B6D3B0A0-3B83-4E7E-B27D-4F1FD687EDF6}
 		{CCEBA087-B6F3-42F0-9782-51D5416662F4} = {B6D3B0A0-3B83-4E7E-B27D-4F1FD687EDF6}
+		{D66EA7CB-D523-4E74-8390-910ADBB570C7} = {1FE82D0C-528D-4234-BB2D-F535E1BAE9E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83CB65B8-011F-4ED7-BCD3-A6CFA935EF7E}

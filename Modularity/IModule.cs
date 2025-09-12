@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Design;
+﻿using System.Collections;
+using System.ComponentModel.Design;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Modularity;
 

@@ -4,16 +4,19 @@ using Modularity.Exceptions;
 
 namespace Modularity;
 
-public interface IModuleManager
+public interface IModuleManager<TContainerRegistry> 
+    where TContainerRegistry : IServiceContainer
 {
     IModuleDirectory ModuleDirectory { get; }
     IReadOnlyCollection<ModuleInstance> LoadedModules { get; }
     Task<ModuleInstance> LoadModuleAsync(string name);
 }
 
-public class ModuleManager : IModuleManager
+public class ModuleManager<TContainerRegistry> 
+    : IModuleManager<TContainerRegistry>
+    where TContainerRegistry : IServiceContainer
 {
-    List<ModuleInstance> loadedModules = new();
+    readonly List<ModuleInstance> loadedModules = new();
     readonly IServiceContainer container;
     
     public IModuleDirectory ModuleDirectory { get; }
@@ -79,11 +82,11 @@ public class ModuleManager : IModuleManager
             try
             {
                 moduleData.State = ModuleState.LoadingSelf;
-                Assembly.LoadFrom(moduleData.FullPath);
+                Assembly.LoadFrom(moduleData.FullPath!);
             }
             catch (Exception e)
             {
-                throw new ModuleLoadException(name, moduleData.FullPath, e);
+                throw new ModuleLoadException(name, moduleData.FullPath!, e);
             }
         }
 
@@ -95,7 +98,8 @@ public class ModuleManager : IModuleManager
         {
             moduleType = Type.GetType(moduleData.AssemblyQualifiedName)!;
             if (moduleType == null)
-                throw new Exception($"Type.GetType returned null for {moduleData.AssemblyQualifiedName}.");
+                throw new Exception($"Type.GetType returned null for " +
+                                    $"{moduleData.AssemblyQualifiedName}.");
         }
         catch (Exception e)
         {
@@ -110,8 +114,8 @@ public class ModuleManager : IModuleManager
         {
             moduleInstance = (IModule)container.GetService(moduleType)!;
             if (moduleInstance == null)
-                throw new Exception($"Services.GetService() returned null for {moduleType.FullName}.");
-            ;
+                throw new Exception($"Services.GetService() returned " +
+                                    $"null for {moduleType.FullName}.");
         }
         catch (Exception e)
         {
