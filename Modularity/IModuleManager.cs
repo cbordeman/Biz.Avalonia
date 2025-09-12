@@ -137,7 +137,7 @@ public class ModuleManager : IModuleManager
 
         try
         {
-            await moduleInstance.AfterInitializationAsync(
+            await moduleInstance.InitializeAsync(
                 AppLocator.Current).ConfigureAwait(false);
             moduleData.State = ModuleState.Initialized;
             return new ModuleInstance(moduleData, moduleInstance);

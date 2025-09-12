@@ -29,8 +29,6 @@
     <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.100" />
     <PackageReference Include="Responsive.Avalonia" Version="0.1.1" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
-    <PackageReference Include="Splat" Version="16.2.1" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="16.2.1" />
     
   </ItemGroup>
 
