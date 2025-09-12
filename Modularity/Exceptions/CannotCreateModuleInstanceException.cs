@@ -8,7 +8,8 @@ public class CannotCreateModuleInstanceException : Exception
     public CannotCreateModuleInstanceException(string name,
         string assemblyQualifiedName, Exception innerException)
         : base($"Cannot create module instance for " +
-               $"{name} from {assemblyQualifiedName}.",
+               $"{name} from {assemblyQualifiedName}.  Ensure " +
+               $"the type has a parameterless constructor.",
             innerException)
     {
         Name = name;
