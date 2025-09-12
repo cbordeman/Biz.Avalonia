@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.ComponentModel.Design;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Splat;
 
 namespace Modularity;
 
 public interface IModule
 {
-    void PerformRegistrations(IServiceContainer services);
-    Task InitializedAsync(IServiceProvider provider);
+    void PerformRegistrations(IMutableDependencyResolver services);
+    Task AfterInitializationAsync(IReadonlyDependencyResolver provider);
 }

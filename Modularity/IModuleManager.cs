@@ -1,30 +1,27 @@
-﻿using System.ComponentModel.Design;
-using System.Reflection;
+﻿using System.Reflection;
 using Modularity.Exceptions;
+using Splat;
 
 namespace Modularity;
 
-public interface IModuleManager<TContainerRegistry> 
-    where TContainerRegistry : IServiceContainer
+public interface IModuleManager
 {
     IModuleDirectory ModuleDirectory { get; }
     IReadOnlyCollection<ModuleInstance> LoadedModules { get; }
     Task<ModuleInstance> LoadModuleAsync(string name);
 }
 
-public class ModuleManager<TContainerRegistry> 
-    : IModuleManager<TContainerRegistry>
-    where TContainerRegistry : IServiceContainer
+public class ModuleManager : IModuleManager
 {
     readonly List<ModuleInstance> loadedModules = new();
-    readonly IServiceContainer container;
+    readonly IMutableDependencyResolver container;
     
     public IModuleDirectory ModuleDirectory { get; }
     public IReadOnlyCollection<ModuleInstance> LoadedModules =>
         loadedModules.AsReadOnly();
     
     public ModuleManager(IModuleDirectory moduleDirectory,
-        IServiceContainer container)
+        IMutableDependencyResolver container)
     {
         ArgumentChecker.ThrowIfNull(moduleDirectory);
         ArgumentChecker.ThrowIfNull(container);
@@ -92,7 +89,7 @@ public class ModuleManager<TContainerRegistry>
 
         moduleData.State = ModuleState.CreatingInstance;
 
-        // Create instance of module.
+        // Create instance of IModule class.
         Type moduleType;
         try
         {
@@ -112,43 +109,43 @@ public class ModuleManager<TContainerRegistry>
         IModule? moduleInstance;
         try
         {
-            moduleInstance = (IModule)container.GetService(moduleType)!;
+            moduleInstance = (IModule)AppLocator.Current.GetService(moduleType)!;
             if (moduleInstance == null)
-                throw new Exception($"Services.GetService() returned " +
+                throw new Exception($"GetService({moduleType.FullName}) returned " +
                                     $"null for {moduleType.FullName}.");
         }
         catch (Exception e)
         {
             throw new CannotCreateModuleInstanceException(
                 moduleData.Name,
-                moduleData.AssemblyQualifiedName,
-                e);
+                moduleData.AssemblyQualifiedName, e);
         }
 
+        loadedModules.Add(new ModuleInstance(moduleData, moduleInstance));
+        
         moduleData.State = ModuleState.Initializing;
 
         try
         {
-            moduleInstance.PerformRegistrations(container);
+            moduleInstance.PerformRegistrations(AppLocator.CurrentMutable);
         }
         catch (Exception e)
         {
             throw new PerformingModuleRegistrationsException(
-                moduleData.Name,
-                e);
+                moduleData.Name, e);
         }
 
         try
         {
-            await moduleInstance.InitializedAsync(container).ConfigureAwait(false);
+            await moduleInstance.AfterInitializationAsync(
+                AppLocator.Current).ConfigureAwait(false);
             moduleData.State = ModuleState.Initialized;
             return new ModuleInstance(moduleData, moduleInstance);
         }
         catch (Exception e)
         {
             throw new ModuleInitializationException(
-                moduleData.Name,
-                e);
+                moduleData.Name, e);
         }
     }
 }
