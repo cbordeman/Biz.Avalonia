@@ -1,17 +1,18 @@
-﻿using Modularity.Exceptions;
+﻿using CompositeFramework.Modules.Exceptions;
 
-namespace Modularity;
+namespace CompositeFramework.Modules;
 
-public class ModuleData
+public class ModuleMetadata
 {
-    public string Name { get; internal set; }
-    public string? FullPath { get; }
+    public string Name { get; }
+    public string? FilePath { get; }
     public string AssemblyQualifiedName { get; }
-    public ModuleState State { get; internal set; }
+    public ModuleState State { get; set; }
     public string[] Dependencies { get; }
+    public IModule? Instance { get; set; }
     
-    internal ModuleData(string name,
-        string? fullPath,
+    public ModuleMetadata(string name,
+        string? filePath,
         string assemblyQualifiedName,
         bool isInMemory,
         string[] dependencies)
@@ -19,16 +20,16 @@ public class ModuleData
         ArgumentChecker.ThrowIfNull(name);
         ArgumentChecker.ThrowIfNull(assemblyQualifiedName);
     
-        if (fullPath is not null && fullPath.Length == 0)
+        if (filePath is not null && filePath.Length == 0)
             throw new ArgumentException("FullPath must not be empty.", 
-                nameof(fullPath));
-        if (fullPath is not null && isInMemory)
+                nameof(filePath));
+        if (filePath is not null && isInMemory)
             throw new InvalidOperationException(
                 $"FullPath cannot be set if isInMemory is true.  " +
-                $"Name: {name}, FullPath: {fullPath}");    
+                $"Name: {name}, FullPath: {filePath}");    
         
         Name = name;
-        FullPath = fullPath;
+        FilePath = filePath;
         AssemblyQualifiedName = assemblyQualifiedName;
         State = isInMemory ? ModuleState.InMemory : ModuleState.NotLoaded;
         Dependencies = dependencies;

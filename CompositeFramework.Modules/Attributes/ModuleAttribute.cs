@@ -1,7 +1,11 @@
-﻿using Modularity.Exceptions;
+﻿using CompositeFramework.Modules.Exceptions;
 
-namespace Modularity;
+namespace CompositeFramework.Modules.Attributes;
 
+/// <summary>
+/// If added via IModuleIndex.AddModuleFiles(), this is
+/// required to give the module a name.
+/// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class ModuleAttribute : Attribute
 {
@@ -10,7 +14,6 @@ public class ModuleAttribute : Attribute
     public ModuleAttribute(string name)
     {
         ArgumentChecker.ThrowIfNullOrEmpty(name);
-        
         Name = name;
     }
 }

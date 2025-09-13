@@ -7,7 +7,6 @@ using Microsoft.Maui.Accessibility;
 using Prism.Container.DryIoc;
 using ServiceClients;
 using Shouldly;
-using Splat;
 using IFormFactorService = Biz.Shell.Services.IFormFactorService;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 

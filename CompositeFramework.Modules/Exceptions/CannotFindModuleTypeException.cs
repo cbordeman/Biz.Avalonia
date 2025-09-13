@@ -1,4 +1,4 @@
-﻿namespace Modularity.Exceptions;
+﻿namespace CompositeFramework.Modules.Exceptions;
 
 public class CannotFindModuleTypeException : Exception
 {

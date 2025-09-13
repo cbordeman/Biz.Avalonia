@@ -60,9 +60,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Modules.AccountManageme
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Modules.AccountManagement.Core", "Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj", "{CCEBA087-B6F3-42F0-9782-51D5416662F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modularity", "Modularity\Modularity.csproj", "{D66EA7CB-D523-4E74-8390-910ADBB570C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositeFramework.Modules", "CompositeFramework.Modules\CompositeFramework.Modules.csproj", "{D66EA7CB-D523-4E74-8390-910ADBB570C7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modularity", "Modularity", "{FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CompositeFramework", "CompositeFramework", "{FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
