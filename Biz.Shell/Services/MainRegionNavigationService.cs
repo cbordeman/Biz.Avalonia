@@ -86,7 +86,7 @@ public class MainContentRegionNavigationService :
     }
 
     void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args) =>
-        logger.LogError(args.Error, $"Navigation failed: {args.Uri}");
+        logger.LogError(args.Error, $"Location failed: {args.Uri}");
 
     // ReSharper disable once AsyncVoidMethod
     void Navigated(object? sender, RegionNavigationEventArgs args)

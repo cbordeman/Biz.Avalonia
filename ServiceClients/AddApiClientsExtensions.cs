@@ -1,15 +1,30 @@
-﻿using Biz.Core.Extensions;
+﻿using Splat;
 
 namespace ServiceClients;
 
-public static class AddApiClientsExtensions
+public static class ServiceClientRegistration
 {
-    public static IContainerRegistry AddMainApiClients(this IContainerRegistry containerRegistry,
+    public static void AddMainApiClients(
         string servicesBaseUrl)
     {
         // Register Refit clients
-        return containerRegistry
-            .RegisterRefitClient<ITenantsApi, ServicesAuthHeaderHandler>(servicesBaseUrl)
-            .RegisterRefitClient<IAccountApi, ServicesAuthHeaderHandler>(servicesBaseUrl);
+        RegisterRefitClient<ITenantsApi, ServicesAuthHeaderHandler>(servicesBaseUrl);
+        RegisterRefitClient<IAccountApi, ServicesAuthHeaderHandler>(servicesBaseUrl);
+    }
+
+    static void RegisterRefitClient<TApi, TDelegatingHandler>(string baseUrl)
+        where TApi : class
+        where TDelegatingHandler : DelegatingHandler
+    {
+        // Register factory for making the API, which resolves
+        // the HttpClient instance using the container.
+        Locator.CurrentMutable.Register(() =>
+        {
+            var handler = Locator.Current.GetService<TDelegatingHandler>();
+            var httpClient = new HttpClient(handler: handler);
+            httpClient.BaseAddress = new Uri(baseUrl);
+            var svc = Refit.RestService.For<TApi>(httpClient);
+            return svc;
+        });
     }
 }

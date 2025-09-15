@@ -7,14 +7,10 @@ public interface IPlatformService
     /// <summary>
     /// Called before container has been built, in the startup of each platform project.
     /// </summary>
-    /// <param name="containerRegistry"></param>
-    void RegisterPlatformTypes(IContainerRegistry containerRegistry);
+    void RegisterPlatformTypes();
 
     /// <summary>
     /// Called after container has been built, in App.OnInitialized.
     /// </summary>
-    /// <param name="containerProvider"></param>
-    /// <param name="authProviderRegistry"></param>
-    void InitializePlatform(IContainerProvider containerProvider,
-        LoginProviderRegistry authProviderRegistry);
+    void InitializePlatform();
 }

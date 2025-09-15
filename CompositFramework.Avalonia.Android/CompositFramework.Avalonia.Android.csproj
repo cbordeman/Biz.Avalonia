@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0-android</TargetFramework>
+        <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+        <LangVersion>preview</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AndroidPackageFormat>apk</AndroidPackageFormat>
+        <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+        <PackageId>CompositFramework.Avalonia.Android</PackageId>
+        <Authors>Chris Bordeman</Authors>
+        <Company>Chris Bordeman</Company>        
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Android" Version="11.3.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CompositeFramework.Core\CompositeFramework.Core.csproj" />
+      <ProjectReference Include="..\CompositFramework.Avalonia\CompositFramework.Avalonia.csproj" />
+    </ItemGroup>
+
+</Project>

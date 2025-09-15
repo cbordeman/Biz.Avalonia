@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Biz.Models;
 using Biz.Modules.AccountManagement.Core;
 using DryIoc;
 using JetBrains.Annotations;
@@ -25,7 +24,7 @@ public class TenantSelectionViewModel : PageViewModelBase
 
     #region SelectCommand
     [field: AllowNull, MaybeNull]
-    public AsyncDelegateCommand<Tenant> SelectCommand => field ??= new AsyncDelegateCommand<Tenant>(ExecuteSelectCommand, CanSelectCommand);
+    public AsyncRelayCommand<Tenant> SelectCommand => field ??= new AsyncRelayCommand<Tenant>(ExecuteSelectCommand, CanSelectCommand);
     static bool CanSelectCommand(Tenant t) => true;
     async Task ExecuteSelectCommand(Tenant t)
     {
@@ -35,7 +34,7 @@ public class TenantSelectionViewModel : PageViewModelBase
 
     #region CancelLoginCommand
     [field: AllowNull, MaybeNull]
-    public AsyncDelegateCommand CancelLoginCommand => field ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
+    public AsyncRelayCommand CancelLoginCommand => field ??= new AsyncRelayCommand(ExecuteCancelLoginCommand);
     Task ExecuteCancelLoginCommand()
     {
         NavigationService!.RequestNavigate(

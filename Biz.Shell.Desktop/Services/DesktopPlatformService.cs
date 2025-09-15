@@ -5,33 +5,35 @@ using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
-using Prism.Ioc;
 using ShadUI;
+using Splat;
+using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
 namespace Biz.Shell.Desktop.Services;
 
 public class DesktopPlatformService : IPlatformService
 {
-    public void RegisterPlatformTypes(IContainerRegistry containerRegistry)
+    public void RegisterPlatformTypes()
     {
         // Register windows-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
-        containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
-        containerRegistry.RegisterSingleton<IPlatformDialogService, DesktopDialogService>();
-        containerRegistry.RegisterSingleton<ISafeStorage, WindowsSafeStorage>();
-        containerRegistry.RegisterSingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
-        containerRegistry.RegisterSingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
+        SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
+        SplatRegistrations.RegisterLazySingleton<DesktopDialogService, Biz.Desktop.Services.DesktopDialogService>();
+        SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
+        SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
+        SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
     }
     
-    public void InitializePlatform(IContainerProvider container,
-        LoginProviderRegistry authProviderRegistry)
+    public void InitializePlatform()
     {
         // ShadUI dialog registration.
-        var dialogService = container.Resolve<DialogManager>();
+        var dialogService = Locator.Current.GetService<DialogManager>();
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
         
-        authProviderRegistry.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
+        var authProviderRegistry = Locator.Current.GetService
+            <LoginProviderRegistry>();
+        authProviderRegistry!.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
             LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
     }
 }

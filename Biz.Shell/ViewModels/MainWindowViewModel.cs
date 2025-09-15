@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Biz.Shell.ViewModels
 {
     [UsedImplicitly]
@@ -23,11 +21,11 @@ namespace Biz.Shell.ViewModels
         
         #region TryCloseCommand
         [field: AllowNull, MaybeNull]
-        public AsyncDelegateCommand TryCloseCommand => field ??= new AsyncDelegateCommand(ExecuteTryCloseCommand, CanTryCloseCommand);
+        public AsyncRelayCommand TryCloseCommand => field ??= new AsyncRelayCommand(ExecuteTryCloseCommand, CanTryCloseCommand);
         bool CanTryCloseCommand() => true;
         async Task ExecuteTryCloseCommand()
         {
-            if (await DialogService.Confirm(
+            if (await DesktopDialogService.Confirm(
                     "Close", "Do you really want to exit?",
                     "Yes", "No")) 
                 Environment.Exit(0);

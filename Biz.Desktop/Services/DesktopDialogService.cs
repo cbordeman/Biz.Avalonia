@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Biz.Shell.Services;
+using CompositFramework.Avalonia.Dialogs;
 using ShadUI;
 
 namespace Biz.Desktop.Services;
 
 public class DesktopDialogService(DialogManager dialogManager)
-    : IPlatformDialogService
+    : IDialogService
 {
     public object DialogHost { get; } = dialogManager;
 

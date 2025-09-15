@@ -1,26 +1,22 @@
-﻿using System;
-using System.Diagnostics;
-using JetBrains.Annotations;
+﻿using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Prism.Ioc;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Biz.Core.Extensions;
 
 public static class TaskExtensions
 {
-    [UsedImplicitly]
     public static T LogExceptionsBlockAndGetResult<T>(this Task<T> task, string taskDescription, ILogger? logger = null)
     {
         task.LogExceptionsAndForget(taskDescription, logger);    
         return task.Result;
     }
 
-    [UsedImplicitly]
     public static void LogExceptionsAndForget(this Task task, string taskDescription, ILogger? logger = null)
     {
         try
         {
-            logger ??= ContainerLocator.Container.Resolve<ILogger<object>>();
+            logger ??= Locator.Current.Resolve<ILogger<object>>();
         }
         catch (Exception)
         {

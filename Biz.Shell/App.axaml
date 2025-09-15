@@ -1,12 +1,8 @@
-<dryIoc:PrismApplication
+<Application
     x:Class="Biz.Shell.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:avalonia="clr-namespace:Biz.Shell"
-    xmlns:dryIoc="http://prismlibrary.com/"
     xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure"
-    xmlns:local="using:Biz.Shell"
-    xmlns:prism="http://prismlibrary.com"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     RequestedThemeVariant="Dark">
 
@@ -49,4 +45,4 @@
         <StyleInclude Source="/Styles/index.axaml" />
         <StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml" />
     </Application.Styles>
-</dryIoc:PrismApplication>
+</Application>

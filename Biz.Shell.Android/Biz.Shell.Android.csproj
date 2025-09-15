@@ -19,9 +19,6 @@
     <UserSecretsId>046c0822-6e95-4ccc-b574-9cf421936bf0</UserSecretsId>
     
   </PropertyGroup>
-  <PropertyGroup>
-    <DefineConstants>ANDROID</DefineConstants>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
@@ -36,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3" />
     <PackageReference Include="Avalonia.Android" Version="11.3.2" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.76.0" />
     <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
@@ -47,6 +45,5 @@
     <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
     <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
     <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
-        <ProjectReference Include="..\Prism\src\Avalonia\Prism.DryIoc.Avalonia\Prism.DryIoc.Avalonia.csproj" />
   </ItemGroup>
 </Project>

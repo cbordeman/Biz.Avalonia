@@ -7,29 +7,32 @@ using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
-using Prism.Ioc;
+using CompositFramework.Avalonia.Dialogs;
+using Splat;
+using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
 namespace Biz.Shell.Android.Services;
 
 public class AndroidPlatformService : IPlatformService
 {
-    public void RegisterPlatformTypes(IContainerRegistry containerRegistry)
+    public void RegisterPlatformTypes()
     {
         // Register Android-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
-        containerRegistry.RegisterSingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
-        containerRegistry.RegisterSingleton<IPlatformDialogService, MobileDialogService>();
-        containerRegistry.RegisterSingleton<ISafeStorage, AndroidSafeStorage>();
-        containerRegistry.RegisterSingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
+        SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
+        SplatRegistrations.RegisterLazySingleton<DesktopDialogService, MobileDesktopDialogService>();
+        SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
+        SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
 
         // Prism style dialog registration.
         containerRegistry.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
     }
 
-    public void InitializePlatform(IContainerProvider container, 
-        LoginProviderRegistry authProviderRegistry)
+    public void InitializePlatform()
     {
-        authProviderRegistry.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
+        var authProviderRegistry = Locator.Current.GetService
+            <LoginProviderRegistry>();
+        authProviderRegistry!.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
             LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
     }
 }

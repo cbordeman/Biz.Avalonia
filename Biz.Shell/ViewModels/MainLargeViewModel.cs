@@ -1,5 +1,4 @@
-﻿using Biz.Modules.Dashboard;
-using Biz.Modules.Dashboard.Core;
+﻿using Biz.Modules.Dashboard.Core;
 
 namespace Biz.Shell.ViewModels;
 
@@ -9,7 +8,7 @@ public class MainLargeViewModel : MainViewModelBase
     public List<SidebarHeaderViewModel> SidebarHeaders 
         { get; protected set; }
     
-    public MainLargeViewModel(IContainer container) : base(container)
+    public MainLargeViewModel()
     {
         IsDrawerOpen = true;
         

@@ -1,6 +1,4 @@
-﻿using Biz.Core.Extensions;
-using Biz.Models;
-using Biz.Shell.Services.Authentication;
+﻿using Biz.Shell.Services.Authentication;
 using Biz.Shell.ViewModels.Toolbar;
 using Microsoft.Extensions.Logging;
 
@@ -11,7 +9,7 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
     protected IAuthenticationService AuthenticationService { get; }
     
     // This must be public so MainWindow can bind to its DialogHost property.
-    public IPlatformDialogService DialogService { get; }
+    public DesktopDialogService DesktopDialogService { get; }
     
     #region Title
     public string? Title
@@ -52,13 +50,13 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
 
     public ObservableCollection<IToolbarEntry> ToolbarEntries { get; } = [];
 
-    protected PageViewModelBase(IContainer container) : base(container)
+    protected PageViewModelBase()
     {
-        DialogService = Container.Resolve<IPlatformDialogService>();
-        AuthenticationService = Container.Resolve<IAuthenticationService>();
+        DesktopDialogService = Locator.Current.Resolve<DesktopDialogService>();
+        AuthenticationService = Locator.Current.Resolve<IAuthenticationService>();
         AuthenticationService.AuthenticationStateChanged += () =>
         {
-            var logger = Container.Resolve<ILogger<PageViewModelBase>>();
+            var logger = Locator.Current.Resolve<ILogger<PageViewModelBase>>();
             CurrentUser = AuthenticationService.GetCurrentUserAsync()
                 .LogExceptionsBlockAndGetResult($"Getting user from " +
                               $"{nameof(PageViewModelBase)}", logger);

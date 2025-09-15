@@ -8,7 +8,5 @@ public interface IClientLoginProvider
     Task<(AuthenticationResult? authenticationResult, 
             string? internalUserId)> 
         LoginAsync(CancellationToken ct);
-    //Task ClearCachedCredentials(bool clearBrowserCache);
-    void Logout(bool clearBrowserCache);
     Task LogoutAsync(bool clearBrowserCache);
 }

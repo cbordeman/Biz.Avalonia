@@ -1,87 +1,56 @@
-﻿using System.Threading.Tasks;
-using Prism.Commands;
-using Prism.Dialogs;
-using Prism.Mvvm;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
+using CompositeFramework.Core;
+using CompositeFramework.Core.Location;
+using CompositeFramework.Mvvm;
+using CompositFramework.Avalonia.Dialogs;
 
 namespace Biz.Mobile.ViewModels;
 
-public sealed class MessageDialogViewModel : BindableBase, IDialogAware
+public sealed class MessageDialogViewModel
+    : ViewModelBase, INavigationAware, IDialog<bool?>
 {
-    // The Dialog Service sets this property for you, do NOT initialize it yourself.
-    public DialogCloseListener RequestClose { get; private set; }
+    // This is set by the dialog service.
+    public RequestObject<bool?>? CloseDialogRequest { get; set; }
 
-    #region Title
-    public string? Title
-    {
-        get => title;
-        set => SetProperty(ref title, value);
-    }
-    string? title;        
-    #endregion Title
+    public string? Title { get; set => SetProperty(ref field, value); }
+    public string? Message { get; set => SetProperty(ref field, value); }
+    public string? CancelText { get; set => SetProperty(ref field, value); }
+    public string? OkText { get; set => SetProperty(ref field, value); }
 
-    #region Message
-    public string? Message
+    public Task OnNavigatedTo(Dictionary<string, object> parameters)
     {
-        get => message;
-        set => SetProperty(ref message, value);
-    }
-    string? message;        
-    #endregion Message
+        Title = parameters["title"] as string;
+        Message = parameters["message"] as string;
+        CancelText = parameters["cancelText"] as string;
+        OkText = parameters["okText"] as string;
 
-    #region CancelText
-    public string? CancelText
-    {
-        get => cancelText;
-        set => SetProperty(ref cancelText, value);
-    }
-    string? cancelText;        
-    #endregion CancelText
-
-    #region OkText
-    public string? OkText
-    {
-        get => okText;
-        set => SetProperty(ref okText, value);
-    }
-    string? okText;        
-    #endregion OkText
-    
-    public void OnDialogOpened(IDialogParameters parameters)
-    {
-        Title = parameters.GetValue<string>("title");;
-        Message = parameters.GetValue<string>("message");
-        CancelText = parameters.GetValue<string>("cancelText");
-        OkText = parameters.GetValue<string>("okText");
+        return Task.CompletedTask;
     }
 
     #region OkCommand
-    AsyncDelegateCommand? okCommand;
-    public AsyncDelegateCommand OkCommand => okCommand ??= new AsyncDelegateCommand(ExecuteOkCommand, CanOkCommand);
+    AsyncRelayCommand? okCommand;
+    public AsyncRelayCommand OkCommand => okCommand ??= new AsyncRelayCommand(ExecuteOkCommand, CanOkCommand);
     bool CanOkCommand() => true;
     Task ExecuteOkCommand()
     {
-        RequestClose.Invoke(ButtonResult.OK);
-        return Task.CompletedTask;
+        Debug.Assert(CloseDialogRequest != null);
+        return CloseDialogRequest.Invoke(true);
     }
     #endregion OkCommand
-    
+
     #region CancelCommand
-    AsyncDelegateCommand? cancelCommand;
-    public AsyncDelegateCommand CancelCommand => cancelCommand ??= new AsyncDelegateCommand(ExecuteCancelCommand, CanCancelCommand);
+    AsyncRelayCommand? cancelCommand;
+    public AsyncRelayCommand CancelCommand => cancelCommand ??= new AsyncRelayCommand(ExecuteCancelCommand, CanCancelCommand);
     bool CanCancelCommand() => true;
     Task ExecuteCancelCommand()
     {
-        RequestClose.Invoke(ButtonResult.Cancel);
-        return Task.CompletedTask;
+        Debug.Assert(CloseDialogRequest != null);
+        return CloseDialogRequest.Invoke(false);
     }
     #endregion CancelCommand
-    
-    // Called when the dialog is closed to finalize or clean up.
-    public void OnDialogClosed()
-    {
-        // Clean up resources if needed.
-    }
 
-    // Control whether the dialog may be closed. Return false to prevent closing.
-    public bool CanCloseDialog() => true;
+    public void OnDialogClosed(bool? result) { }
 }

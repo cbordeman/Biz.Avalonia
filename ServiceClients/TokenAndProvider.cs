@@ -1,4 +1,4 @@
-using Biz.Core.Models;
+using Biz.Models;
 
 namespace ServiceClients;
 

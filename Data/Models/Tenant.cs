@@ -11,6 +11,6 @@ public class Tenant
     [Required] public bool IsActive { get; set; }
     [Required] public bool IsDefault { get; set; }
 
-    // Navigation property for many-to-many relationship with AppUser
+    // Location property for many-to-many relationship with AppUser
     public ICollection<TenantUser>? TenantUsers { get; set; }
 }

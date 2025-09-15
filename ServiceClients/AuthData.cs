@@ -1,4 +1,3 @@
-using Biz.Core.Models;
 using Biz.Models;
 using JetBrains.Annotations;
 

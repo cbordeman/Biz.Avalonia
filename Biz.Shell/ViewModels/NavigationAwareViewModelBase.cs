@@ -3,8 +3,8 @@ using Shouldly;
 
 namespace Biz.Shell.ViewModels;
 
-public abstract class NavigationAwareViewModelBase(IContainer container)
-    : FormFactorAwareViewModel(container),
+public abstract class NavigationAwareViewModelBase()
+    : FormFactorAwareViewModel,
     INavigationAware,
     IJournalAware,
     IConfirmNavigationRequest
@@ -87,7 +87,7 @@ public abstract class NavigationAwareViewModelBase(IContainer container)
     //     return Task.FromException(new InvalidOperationException("Initialize() has not been called."));
     // }
     
-    /// <summary>Navigation validation checker.</summary>
+    /// <summary>Location validation checker.</summary>
     /// <remarks>Override for Prism 7.2's IsNavigationTarget.</remarks>
     /// <param name="navigationContext">The navigation context.</param>
     /// <returns><see langword="true"/> if this instance accepts the navigation request; otherwise, <see langword="false"/>.</returns>

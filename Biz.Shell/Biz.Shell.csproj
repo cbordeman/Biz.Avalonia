@@ -18,8 +18,8 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2"/>
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4"/>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
-    <PackageReference Include="DryIoc.Microsoft.DependencyInjection" Version="6.2.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageReference Include="Lucide.Avalonia" Version="0.1.39" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
@@ -29,14 +29,21 @@
     <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.100" />
     <PackageReference Include="Responsive.Avalonia" Version="0.1.1" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
+    <PackageReference Include="Splat" Version="16.2.1" />
+    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="16.1.1" />
     
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
     <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
-    <ProjectReference Include="..\Prism\src\Avalonia\Prism.DryIoc.Avalonia\Prism.DryIoc.Avalonia.csproj" />
-    <ProjectReference Include="..\Prism\src\Prism.Core\Prism.Core.csproj" />
+    <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
+    <ProjectReference Include="..\CompositFramework.Avalonia\CompositFramework.Avalonia.csproj" />
+    <ProjectReference Include="..\Prism\src\Avalonia\CompositeFramework.DialogsOLD\CompositeFramework.DialogsOLD.csproj" />
     <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />
     <ProjectReference Include="..\ShadUI\ShadUI.csproj" />
   </ItemGroup>

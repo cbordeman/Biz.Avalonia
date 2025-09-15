@@ -1,106 +1,93 @@
 using Biz.Shell.Logging;
-using Biz.Shell.Platform;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
+using CompositFramework.Avalonia;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
-using Prism.Container.DryIoc;
 using ServiceClients;
 using Shouldly;
 using IFormFactorService = Biz.Shell.Services.IFormFactorService;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Biz.Shell;
 
 public class App : Application
 {
-    public override void Initialize()
+    public override async void Initialize()
     {
-        AvaloniaXamlLoader.Load(this);
-        base.Initialize();
+        try
+        {
+            AvaloniaXamlLoader.Load(this);
+            base.Initialize();
+
+            PerformRegistrations();
+            PlatformHelper.PlatformService?.InitializePlatform();
+            
+            // Configure resolution.  Can also pass a parameter
+            // containing the recognized view suffixes, which will
+            // be replaced with "ViewModel".
+            ViewModelLocator.Configure(viewType =>
+                Locator.Current.GetService(viewType));
+            
+            var authService = Locator.Current.GetService<IAuthenticationService>();
+            Debug.Assert(authService != null);
+            await authService.InitializeAsync();
+        }
+        catch (Exception e)
+        {
+            var logger = Locator.Current.GetService<ILogger<App>>();
+            Debug.Assert(logger != null, "logger was null");
+            logger.LogError(e, "Failed to initialize application: " +
+                               "{EMessage}", e.Message);
+            Environment.Exit(1);
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (ApplicationLifetime is 
+            IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Avoid duplicate validations from both Avalonia and the
             // CommunityToolkit.  More info:
             // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             
-            var mainViewModel = Locator.Current.GetService<MainWindow>();
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = mainViewModel
-            };
+            desktop.MainWindow = Locator.Current.GetService<MainWindow>();
+            ViewModelLocator.SetAutoWireViewModel(desktop.MainWindow!, true);
         }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
+        else if (ApplicationLifetime is 
+                 ISingleViewApplicationLifetime singleView)
         {
-            singleView.MainView = new MainView
-            {
-                DataContext = mainViewModel
-            };
+            singleView.MainView = Locator.Current.GetService<MainSmallView>();
+            ViewModelLocator.SetAutoWireViewModel(singleView.MainView!, true);
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    
-    protected override AvaloniaObject CreateShell()
+    static void PerformRegistrations()
     {
-        switch (ApplicationLifetime)
-        {
-            case IClassicDesktopStyleApplicationLifetime:
-                // Avoid duplicate validations from both Avalonia and the
-                // CommunityToolkit.  More info:
-                // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-                DisableAvaloniaDataAnnotationValidation();
-                return Container.Resolve<MainWindow>();
-
-            case ISingleViewApplicationLifetime:
-                // This includes browser / WASM, so we must use the form factor
-                // in deciding UI elements.
-                return Container.Resolve<MainSmallView>();
-
-            default:
-                throw new InvalidOperationException("Unsupported application lifetime.");
-        }
-    }
-
-    protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
-    {
-        var pmcs = ContainerLocator.Current.Resolve<IPlatformModuleCatalogService>();
-        pmcs.ConfigureModuleCatalog(moduleCatalog);
-    }
-
-    protected override IModuleCatalog CreateModuleCatalog() => new CompositeModuleCatalog();
-
-    protected override void RegisterTypes(IContainerRegistry containerRegistry)
-    {
+        // Views and ViewModels
+        
         // Platform-specific registrations
-        PlatformHelper.PlatformService?.RegisterPlatformTypes(containerRegistry);
+        PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
         // Register services.
-        containerRegistry
-            .RegisterSingleton<IConfigurationService, ConfigurationService>()
-            .RegisterSingleton<IAuthenticationService, AuthenticationService>()
-            .RegisterSingleton<IAuthDataStore, SecureStorageAuthDataStore>()
-            .RegisterSingleton<ServicesAuthHeaderHandler>();
-
+        SplatRegistrations.RegisterLazySingleton<ConfigurationService>();
+        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
+        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
+        SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
+        
         // Get configuration service to access maps API key
         // TODO: Fix this to use the IConfigurationService via dependency
         // injection.
-        var configService = new ConfigurationService();
+        ConfigurationService? configService = Locator.Current.GetService<ConfigurationService>();
+        Debug.Assert(configService != null, "configService was null");
+        
         //var mapsApiKey = configService.Maps.BingMapsApiKey;
 
-        // Logging
-        containerRegistry.GetContainer().RegisterLoggerFactory(
-            LoggerFactory.Create(builder =>
-            {
-                builder.AddConsole();
-                builder.SetMinimumLevel(LogLevel.Information);
-            }));
+        // Lets you use ILogger<T>
+        LoggingSetup.RegisterMicrosoftLoggerFactoryWithSplat();
 
         string servicesUrl;
         if (OperatingSystem.IsAndroid())
@@ -116,22 +103,22 @@ public class App : Application
         else 
             throw new InvalidOperationException("Unsupported platform.");
         
-        containerRegistry.AddMainApiClients(servicesUrl);
+        ServiceClientRegistration.AddMainApiClients(servicesUrl);
 
         // Services
-        containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
-        containerRegistry.RegisterSingleton<IFormFactorService, ViewControlService>();
-        containerRegistry.RegisterSingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
-        containerRegistry.RegisterSingleton<LoginProviderRegistry>();
+        SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
+        SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
+        SplatRegistrations.RegisterLazySingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
+        SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
-        // Views - Region Navigation
-        containerRegistry
-            .RegisterForNavigation<SettingsView, SettingsViewModel>()
-            .RegisterForNavigation<SettingsSubView, SettingsSubViewModel>();
+        // Views - Region Location
+        SplatRegistrations.Register<SettingsView>(); 
+        SplatRegistrations.Register<SettingsViewModel>(); 
+        SplatRegistrations.Register<SettingsSubView>();
+        SplatRegistrations.Register<SettingsSubViewModel>();
         
         // Accessibility
-        containerRegistry
-            .RegisterInstance(SemanticScreenReader.Default);
+        Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 
         // Dialogs, etc. 
     }
@@ -147,41 +134,4 @@ public class App : Application
             BindingPlugins.DataValidators.Remove(plugin);
     }
 
-    protected override async void OnInitialized()
-    {
-        try
-        {
-            // Register Views to the Region it will appear in. Don't register them in the ViewModel.
-            //var regionManager = Container.Resolve<IRegionManager>();
-
-            // WARNING: Prism v11.0.0-prev4
-            // - DataTemplates MUST define a DataType, or else an XAML error will be thrown
-            // - Error: DataTemplate inside DataTemplates must have a DataType set
-            ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting1View));
-            ////regionManager.RegisterViewWithRegion(RegionNames.DynamicSettingsListRegion, typeof(Setting2View));
-            
-            var authProviderRegistry = Container.Resolve<LoginProviderRegistry>();
-            PlatformHelper.PlatformService?.InitializePlatform(Container,
-                authProviderRegistry);
-            
-            var authService = Container.Resolve<IAuthenticationService>();
-            await authService.InitializeAsync();
-        }
-        catch (Exception e)
-        {
-            var logger = Container.Resolve<ILogger<App>>();
-            logger.LogError(e, "Failed to initialize application: {EMessage}",
-                e.Message);
-        }
-    }
-
-    /// <summary>Custom region adapter mappings.</summary>
-    /// <param name="regionAdapterMappings">Region Adapters.</param>
-    protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
-    {
-        regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
-        regionAdapterMappings.RegisterMapping<StackPanel, StackPanelRegionAdapter>();
-        regionAdapterMappings.RegisterMapping<ItemsControl, ItemsControlRegionAdapter>();
-        regionAdapterMappings.RegisterMapping<TransitioningContentControl, TransitioningContentControlRegionAdapter>();
-    }
 }

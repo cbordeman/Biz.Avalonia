@@ -3,7 +3,7 @@
 /// <summary>
 /// Loads a module and navigates within the MainContentRegion.
 /// </summary>
-public class NavigationCommand : AsyncDelegateCommand
+public class NavigationCommand : AsyncRelayCommand
 {
     readonly string moduleName;
     readonly string viewName;

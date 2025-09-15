@@ -1,4 +1,3 @@
-using Biz.Models;
 using Biz.Shell.ClientLoginProviders;
 
 namespace Biz.Shell.Services.Authentication

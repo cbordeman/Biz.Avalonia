@@ -35,8 +35,8 @@ public class SettingsSubViewModel : PageViewModelBase
         set => SetProperty(ref field, value);
     } = string.Empty;
 
-    /// <summary>Navigation completed successfully.</summary>
-    /// <param name="navigationContext">Navigation context.</param>
+    /// <summary>Location completed successfully.</summary>
+    /// <param name="navigationContext">Location context.</param>
     public override void OnNavigatedTo(NavigationContext navigationContext)
     {
         // Used to "Go Back" to parent
@@ -54,7 +54,7 @@ public class SettingsSubViewModel : PageViewModelBase
     {
         Debug.WriteLine("OnNavigatingTo");
 
-        // Navigation permission sample:
+        // Location permission sample:
         return navigationContext.Parameters.ContainsKey("key1") &&
                navigationContext.Parameters.ContainsKey("key2");
     }

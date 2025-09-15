@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Avalonia.Controls.Templates;
 
 namespace Biz.Shell.Infrastructure;
@@ -23,6 +24,7 @@ public class ViewLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is ViewModelBase;
+        return true;
+        //return data is INotifyPropertyChanged;
     }
 }

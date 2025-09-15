@@ -107,7 +107,7 @@ public class SidebarItem : RadioButton
     ///     Gets or sets the route or navigation path associated with this sidebar item.
     ///     This property is useful for:
     ///     <list type="bullet">
-    ///         <item><description>Navigation-aware sidebar behavior where items can be highlighted based on the current route</description></item>
+    ///         <item><description>Location-aware sidebar behavior where items can be highlighted based on the current route</description></item>
     ///         <item><description>Implementing automatic selection of sidebar items when navigating to specific pages</description></item>
     ///         <item><description>Enabling deep linking scenarios where the sidebar reflects the current application state</description></item>
     ///         <item><description>Facilitating route-based sidebar item activation and deactivation</description></item>

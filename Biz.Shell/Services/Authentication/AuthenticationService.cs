@@ -1,7 +1,5 @@
 using System.Net.Http;
 using System.Text.Json;
-using Biz.Core.Extensions;
-using Biz.Models;
 using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
-using Biz.Core.Models;
+using Biz.Models;
 using JetBrains.Annotations;
 
 namespace ServiceClients;

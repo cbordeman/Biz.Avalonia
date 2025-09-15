@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>Biz.Mobile</AssemblyName>
@@ -14,6 +14,8 @@
       <ProjectReference Include="..\Biz.Modules.AccountManagement\Biz.Modules.AccountManagement.csproj" />
       <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
       <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
+      <ProjectReference Include="..\CompositeFramework.Core\CompositeFramework.Core.csproj" />
+      <ProjectReference Include="..\CompositeFramework.Mvvm\CompositeFramework.Mvvm.csproj" />
     </ItemGroup>
 
     <ItemGroup>

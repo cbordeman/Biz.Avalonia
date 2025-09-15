@@ -27,7 +27,7 @@ public sealed class DashboardViewModel : PageViewModelBase
         Title = "Dashboard";
         TitleGeometryResourceName = ResourceNames.Gear;
         
-        notificationService = container.Resolve<INotificationService>();
+        notificationService = locator.Current.ResolveINotificationService>();
         ThemeSelected = Application.Current!.RequestedThemeVariant!;
         
         ToolbarEntries.Add(new ToolbarEntry(

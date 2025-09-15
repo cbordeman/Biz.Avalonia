@@ -11,13 +11,13 @@ public class DesktopPlatformAppCustomUriHandler(
     ILogger<DesktopPlatformAppCustomUriHandler> logger,
     IMainRegionNavigationService navService,
     IAccountApi accountApi,
-    IPlatformDialogService dialogService)
+    DesktopDialogService desktopDialogService)
     : PlatformAppCustomUriHandlerBase(logger)
 {
     // ReSharper disable once UnusedMember.Local
     readonly ILogger<DesktopPlatformAppCustomUriHandler> logger = logger;
     readonly IAccountApi accountApi = accountApi;
-    readonly IPlatformDialogService dialogService = dialogService;
+    readonly DesktopDialogService desktopDialogService = desktopDialogService;
     
     protected override async Task HandleConfirmUserRegistration(
         string token, string email)
@@ -26,7 +26,7 @@ public class DesktopPlatformAppCustomUriHandler(
         // whether the token was good or the action was successful.
         // But we still tell the user it was.
         await accountApi.ConfirmRegisteredEmail(email, token);
-        await dialogService.Confirm("Account Activated",
+        await desktopDialogService.Confirm("Account Activated",
             "Your email has been confirmed.  You may log in.",
             "OK", null);
         await navService.NavigateAsync(

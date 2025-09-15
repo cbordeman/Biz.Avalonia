@@ -11,7 +11,7 @@ public class TenantUser
     [StringLength(100)]
     public string AppUserId { get; set; } = string.Empty;
 
-    // Navigation properties
+    // Location properties
     public Tenant Tenant { get; set; } = null!;
     public AppUser AppUser { get; set; } = null!;
 

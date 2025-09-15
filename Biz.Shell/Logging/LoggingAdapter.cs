@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Biz.Shell.Logging;
 

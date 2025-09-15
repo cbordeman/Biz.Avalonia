@@ -1,5 +1,4 @@
-﻿using Biz.Core.Extensions;
-using Biz.Shell.ClientLoginProviders;
+﻿using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
@@ -61,14 +60,6 @@ public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
 
     public abstract Task<(AuthenticationResult? authenticationResult,
         string? internalUserId)> LoginAsync(CancellationToken ct);
-
-    public void Logout(bool clearBrowserCache)
-    {
-        LogoutAsync(clearBrowserCache)
-            .LogExceptionsAndForget(
-                $"{nameof(MicrosoftLoginProviderBase)}.{nameof(Logout)}()",
-                Logger);
-    }
 
     //  Clears existing login data, plus any provider-specific cleanup.
     public async Task LogoutAsync(bool clearBrowserCache)

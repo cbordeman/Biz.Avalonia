@@ -1,6 +1,8 @@
-﻿namespace Biz.Shell.Platform;
+﻿using CompositeFramework.Modules;
+
+namespace Biz.Shell.Platform;
 
 public interface IPlatformModuleCatalogService
 {
-    void ConfigureModuleCatalog(IModuleCatalog moduleCatalog);
+    void ConfigureModuleCatalog(IModuleIndex moduleIndex);
 }

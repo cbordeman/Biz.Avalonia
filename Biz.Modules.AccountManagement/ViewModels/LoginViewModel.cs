@@ -1,23 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Biz.Core;
-using Biz.Core.DataAnnotations;
-using Biz.Core.Models;
-using Biz.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using Biz.Core.Extensions;
 using Biz.Modules.AccountManagement.Core;
-using Biz.Shell.Infrastructure;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
-using DryIoc;
-using Prism.Commands;
-using Prism.Navigation;
-using Prism.Navigation.Regions;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
 public class LoginViewModel : PageViewModelBase
 {
     CancellationTokenSource? loginCancellationTokenSource;
-    readonly IPlatformDialogService dialogService;
+    readonly DesktopDialogService desktopDialogService;
     readonly IAuthenticationService authenticationService;
 
     #region Email
@@ -43,19 +35,18 @@ public class LoginViewModel : PageViewModelBase
     }
     #endregion Password
     
-    public LoginViewModel(IContainer container)
-        : base(container)
+    public LoginViewModel() : base()
     {
-        dialogService = container.Resolve<IPlatformDialogService>();
-        authenticationService = container.Resolve<IAuthenticationService>();
+        desktopDialogService = Locator.Current.Resolve<DesktopDialogService>();
+        authenticationService = Locator.Current.Resolve<IAuthenticationService>();
         Title = $"Sign In to {AppConstants.AppShortName}";
         IsValidating = true;
     }
 
     #region LoginCommand
-    AsyncDelegateCommandWithParam<LoginProvider>? loginCommand;
-    public AsyncDelegateCommandWithParam<LoginProvider> LoginCommand => loginCommand ??= 
-        new AsyncDelegateCommandWithParam<LoginProvider>(ExecuteLoginCommand, CanLoginCommand);
+    [field: AllowNull, MaybeNull]
+    public AsyncRelayCommand<LoginProvider> LoginCommand => field ??= 
+        new AsyncRelayCommand<LoginProvider>(ExecuteLoginCommand, CanLoginCommand);
     static bool CanLoginCommand(LoginProvider provider) => true;
     async Task ExecuteLoginCommand(LoginProvider provider)
     {
@@ -69,7 +60,7 @@ public class LoginViewModel : PageViewModelBase
             {
                 if (result.availableTenants == null || result.error != null)
                 {
-                    await dialogService.Confirm(
+                    await desktopDialogService.Confirm(
                         $"{provider} Login",
                         $"Error logging in." +
                         (result.error == null ? "" : $"\n\nError: {result.error}"),
@@ -78,7 +69,7 @@ public class LoginViewModel : PageViewModelBase
                 }
                 else if (result.availableTenants.Length == 0)
                 {
-                    await dialogService.Confirm("Account Inactive",
+                    await desktopDialogService.Confirm("Account Inactive",
                         "Your account is inactive in all organizations.",
                         cancelText: null);
                     return;
@@ -92,7 +83,7 @@ public class LoginViewModel : PageViewModelBase
         }
         catch (Exception ex)
         {
-            await dialogService.Confirm(
+            await desktopDialogService.Confirm(
                 "Error",
                 $"An error occurred during Microsoft login: {ex.Message}",
                 cancelText: null);
@@ -122,7 +113,7 @@ public class LoginViewModel : PageViewModelBase
     }
 
     #region CancelLoginCommand
-    public AsyncDelegateCommand? CancelLoginCommand => field ??= new AsyncDelegateCommand(ExecuteCancelLoginCommand);
+    public AsyncRelayCommand? CancelLoginCommand => field ??= new AsyncRelayCommand(ExecuteCancelLoginCommand);
     Task ExecuteCancelLoginCommand()
     {
         loginCancellationTokenSource?.Cancel();
@@ -138,8 +129,8 @@ public class LoginViewModel : PageViewModelBase
     }
 
     #region RegisterCommand
-    AsyncDelegateCommand? registerCommand;
-    public AsyncDelegateCommand RegisterCommand => registerCommand ??= new AsyncDelegateCommand(ExecuteRegisterCommand, CanRegisterCommand);
+    AsyncRelayCommand? registerCommand;
+    public AsyncRelayCommand RegisterCommand => registerCommand ??= new AsyncRelayCommand(ExecuteRegisterCommand, CanRegisterCommand);
     static bool CanRegisterCommand() => true;
     async Task ExecuteRegisterCommand()
     {
@@ -148,8 +139,8 @@ public class LoginViewModel : PageViewModelBase
     #endregion RegisterCommand
     
     #region ForgotPasswordCommand
-    AsyncDelegateCommand? forgotPasswordCommand;
-    public AsyncDelegateCommand ForgotPasswordCommand => forgotPasswordCommand ??= new AsyncDelegateCommand(ExecuteForgotPasswordCommand, CanForgotPasswordCommand);
+    AsyncRelayCommand? forgotPasswordCommand;
+    public AsyncRelayCommand ForgotPasswordCommand => forgotPasswordCommand ??= new AsyncRelayCommand(ExecuteForgotPasswordCommand, CanForgotPasswordCommand);
     static bool CanForgotPasswordCommand() => true;
     async Task ExecuteForgotPasswordCommand()
     {

@@ -181,7 +181,7 @@ sealed class Program
     {
         try
         {
-            return ContainerLocator.Container.Resolve<ILogger<Program>>();
+            return ContainerLocator.Locator.Current.Resolve<ILogger<Program>>();
         }
         catch (Exception)
         {

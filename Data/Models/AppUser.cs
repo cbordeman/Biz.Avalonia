@@ -74,6 +74,6 @@ public class AppUser : IdentityUser
     [Required]
     public LoginProvider? LoginProvider { get; set; }
 
-    // Navigation property for many-to-many relationship with Tenant
+    // Location property for many-to-many relationship with Tenant
     public ICollection<TenantUser>? TenantUsers { get; set; }
 }
