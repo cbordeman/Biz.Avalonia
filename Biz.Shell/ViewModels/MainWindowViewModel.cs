@@ -1,6 +1,5 @@
 namespace Biz.Shell.ViewModels
 {
-    [UsedImplicitly]
     public class MainWindowViewModel : PageViewModelBase
     {
         #region Main
@@ -11,9 +10,8 @@ namespace Biz.Shell.ViewModels
         }
         #endregion Main
 
-        public MainWindowViewModel(IContainer container, 
+        public MainWindowViewModel( 
             MainLargeViewModel mainLargeViewModel)
-            : base(container)
         {
             Main = mainLargeViewModel;
             Title = "Shell (Window)";
@@ -31,5 +29,7 @@ namespace Biz.Shell.ViewModels
                 Environment.Exit(0);
         }
         #endregion TryCloseCommand
+        
+        public override string Area => string.Empty;
     }
 }

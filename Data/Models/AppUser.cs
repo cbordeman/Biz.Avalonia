@@ -1,6 +1,4 @@
-﻿using Biz.Core;
-using Biz.Core.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Models;
@@ -69,11 +67,11 @@ public class AppUser : IdentityUser
     
     [ProtectedPersonalData]
     [StringLength(8)]
-    public string? Extension { get; set; }
+    public string? Extension { get; init; }
     
     [Required]
-    public LoginProvider? LoginProvider { get; set; }
+    public LoginProvider? LoginProvider { get; init; }
 
-    // Location property for many-to-many relationship with Tenant
-    public ICollection<TenantUser>? TenantUsers { get; set; }
+    // Navigation property for many-to-many relationship with Tenant
+    public ICollection<TenantUser>? TenantUsers { get; init; }
 }

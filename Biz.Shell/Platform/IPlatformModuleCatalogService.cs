@@ -1,6 +1,4 @@
-﻿using CompositeFramework.Modules;
-
-namespace Biz.Shell.Platform;
+﻿namespace Biz.Shell.Platform;
 
 public interface IPlatformModuleCatalogService
 {

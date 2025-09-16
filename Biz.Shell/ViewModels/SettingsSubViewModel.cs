@@ -13,15 +13,15 @@ public class SettingsSubViewModel : PageViewModelBase
         Title = "Settings - SubView";
     }
 
-    public DelegateCommand CmdNavigateBack => new(() =>
-    {
-        // Go back to the previous calling page, otherwise, Dashboard.
-        if (journal != null && journal.CanGoBack)
-            journal.GoBack();
-        else
-            NavigationService.RequestNavigate(RegionNames.MainContentRegion, 
-                DashboardConstants.DashboardView);
-    });
+    // public DelegateCommand CmdNavigateBack => new(() =>
+    // {
+    //     // Go back to the previous calling page, otherwise, Dashboard.
+    //     if (journal != null && journal.CanGoBack)
+    //         journal.GoBack();
+    //     else
+    //         NavigationService.RequestNavigate(RegionNames.MainContentRegion, 
+    //             DashboardConstants.DashboardView);
+    // });
 
     public string? MessageText
     {
@@ -35,8 +35,8 @@ public class SettingsSubViewModel : PageViewModelBase
         set => SetProperty(ref field, value);
     } = string.Empty;
 
-    /// <summary>Location completed successfully.</summary>
-    /// <param name="navigationContext">Location context.</param>
+    /// <summary>Navigation completed successfully.</summary>
+    /// <param name="navigationContext">Navigation context.</param>
     public override void OnNavigatedTo(NavigationContext navigationContext)
     {
         // Used to "Go Back" to parent
@@ -54,8 +54,10 @@ public class SettingsSubViewModel : PageViewModelBase
     {
         Debug.WriteLine("OnNavigatingTo");
 
-        // Location permission sample:
-        return navigationContext.Parameters.ContainsKey("key1") &&
+        // Navigation permission sample:
+        return navigationContext.Parameters != null &&
+               navigationContext.Parameters.ContainsKey("key1") &&
                navigationContext.Parameters.ContainsKey("key2");
     }
+    public override string Area => "Settings.Sub1";
 }

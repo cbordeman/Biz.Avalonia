@@ -9,9 +9,9 @@ public class MainContentRegionNavigationService :
     IMainRegionNavigationService, IDisposable
 {
     bool initialized;
-    IRegionNavigationService? regionNavigationService;
-    IAuthenticationService AuthenticationService => ContainerLocator.Current.Resolve<IAuthenticationService>();
-    readonly IRegionManager regionManager;
+    readonly IContextNavigationService? navigationService;
+    readonly IAuthenticationService AuthenticationService => 
+        Locator.Current.Resolve<IAuthenticationService>();
     readonly ILogger<MainContentRegionNavigationService> logger;
     readonly IAuthenticationService authenticationService;
     readonly IModuleManager moduleManager;
@@ -20,20 +20,19 @@ public class MainContentRegionNavigationService :
     public string? CurrentPage { get; private set; }
     
     // this is just the first bit
-    // ReSharper disable once MemberCanBePrivate.Global
     public string? CurrentArea { get; private set; }
 
     public event NotifyPageChanged? PageChanged;
 
-    public MainContentRegionNavigationService(IRegionManager regionManager,
+    public MainContentRegionNavigationService(
         ILogger<MainContentRegionNavigationService> logger,
         IAuthenticationService authenticationService,
-        IModuleManager moduleManager)
+        IModuleManager moduleManager, IContextNavigationService? navigationService)
     {
-        this.regionManager = regionManager;
         this.logger = logger;
         this.authenticationService = authenticationService;
         this.moduleManager = moduleManager;
+        this.navigationService = navigationService;
     }
 
     /// <summary>
@@ -46,20 +45,13 @@ public class MainContentRegionNavigationService :
         if (initialized)
             return;
 
-        if (!regionManager.Regions.ContainsRegionWithName(RegionNames.MainContentRegion))
-            throw new InvalidOperationException(
-                $"MainContentRegion not found.  Could not initialize {nameof(MainContentRegionNavigationService)}.");
-
-        var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
-        regionNavigationService = mainRegion.NavigationService;
+        navigationService.Navigated += NavigationServiceOnNavigated;
         
-        regionNavigationService.Navigated += Navigated;
-        regionNavigationService.NavigationFailed += NavigationFailed;
-
         authenticationService.AuthenticationStateChanged += AuthStateChanged;
         
         initialized = true;
     }
+    
     void AuthStateChanged()
     {
         try
@@ -85,20 +77,22 @@ public class MainContentRegionNavigationService :
         }
     }
 
-    void NavigationFailed(object? sender, RegionNavigationFailedEventArgs args) =>
-        logger.LogError(args.Error, $"Location failed: {args.Uri}");
-
     // ReSharper disable once AsyncVoidMethod
-    void Navigated(object? sender, RegionNavigationEventArgs args)
+    async Task NavigationServiceOnNavigated(
+        NavigationResult result,
+        string error,
+        NavigationContext context)
     {
+        if (result != NavigationResult.Success)
+            logger.LogError(error, $"Navigation failed: {context.Location?.Name ?? "null"}");
         try
         {
-            CurrentPage = args.Uri.OriginalString;
-            CurrentArea = args.Uri.OriginalString.Split('.').First();
+            CurrentPage = context.Location?.Name;
+            CurrentArea = context.Location?.Area.Split('.').FirstOrDefault();
             
             // There should be exactly one active view
             // in the main region.
-            var pageView = regionNavigationService!.Region
+            var pageView = navigationService!.Region
                 .ActiveViews.Single();
             if (pageView == null)
                 throw new InvalidOperationException("Page contains no views.");
@@ -143,8 +137,8 @@ public class MainContentRegionNavigationService :
         }
     }
 
-    public Task NavigateAsync(string? module, string area,
-        INavigationParameters? navigationParameters = null)
+    public async Task NavigateAsync(string? module, string area,
+        params IDictionary<string, object> navigationParameters)
     {
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
@@ -152,13 +146,13 @@ public class MainContentRegionNavigationService :
         TaskCompletionSource<bool> tcs = new();
         
         if (module != null)
-            moduleManager.LoadModule(module);
+            await moduleManager.LoadModuleAsync(module);
 
-        if (navigationParameters == null)
-            regionNavigationService!.RequestNavigate(area,
+        if (navigationParameters.Count > 0)
+            navigationService!.RequestNavigate(area,
                 NavigationCallback);
         else
-            regionNavigationService!.RequestNavigate(area, 
+            navigationService!.RequestNavigate(area, 
                 NavigationCallback,
                 navigationParameters);
 
@@ -189,17 +183,17 @@ public class MainContentRegionNavigationService :
 #endif
         
         if (navigationParameters == null)
-            regionNavigationService!.RequestNavigate(area);
+            navigationService!.RequestNavigate(area);
         else
-            regionNavigationService!.RequestNavigate(area, 
+            navigationService!.RequestNavigate(area, 
                 navigationParameters);
     }
 
     public void Dispose()
     {
-        if (regionNavigationService == null) return;
+        if (navigationService == null) return;
 
-        regionNavigationService.Navigated -= Navigated;
-        regionNavigationService.NavigationFailed -= NavigationFailed;
+        navigationService.Navigated -= Navigated;
+        navigationService.NavigationFailed -= NavigationFailed;
     }
 }

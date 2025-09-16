@@ -111,7 +111,7 @@ public class App : Application
         SplatRegistrations.RegisterLazySingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
         SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
-        // Views - Region Location
+        // Views - Region Navigation
         SplatRegistrations.Register<SettingsView>(); 
         SplatRegistrations.Register<SettingsViewModel>(); 
         SplatRegistrations.Register<SettingsSubView>();

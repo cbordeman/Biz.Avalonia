@@ -10,8 +10,6 @@ public interface IMainRegionNavigationService
     void Initialize();
 
     Task NavigateAsync(string module, string area, 
-        INavigationParameters? navigationParameters = null);
-    
-    void RequestNavigate(string? module, string area,
-        INavigationParameters? navigationParameters = null);
+        IDictionary<string, object>? parameters = null);
+   
 }

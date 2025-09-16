@@ -1,4 +1,5 @@
-﻿using CompositeFramework.Modules.Attributes;
+﻿using CompositeFramework.Core;
+using CompositeFramework.Modules.Attributes;
 using CompositeFramework.Modules.Exceptions;
 using Mono.Cecil;
 

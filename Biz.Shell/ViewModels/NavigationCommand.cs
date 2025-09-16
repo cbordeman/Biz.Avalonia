@@ -3,7 +3,7 @@
 /// <summary>
 /// Loads a module and navigates within the MainContentRegion.
 /// </summary>
-public class NavigationCommand : AsyncRelayCommand
+public class NavigationCommand : DelegatingAsyncRelayCommand
 {
     readonly string moduleName;
     readonly string viewName;
@@ -35,11 +35,11 @@ public class NavigationCommand : AsyncRelayCommand
     {
         // Will be null if it's a primary module that
         // doesn't need to be loaded.
-        var moduleManager = ContainerLocator.Current.Resolve<IModuleManager>();
+        var moduleManager = Locator.Current.Resolve<IModuleManager>();
         moduleManager.LoadModule(moduleName);
         
-        var regionManager = ContainerLocator.Current.Resolve<IRegionManager>();
-        regionManager.RequestNavigate(RegionNames.MainContentRegion, viewName);
+        var nav = Locator.Current.Resolve<IMainRegionNavigationService>();
+        await nav.NavigateAsync(RegionNames.MainContentRegion, viewName);
         
          return Task.CompletedTask;
     }

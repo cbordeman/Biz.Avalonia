@@ -2,7 +2,6 @@
 
 namespace Biz.Shell.ViewModels;
 
-[UsedImplicitly]
 public class MainLargeViewModel : MainViewModelBase
 {
     public List<SidebarHeaderViewModel> SidebarHeaders 
@@ -21,7 +20,7 @@ public class MainLargeViewModel : MainViewModelBase
                 [
                     new SideBarNavigationItemViewModel(
                         DashboardConstants.DashboardView,
-                        "Dashboard", 
+                        DashboardConstants.ModuleName, 
                         ResourceNames.Home,
                         DashboardConstants.ModuleName),
                     // new SideBarNavigationItemViewModel(
@@ -33,4 +32,6 @@ public class MainLargeViewModel : MainViewModelBase
             }
         ];
     }
+
+    public override string Area => string.Empty;
 }

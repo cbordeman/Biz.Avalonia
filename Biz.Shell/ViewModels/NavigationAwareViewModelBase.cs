@@ -4,10 +4,8 @@ using Shouldly;
 namespace Biz.Shell.ViewModels;
 
 public abstract class NavigationAwareViewModelBase()
-    : FormFactorAwareViewModel,
-    INavigationAware,
-    IJournalAware,
-    IConfirmNavigationRequest
+    : FormFactorAwareViewModel, INavigationAware
+    
 {
     /// <summary>
     ///   Called to determine if this instance can handle the navigation request.
@@ -44,8 +42,6 @@ public abstract class NavigationAwareViewModelBase()
     /// <param name="ctx">The navigation context.</param>
     public virtual void OnNavigatedTo(NavigationContext ctx)
     {
-        //NavigationService = ctx.NavigationService;
-        
         if (ctx.Parameters == null || ctx.Parameters.Count == 0)
             return;
         
@@ -87,12 +83,19 @@ public abstract class NavigationAwareViewModelBase()
     //     return Task.FromException(new InvalidOperationException("Initialize() has not been called."));
     // }
     
-    /// <summary>Location validation checker.</summary>
+    /// <summary>Navigation validation checker.</summary>
     /// <remarks>Override for Prism 7.2's IsNavigationTarget.</remarks>
     /// <param name="navigationContext">The navigation context.</param>
     /// <returns><see langword="true"/> if this instance accepts the navigation request; otherwise, <see langword="false"/>.</returns>
+    
     protected virtual bool OnNavigatingTo(NavigationContext navigationContext) 
         => true;
 
     public virtual bool PersistInHistory() => true;
+    
+    public Task OnNavigatedToAsync(NavigationContext context)
+    {
+        return Task.CompletedTask;
+    }
+    public abstract string Area { get; }
 }

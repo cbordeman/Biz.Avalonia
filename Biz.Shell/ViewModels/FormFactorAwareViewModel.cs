@@ -46,7 +46,7 @@ public abstract class FormFactorAwareViewModel : ViewModelBase, IDisposable
     }
     #endregion IsTabletOrDesktop
     
-    protected FormFactorAwareViewModel() : base()
+    protected FormFactorAwareViewModel()
     {
         this.formFactorService = Locator.Current.Resolve<IFormFactorService>();
         formFactorService.Changed += FormFactorServiceOnChanged;

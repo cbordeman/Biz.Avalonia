@@ -42,6 +42,7 @@
     <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
     <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
     <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
+    <ProjectReference Include="..\CompositeFramework.Mvvm\CompositeFramework.Mvvm.csproj" />
     <ProjectReference Include="..\CompositFramework.Avalonia\CompositFramework.Avalonia.csproj" />
     <ProjectReference Include="..\Prism\src\Avalonia\CompositeFramework.DialogsOLD\CompositeFramework.DialogsOLD.csproj" />
     <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />

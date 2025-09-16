@@ -12,7 +12,7 @@ public static class StringExtensions
         return str;
     }
 
-    public static string? OpenUrlCrossPlatform(this string url)
+    public static void OpenUrlCrossPlatform(this string url)
     {
         ArgumentChecker.ThrowIfNullOrEmpty(url);
         

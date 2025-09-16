@@ -1,6 +1,4 @@
-﻿using Biz.Models;
-
-namespace Services.Converters;
+﻿namespace Services.Converters;
 
 public static class TenantUserExtensions
 {

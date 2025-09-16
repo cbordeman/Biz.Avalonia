@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel;
 using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
-using IContainer = DryIoc.IContainer;
 
 namespace Biz.Shell.ViewModels;
 
-[UsedImplicitly]
 public class MainSmallViewModel : MainViewModelBase
 {
     public List<SidebarItemViewModel> SidebarItems { get; }
@@ -42,5 +40,6 @@ public class MainSmallViewModel : MainViewModelBase
         
         base.OnPropertyChanged(args);
     }
-    
+
+    public override string Area => string.Empty;
 }

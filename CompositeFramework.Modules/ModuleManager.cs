@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CompositeFramework.Core;
 using CompositeFramework.Modules;
 using CompositeFramework.Modules.Exceptions;
 

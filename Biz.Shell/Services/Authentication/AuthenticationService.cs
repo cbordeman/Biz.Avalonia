@@ -16,12 +16,9 @@ public class AuthenticationService(IConfigurationService configurationService,
     IAuthDataStore authDataStore,
     ITenantsApi tenantsApi,
     ILogger<AuthenticationService> logger,
-    IRegionManager regionManager,
-    LoginProviderRegistry loginProviderRegistry,
-    IContainer container)
+    LoginProviderRegistry loginProviderRegistry)
     : IAuthenticationService
 {
-
     public event ChangeHandler? AuthenticationStateChanged;
 
     public IClientLoginProvider? CurrentProvider { get; private set; }
@@ -35,27 +32,28 @@ public class AuthenticationService(IConfigurationService configurationService,
             authDataStore.Data.LoginProvider == null)
             return;
         if (loginProviderRegistry.Descriptors
-            .TryGetValue(authDataStore.Data.LoginProvider.Value, 
+            .TryGetValue(authDataStore.Data.LoginProvider.Value,
                 out var descriptor))
         {
             CurrentProviderDescriptor = descriptor;
             CurrentProvider = (IClientLoginProvider)
-                container.Resolve(descriptor.ProviderType);
+                Locator.Current.Resolve(descriptor.ProviderType);
         }
     }
-    
+
     public bool IsAuthenticated
     {
         get
         {
             if (authDataStore.Data == null)
-                authDataStore.RestoreAuthDataAsync()
+                authDataStore
+                    .RestoreAuthDataAsync()
                     .LogExceptionsAndForget(
-                    "Restoring auth data",
-                    logger);
+                        "Restoring auth data",
+                        logger);
             if (authDataStore.Data == null || authDataStore.Data.LoginProvider == null)
                 return false;
-            
+
             if (authDataStore.Data.Tenant == null || authDataStore.Data.Tenant.TenantId < 1)
                 return false;
 
@@ -69,7 +67,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         LoginWithGoogleAsync(CancellationToken ct)
     {
         try
@@ -100,30 +98,33 @@ public class AuthenticationService(IConfigurationService configurationService,
             return (false, null, ex.Message);
         }
     }
-    
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, 
+
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants,
             string? error)> LoginWithProviderAsync(
-        LoginProvider providerEnum, 
+        LoginProvider providerEnum,
         CancellationToken ct)
     {
         if (IsAuthenticated)
             await LogoutAsync(false, false);
-        
+
         try
         {
-            CurrentProviderDescriptor = 
+            CurrentProviderDescriptor =
                 loginProviderRegistry.Descriptors[providerEnum];
-            CurrentProvider = (IClientLoginProvider)container.Resolve(
-                CurrentProviderDescriptor.ProviderType);
+            CurrentProvider = (IClientLoginProvider)
+                Locator.Current.Resolve(
+                    CurrentProviderDescriptor.ProviderType);
         }
         catch (Exception e)
         {
-            logger.LogError(e, 
+            logger.LogError(e,
                 "No registered login provider for {LoginProvider}: " +
-                "{EMessage}", providerEnum, e.Message);
+                "{EMessage}",
+                providerEnum,
+                e.Message);
             throw;
         }
-        
+
         try
         {
             authDataStore.RemoveAuthData();
@@ -135,7 +136,7 @@ public class AuthenticationService(IConfigurationService configurationService,
             return (false, null, e.Message);
         }
 
-        var (result, internalUserId) = 
+        var (result, internalUserId) =
             await CurrentProvider.LoginAsync(ct);
 
         try
@@ -143,15 +144,15 @@ public class AuthenticationService(IConfigurationService configurationService,
             if (result != null)
             {
                 internalUserId.ShouldNotBeNullOrEmpty();
-                
+
                 //var allclaims = string.Join(", ", result.ClaimsPrincipal.Claims.Select(c => c.Type));
                 var isMfa = result.ClaimsPrincipal.Claims.Any(c =>
                     c.Type == "mfr" && c.Value.Split().Contains("mfa"));
                 return await SaveAuthenticationResultAndGetTenants(
                     internalUserId,
-                    result.AccessToken, 
+                    result.AccessToken,
                     result.ExpiresOn,
-                    result.Account.Username, 
+                    result.Account.Username,
                     result.Account.Username,
                     isMfa);
             }
@@ -170,14 +171,14 @@ public class AuthenticationService(IConfigurationService configurationService,
     // Called by LoginWithXXXAsync methods.
     async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         SaveAuthenticationResultAndGetTenants(
-        string internalUserId, string accessToken, 
+        string internalUserId, string accessToken,
         DateTimeOffset expiresOn,
         string name, string email, bool isMfa)
     {
         CurrentProvider.ShouldNotBeNull();
-        
+
         authDataStore.RemoveAuthData();
-        
+
         authDataStore.Data.ShouldNotBeNull("authDataStore.Data was null");
         authDataStore.Data.Id = internalUserId;
         authDataStore.Data.AccessToken = accessToken;
@@ -188,7 +189,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         authDataStore.Data.IsMfa = isMfa;
         // Note that Tenant is not set here; it will be set later.
         authDataStore.Data.Tenant = null;
-        
+
         await authDataStore.SaveAuthDataAsync();
 
         // Fetch available tenants for the user.
@@ -218,7 +219,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         AuthenticationStateChanged?.Invoke();
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         LoginWithFacebookAsync(CancellationToken ct)
     {
         try
@@ -276,7 +277,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
     }
 
-    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
+    public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
         LoginWithAppleAsync(CancellationToken ct)
     {
         try
@@ -321,27 +322,27 @@ public class AuthenticationService(IConfigurationService configurationService,
     public async Task LogoutAsync(bool invokeEvent, bool clearBrowserCache)
     {
         // Clear history
-        var mainRegion = regionManager.Regions[RegionNames.MainContentRegion];
-        mainRegion.NavigationService.Journal.Clear();
+        var nav = Locator.Current.Resolve<IContextNavigationService>();
+        nav.ClearHistory();
 
         if (CurrentProvider != null)
             await CurrentProvider.LogoutAsync(clearBrowserCache);
 
         authDataStore.Data = null;
         await authDataStore.SaveAuthDataAsync();
-        
+
         CurrentProviderDescriptor = null;
         CurrentProvider = null;
-        
+
         if (invokeEvent)
             AuthenticationStateChanged?.Invoke();
     }
-    
+
     public async Task<User?> GetCurrentUserAsync()
     {
         if (!IsAuthenticated)
             return null;
-        
+
         if (authDataStore.Data == null)
             await authDataStore.RestoreAuthDataAsync();
         if (authDataStore.Data != null)
@@ -361,7 +362,7 @@ public class AuthenticationService(IConfigurationService configurationService,
                 authDataStore.Data.Tenant);
 
             // TODO: Make call the accounts service to get the user information
-            
+
             return user;
         }
 
@@ -476,7 +477,6 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
     }
 
-    [UsedImplicitly]
     async Task<bool> ValidateFacebookTokenAsync(string accessToken)
     {
         try

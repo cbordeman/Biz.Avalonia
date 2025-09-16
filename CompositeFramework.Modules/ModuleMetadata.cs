@@ -1,4 +1,5 @@
-﻿using CompositeFramework.Modules.Exceptions;
+﻿using CompositeFramework.Core;
+using CompositeFramework.Modules.Exceptions;
 
 namespace CompositeFramework.Modules;
 

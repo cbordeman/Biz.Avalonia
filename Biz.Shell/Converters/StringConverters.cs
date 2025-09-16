@@ -2,7 +2,6 @@
 
 public static class StringConverters
 {
-    [UsedImplicitly]
     public static readonly IValueConverter ToSelectionMode =
         new FuncValueConverter<string, SelectionMode>(mode => mode switch
         {
@@ -27,8 +26,8 @@ public static class StringConverters
                 return null;
             return AppHelpers.GetAppStyleResource<object>(key);
         });
-    [UsedImplicitly] public static readonly IValueConverter NullOrEmpty =
+    public static readonly IValueConverter NullOrEmpty =
         new FuncValueConverter<string, bool>(string.IsNullOrEmpty);
-    [UsedImplicitly] public static readonly IValueConverter NotNullOrEmpty =
+    public static readonly IValueConverter NotNullOrEmpty =
         new FuncValueConverter<string, bool>(str => !string.IsNullOrEmpty(str));
 }

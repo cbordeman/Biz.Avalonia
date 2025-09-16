@@ -1,4 +1,4 @@
-﻿namespace Biz.Shell.Infrastructure;
+﻿namespace CompositeFramework.Core.Navigation;
 
 /// <summary>
 /// When used with UserControlEx (or invoked on your view's OnLoaded(),

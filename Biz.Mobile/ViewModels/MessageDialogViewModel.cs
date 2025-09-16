@@ -3,18 +3,19 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Core;
-using CompositeFramework.Core.Location;
+using CompositeFramework.Core.Navigation;
 using CompositeFramework.Mvvm;
 using CompositFramework.Avalonia.Dialogs;
 
 namespace Biz.Mobile.ViewModels;
 
 public sealed class MessageDialogViewModel
-    : ViewModelBase, INavigationAware, IDialog<bool?>
+    : ViewModelBase, IDialog<bool?>
 {
-    // This is set by the dialog service.
+    // These are set by the dialog service.
     public RequestObject<bool?>? CloseDialogRequest { get; set; }
-
+    public IContextNavigationService? NavigationService { get; set; }
+    
     public string? Title { get; set => SetProperty(ref field, value); }
     public string? Message { get; set => SetProperty(ref field, value); }
     public string? CancelText { get; set => SetProperty(ref field, value); }
@@ -53,4 +54,14 @@ public sealed class MessageDialogViewModel
     #endregion CancelCommand
 
     public void OnDialogClosed(bool? result) { }
+    
+    // public Task OnNavigatedToAsync(INavigationContext context)
+    // {
+    //     return Task.CompletedTask;
+    // }
+    
+    public Task OnNavigatedToAsync(INavigationContext context)
+    {
+        return Task.CompletedTask;        
+    }
 }
