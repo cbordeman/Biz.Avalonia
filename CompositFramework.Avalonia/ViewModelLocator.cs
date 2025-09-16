@@ -7,10 +7,12 @@ namespace CompositFramework.Avalonia;
 public class ViewModelLocator : AvaloniaObject
 {
     static Func<Type, object?>? resolve;
+    static Func<string, string>? getViewModelTypeFromView;
+
     static string[]? viewSuffixes =
     [
-        "View", 
-        "Page", 
+        "View",
+        "Page",
         "UserControl",
         "Dialog"
     ];
@@ -19,18 +21,25 @@ public class ViewModelLocator : AvaloniaObject
     /// Given the viewmodel type, should return an instance.
     /// </summary>
     /// <param name="viewModelResolver"></param>
+    /// <param name="getViewModelTypeFromViewType">If provided, used to get the
+    /// ViewModel type from the View type.</param>
     /// <param name="recognizedViewSuffixes">Default is View, Page, or UserControl</param>
-    public static void Configure(Func<Type, object?> viewModelResolver,
-        params string[] recognizedViewSuffixes)
+    public static void Configure(
+        Func<Type, object?> viewModelResolver,
+        Func<string, string>? getViewModelTypeFromViewType = null,
+        string[]? recognizedViewSuffixes = null)
     {
-        ViewModelLocator.resolve = viewModelResolver;
-        ViewModelLocator.viewSuffixes = recognizedViewSuffixes;
+        getViewModelTypeFromView = getViewModelTypeFromViewType;
+        resolve = viewModelResolver;
+        if (recognizedViewSuffixes != null)
+            ViewModelLocator.viewSuffixes = recognizedViewSuffixes;
     }
-    
+
     // ReSharper disable once MemberCanBePrivate.Global
     public static readonly AttachedProperty<bool> AutoWireViewModelProperty =
         AvaloniaProperty.RegisterAttached<ViewModelLocator, Control, bool>(
-            "AutoWireViewModel", defaultValue: false);
+            "AutoWireViewModel",
+            defaultValue: false);
 
     static ViewModelLocator()
     {
@@ -46,7 +55,7 @@ public class ViewModelLocator : AvaloniaObject
     {
         window.SetValue(AutoWireViewModelProperty, value);
     }
-    
+
     public static bool GetAutoWireViewModel(Control element)
     {
         return element.GetValue(AutoWireViewModelProperty);
@@ -59,36 +68,50 @@ public class ViewModelLocator : AvaloniaObject
 
     private static void OnAutoWireViewModelChanged(Control view, AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.NewValue is bool and true)
+        if (e.NewValue is bool and true && view.DataContext == null)
             WireViewModel(view);
     }
 
-    // public static bool TypeIsView(Type t)
-    // {
-    //     foreach (var suffix in viewSuffixes!)
-    //         if (t.Name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
-    //             return true;
-    //     return false;
-    // }
-    
     private static void WireViewModel(Control view)
     {
-        // Uses a convention based approach to VM location.
-        
-        if (view.DataContext != null)
-            return;
-        
-        var viewModel = await GetViewModel(view);
-        
-        view.DataContext = viewModel;
-    }
-    static async Task<object?> GetViewModel(Control view)
-    {
+        string? viewModelTypeAssemblyQualifiedName;
         var viewType = view.GetType();
-        var viewName = viewType.FullName;
-        if (string.IsNullOrEmpty(viewName))
-            return;
+        var viewAssemblyQualifiedName = viewType.AssemblyQualifiedName;
+        if (viewAssemblyQualifiedName == null)
+            throw new Exception("View type does not have an AssemblyQualifiedName.");
+        
+        if (getViewModelTypeFromView == null)
+            // Uses a convention based approach to VM location.
+            viewModelTypeAssemblyQualifiedName = 
+                GetViewModelType(viewAssemblyQualifiedName);
+        else
+            // User user provided menas to get vm type from view.
+            viewModelTypeAssemblyQualifiedName = 
+                getViewModelTypeFromView(viewAssemblyQualifiedName);
 
+        var viewModelType = Type.GetType(viewModelTypeAssemblyQualifiedName);
+        if (viewModelType == null)
+            throw new Exception("Resolver returned null.");
+
+        try
+        {
+            object? viewModel = resolve?.Invoke(viewModelType);
+
+            if (viewModel == null)
+                throw new Exception("Service resolver returned null");
+            view.DataContext = viewModel;
+        }
+        catch (Exception e)
+        {
+            throw new AutoWireViewModelTypeCreationException(
+                viewAssemblyQualifiedName, 
+                viewModelTypeAssemblyQualifiedName, e);
+        }
+
+    }
+
+    static string GetViewModelType(string viewName)
+    {
         var viewModelName = viewName
             .Replace(".Views.", ".ViewModels.", StringComparison.OrdinalIgnoreCase);
         foreach (var suffix in viewSuffixes!)
@@ -96,23 +119,7 @@ public class ViewModelLocator : AvaloniaObject
         if (viewModelName == viewName)
             throw new AutoWireViewModelTypeDoesNotFollowConventionException(
                 viewName);
-        var viewModelType = Type.GetType(viewModelName!);
-        if (viewModelType == null)
-            return null;
-
-        object? viewModel;
-        try
-        {
-            viewModel = resolve?.Invoke(viewModelType);
-            if (viewModel == null)
-                throw new Exception("Service provider returned null");
-            return viewModel;
-        }
-        catch (Exception e)
-        {
-            throw new AutoWireViewModelTypeCreationException(
-                viewName, viewModelName!, e);
-        }
+        return viewModelName!;
     }
 
     static string? ReplaceEnd(string? str, string oldStr, string newStr)
