@@ -1,9 +1,6 @@
-﻿using CompositeFramework.Core;
-using CompositeFramework.Core.Navigation;
+﻿namespace CompositFramework.Avalonia.Dialogs;
 
-namespace CompositFramework.Avalonia.Dialogs;
-
-public interface IDialog<T> : INavigationAware
+public interface IDialog<T> : ILocation
 {
     /// <summary>
     /// Set by the dialog service.  Do not set it yourself.
@@ -20,5 +17,5 @@ public interface IDialog<T> : INavigationAware
     /// Invoke to ask dialog service to close the dialog.
     /// Set by the dialog service.  Do not set it yourself.
     /// </summary>
-    RequestObject<T?>? CloseDialogRequest { get; set; }
+    AsyncEvent<T?>? CloseDialogRequest { get; set; }
 }

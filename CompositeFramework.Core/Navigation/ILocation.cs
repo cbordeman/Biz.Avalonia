@@ -1,11 +1,9 @@
-﻿
-
-// ReSharper disable ClassNeverInstantiated.Global
+﻿// ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Local
 
 namespace CompositeFramework.Core.Navigation;
 
-public interface INavigationAware
+public interface ILocation
 {
     /// <summary>
     /// Called when navigated to, forward or backward.
@@ -22,14 +20,6 @@ public interface INavigationAware
     /// <returns></returns>
     Task OnNavigatingFromAsync(NavigationContext newContext) 
         => Task.CompletedTask;
-    
-    /// <summary>
-    /// Defaults to GetType().Name.  Can be Used in breadcrumbs,
-    /// and when navigating back to target a certain location.
-    /// Is not unique. 
-    /// </summary>
-    string Name => GetType().Name;
-    string Description => string.Empty;
     
     /// <summary>
     /// If true, the View is referenced, keeping views

@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Biz.Shell.Services;
 
-public class MainContentRegionNavigationService : 
+public class MainContentRegionNavigationService :
     IMainRegionNavigationService, IDisposable
 {
     bool initialized;
-    readonly IContextNavigationService? navigationService;
-    readonly IAuthenticationService AuthenticationService => 
+    readonly IContextNavigationService navigationService;
+    IAuthenticationService AuthenticationService =>
         Locator.Current.Resolve<IAuthenticationService>();
     readonly ILogger<MainContentRegionNavigationService> logger;
     readonly IAuthenticationService authenticationService;
@@ -18,16 +18,18 @@ public class MainContentRegionNavigationService :
 
     // this is the full page url
     public string? CurrentPage { get; private set; }
-    
-    // this is just the first bit
+
+    // this is just the first bit of the Area that
+    // was passed to the IContextNavigationService.
     public string? CurrentArea { get; private set; }
 
-    public event NotifyPageChanged? PageChanged;
+    public AsyncEvent<NotifyPageChangedArgs> PageChanged { get; } = new();
 
     public MainContentRegionNavigationService(
         ILogger<MainContentRegionNavigationService> logger,
         IAuthenticationService authenticationService,
-        IModuleManager moduleManager, IContextNavigationService? navigationService)
+        IModuleManager moduleManager,
+        IContextNavigationService navigationService)
     {
         this.logger = logger;
         this.authenticationService = authenticationService;
@@ -45,84 +47,87 @@ public class MainContentRegionNavigationService :
         if (initialized)
             return;
 
-        navigationService.Navigated += NavigationServiceOnNavigated;
-        
-        authenticationService.AuthenticationStateChanged += AuthStateChanged;
-        
+        navigationService.Navigated.Subscribe(Navigated);
+
+        authenticationService.AuthenticationStateChanged
+            .Subscribe(AuthStateChanged);
+
         initialized = true;
     }
-    
-    void AuthStateChanged()
+
+    async Task AuthStateChanged()
     {
         try
         {
             if (!authenticationService.IsAuthenticated)
                 // Redirect to login page
-                RequestNavigate(
+                await NavigateWithModuleAsync(
                     AccountManagementConstants.ModuleName,
                     AccountManagementConstants.LoginView);
             else
                 // Go to dashboard.  Note that the region journal has been
                 // emptied so there's no back history to go to.
-                RequestNavigate(
+                await NavigateWithModuleAsync(
                     DashboardConstants.ModuleName,
-                    nameof(DashboardConstants.DashboardView));
+                    DashboardConstants.DashboardView);
         }
         catch (Exception exception)
         {
             // If we don't redirect to Login because of an exception, it
             // isn't catastrophic.  Server operations will simply fail
             // because of the lack of a token.
-            logger.LogError(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));       
+            logger.LogError(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));
         }
     }
 
-    // ReSharper disable once AsyncVoidMethod
-    async Task NavigationServiceOnNavigated(
-        NavigationResult result,
-        string error,
-        NavigationContext context)
+    async Task Navigated(NavigatedEventArgs args)
     {
-        if (result != NavigationResult.Success)
-            logger.LogError(error, $"Navigation failed: {context.Location?.Name ?? "null"}");
+        if (args.Result != NavigationResult.Success)
+        {
+            if (args.Result == NavigationResult.Error)
+                logger.LogError(args.Error, $"Navigation failed: " +
+                                            $"{args.Context.ViewName}");
+            return;
+        }
+
         try
         {
-            CurrentPage = context.Location?.Name;
-            CurrentArea = context.Location?.Area.Split('.').FirstOrDefault();
+            args.Context.Location.ShouldNotBeNull();
             
-            // There should be exactly one active view
-            // in the main region.
-            var pageView = navigationService!.Region
-                .ActiveViews.Single();
-            if (pageView == null)
-                throw new InvalidOperationException("Page contains no views.");
-            if (pageView is not UserControl uc)
+            CurrentPage = args.Context.ViewName;
+            CurrentArea = args.Context.Location.Area;
+
+            if (args.Context.Location is not PageViewModelBase vm)
                 throw new InvalidOperationException(
-                    "Page view must be derived from UserControl");
-            if (uc.DataContext is not PageViewModelBase vm)
-                throw new InvalidOperationException(
-                    "Page DataContext (ViewModel) must be derived from PageViewModelBase");
+                    "Page DataContext must be derived from PageViewModelBase");
             else
-                PageChanged?.Invoke(CurrentArea!, vm);
+                await PageChanged.PublishAsync(
+                    new NotifyPageChangedArgs(CurrentArea!, vm));
         }
         catch (Exception e)
         {
             logger.LogError(
-                e, 
-                "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
-                nameof(MainContentRegionNavigationService), nameof(Navigated), 
-                args.Uri, e.Message);
+                e,
+                "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
+                nameof(MainContentRegionNavigationService),
+                nameof(Navigated),
+                args.Context.ViewName,
+                e.Message);
         }
-        
+
         try
         {
-            var name = args.NavigationContext.Uri.OriginalString;
-            if (name != AccountManagementConstants.LoginView &&
-                name != AccountManagementConstants.TenantSelectionView &&
+            // We must re-check the page we're still authenticated on
+            // every navigation, even though we do check this on
+            // authentication events in AuthenticationService.
+            if (args.Context.ViewName != 
+                    AccountManagementConstants.LoginView &&
+                args.Context.ViewName != 
+                    AccountManagementConstants.TenantSelectionView &&
                 !AuthenticationService.IsAuthenticated)
             {
                 // Redirect to login page
-                RequestNavigate(
+                await NavigateWithModuleAsync(
                     AccountManagementConstants.ModuleName,
                     AccountManagementConstants.LoginView);
             }
@@ -130,70 +135,27 @@ public class MainContentRegionNavigationService :
         catch (Exception e)
         {
             logger.LogError(
-                e, 
-                "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}", 
-                nameof(MainContentRegionNavigationService), nameof(Navigated), 
-                args.Uri, e.Message);
+                e,
+                "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
+                nameof(MainContentRegionNavigationService),
+                nameof(Navigated),
+                args.Context.ViewName,
+                e.Message);
         }
     }
 
-    public async Task NavigateAsync(string? module, string area,
-        params IDictionary<string, object> navigationParameters)
+    public async Task NavigateWithModuleAsync(string module, string area,
+        params NavParam[] parameters)
     {
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
-        
-        TaskCompletionSource<bool> tcs = new();
-        
-        if (module != null)
-            await moduleManager.LoadModuleAsync(module);
 
-        if (navigationParameters.Count > 0)
-            navigationService!.RequestNavigate(area,
-                NavigationCallback);
-        else
-            navigationService!.RequestNavigate(area, 
-                NavigationCallback,
-                navigationParameters);
-
-        return tcs.Task;
-        
-        void NavigationCallback(NavigationResult nr)
-        {
-            if (nr.Success)
-                tcs.SetResult(true);
-            else if (nr.Exception != null)
-                tcs.SetException(nr.Exception);
-            else
-                tcs.SetCanceled();
-        }
-    }
-
-    public void RequestNavigate(string? module, string area,
-        INavigationParameters? navigationParameters = null)
-    {
-        if (!initialized)
-            throw new InvalidOperationException("Not initialized.");
-        
-        if (module != null)
-            moduleManager.LoadModule(module);
-#if DEBUG
-        else
-            logger.LogWarning("{MethodName}(null, {Area}) called with null module.", nameof(RequestNavigate), area);
-#endif
-        
-        if (navigationParameters == null)
-            navigationService!.RequestNavigate(area);
-        else
-            navigationService!.RequestNavigate(area, 
-                navigationParameters);
+        await moduleManager.LoadModuleAsync(module);
+        await navigationService.NavigateToAsync(area, parameters);
     }
 
     public void Dispose()
     {
-        if (navigationService == null) return;
-
-        navigationService.Navigated -= Navigated;
-        navigationService.NavigationFailed -= NavigationFailed;
+        navigationService.Navigated.Unsubscribe(Navigated);
     }
 }

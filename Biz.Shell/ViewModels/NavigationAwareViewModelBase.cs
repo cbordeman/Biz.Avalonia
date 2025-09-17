@@ -4,7 +4,7 @@ using Shouldly;
 namespace Biz.Shell.ViewModels;
 
 public abstract class NavigationAwareViewModelBase()
-    : FormFactorAwareViewModel, INavigationAware
+    : FormFactorAwareViewModel, ILocation
     
 {
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 
-
 namespace CompositeFramework.Core;
 
 public static class ArgumentChecker 

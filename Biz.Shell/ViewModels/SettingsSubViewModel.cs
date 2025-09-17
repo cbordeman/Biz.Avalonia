@@ -5,10 +5,7 @@ namespace Biz.Shell.ViewModels;
 
 public class SettingsSubViewModel : PageViewModelBase
 {
-    IRegionNavigationJournal? journal;
-
-    public SettingsSubViewModel(IContainer container)
-        : base(container)
+    public SettingsSubViewModel()
     {
         Title = "Settings - SubView";
     }
@@ -39,15 +36,13 @@ public class SettingsSubViewModel : PageViewModelBase
     /// <param name="navigationContext">Navigation context.</param>
     public override void OnNavigatedTo(NavigationContext navigationContext)
     {
-        // Used to "Go Back" to parent
-        journal = navigationContext.NavigationService.Journal;
-
-        // Get and display our parameters
-        if (navigationContext.Parameters.TryGetValue("key1", out string? value))
-            MessageText = value;
-
-        if (navigationContext.Parameters.TryGetValue("key2", out int msgNum))
-            MessageNumber = msgNum.ToString();
+        
+        // // Get and display our parameters
+        // if (navigationContext.Parameters.TryGetValue("key1", out string? value))
+        //     MessageText = value;
+        //
+        // if (navigationContext.Parameters.TryGetValue("key2", out int msgNum))
+        //     MessageNumber = msgNum.ToString();
     }
 
     protected override bool OnNavigatingTo(NavigationContext navigationContext)

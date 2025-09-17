@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CompositeFramework.Core.Navigation;
 
@@ -13,7 +14,7 @@ public interface IContextNavigationService
     /// Invoked after any navigation event, even if cancelled
     /// or an exception is thrown.
     /// </summary>
-    public event NavigationEventArgs Navigated;
+    AsyncEvent<NavigatedEventArgs> Navigated { get; }
     
     /// <summary>
     /// Navigates to a new location.
@@ -22,15 +23,15 @@ public interface IContextNavigationService
     /// <param name="parameters"></param>
     /// <returns>True if navigation was successful and not
     /// cancelled or disallowed.</returns>
-    Task<bool> NavigateAsync(string location, 
-        IDictionary<string, object>? parameters = null);
+    Task<bool> NavigateToAsync(string location, 
+        params NavParam[] parameters);
     
     /// <summary>
     /// Navigates backward.
     /// </summary>
     /// <param name="toLocation"></param>
     /// <returns></returns>
-    Task<bool> GoBackAsync(INavigationAware? toLocation = null);
+    Task<bool> GoBackAsync(ILocation? toLocation = null);
     
     /// <summary>
     /// Clears all locations from history.
@@ -41,7 +42,7 @@ public interface IContextNavigationService
     /// All locations navigated to where
     /// INavigationAware.AddToHistory is true.
     /// </summary>
-    INavigationAware[] History { get; }
+    ILocation[] History { get; }
     
     /// <summary>
     /// Index of the current location.
@@ -50,4 +51,10 @@ public interface IContextNavigationService
 
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
+    
+    void BindViewModelAndView<TViewModel, TView>(string? locationName = null)
+        where TViewModel: INotifyPropertyChanged
+        where TView: ILocation;
+
+    IReadOnlyDictionary<Type, Type> Bindings { get; }
 }

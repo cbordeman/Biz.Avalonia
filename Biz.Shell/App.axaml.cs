@@ -5,7 +5,6 @@ using CompositFramework.Avalonia;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
-using Shouldly;
 using IFormFactorService = Biz.Shell.Services.IFormFactorService;
 
 namespace Biz.Shell;
@@ -21,12 +20,6 @@ public class App : Application
 
             PerformRegistrations();
             PlatformHelper.PlatformService?.InitializePlatform();
-            
-            // Configure resolution.  Can also pass a parameter
-            // containing the recognized view suffixes, which will
-            // be replaced with "ViewModel".
-            ViewModelLocator.Configure(viewType =>
-                Locator.Current.GetService(viewType));
             
             var authService = Locator.Current.GetService<IAuthenticationService>();
             Debug.Assert(authService != null);

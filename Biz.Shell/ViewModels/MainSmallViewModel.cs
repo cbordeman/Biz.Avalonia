@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
 
 namespace Biz.Shell.ViewModels;
@@ -16,7 +15,7 @@ public class MainSmallViewModel : MainViewModelBase
     }
     #endregion CurrentItem
     
-    public MainSmallViewModel(IContainer container) : base(container)
+    public MainSmallViewModel()
     {
         IsDrawerOpen = false;
 

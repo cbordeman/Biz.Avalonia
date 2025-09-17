@@ -1,15 +1,14 @@
 ﻿namespace Biz.Shell.Services;
 
-public delegate void NotifyPageChanged(string area, PageViewModelBase page);
+public record NotifyPageChangedArgs(string Area, PageViewModelBase Page);
 
 public interface IMainRegionNavigationService
 {
     string? CurrentPage { get; }
-    event NotifyPageChanged? PageChanged;
+    AsyncEvent<NotifyPageChangedArgs> PageChanged { get; }
 
     void Initialize();
 
-    Task NavigateAsync(string module, string area, 
-        IDictionary<string, object>? parameters = null);
-   
+    Task NavigateWithModuleAsync(string module, string area, 
+        params NavParam[] parameters);
 }

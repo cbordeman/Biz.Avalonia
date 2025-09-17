@@ -15,7 +15,8 @@ public static class CustomConverters
     {
         if (value is null || parameter is null)
             // ReSharper disable once NotResolvedInText
-            throw new ArgumentNullException("Binding value or CommandParameter is null.");
+            throw new ArgumentNullException(
+                "Binding value or CommandParameter is null.");
         
         if (!string.Equals(parameter, value, StringComparison.Ordinal))
             return Brushes.Transparent;

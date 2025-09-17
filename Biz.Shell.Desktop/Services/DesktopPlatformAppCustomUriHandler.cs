@@ -29,7 +29,7 @@ public class DesktopPlatformAppCustomUriHandler(
         await desktopDialogService.Confirm("Account Activated",
             "Your email has been confirmed.  You may log in.",
             "OK", null);
-        await navService.NavigateAsync(
+        await navService.NavigateWithModuleAsync(
             AccountManagementConstants.ModuleName,
             AccountManagementConstants.LoginView);
     }

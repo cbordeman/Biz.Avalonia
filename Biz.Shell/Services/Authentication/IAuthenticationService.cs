@@ -16,7 +16,7 @@ namespace Biz.Shell.Services.Authentication
         void Logout(bool invokeEvent, bool clearBrowserCache);
         Task LogoutAsync(bool invokeEvent, bool clearBrowserCache);
         Task<User?> GetCurrentUserAsync();
-        event ChangeHandler AuthenticationStateChanged;
+        AsyncEvent AuthenticationStateChanged { get; }
         IClientLoginProvider? CurrentProvider { get; }
         LoginProviderDescriptor? CurrentProviderDescriptor { get; }
     }

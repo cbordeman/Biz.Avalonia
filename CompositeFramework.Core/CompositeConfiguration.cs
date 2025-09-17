@@ -1,11 +1,21 @@
 ﻿// namespace CompositeFramework.Core;
 //
-// public static class CompositeConfiguration
+// public class CompositConfiguration
 // {
-//     public static List<string> ViewSuffixes { get; set; } =
-//     [
-//         "View", 
-//         "Page", 
-//         "UserControl"
-//     ];
+//     public string ConnectionString { get; }
+//     public int TimeoutSeconds { get; }
+//     public bool EnableLogging { get; }
+//     public IReadOnlyList<string> PluginPaths { get; }
+//
+//     internal CompositConfiguration(
+//         string connectionString,
+//         int timeoutSeconds,
+//         bool enableLogging,
+//         List<string> pluginPaths)
+//     {
+//         ConnectionString = connectionString;
+//         TimeoutSeconds = timeoutSeconds;
+//         EnableLogging = enableLogging;
+//         PluginPaths = pluginPaths.AsReadOnly();
+//     }
 // }

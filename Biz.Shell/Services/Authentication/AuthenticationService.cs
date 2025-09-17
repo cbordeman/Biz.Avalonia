@@ -19,7 +19,7 @@ public class AuthenticationService(IConfigurationService configurationService,
     LoginProviderRegistry loginProviderRegistry)
     : IAuthenticationService
 {
-    public event ChangeHandler? AuthenticationStateChanged;
+    public AsyncEvent AuthenticationStateChanged { get; }= new();
 
     public IClientLoginProvider? CurrentProvider { get; private set; }
     public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
@@ -85,7 +85,7 @@ public class AuthenticationService(IConfigurationService configurationService,
                 IsMfa = false // TODO: set MFA status if applicable
             };
             await authDataStore.SaveAuthDataAsync();
-            AuthenticationStateChanged?.Invoke();
+            await AuthenticationStateChanged.PublishAsync();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -216,7 +216,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         authDataStore.Data.Tenant = selectedTenant;
         await authDataStore.SaveAuthDataAsync();
 
-        AuthenticationStateChanged?.Invoke();
+        await AuthenticationStateChanged.PublishAsync();
     }
 
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
@@ -263,7 +263,7 @@ public class AuthenticationService(IConfigurationService configurationService,
             };
 
             await authDataStore.SaveAuthDataAsync();
-            AuthenticationStateChanged?.Invoke();
+            await AuthenticationStateChanged.PublishAsync();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -297,7 +297,7 @@ public class AuthenticationService(IConfigurationService configurationService,
             };
 
             await authDataStore.SaveAuthDataAsync();
-            AuthenticationStateChanged?.Invoke();
+            await AuthenticationStateChanged.PublishAsync();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -335,7 +335,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         CurrentProvider = null;
 
         if (invokeEvent)
-            AuthenticationStateChanged?.Invoke();
+            await AuthenticationStateChanged.PublishAsync();
     }
 
     public async Task<User?> GetCurrentUserAsync()

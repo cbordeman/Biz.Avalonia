@@ -282,7 +282,7 @@ namespace Biz.Modules.AccountManagement.ViewModels
         //
         //     public RelayCommand(Action execute, Func<bool> canExecute = null)
         //     {
-        //         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        //         this.execute = execute ?? throw new ArgumentChecker(nameof(execute));
         //         this.canExecute = canExecute;
         //     }
         //
@@ -303,7 +303,7 @@ namespace Biz.Modules.AccountManagement.ViewModels
         //
         //     public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
         //     {
-        //         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        //         this.execute = execute ?? throw new ArgumentChecker(nameof(execute));
         //         this.canExecute = canExecute;
         //     }
         //

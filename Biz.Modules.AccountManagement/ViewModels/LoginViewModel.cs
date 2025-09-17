@@ -98,7 +98,7 @@ public class LoginViewModel : PageViewModelBase
 
     async Task GoToTenantSelectionPage(Tenant[] availableTenants)
     {
-        ArgumentNullException.ThrowIfNull(availableTenants);
+        ArgumentChecker.ThrowIfNull(availableTenants);
 
         await NavigationService.NavigateAsync(
             AccountManagementConstants.ModuleName,

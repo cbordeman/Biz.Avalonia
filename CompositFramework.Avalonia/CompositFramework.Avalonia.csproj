@@ -10,10 +10,15 @@
     <ItemGroup>
       <PackageReference Include="Avalonia" Version="11.3.3" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+      <PackageReference Include="Splat" Version="17.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\CompositeFramework.Core\CompositeFramework.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="CompositConfigurationBuilderExtensions" />
     </ItemGroup>
 
 </Project>

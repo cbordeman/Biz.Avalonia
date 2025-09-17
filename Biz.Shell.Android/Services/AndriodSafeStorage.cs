@@ -26,7 +26,7 @@ public class AndroidSafeStorage : ISafeStorage
 
     public AndroidSafeStorage(ILogger<AndroidSafeStorage> logger)
     {
-        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.logger = logger ?? throw new ArgumentChecker(nameof(logger));
         backingFile = new Java.IO.File(MainActivity.Context.FilesDir, "secure_store.json");
 
         try

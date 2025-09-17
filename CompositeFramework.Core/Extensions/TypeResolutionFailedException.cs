@@ -1,4 +1,4 @@
-﻿namespace Biz.Core.Extensions;
+﻿namespace CompositeFramework.Core.Extensions;
 
 public class TypeResolutionFailedException : Exception
 {
