@@ -1,6 +1,5 @@
 ﻿using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Services.Config;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 
 namespace Biz.Shell.Services.Authentication;

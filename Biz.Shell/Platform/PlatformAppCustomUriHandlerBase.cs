@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Biz.Shell.Platform;
+﻿namespace Biz.Shell.Platform;
 
 public abstract class PlatformAppCustomUriHandlerBase(
     ILogger<PlatformAppCustomUriHandlerBase> logger)

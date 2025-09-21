@@ -2,9 +2,6 @@ using Biz.Shell.ClientLoginProviders;
 
 namespace Biz.Shell.Services.Authentication
 {
-    // Like EventHandler, but no unnecessary sender or payload.
-    public delegate void ChangeHandler();
-    
     public interface IAuthenticationService
     {
         Task InitializeAsync();

@@ -23,8 +23,7 @@ public interface IContextNavigationService
     /// <param name="parameters"></param>
     /// <returns>True if navigation was successful and not
     /// cancelled or disallowed.</returns>
-    Task<bool> NavigateToAsync(string location, 
-        params NavParam[] parameters);
+    Task<bool> NavigateToAsync(string location, params NavParam[] parameters);
     
     /// <summary>
     /// Navigates backward.

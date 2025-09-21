@@ -14,7 +14,7 @@ public abstract class MainViewModelBase
 {
     protected readonly IMainRegionNavigationService MainContentRegionNavigationService;
     protected readonly IAuthenticationService AuthService;
-
+    
     #region IsDrawerOpen
     public bool IsDrawerOpen
     {
@@ -62,22 +62,25 @@ public abstract class MainViewModelBase
         ToastManager = Locator.Current.Resolve<ToastManager>();
 
         AuthService = Locator.Current.Resolve<IAuthenticationService>();
-        AuthService.AuthenticationStateChanged += () =>
+        AuthService.AuthenticationStateChanged.Subscribe(() =>
         {
             IsLoggedIn = AuthService.IsAuthenticated;
-        };
+            return Task.CompletedTask;
+        });
 
         MainContentRegionNavigationService =
             Locator.Current.Resolve<IMainRegionNavigationService>();
-        MainContentRegionNavigationService.PageChanged += 
-            MainContentRegionNavigationServiceOnPageChanged;
+        MainContentRegionNavigationService.PageChanged.Subscribe( 
+            MainContentRegionNavigationServiceOnPageChanged);
     }
 
-    void MainContentRegionNavigationServiceOnPageChanged(
-        string area, PageViewModelBase pageVm)
+    Task MainContentRegionNavigationServiceOnPageChanged(
+        NotifyPageChangedArgs args)
     {
-        CurrentArea = area;
-        CurrentPage = pageVm;
+        CurrentArea = args.Area.Split('.').FirstOrDefault();
+        CurrentPage = args.Page;
+   
+        return Task.CompletedTask;
     }
 
     #region SwitchThemeCommand
@@ -124,15 +127,14 @@ public abstract class MainViewModelBase
     #endregion ToggleIsDrawerOpenCommand
 
     #region NavigateSettingsCommand
-    [field: AllowNull, MaybeNull]
-    public AsyncRelayCommand NavigateSettingsCommand => field ??= new AsyncRelayCommand(ExecuteNavigateSettingsCommand, CanNavigateSettingsCommand);
+    public AsyncRelayCommand? NavigateSettingsCommand => field ??= 
+        new AsyncRelayCommand(ExecuteNavigateSettingsCommand, 
+            CanNavigateSettingsCommand);
     static bool CanNavigateSettingsCommand() => true;
-    Task ExecuteNavigateSettingsCommand()
+    async Task ExecuteNavigateSettingsCommand()
     {
-        this.NavigationService.RequestNavigate(
-            null,
-            nameof(SettingsView));
-        return Task.CompletedTask;
+        await MainContentRegionNavigationService.NavigateWithModuleAsync(
+            null, nameof(SettingsView));
     }
     #endregion NavigateSettingsCommand
 
@@ -155,20 +157,31 @@ public abstract class MainViewModelBase
     public override void Dispose()
     {
         base.Dispose();
-        MainContentRegionNavigationService.PageChanged -=
-            MainContentRegionNavigationServiceOnPageChanged;
+        MainContentRegionNavigationService.PageChanged.Subscribe(
+            MainContentRegionNavigationServiceOnPageChanged);
     }
 
-    public void OnViewLoaded()
+    public async void OnViewLoaded()
     {
-        IsLoggedIn = AuthService.IsAuthenticated;
+        try
+        {
+            IsLoggedIn = AuthService.IsAuthenticated;
 
-        // This executes after regions are loaded.
-        MainContentRegionNavigationService.Initialize();
-
-        NavigationService.RequestNavigate(
-            DashboardConstants.ModuleName,
-            DashboardConstants.DashboardView);
+            // This executes after regions are loaded.
+            MainContentRegionNavigationService.Initialize();
+        
+            await MainContentRegionNavigationService.NavigateWithModuleAsync(
+                DashboardConstants.ModuleName,
+                DashboardConstants.DashboardView);
+        }
+        catch (Exception e)
+        {
+            var logger = Locator.Current
+                .Resolve<ILogger<MainViewModelBase>>();
+            logger.LogError(e, 
+                "In {ClassName}.{MethodName}: {EMessage}", 
+                nameof(MainViewModelBase), nameof(OnViewLoaded), e.Message);
+        }
     }
 
     #region LogoutCommand

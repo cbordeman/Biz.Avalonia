@@ -9,6 +9,6 @@ public interface IMainRegionNavigationService
 
     void Initialize();
 
-    Task NavigateWithModuleAsync(string module, string area, 
+    Task NavigateWithModuleAsync(string? module, string area, 
         params NavParam[] parameters);
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Splat.Microsoft.Extensions.Logging;
+﻿using Splat.Microsoft.Extensions.Logging;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Biz.Shell.Logging;

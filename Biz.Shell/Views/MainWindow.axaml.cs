@@ -42,9 +42,7 @@ namespace Biz.Shell.Views
             e.Cancel = true;
 
             if (DataContext is MainWindowViewModel viewModel)
-            {
-                viewModel.TryCloseCommand.Execute().LogExceptionsAndForget("MainWindow.OnClosing dialog");
-            }
+                viewModel.TryCloseCommand.Execute(null);
         }
     }
 }

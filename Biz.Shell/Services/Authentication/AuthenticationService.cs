@@ -2,10 +2,8 @@ using System.Net.Http;
 using System.Text.Json;
 using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Services.Config;
-using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Authentication;
 using ServiceClients;
-using Shouldly;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global

@@ -1,16 +1,17 @@
 ﻿using Biz.Shell.Services.Authentication;
 using Biz.Shell.ViewModels.Toolbar;
-using Microsoft.Extensions.Logging;
+
+// ReSharper disable UnusedMember.Global
 
 namespace Biz.Shell.ViewModels;
 
 public abstract class PageViewModelBase : NavigationAwareViewModelBase
 {
     protected IAuthenticationService AuthenticationService { get; }
-    
+
     // This must be public so MainWindow can bind to its DialogHost property.
     public DesktopDialogService DesktopDialogService { get; }
-    
+
     #region Title
     public string? Title
     {
@@ -26,7 +27,7 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion TitleGeometryResourceName
-    
+
     #region IsMinimalUi
     public bool IsMinimalUi
     {
@@ -39,7 +40,7 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
     }
     public bool IsFullUi => !IsMinimalUi;
     #endregion MinimalUi
-    
+
     #region CurrentUser
     public User? CurrentUser
     {
@@ -52,14 +53,17 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
 
     protected PageViewModelBase()
     {
-        DesktopDialogService = Locator.Current.Resolve<DesktopDialogService>();
-        AuthenticationService = Locator.Current.Resolve<IAuthenticationService>();
-        AuthenticationService.AuthenticationStateChanged += () =>
-        {
-            var logger = Locator.Current.Resolve<ILogger<PageViewModelBase>>();
-            CurrentUser = AuthenticationService.GetCurrentUserAsync()
-                .LogExceptionsBlockAndGetResult($"Getting user from " +
-                              $"{nameof(PageViewModelBase)}", logger);
-        };
+        DesktopDialogService = Locator.Current
+            .Resolve<DesktopDialogService>();
+        AuthenticationService = Locator.Current
+            .Resolve<IAuthenticationService>();
+        AuthenticationService.AuthenticationStateChanged
+            .Subscribe(OnAuthStateChanged); 
+    }
+
+    private async Task OnAuthStateChanged()
+    {
+        CurrentUser = await AuthenticationService
+            .GetCurrentUserAsync();
     }
 }

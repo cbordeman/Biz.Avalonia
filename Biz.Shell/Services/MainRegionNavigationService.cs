@@ -144,13 +144,15 @@ public class MainContentRegionNavigationService :
         }
     }
 
-    public async Task NavigateWithModuleAsync(string module, string area,
+    public async Task NavigateWithModuleAsync(string? module, string area,
         params NavParam[] parameters)
     {
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
 
-        await moduleManager.LoadModuleAsync(module);
+        if (module != null)
+            await moduleManager.LoadModuleAsync(module);
+        
         await navigationService.NavigateToAsync(area, parameters);
     }
 

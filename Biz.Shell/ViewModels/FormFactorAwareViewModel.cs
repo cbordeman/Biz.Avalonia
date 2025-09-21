@@ -2,7 +2,7 @@
 
 namespace Biz.Shell.ViewModels;
 
-public abstract class FormFactorAwareViewModel : ViewModelBase, IDisposable
+public abstract class FormFactorAwareViewModel : AppViewModelBase, IDisposable
 {
     readonly IFormFactorService formFactorService;
     
