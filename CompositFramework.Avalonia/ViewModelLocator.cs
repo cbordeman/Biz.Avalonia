@@ -122,17 +122,10 @@ public class ViewModelLocator : AvaloniaObject
         var viewModelName = viewName
             .Replace(".Views.", ".ViewModels.", StringComparison.OrdinalIgnoreCase);
         foreach (var suffix in viewSuffixes)
-            viewModelName = ReplaceEnd(viewModelName, suffix, "ViewModel");
+            viewModelName = viewModelName.ReplaceEnd(suffix, "ViewModel");
         if (viewModelName == viewName)
             throw new AutoWireViewModelTypeDoesNotFollowConventionException(
                 viewName);
         return viewModelName!;
-    }
-
-    static string? ReplaceEnd(string? str, string oldStr, string newStr)
-    {
-        if (str != null && str.EndsWith(oldStr))
-            return str.Substring(0, str.Length - oldStr.Length) + newStr;
-        return str;
     }
 }
