@@ -1,7 +1,7 @@
 using Biz.Shell.Logging;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
-using CompositFramework.Avalonia;
+using CompositeFramework.Avalonia;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;

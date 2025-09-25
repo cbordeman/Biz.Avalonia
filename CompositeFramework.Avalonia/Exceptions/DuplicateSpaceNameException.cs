@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 
-namespace CompositFramework.Avalonia.Exceptions;
+namespace CompositeFramework.Avalonia.Exceptions;
 
 public class DuplicateSpaceNameException(Control control,
     string duplicateSpaceName) 

@@ -1,4 +1,4 @@
-﻿using CompositFramework.Avalonia.Commands;
+﻿using CompositeFramework.Avalonia.Commands;
 
 namespace Biz.Shell.ViewModels;
 

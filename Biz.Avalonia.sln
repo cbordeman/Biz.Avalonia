@@ -56,7 +56,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositeFramework.Modules"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CompositeFramework", "CompositeFramework", "{FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositFramework.Avalonia", "CompositFramework.Avalonia\CompositFramework.Avalonia.csproj", "{F8ECAEE2-2D8C-4AAA-8C88-87FE7EFFED96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositeFramework.Avalonia", "CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj", "{F8ECAEE2-2D8C-4AAA-8C88-87FE7EFFED96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositeFramework.Core", "CompositeFramework.Core\CompositeFramework.Core.csproj", "{8F791A5F-7A3C-4EF1-A0C4-AC5B6F42885F}"
 EndProject

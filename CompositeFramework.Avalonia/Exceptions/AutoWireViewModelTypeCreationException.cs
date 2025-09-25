@@ -1,4 +1,4 @@
-﻿namespace CompositFramework.Avalonia.Exceptions;
+﻿namespace CompositeFramework.Avalonia.Exceptions;
 
 public class AutoWireViewModelTypeCreationException : Exception
 {

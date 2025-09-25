@@ -6,7 +6,7 @@ using Avalonia.Threading;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 
-namespace CompositFramework.Avalonia.Commands;
+namespace CompositeFramework.Avalonia.Commands;
 
 public class AsyncCommand : ICommand, INotifyPropertyChanged
 {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace CompositeFramework.Core.Navigation;
@@ -41,7 +42,7 @@ public interface IContextNavigationService
     /// All locations navigated to where
     /// INavigationAware.AddToHistory is true.
     /// </summary>
-    ILocation[] History { get; }
+    IReadOnlyCollection<ILocation> History { get; }
     
     /// <summary>
     /// Index of the current location.

@@ -1,4 +1,4 @@
-﻿using CompositFramework.Avalonia.Dialogs;
+﻿using CompositeFramework.Avalonia.Dialogs;
 
 namespace Biz.Shell.Services;
 

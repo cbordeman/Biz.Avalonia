@@ -1,4 +1,4 @@
-﻿namespace CompositFramework.Avalonia.Dialogs;
+﻿namespace CompositeFramework.Avalonia.Dialogs;
 
 public class DesktopDialogService : IDialogService
 {

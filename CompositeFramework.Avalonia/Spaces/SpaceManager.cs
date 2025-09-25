@@ -1,8 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using CompositFramework.Avalonia.Exceptions;
+using CompositeFramework.Avalonia.Exceptions;
 
-namespace CompositFramework.Avalonia.Spaces;
+namespace CompositeFramework.Avalonia.Spaces;
 
 public class SpaceManager : AvaloniaObject
 {
@@ -30,28 +30,25 @@ public class SpaceManager : AvaloniaObject
         return element.GetValue(SpaceNameProperty);
     }
 
-    private static void OnSpaceNameChanged(Control view, AvaloniaPropertyChangedEventArgs e)
+    private static void OnSpaceNameChanged(Control element, AvaloniaPropertyChangedEventArgs e)
     {
-        RegisterSpaceName(view, e.NewValue as string);
-    }
-
-    private static void RegisterSpaceName(Control element, string? spaceName)
-    {
-        var oldSpaceName = element.GetValue(SpaceNameProperty);
-        if (oldSpaceName == spaceName)
+        var oldSpaceName = e.OldValue as string;
+        var newSpaceName = e.NewValue as string;
+        
+        if (oldSpaceName == newSpaceName)
             return;
         
-        element.SetValue(SpaceNameProperty, spaceName);
+        element.SetValue(SpaceNameProperty, newSpaceName);
         
         // Remove old space.
         if (oldSpaceName != null)
             SpaceNameRegistrations.Remove(oldSpaceName);
 
-        if (spaceName == null)
+        if (newSpaceName == null)
             return;
         
         // Add new space name.
-        if (!SpaceNameRegistrations.TryAdd(spaceName, element))
-            throw new DuplicateSpaceNameException(element, spaceName);
+        if (!SpaceNameRegistrations.TryAdd(newSpaceName, element))
+            throw new DuplicateSpaceNameException(element, newSpaceName);
     }
 }

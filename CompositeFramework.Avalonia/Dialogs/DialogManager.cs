@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 
-namespace CompositFramework.Avalonia.Dialogs;
+namespace CompositeFramework.Avalonia.Dialogs;
 
 public class DialogManager
 {
