@@ -12,17 +12,17 @@
     mc:Ignorable="d">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Spacing="5">
-            <Grid ColumnDefinitions="Auto, *">
-                <Button Command="{Binding CmdNavigateBack}" CornerRadius="10">
-                    <PathIcon Data="{StaticResource arrow_reply_regular}" />
-                </Button>
-                <TextBlock
-                    Grid.Column="1"
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    FontWeight="Bold"
-                    Text="{Binding Title}" />
-            </Grid>
+            <!-- <Grid ColumnDefinitions="Auto, *"> -->
+            <!--     <Button Command="{Binding CmdNavigateBack}" CornerRadius="10"> -->
+            <!--         <PathIcon Data="{StaticResource arrow_reply_regular}" /> -->
+            <!--     </Button> -->
+            <!--  <TextBlock  -->
+            <!--  Grid.Column="1"  -->
+            <!--  Margin="5"  -->
+            <!--  VerticalAlignment="Center"  -->
+            <!--  FontWeight="Bold"  -->
+            <!--  Text="{Binding Title}" />  -->
+            <!-- </Grid> -->
         </StackPanel>
 
         <ScrollViewer Margin="5">

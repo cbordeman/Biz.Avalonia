@@ -44,7 +44,6 @@
     <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
     <ProjectReference Include="..\CompositeFramework.Mvvm\CompositeFramework.Mvvm.csproj" />
     <ProjectReference Include="..\CompositFramework.Avalonia\CompositFramework.Avalonia.csproj" />
-    <ProjectReference Include="..\Prism\src\Avalonia\CompositeFramework.DialogsOLD\CompositeFramework.DialogsOLD.csproj" />
     <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />
     <ProjectReference Include="..\ShadUI\ShadUI.csproj" />
   </ItemGroup>

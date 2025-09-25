@@ -24,8 +24,8 @@ public class iOsPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<DesktopDialogService, MobileDesktopDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, iOsSafeStorage>();
         
-        // Prism style dialog registration.
-        containerRegistry.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
+        // Dialog registration.
+        Locator.CurrentMutable.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
     }
 
     public void InitializePlatform()

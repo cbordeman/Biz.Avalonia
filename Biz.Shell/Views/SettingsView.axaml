@@ -26,7 +26,7 @@
         <ScrollViewer Margin="5">
             <StackPanel Spacing="10">
                 <Label Content="Click the button below to navigate to the sub page" />
-                <Button Command="{Binding CmdNavigateToChild}" Content="Navigate using Journaling" />
+                <!-- <Button Command="{Binding CmdNavigateToChild}" Content="Navigate using Journaling" /> -->
             </StackPanel>
         </ScrollViewer>
     </DockPanel>
