@@ -12,6 +12,12 @@ namespace CompositeFramework.Core.Navigation;
 public interface IContextNavigationService
 {
     /// <summary>
+    /// The context to which the service is bound, such as a
+    /// section name.
+    /// </summary>
+    object? Context { get; set; }
+    
+    /// <summary>
     /// Invoked after any navigation event, even if cancelled
     /// or an exception is thrown.
     /// </summary>
@@ -45,16 +51,17 @@ public interface IContextNavigationService
     IReadOnlyCollection<ILocation> History { get; }
     
     /// <summary>
-    /// Index of the current location.
+    /// Index of the current location.  -1 if no location.
     /// </summary>
-    int? CurrentLocationIndex { get; }
+    int CurrentLocationIndex { get; }
 
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
     
-    void BindViewModelAndView<TViewModel, TView>(string? locationName = null)
+    void RegisterNavigation<TViewModel, TView>
+        (string? locationName = null)
         where TViewModel: INotifyPropertyChanged
-        where TView: ILocation;
+        where TView: ILocation; 
 
-    IReadOnlyDictionary<Type, Type> Bindings { get; }
+    IReadOnlyDictionary<Type, Type> NavigationBindings { get; }
 }
