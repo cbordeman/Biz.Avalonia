@@ -1,5 +1,4 @@
-﻿using Biz.Core.Models;
-using Biz.Mobile.Services;
+﻿using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Models;
@@ -9,7 +8,6 @@ using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
 using CompositeFramework.Avalonia.Dialogs;
-using CompositFramework.Avalonia.Dialogs;
 using Splat;
 using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
@@ -27,9 +25,10 @@ public class AndroidPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
 
         // Prism style dialog registration.
-        containerRegistry.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
+        var dialogService = Locator.Current.GetService<IDialogService>();
+        dialogService.RegisterDialog<MessageDialogViewModel, MessageDialogView>(); 
     }
-
+    
     public void InitializePlatform()
     {
         var authProviderRegistry = Locator.Current.GetService

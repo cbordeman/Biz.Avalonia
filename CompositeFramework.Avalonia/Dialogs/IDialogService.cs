@@ -1,4 +1,7 @@
-﻿namespace CompositeFramework.Avalonia.Dialogs;
+﻿using System.ComponentModel;
+using Avalonia.Controls;
+
+namespace CompositeFramework.Avalonia.Dialogs;
 
 public interface IDialogService
 {
@@ -14,4 +17,7 @@ public interface IDialogService
     /// <returns></returns>
     Task<bool> Confirm(string title, string message,
         string okText = "OK", string? cancelText = "Cancel");
+    void RegisterDialog<TViewModel, TView>()
+        where TViewModel : IDialog, INotifyPropertyChanged
+        where TView: UserControl;
 }

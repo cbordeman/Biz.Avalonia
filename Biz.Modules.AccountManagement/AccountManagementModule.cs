@@ -1,8 +1,5 @@
-﻿using Biz.Modules.AccountManagement.Core;
-using Biz.Modules.AccountManagement.ViewModels;
+﻿using Biz.Modules.AccountManagement.ViewModels;
 using Biz.Modules.AccountManagement.Views;
-using CompositeFramework.Core.Extensions;
-using CompositeFramework.Core.Navigation;
 using CompositeFramework.Modules;
 using CompositeFramework.Modules.Attributes;
 

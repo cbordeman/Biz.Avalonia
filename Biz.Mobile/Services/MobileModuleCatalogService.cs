@@ -2,10 +2,8 @@
 using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
-using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using CompositeFramework.Modules;
-using Prism.Modularity;
 
 namespace Biz.Mobile.Services;
 

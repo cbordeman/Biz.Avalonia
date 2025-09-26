@@ -2,18 +2,16 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
+using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core;
 using CompositeFramework.Core.Navigation;
 using CompositeFramework.Core.ViewModels;
-using CompositFramework.Avalonia.Dialogs;
 
 namespace Biz.Mobile.ViewModels;
 
 public sealed class MessageDialogViewModel
-    : BindingValidatingBase, IDialog<bool?>
+    : BindingValidatingBase, IDialog
 {
-    // These are set by the dialog service.
-    public RequestObject<bool?>? CloseDialogRequest { get; set; }
     public IContextNavigationService? NavigationService { get; set; }
     
     public string? Title { get; set => SetProperty(ref field, value); }
@@ -37,8 +35,7 @@ public sealed class MessageDialogViewModel
     bool CanOkCommand() => true;
     Task ExecuteOkCommand()
     {
-        Debug.Assert(CloseDialogRequest != null);
-        return CloseDialogRequest.Invoke(true);
+        return CloseDialogRequest.PublishAsync(true);
     }
     #endregion OkCommand
 
@@ -48,20 +45,16 @@ public sealed class MessageDialogViewModel
     bool CanCancelCommand() => true;
     Task ExecuteCancelCommand()
     {
-        Debug.Assert(CloseDialogRequest != null);
-        return CloseDialogRequest.Invoke(false);
+        return CloseDialogRequest.PublishAsync(false);
     }
     #endregion CancelCommand
 
     public void OnDialogClosed(bool? result) { }
-    
-    // public Task OnNavigatedToAsync(INavigationContext context)
-    // {
-    //     return Task.CompletedTask;
-    // }
-    
-    public Task OnNavigatedToAsync(INavigationContext context)
+
+    public AsyncEvent<bool?> CloseDialogRequest { get; set; } = new();
+
+    public Task OnNavigatedToAsync(NavigationContext context)
     {
-        return Task.CompletedTask;        
+        return Task.CompletedTask;
     }
 }

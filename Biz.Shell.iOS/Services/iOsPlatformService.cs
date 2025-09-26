@@ -1,13 +1,11 @@
 ﻿using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
-using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
-using Biz.Shell.Services.Authentication;
-using CompositFramework.Avalonia.Dialogs;
+using CompositeFramework.Avalonia.Dialogs;
+using CompositeFramework.Core.Extensions;
 using Microsoft.Identity.Client;
-using Prism.Ioc;
 using Splat;
 using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 

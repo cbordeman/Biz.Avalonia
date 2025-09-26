@@ -1,12 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Biz.Core.Extensions;
-using Biz.Modules.AccountManagement.Core;
-using Biz.Shell.Services;
-using Biz.Shell.Services.Authentication;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
-public class LoginViewModel : PageViewModelBase
+public partial class LoginViewModel : PageViewModelBase
 {
     CancellationTokenSource? loginCancellationTokenSource;
     readonly DesktopDialogService desktopDialogService;
@@ -100,16 +96,13 @@ public class LoginViewModel : PageViewModelBase
     {
         ArgumentChecker.ThrowIfNull(availableTenants);
 
-        await NavigationService.NavigateAsync(
+        var mainNavService = Locator.Current.Resolve<IMainNavigationService>();
+        await mainNavService.NavigateWithModuleAsync(
             AccountManagementConstants.ModuleName,
             AccountManagementConstants.TenantSelectionView,
-            new NavigationParameters
-            {
-                {
-                    nameof(TenantSelectionViewModel.AvailableTenants), 
-                    availableTenants
-                }
-            });
+            new NavParam(
+                nameof(TenantSelectionViewModel.AvailableTenants),
+                availableTenants));
     }
 
     #region CancelLoginCommand
@@ -132,9 +125,9 @@ public class LoginViewModel : PageViewModelBase
     AsyncRelayCommand? registerCommand;
     public AsyncRelayCommand RegisterCommand => registerCommand ??= new AsyncRelayCommand(ExecuteRegisterCommand, CanRegisterCommand);
     static bool CanRegisterCommand() => true;
-    async Task ExecuteRegisterCommand()
+    Task ExecuteRegisterCommand()
     {
-        
+        return Task.CompletedTask;
     }
     #endregion RegisterCommand
     
@@ -142,11 +135,12 @@ public class LoginViewModel : PageViewModelBase
     AsyncRelayCommand? forgotPasswordCommand;
     public AsyncRelayCommand ForgotPasswordCommand => forgotPasswordCommand ??= new AsyncRelayCommand(ExecuteForgotPasswordCommand, CanForgotPasswordCommand);
     static bool CanForgotPasswordCommand() => true;
-    async Task ExecuteForgotPasswordCommand()
+    Task ExecuteForgotPasswordCommand()
     {
-
+        return Task.CompletedTask;
     }
     #endregion ForgotPasswordCommand
     
     public override bool PersistInHistory() => false;
+    public override string Area => "Account";   
 }

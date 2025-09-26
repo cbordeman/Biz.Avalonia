@@ -3,10 +3,11 @@
     [UsedImplicitly]
     public class ResetPasswordAfterEmailConfirmationViewModel : PageViewModelBase
     {
-        public ResetPasswordAfterEmailConfirmationViewModel(IContainer container) 
-            : base(container)
+        public ResetPasswordAfterEmailConfirmationViewModel()
         {
+            Title = "Reset Password";
         }
+        
         public override string Area => "Account";
     }
 }
