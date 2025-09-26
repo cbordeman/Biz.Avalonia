@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Windows.Input;
-using Avalonia.Controls;
 using CompositeFramework.Avalonia.Exceptions;
+using Splat;
 
 namespace CompositeFramework.Avalonia.Navigation;
 
@@ -13,7 +13,7 @@ namespace CompositeFramework.Avalonia.Navigation;
 public class SectionNavigationService : IContextNavigationService
 {
     public object? Context { get; set; }
-    
+
     readonly List<ILocation> history = [];
     public IReadOnlyCollection<ILocation> History => history.AsReadOnly();
 
@@ -21,37 +21,47 @@ public class SectionNavigationService : IContextNavigationService
     public ICommand NavigateForwardCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
-    readonly ConcurrentDictionary<Type, Type> navigationBindings = new();
-    public IReadOnlyDictionary<Type, Type> NavigationBindings => 
-        navigationBindings.AsReadOnly<Type, Type>();
+    readonly ConcurrentDictionary<string, ViewModelViewBinding> registrations = new();
+    public IReadOnlyDictionary<string, ViewModelViewBinding> Registrations =>
+        registrations.AsReadOnly();
 
     public AsyncEvent<NavigatedEventArgs> Navigated { get; } = new();
-    
+
     public Task<bool> NavigateToAsync(string location, params NavParam[] parameters)
     {
         if (Context == null)
             throw new NavigationContextNotSetException();
-        
-        ArgumentChecker.ThrowIfNullOrEmpty(location);
-        
+
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(location);
+
         return Task.FromResult(true);
     }
-    
+
     public Task<bool> GoBackAsync(ILocation? toLocation = null)
     {
         return Task.FromResult(true);
     }
-    
+
     public void ClearHistory()
     {
         history.Clear();
         CurrentLocationIndex = -1;
     }
 
-    public void RegisterNavigation<TViewModel, TView>(string? locationName = null)
+    public void RegisterForNavigation<TViewModel, TView>(string? locationName = null)
         where TViewModel : INotifyPropertyChanged where TView : ILocation
     {
-        if (!navigationBindings.TryAdd(typeof(TViewModel), typeof(TView)))
-            throw new DuplicateViewModelBindingException<TViewModel, TView>();
+        locationName ??= typeof(TViewModel).FullName!;
+        
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(locationName);
+
+        if (!registrations.TryAdd(locationName,
+                new ViewModelViewBinding(typeof(TViewModel), typeof(TView))))
+        {
+            throw new DuplicateNavigationRegistrationException
+                <TViewModel, TView>(locationName);
+        }
+        Locator.CurrentMutable.Register<TViewModel>();
+        Locator.CurrentMutable.Register<TView>();
     }
 }

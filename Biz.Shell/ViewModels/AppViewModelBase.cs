@@ -1,6 +1,8 @@
-﻿namespace Biz.Shell.ViewModels;
+﻿using CompositeFramework.Core.ViewModels;
 
-public abstract class AppViewModelBase : ViewModelBase
+namespace Biz.Shell.ViewModels;
+
+public abstract class AppViewModelBase : BindingValidatingBase
 {
     #region OpenUrlCommand
     public AsyncRelayCommand<string?>? OpenUrlCommand =>

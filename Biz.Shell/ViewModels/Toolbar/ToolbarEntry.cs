@@ -1,8 +1,9 @@
 ﻿using Avalonia.Media;
+using CompositeFramework.Core.ViewModels;
 
 namespace Biz.Shell.ViewModels.Toolbar;
 
-public class ToolbarEntry : ViewModelBase, IToolbarEntry
+public class ToolbarEntry : BindingValidatingBase, IToolbarEntry
 {
     readonly Func<object?, Task>? execute;
     readonly Func<object?, bool>? canExecute;

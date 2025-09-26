@@ -64,8 +64,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositFramework.Avalonia.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositFramework.Avalonia.Desktop", "CompositFramework.Avalonia.Desktop\CompositFramework.Avalonia.Desktop.csproj", "{1356C464-CF8F-49FB-A7F0-C24356C68F95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositeFramework.Mvvm", "CompositeFramework.Mvvm\CompositeFramework.Mvvm.csproj", "{E2270BFB-E62C-4CFA-AE7A-A89F131B67E1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,10 +162,6 @@ Global
 		{1356C464-CF8F-49FB-A7F0-C24356C68F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1356C464-CF8F-49FB-A7F0-C24356C68F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1356C464-CF8F-49FB-A7F0-C24356C68F95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2270BFB-E62C-4CFA-AE7A-A89F131B67E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2270BFB-E62C-4CFA-AE7A-A89F131B67E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2270BFB-E62C-4CFA-AE7A-A89F131B67E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2270BFB-E62C-4CFA-AE7A-A89F131B67E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,7 +184,6 @@ Global
 		{8F791A5F-7A3C-4EF1-A0C4-AC5B6F42885F} = {FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}
 		{DDEE6498-6793-4F24-BCCB-2B6CF000BF77} = {FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}
 		{1356C464-CF8F-49FB-A7F0-C24356C68F95} = {FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}
-		{E2270BFB-E62C-4CFA-AE7A-A89F131B67E1} = {FD2B81AC-80A0-4CCF-AAAB-BD8360087B03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83CB65B8-011F-4ED7-BCD3-A6CFA935EF7E}

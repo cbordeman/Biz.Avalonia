@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Input;
 
 namespace CompositeFramework.Core.Navigation;
@@ -58,10 +57,10 @@ public interface IContextNavigationService
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
     
-    void RegisterNavigation<TViewModel, TView>
+    void RegisterForNavigation<TViewModel, TView>
         (string? locationName = null)
         where TViewModel: INotifyPropertyChanged
         where TView: ILocation; 
 
-    IReadOnlyDictionary<Type, Type> NavigationBindings { get; }
+    IReadOnlyDictionary<string, ViewModelViewBinding> Registrations { get; }
 }

@@ -20,8 +20,8 @@ public class StandardModuleIndex : IModuleIndex
         string assemblyQualifiedType,
         params string[] dependencies)
     {
-        ArgumentChecker.ThrowIfNullOrEmpty(name);
-        ArgumentChecker.ThrowIfNullOrEmpty(assemblyQualifiedType);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(name);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(assemblyQualifiedType);
 
         if (modules.Any(m => m.Name == name))
             throw new ModuleAlreadyAddedException(name);
@@ -37,7 +37,7 @@ public class StandardModuleIndex : IModuleIndex
 
     public async virtual Task AddModuleFiles(string fileSpec)
     {
-        ArgumentChecker.ThrowIfNullOrEmpty(fileSpec);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(fileSpec);
 
         // Does not load assemblies into memory or
         // initialize them.

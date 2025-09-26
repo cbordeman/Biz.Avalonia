@@ -14,7 +14,7 @@ public class ModuleAttribute : Attribute
 
     public ModuleAttribute(string name)
     {
-        ArgumentChecker.ThrowIfNullOrEmpty(name);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(name);
         Name = name;
     }
 }

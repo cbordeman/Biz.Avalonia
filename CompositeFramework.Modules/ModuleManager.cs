@@ -94,7 +94,7 @@ public class ModuleManager : IModuleManager
         {
             moduleMetadata.State = ModuleState.LoadingSelf;
 
-            ArgumentChecker.ThrowIfNullOrEmpty(moduleMetadata.FilePath);
+            ArgumentChecker.ThrowIfNullOrWhiteSpace(moduleMetadata.FilePath);
             if (!File.Exists(moduleMetadata.FilePath!))
                 throw new FileNotFoundException(moduleMetadata.FilePath);
             try

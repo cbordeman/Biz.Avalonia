@@ -16,7 +16,7 @@ public class ModuleDependencyAttribute : Attribute
     
     public ModuleDependencyAttribute(string dependentModuleName)
     {
-        ArgumentChecker.ThrowIfNullOrEmpty(dependentModuleName);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(dependentModuleName);
         
         DependentModuleName = dependentModuleName;
 

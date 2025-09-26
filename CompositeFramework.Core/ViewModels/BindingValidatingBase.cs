@@ -3,13 +3,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace CompositeFramework.Mvvm;
+namespace CompositeFramework.Core.ViewModels;
 
 /// <summary>
 /// Provides binding and validation support, with
 /// IsValidating, IsBusy, and IsNotBusy flags.
 /// </summary>
-public abstract class ViewModelBase : INotifyPropertyChanged,
+public abstract class BindingValidatingBase : 
+    INotifyPropertyChanged,
     INotifyDataErrorInfo
 {
     #region INotifyPropertyChanged
@@ -66,7 +67,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged,
     #endregion INotifyPropertyChanged
 
     #region IsValidating
-    public bool IsValidating
+    public virtual bool IsValidating
     {
         get => field;
         set

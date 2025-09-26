@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Core;
 using CompositeFramework.Core.Navigation;
-using CompositeFramework.Mvvm;
+using CompositeFramework.Core.ViewModels;
 using CompositFramework.Avalonia.Dialogs;
 
 namespace Biz.Mobile.ViewModels;
 
 public sealed class MessageDialogViewModel
-    : ViewModelBase, IDialog<bool?>
+    : BindingValidatingBase, IDialog<bool?>
 {
     // These are set by the dialog service.
     public RequestObject<bool?>? CloseDialogRequest { get; set; }

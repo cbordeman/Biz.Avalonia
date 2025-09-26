@@ -14,7 +14,7 @@ public static class StringExtensions
 
     public static void OpenUrlCrossPlatform(this string url)
     {
-        ArgumentChecker.ThrowIfNullOrEmpty(url);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(url);
         
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
