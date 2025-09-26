@@ -19,7 +19,7 @@ public class NavigationCommand : AsyncCommand
     
     async Task LoadModuleAndNavigate()
     {
-        var nav = Locator.Current.Resolve<IMainRegionNavigationService>();
+        var nav = Locator.Current.Resolve<IMainNavigationService>();
         await nav.NavigateWithModuleAsync(moduleName, viewName);
     }
 }

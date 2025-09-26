@@ -20,6 +20,13 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
     <!--  The next PropertyGroup and Target goes in every module csproj.  -->
     <PropertyGroup>
         <ModulesOutputPath>$(SolutionDir)Biz.Shell.Desktop\bin\$(Configuration)\$(TargetFramework)\Modules</ModulesOutputPath>

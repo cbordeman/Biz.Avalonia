@@ -7,12 +7,12 @@ public static class ArgumentChecker
     public static void ThrowIfNullOrWhiteSpace(
         string? argument, 
         [CallerArgumentExpression(nameof(argument))] 
-        string? paramName = null)
+        string? parameterName = null)
     {
         if (string.IsNullOrWhiteSpace(argument))
             throw new ArgumentException(
                 $"Argument '{argument}' is null or whitespace.", 
-                paramName);
+                parameterName);
     }
     
     public static void ThrowIfNull(

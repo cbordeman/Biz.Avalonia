@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Runtime;
 using Biz.Shell.Services;
+using CompositeFramework.Core;
+using Java.IO;
+using Java.Lang;
 using Microsoft.Extensions.Logging;
 using Xamarin.Google.Crypto.Tink;
 using Xamarin.Google.Crypto.Tink.Aead;
 using Xamarin.Google.Crypto.Tink.Integration.Android;
+using Exception = System.Exception;
 
 namespace Biz.Shell.Android.Services;
 
@@ -19,7 +21,7 @@ namespace Biz.Shell.Android.Services;
 public class AndroidSafeStorage : ISafeStorage
 {
     private readonly ILogger<AndroidSafeStorage> logger;
-    private readonly Java.IO.File backingFile;
+    private readonly File backingFile;
     private readonly Lock syncRoot = new();
 
     private readonly IAead aead;
@@ -27,7 +29,7 @@ public class AndroidSafeStorage : ISafeStorage
     public AndroidSafeStorage(ILogger<AndroidSafeStorage> logger)
     {
         this.logger = logger ?? throw new ArgumentChecker(nameof(logger));
-        backingFile = new Java.IO.File(MainActivity.Context.FilesDir, "secure_store.json");
+        backingFile = new File(MainActivity.Context.FilesDir, "secure_store.json");
 
         try
         {
@@ -43,7 +45,7 @@ public class AndroidSafeStorage : ISafeStorage
 
             if (handle != null)
             {
-                var tmp = handle.GetPrimitive(Java.Lang.Class.FromType(typeof(IAead)));
+                var tmp = handle.GetPrimitive(Class.FromType(typeof(IAead)));
                 if (tmp == null)
                     throw new Exception("Failed to get AEAD primitive.");
 
@@ -67,7 +69,7 @@ public class AndroidSafeStorage : ISafeStorage
             if (!backingFile.Exists()) return new Dictionary<string, string>();
             try
             {
-                var bytes = File.ReadAllBytes(backingFile.AbsolutePath);
+                var bytes = System.IO.File.ReadAllBytes(backingFile.AbsolutePath);
                 var decrypted = aead.Decrypt(bytes, null);
                 var json = Encoding.UTF8.GetString(decrypted!);
                 return JsonSerializer.Deserialize<Dictionary<string, string>>(json)
@@ -91,7 +93,7 @@ public class AndroidSafeStorage : ISafeStorage
                 var plainBytes = Encoding.UTF8.GetBytes(json);
                 var cipherBytes = aead.Encrypt(plainBytes, null)!;
 
-                File.WriteAllBytes(path: backingFile.AbsolutePath, cipherBytes);
+                System.IO.File.WriteAllBytes(path: backingFile.AbsolutePath, cipherBytes);
             }
             catch (Exception ex)
             {

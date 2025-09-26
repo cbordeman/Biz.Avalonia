@@ -1,7 +1,4 @@
-﻿using JetBrains.Annotations;
-using IContainer = DryIoc.IContainer;
-
-namespace Biz.Modules.AccountManagement.ViewModels
+﻿namespace Biz.Modules.AccountManagement.ViewModels
 {
     [UsedImplicitly]
     public class ResetPasswordAfterEmailConfirmationViewModel : PageViewModelBase
@@ -10,5 +7,6 @@ namespace Biz.Modules.AccountManagement.ViewModels
             : base(container)
         {
         }
+        public override string Area => "Account";
     }
 }

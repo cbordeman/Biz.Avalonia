@@ -21,7 +21,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3" />
     <PackageReference Include="Avalonia.iOS" Version="11.3.2" />    
   </ItemGroup>
 

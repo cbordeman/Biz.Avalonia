@@ -5,9 +5,10 @@ namespace CompositeFramework.Modules;
 public interface IModule
 {
     /// <summary>
-    /// Inject your container in your module constructor and
-    /// perform registrations.
-    /// <br/>
+    /// Called when the module is being lazy loaded.
+    /// If you need access to the container, inject it or use
+    /// Splat's Locator.Current.
+    /// <br/> 
     /// WARNING: Do not use Microsoft's IServiceCollection and
     /// IServiceProvider, which are immutable after the
     /// app.Build() is called.  Splat and DryIoc, among others,
@@ -18,11 +19,11 @@ public interface IModule
     void PerformRegistrations();
     
     /// <summary>
-    /// Called after the module is fully loaded by:
-    /// IModuleManager.Load("ModuleA").  If you need
-    /// access to your container, inject it or use a
-    /// service locator.
+    /// Called after the module and its dependencies are
+    /// lazy loaded via: IModuleManager.Load("ModuleA").
+    /// If you need access to the container, inject it or use
+    /// Splat's Locator.CurrentMutable and Locator.Current.
     /// </summary>
     /// <returns></returns>
-    Task InitializeAsync();
+    Task InitializedAsync();
 }

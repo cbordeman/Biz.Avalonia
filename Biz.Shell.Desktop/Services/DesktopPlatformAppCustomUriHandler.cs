@@ -9,7 +9,7 @@ namespace Biz.Shell.Desktop.Services;
 
 public class DesktopPlatformAppCustomUriHandler(
     ILogger<DesktopPlatformAppCustomUriHandler> logger,
-    IMainRegionNavigationService navService,
+    IMainNavigationService navService,
     IAccountApi accountApi,
     DesktopDialogService desktopDialogService)
     : PlatformAppCustomUriHandlerBase(logger)

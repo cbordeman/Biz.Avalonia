@@ -5,7 +5,7 @@ using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
 using Microsoft.Identity.Client;
-using Prism.Ioc;
+using Splat;
 using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
 namespace Biz.Shell.Browser.Services;

@@ -1,25 +1,26 @@
 ﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.AccountManagement.ViewModels;
 using Biz.Modules.AccountManagement.Views;
-using Prism.Modularity;
+using CompositeFramework.Core.Extensions;
+using CompositeFramework.Core.Navigation;
+using CompositeFramework.Modules;
+using CompositeFramework.Modules.Attributes;
 
 namespace Biz.Modules.AccountManagement;
 
 // Module attributes are necessary for directory loading scenario.
-[Module(ModuleName = AccountManagementConstants.ModuleName, OnDemand = true)]
+[Module(AccountManagementConstants.ModuleName)]
 //[ModuleDependency()]
 public class AccountManagementModule : IModule
 {
-    public void RegisterTypes(IContainerRegistry containerRegistry)
+    public void PerformRegistrations()
     { 
-        containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>(
+        var contextNavigationService = Locator.Current.Resolve<IContextNavigationService>();
+        contextNavigationService.RegisterForNavigation<LoginView, LoginViewModel>(
             AccountManagementConstants.LoginView);
-        containerRegistry.RegisterForNavigation<TenantSelectionView, TenantSelectionViewModel>(
+        contextNavigationService.RegisterForNavigation<TenantSelectionView, TenantSelectionViewModel>(
             AccountManagementConstants.TenantSelectionView);
     }
     
-    public void OnInitialized(IContainerProvider containerProvider)
-    {
-        
-    }
+    public Task InitializedAsync() => Task.CompletedTask;
 }

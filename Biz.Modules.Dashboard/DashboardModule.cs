@@ -1,22 +1,27 @@
-﻿using Biz.Modules.Dashboard.Core;
-using Prism.Ioc;
-using Prism.Modularity;
+﻿using System.Threading.Tasks;
+using Biz.Modules.Dashboard.Core;
+using CompositeFramework.Core.Navigation;
+using CompositeFramework.Modules;
+using CompositeFramework.Modules.Attributes;
+using Splat;
 
 namespace Biz.Modules.Dashboard;
 
 // Module attributes are necessary for directory loading scenario.
-[Module(ModuleName = DashboardConstants.ModuleName, OnDemand = true)]
+[Module(DashboardConstants.ModuleName)]
 //[ModuleDependency()]
 public class DashboardModule : IModule
 {
-    public void RegisterTypes(IContainerRegistry containerRegistry)
+    public void PerformRegistrations()
     {
-        containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>(
+        var contextNavigationService = 
+            Locator.Current.GetService<IContextNavigationService>();
+        contextNavigationService!.RegisterForNavigation<DashboardView, DashboardViewModel>(
             DashboardConstants.DashboardView);
     }
-
-    public void OnInitialized(IContainerProvider containerProvider)
+    
+    public Task InitializedAsync()
     {
-
+        return Task.CompletedTask;
     }
 }

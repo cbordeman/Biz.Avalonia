@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Biz.Modules.AccountManagement.Core;
-using DryIoc;
-using JetBrains.Annotations;
-using Prism.Commands;
+using Biz.Shell.Services;
+using CompositeFramework.Core.Extensions;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
@@ -17,7 +17,7 @@ public class TenantSelectionViewModel : PageViewModelBase
     } = null!;
     #endregion AvailableTenants
 
-    public TenantSelectionViewModel(IContainer container) : base(container)
+    public TenantSelectionViewModel()
     {
         Title = "Login";
     }
@@ -25,9 +25,10 @@ public class TenantSelectionViewModel : PageViewModelBase
     #region SelectCommand
     [field: AllowNull, MaybeNull]
     public AsyncRelayCommand<Tenant> SelectCommand => field ??= new AsyncRelayCommand<Tenant>(ExecuteSelectCommand, CanSelectCommand);
-    static bool CanSelectCommand(Tenant t) => true;
-    async Task ExecuteSelectCommand(Tenant t)
+    static bool CanSelectCommand(Tenant? t) => true;
+    async Task ExecuteSelectCommand(Tenant? t)
     {
+        Debug.Assert(t != null, nameof(t) + " != null");
         await AuthenticationService.CompleteLogin(t);
     }
     #endregion SelectCommand
@@ -35,14 +36,16 @@ public class TenantSelectionViewModel : PageViewModelBase
     #region CancelLoginCommand
     [field: AllowNull, MaybeNull]
     public AsyncRelayCommand CancelLoginCommand => field ??= new AsyncRelayCommand(ExecuteCancelLoginCommand);
-    Task ExecuteCancelLoginCommand()
+    async Task ExecuteCancelLoginCommand()
     {
-        NavigationService!.RequestNavigate(
+        var mainNavService = Locator.Current.Resolve<IMainNavigationService>();
+        await mainNavService.NavigateWithModuleAsync(
             AccountManagementConstants.ModuleName,
             AccountManagementConstants.LoginView);
-        return Task.CompletedTask;
     }
     #endregion CancelLoginCommand
 
     public override bool PersistInHistory() => false;
+
+    public override string Area => "Account";
 }

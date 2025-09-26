@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using CompositeFramework.Avalonia.Exceptions;
-using Splat;
 
 namespace CompositeFramework.Avalonia.Navigation;
 
@@ -10,7 +9,8 @@ namespace CompositeFramework.Avalonia.Navigation;
 /// Implementation of IContextNavigationService that navigates
 /// within a single space.
 /// </summary>
-public class SectionNavigationService : IContextNavigationService
+public class SectionNavigationService 
+    : IContextNavigationService
 {
     public object? Context { get; set; }
 
@@ -48,8 +48,10 @@ public class SectionNavigationService : IContextNavigationService
         CurrentLocationIndex = -1;
     }
 
-    public void RegisterForNavigation<TViewModel, TView>(string? locationName = null)
-        where TViewModel : INotifyPropertyChanged where TView : ILocation
+    public void RegisterForNavigation<TViewModel, TView>
+        (string? locationName = null)
+        where TViewModel : INotifyPropertyChanged
+        where TView : ILocation
     {
         locationName ??= typeof(TViewModel).FullName!;
         
@@ -61,7 +63,5 @@ public class SectionNavigationService : IContextNavigationService
             throw new DuplicateNavigationRegistrationException
                 <TViewModel, TView>(locationName);
         }
-        Locator.CurrentMutable.Register<TViewModel>();
-        Locator.CurrentMutable.Register<TView>();
     }
 }

@@ -12,7 +12,7 @@ namespace Biz.Shell.ViewModels;
 public abstract class MainViewModelBase
     : NavigationAwareViewModelBase, IOnViewLoaded
 {
-    protected readonly IMainRegionNavigationService MainContentRegionNavigationService;
+    protected readonly IMainNavigationService MainContentNavigationService;
     protected readonly IAuthenticationService AuthService;
     
     #region IsDrawerOpen
@@ -68,9 +68,9 @@ public abstract class MainViewModelBase
             return Task.CompletedTask;
         });
 
-        MainContentRegionNavigationService =
-            Locator.Current.Resolve<IMainRegionNavigationService>();
-        MainContentRegionNavigationService.PageChanged.Subscribe( 
+        MainContentNavigationService =
+            Locator.Current.Resolve<IMainNavigationService>();
+        MainContentNavigationService.PageChanged.Subscribe( 
             MainContentRegionNavigationServiceOnPageChanged);
     }
 
@@ -133,7 +133,7 @@ public abstract class MainViewModelBase
     static bool CanNavigateSettingsCommand() => true;
     async Task ExecuteNavigateSettingsCommand()
     {
-        await MainContentRegionNavigationService.NavigateWithModuleAsync(
+        await MainContentNavigationService.NavigateWithModuleAsync(
             null, nameof(SettingsView));
     }
     #endregion NavigateSettingsCommand
@@ -157,7 +157,7 @@ public abstract class MainViewModelBase
     public override void Dispose()
     {
         base.Dispose();
-        MainContentRegionNavigationService.PageChanged.Subscribe(
+        MainContentNavigationService.PageChanged.Subscribe(
             MainContentRegionNavigationServiceOnPageChanged);
     }
 
@@ -168,9 +168,9 @@ public abstract class MainViewModelBase
             IsLoggedIn = AuthService.IsAuthenticated;
 
             // This executes after regions are loaded.
-            MainContentRegionNavigationService.Initialize();
+            MainContentNavigationService.Initialize();
         
-            await MainContentRegionNavigationService.NavigateWithModuleAsync(
+            await MainContentNavigationService.NavigateWithModuleAsync(
                 DashboardConstants.ModuleName,
                 DashboardConstants.DashboardView);
         }

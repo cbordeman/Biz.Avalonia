@@ -1,5 +1,4 @@
-﻿using Biz.Core.Models;
-using Biz.Desktop.Services;
+﻿using Biz.Models;
 using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;

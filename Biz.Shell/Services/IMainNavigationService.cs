@@ -2,7 +2,7 @@
 
 public record NotifyPageChangedArgs(string Area, PageViewModelBase Page);
 
-public interface IMainRegionNavigationService
+public interface IMainNavigationService
 {
     string? CurrentPage { get; }
     AsyncEvent<NotifyPageChangedArgs> PageChanged { get; }

@@ -158,7 +158,7 @@ public class ModuleManager : IModuleManager
 
         try
         {
-            await moduleInstance.InitializeAsync().ConfigureAwait(false);
+            await moduleInstance.InitializedAsync().ConfigureAwait(false);
             moduleMetadata.State = ModuleState.Initialized;
 
             var loadedModuleAndInstance = new ModuleDataAndInstance(

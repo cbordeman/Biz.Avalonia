@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.ViewModels.Toolbar;
-using Prism.Commands;
+using CommunityToolkit.Mvvm.Input;
+using CompositeFramework.Core.Extensions;
+using Splat;
 
 namespace Biz.Modules.Dashboard.ViewModels;
 
@@ -22,12 +25,12 @@ public sealed class DashboardViewModel : PageViewModelBase
         ThemeVariant.Light
     ];
     
-    public DashboardViewModel(IContainer container) : base(container)
+    public DashboardViewModel()
     {
         Title = "Dashboard";
         TitleGeometryResourceName = ResourceNames.Gear;
         
-        notificationService = locator.Current.ResolveINotificationService>();
+        notificationService = Locator.Current.Resolve<INotificationService>();
         ThemeSelected = Application.Current!.RequestedThemeVariant!;
         
         ToolbarEntries.Add(new ToolbarEntry(
@@ -46,22 +49,28 @@ public sealed class DashboardViewModel : PageViewModelBase
         return Task.Delay(5000);
     }
 
-    public DelegateCommand CmdAddItem => new(() =>
+    public AsyncRelayCommand CmdAddItem => new(() =>
     {
         counter++;
 
         // Insert items at the top of the list
         ListItems.Insert(0, $"Item Number: {counter}");
+        return Task.CompletedTask;
 
         // Insert at the bottom
         // ListItems.Add($"Item Number: {_counter}");
     });
 
-    public DelegateCommand CmdClearItems => new(ListItems.Clear);
+    public AsyncRelayCommand CmdClearItems => new(() =>
+    {
+        ListItems.Clear();
+        return Task.CompletedTask;
+    });
 
-    public DelegateCommand CmdNotification => new(() =>
+    public AsyncRelayCommand CmdNotification => new(() =>
     {
         notificationService.Show("Hello Prism!", "Notification Pop-up Message.");
+        return Task.CompletedTask;
 
         // Alternate OnClick action
         ////_notification.Show("Hello Prism!", "Notification Pop-up Message.", () =>
@@ -108,4 +117,6 @@ public sealed class DashboardViewModel : PageViewModelBase
         }
     }
     #endregion ThemeSelected
+    
+    public override string Area => "Dashboard";
 }

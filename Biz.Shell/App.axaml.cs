@@ -101,7 +101,7 @@ public class App : Application
         // Services
         SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
         SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
-        SplatRegistrations.RegisterLazySingleton<IMainRegionNavigationService, MainContentRegionNavigationService>();
+        SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
         SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
         // Views - Region Navigation

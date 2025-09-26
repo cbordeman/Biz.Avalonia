@@ -1,18 +1,17 @@
 ﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shell.Services.Authentication;
-using Microsoft.Extensions.Logging;
 
 namespace Biz.Shell.Services;
 
-public class MainContentRegionNavigationService :
-    IMainRegionNavigationService, IDisposable
+public class MainNavigationService :
+    IMainNavigationService, IDisposable
 {
     bool initialized;
     readonly IContextNavigationService navigationService;
     IAuthenticationService AuthenticationService =>
         Locator.Current.Resolve<IAuthenticationService>();
-    readonly ILogger<MainContentRegionNavigationService> logger;
+    readonly ILogger<MainNavigationService> logger;
     readonly IAuthenticationService authenticationService;
     readonly IModuleManager moduleManager;
 
@@ -25,8 +24,8 @@ public class MainContentRegionNavigationService :
 
     public AsyncEvent<NotifyPageChangedArgs> PageChanged { get; } = new();
 
-    public MainContentRegionNavigationService(
-        ILogger<MainContentRegionNavigationService> logger,
+    public MainNavigationService(
+        ILogger<MainNavigationService> logger,
         IAuthenticationService authenticationService,
         IModuleManager moduleManager,
         IContextNavigationService navigationService)
@@ -109,7 +108,7 @@ public class MainContentRegionNavigationService :
             logger.LogError(
                 e,
                 "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
-                nameof(MainContentRegionNavigationService),
+                nameof(MainNavigationService),
                 nameof(Navigated),
                 args.Context.ViewName,
                 e.Message);
@@ -137,7 +136,7 @@ public class MainContentRegionNavigationService :
             logger.LogError(
                 e,
                 "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
-                nameof(MainContentRegionNavigationService),
+                nameof(MainNavigationService),
                 nameof(Navigated),
                 args.Context.ViewName,
                 e.Message);

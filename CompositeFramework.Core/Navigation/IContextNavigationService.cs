@@ -56,11 +56,11 @@ public interface IContextNavigationService
 
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
-    
+
     void RegisterForNavigation<TViewModel, TView>
         (string? locationName = null)
-        where TViewModel: INotifyPropertyChanged
-        where TView: ILocation; 
+        where TViewModel : INotifyPropertyChanged
+        where TView : ILocation; 
 
     IReadOnlyDictionary<string, ViewModelViewBinding> Registrations { get; }
 }

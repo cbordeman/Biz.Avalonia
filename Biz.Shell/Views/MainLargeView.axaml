@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:regions="http://prismlibrary.com/"
+    xmlns:sections="clr-namespace:CompositeFramework.Avalonia.Sections;assembly=CompositeFramework.Avalonia"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:toolbar="clr-namespace:Biz.Shell.ViewModels.Toolbar;assembly=Biz.Shell"
     xmlns:views="clr-namespace:Biz.Shell.Views"
@@ -328,7 +328,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Margin="0,15,0,0"
-                    regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.MainContentRegion}">
+                    sections:SectionManager.SectionName="{x:Static infrastructure:SectionNames.MainContentSection}">
                     <TransitioningContentControl.PageTransition>
                         <PageSlide Duration="0:00:00.2">
                             <PageSlide.SlideInEasing>

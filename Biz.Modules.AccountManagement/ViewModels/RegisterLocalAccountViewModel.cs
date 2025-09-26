@@ -1,8 +1,6 @@
-﻿using IContainer = DryIoc.IContainer;
-
-namespace Biz.Modules.AccountManagement.ViewModels
+﻿namespace Biz.Modules.AccountManagement.ViewModels
 {
-    public class RegisterLocalAccountViewModel : PageViewModelBase //, IDataErrorInfo
+    public class RegisterLocalAccountViewModel : PageViewModelBase
     {
         //     #region Fields
         //     private readonly Dictionary<string, string> errorMessages = new Dictionary<string, string>();
@@ -320,8 +318,6 @@ namespace Biz.Modules.AccountManagement.ViewModels
         // }
         // #endregion
 
-        public RegisterLocalAccountViewModel(IContainer container) : base(container)
-        {
-        }
+        public override string Area => "Account";
     }
 }
