@@ -1,20 +1,24 @@
-﻿using Avalonia.Controls;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using CompositeFramework.Core.Dialogs;
 
 namespace CompositeFramework.Avalonia.Dialogs;
 
 public class AvaloniaDialogService : IDialogService
 {
-    public object? DialogHost => IsDesktop() ? ShadUiDialogManager.Current : null;
-
-    public void RegisterDialog<TViewModel, TView>()
-        where TViewModel : IDialog, INotifyPropertyChanged where TView : UserControl
+    static Control DialogHost;
+    
+    static AvaloniaDialogService()
     {
-        // TODO: implement
+        SetMainView();
     }
-
+    
     public async Task<bool> Confirm(string title, string message, string okText = "OK", string? cancelText = "Cancel")
     {
-        if (IsDesktop())
+        if (IsDesktop)
         {
             // Use ShadUI/DialogHost modal dialog on desktop
             return await ShadUiDialogManager.Current.ShowConfirmAsync(title, message, okText, cancelText);
@@ -44,16 +48,38 @@ public class AvaloniaDialogService : IDialogService
         }
     }
     
-    private bool IsDesktop() =>
-        OperatingSystem.IsWindows() || OperatingSystem.IsMacOS() || OperatingSystem.IsLinux();
-
-    private static Panel GetMainView()
+    public Task<TResult> ShowDialog<TResult>(IDialog dialog)
     {
+        // TODO: Implement    
+    }
+    
+    public void RegisterDialogView<TViewModel, TView>()
+        where TViewModel : IDialog where TView : class
+    {
+        // TODO: Implement
+    }
+
+    private bool IsDesktop =>
+        OperatingSystem.IsWindows() || 
+        OperatingSystem.IsMacOS() || 
+        OperatingSystem.IsLinux();
+
+    private static void SetDialogHost()
+    {
+        if (Application.Current == null)
+            throw new NullReferenceException("Application.Current was null when getting the main view.");
+        
         // Get the root Panel of your application (set as MainView on mobiles per ISingleViewApplicationLifetime)
-        return (Panel)Avalonia.Application.Current!.ApplicationLifetime switch
+        switch(Application.Current.ApplicationLifetime)
         {
-            ISingleViewApplicationLifetime single => single.MainView,
-            _ => throw new NotSupportedException()
+            case ISingleViewApplicationLifetime single:
+                if (single.MainView == null)
+                    throw new NullReferenceException(
+                        "Application.Current.ApplicationLifetime.MainView " +
+                        "was null when getting the main view.");
+                return single.MainView;
+            default:
+                throw new NotSupportedException();
         };
     }
 }

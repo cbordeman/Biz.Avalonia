@@ -1,4 +1,4 @@
-﻿namespace CompositeFramework.Avalonia.Dialogs;
+﻿namespace CompositeFramework.Core.Dialogs;
 
 public interface IDialog
 {

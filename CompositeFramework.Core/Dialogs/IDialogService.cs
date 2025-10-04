@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel;
-using Avalonia.Controls;
 
-namespace CompositeFramework.Avalonia.Dialogs;
+namespace CompositeFramework.Core.Dialogs;
 
 public interface IDialogService
 {
-    object? DialogHost { get; }
-
     /// <summary>
     /// Presents a simple OK Cancel dialog with some text.
     /// If null is passed for cancelText, the cancel button is
@@ -20,7 +17,5 @@ public interface IDialogService
     Task<bool> Confirm(string title, string message,
         string okText = "OK", string? cancelText = "Cancel");
     
-    void RegisterDialog<TViewModel, TView>()
-        where TViewModel : IDialog, INotifyPropertyChanged
-        where TView : UserControl;
+    Task<TResult> ShowDialog<TResult>(IDialog dialog);
 }
