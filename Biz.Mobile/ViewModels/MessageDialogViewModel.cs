@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core;
-using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Navigation;
 using CompositeFramework.Core.ViewModels;
 
@@ -13,7 +12,7 @@ namespace Biz.Mobile.ViewModels;
 public sealed class MessageDialogViewModel
     : BindingValidatingBase, IDialog
 {
-    public IContextNavigationService? NavigationService { get; set; }
+    public IContextNavigationService? DialogNavigationService { get; set; }
     
     public string? Title { get; set => SetProperty(ref field, value); }
     public string? Message { get; set => SetProperty(ref field, value); }

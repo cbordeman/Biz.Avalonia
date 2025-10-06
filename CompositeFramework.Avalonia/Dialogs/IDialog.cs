@@ -1,11 +1,11 @@
-﻿namespace CompositeFramework.Core.Dialogs;
+﻿namespace CompositeFramework.Avalonia.Dialogs;
 
 public interface IDialog
 {
     /// <summary>
     /// Set by the dialog service.  Do not set it yourself.
     /// </summary>
-    IContextNavigationService? NavigationService { get; set; }
+    IContextNavigationService? DialogNavigationService { get; set; }
     
     /// <summary>
     /// Called by the dialog service when the dialog is

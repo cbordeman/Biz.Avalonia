@@ -1,19 +1,8 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿namespace CompositeFramework.ShadUi.Dialogs;
 
-namespace CompositeFramework.Avalonia.Dialogs;
-
-public class AvaloniaDialogService : IDialogService
+public class ShadUiDialogService : IDialogService
 {
-    static Control DialogHost;
-    
-    static AvaloniaDialogService()
-    {
-        SetMainView();
-    }
+    public object? DialogHost { get; set; }
     
     public async Task<bool> Confirm(string title, string message, string okText = "OK", string? cancelText = "Cancel")
     {

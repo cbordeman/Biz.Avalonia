@@ -9,9 +9,6 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
 {
     protected IAuthenticationService AuthenticationService { get; }
 
-    // This must be public so MainWindow can bind to its DialogHost property.
-    public DesktopDialogService DesktopDialogService { get; }
-
     #region Title
     public string? Title
     {
@@ -53,8 +50,6 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
 
     protected PageViewModelBase()
     {
-        DesktopDialogService = Locator.Current
-            .Resolve<DesktopDialogService>();
         AuthenticationService = Locator.Current
             .Resolve<IAuthenticationService>();
         AuthenticationService.AuthenticationStateChanged

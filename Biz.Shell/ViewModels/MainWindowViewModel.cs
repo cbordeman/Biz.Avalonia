@@ -1,3 +1,5 @@
+using CompositeFramework.Avalonia.Dialogs;
+
 namespace Biz.Shell.ViewModels
 {
     public class MainWindowViewModel : PageViewModelBase
@@ -10,10 +12,15 @@ namespace Biz.Shell.ViewModels
         }
         #endregion Main
 
+        // This must be public so MainWindow can bind to its DialogHost property.
+        public IDialogService DialogService { get; }
+        
         public MainWindowViewModel( 
             MainLargeViewModel mainLargeViewModel)
         {
             Main = mainLargeViewModel;
+            DialogService = Locator.Current
+                .Resolve<IDialogService>();
             Title = "Shell (Window)";
         }
         
@@ -23,7 +30,7 @@ namespace Biz.Shell.ViewModels
         bool CanTryCloseCommand() => true;
         async Task ExecuteTryCloseCommand()
         {
-            if (await DesktopDialogService.Confirm(
+            if (await DialogService.Confirm(
                     "Close", "Do you really want to exit?",
                     "Yes", "No")) 
                 Environment.Exit(0);

@@ -4,7 +4,7 @@ namespace Biz.Shell.Services;
 
 public class DesktopDialogService : IDialogService
 {
-    object? DialogHost { get; }
+    public object? DialogHost { get; set; }
     public Task<bool> Confirm(string title, string message, string okText = "OK", string? cancelText = "Cancel") =>
         Task.FromResult(true);
 }

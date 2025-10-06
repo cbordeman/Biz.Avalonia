@@ -11,4 +11,8 @@
       <PackageReference Include="Splat" Version="17.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Dialogs\" />
+    </ItemGroup>
+
 </Project>
