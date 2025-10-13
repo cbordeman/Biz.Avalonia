@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core;
+using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Navigation;
 using CompositeFramework.Core.ViewModels;
 
 namespace Biz.Mobile.ViewModels;
 
 public sealed class MessageDialogViewModel
-    : BindingValidatingBase, IDialog
+    : BindingValidatingBase, IDialogViewModel
 {
     public IContextNavigationService? DialogNavigationService { get; set; }
     

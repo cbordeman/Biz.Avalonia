@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using CompositeFramework.Core.Dialogs;
 
 namespace CompositeFramework.Avalonia.Dialogs;
 
@@ -12,7 +13,7 @@ public class AvaloniaDialogService : IDialogService
     
     static AvaloniaDialogService()
     {
-        SetMainView();
+        SetTopLevel();
     }
     
     public async Task<bool> Confirm(string title, string message, string okText = "OK", string? cancelText = "Cancel")
@@ -47,17 +48,39 @@ public class AvaloniaDialogService : IDialogService
         }
     }
     
-    public Task<TResult> ShowDialog<TResult>(IDialog dialog)
+    public void ChangeDialogContainer<TDialogContainer>(int a)
+        where TDialogContainer : IDialogContainer
+    {
+        
+    }
+    
+    public void OverrideDialogContainer<TDialogContainer>(int a)
+        where TDialogContainer : IDialogContainer
+    {
+        
+    }
+
+    public void RegisterDialog<TView, TViewModel>()
+        where TView
+        where TViewModel : IDialogViewModel
+    {
+        throw new NotImplementedException();
+    }
+    
+    void IDialogService.Show<TResult>(IDialogViewModel dialog)
+    {
+        throw new NotImplementedException();
+    }
+    public async Task<TResult> ShowModal<TResult>(IDialogViewModel dialog)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TResult> Show<TResult>(IDialogViewModel dialog)
     {
         // TODO: Implement    
     }
     
-    public void RegisterDialogView<TViewModel, TView>()
-        where TViewModel : IDialog where TView : class
-    {
-        // TODO: Implement
-    }
-
     private bool IsDesktop =>
         OperatingSystem.IsWindows() || 
         OperatingSystem.IsMacOS() || 

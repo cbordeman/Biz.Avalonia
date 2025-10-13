@@ -5,7 +5,6 @@ public static class ReadonlyDependencyResolverExtensions
     /// <summary>
     /// A safe version of Splat's GetServie{T}() method.
     /// Instead of returning null, throws an exception.
-    /// Attempts to register classes if not views.
     /// </summary>
     /// <param name="resolver"></param>
     /// <param name="type"></param>
@@ -17,11 +16,6 @@ public static class ReadonlyDependencyResolverExtensions
         try
         {
             var service = resolver.GetService(type);
-            if (service is null &&
-                type.IsClass)
-            {
-                Locator.CurrentMutable.Register(() => Locator.Current.GetService(type));
-            }
             if (service is null)
                 throw new TypeResolutionFailedException(type, null);
             return service;
@@ -35,7 +29,6 @@ public static class ReadonlyDependencyResolverExtensions
     /// <summary>
     /// A safe version of Splat's GetServie{T}() method.
     /// Instead of returning null, throws an exception.
-    /// Attempts to register classes if not views.
     /// </summary>
     /// <param name="resolver"></param>
     /// <typeparam name="T"></typeparam>
@@ -46,12 +39,6 @@ public static class ReadonlyDependencyResolverExtensions
         try
         {
             var service = resolver.GetService<T>();
-            if (service is null &&
-                typeof(T).IsClass) //&&
-                //!typeof(T).Name.IsView())
-            {
-                Locator.CurrentMutable.Register(() => Locator.Current.GetService<T>());
-            }
             if (service is null)
                 throw new TypeResolutionFailedException(typeof(T), null);
             return service;

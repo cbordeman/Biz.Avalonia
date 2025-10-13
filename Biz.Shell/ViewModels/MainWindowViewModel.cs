@@ -1,4 +1,5 @@
 using CompositeFramework.Avalonia.Dialogs;
+using CompositeFramework.Core.Dialogs;
 
 namespace Biz.Shell.ViewModels
 {

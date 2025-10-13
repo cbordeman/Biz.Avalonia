@@ -8,6 +8,7 @@ using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
 using CompositeFramework.Avalonia.Dialogs;
+using CompositeFramework.Core.Dialogs;
 using Splat;
 using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
