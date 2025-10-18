@@ -5,12 +5,12 @@ public class NavigationContext
     /// <summary>
     /// True when navigation is backward.
     /// </summary>
-    public bool IsBack { get; init; }
-    
+    public NavitationDirection Direction { get; init; }
+
     /// <summary>
-    /// The location.  Initially null.
+    /// The location.  Must be set;
     /// </summary>
-    public ILocation? Location { get; init; }
+    public ILocation Location { get; init; } = null!;
 
     /// <summary>
     /// Used to pass values during navigation.

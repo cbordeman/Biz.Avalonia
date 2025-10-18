@@ -1,6 +1,9 @@
 ﻿namespace CompositeFramework.Core.Extensions;
 
-public static class DictionaryExtensions
+/// <summary>
+/// Extension methods to get values from navigation Parameters.
+/// </summary>
+public static class NavigationParameterDictionaryExtensions
 {
     public static TValue? GetClassOrDefault<TValue>(this IDictionary<string, object> dictionary, string key)
         where TValue : class =>

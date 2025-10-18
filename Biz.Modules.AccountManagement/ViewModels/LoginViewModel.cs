@@ -3,7 +3,7 @@ using CompositeFramework.Core.Dialogs;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
-public partial class LoginViewModel : PageViewModelBase
+public class LoginViewModel : PageViewModelBase
 {
     CancellationTokenSource? loginCancellationTokenSource;
     readonly IDialogService dialogService;
@@ -32,7 +32,7 @@ public partial class LoginViewModel : PageViewModelBase
     }
     #endregion Password
     
-    public LoginViewModel() : base()
+    public LoginViewModel()
     {
         dialogService = Locator.Current.Resolve<IDialogService>();
         authenticationService = Locator.Current.Resolve<IAuthenticationService>();
@@ -114,11 +114,9 @@ public partial class LoginViewModel : PageViewModelBase
     }
     #endregion CancelLoginCommand
 
-    protected override void OnNavigatedTo(NavigationContext ctx)
+    public override async Task OnNavigatedToAsync(NavigationContext ctx)
     {
-        base.OnNavigatedTo(ctx);
-
-        AuthenticationService.Logout(false, false);
+        await AuthenticationService.LogoutAsync(false, false);
         IsValidating = true;
     }
 

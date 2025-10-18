@@ -309,14 +309,6 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
     }
 
-    public void Logout(bool invokeEvent, bool clearBrowserCache)
-    {
-        LogoutAsync(invokeEvent, clearBrowserCache)
-            .LogExceptionsAndForget(
-                $"{nameof(AuthenticationService)}.{nameof(Logout)}()",
-                logger);
-    }
-
     public async Task LogoutAsync(bool invokeEvent, bool clearBrowserCache)
     {
         // Clear history

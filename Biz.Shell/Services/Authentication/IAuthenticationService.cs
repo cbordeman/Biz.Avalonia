@@ -10,7 +10,6 @@ namespace Biz.Shell.Services.Authentication
             LoginWithProviderAsync(
             LoginProvider providerEnum, CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);
-        void Logout(bool invokeEvent, bool clearBrowserCache);
         Task LogoutAsync(bool invokeEvent, bool clearBrowserCache);
         Task<User?> GetCurrentUserAsync();
         AsyncEvent AuthenticationStateChanged { get; }

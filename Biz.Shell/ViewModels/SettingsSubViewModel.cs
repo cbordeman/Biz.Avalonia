@@ -40,12 +40,10 @@ public class SettingsSubViewModel : PageViewModelBase
 
     protected override bool OnNavigatingTo(NavigationContext navigationContext)
     {
-        Debug.WriteLine("OnNavigatingTo");
-
         // Navigation permission sample:
-        return navigationContext.Parameters != null &&
-               navigationContext.Parameters.ContainsKey("key1") &&
+        return navigationContext.Parameters.ContainsKey("key1") &&
                navigationContext.Parameters.ContainsKey("key2");
     }
+    
     public override string Area => "Settings.Sub1";
 }

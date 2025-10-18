@@ -5,21 +5,9 @@ namespace CompositeFramework.Core.Navigation;
 
 public interface ILocation
 {
-    /// <summary>
-    /// Called when navigated to, forward or backward.
-    /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
     Task OnNavigatedToAsync(NavigationContext context);
-
-    /// <summary>
-    /// Called just before navigating away from location.  Use
-    /// for cleanup or saving state.
-    /// </summary>
-    /// <param name="newContext"></param>
-    /// <returns></returns>
-    Task OnNavigatingFromAsync(NavigationContext newContext) 
-        => Task.CompletedTask;
+    Task<bool> OnNavigatingFromAsync(NavigationContext newContext); 
+    Task OnNavigatedFromAsync(NavigationContext navigationContext);
     
     /// <summary>
     /// If true, the View is referenced, keeping views
@@ -38,15 +26,6 @@ public interface ILocation
     /// that are outside the normal navigation flow.
     /// </summary>
     bool AddToHistory => true;
-    
-    /// <summary>
-    /// Return false to disallow navigation.  Surfaced as
-    /// NavigationResult.NotAllowed.
-    /// </summary>
-    /// <param name="fromContext"></param>
-    /// <returns></returns>
-    Task<bool> CanNavigateToAsync(NavigationContext fromContext) 
-        => Task.FromResult(true);
     
     /// <summary>
     /// Used to prevent forward navigation.  Referenced 
