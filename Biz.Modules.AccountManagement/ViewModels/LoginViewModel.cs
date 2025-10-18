@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CompositeFramework.Core.Dialogs;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
 public partial class LoginViewModel : PageViewModelBase
 {
     CancellationTokenSource? loginCancellationTokenSource;
-    readonly DesktopDialogService desktopDialogService;
+    readonly IDialogService dialogService;
     readonly IAuthenticationService authenticationService;
 
     #region Email
@@ -33,10 +34,9 @@ public partial class LoginViewModel : PageViewModelBase
     
     public LoginViewModel() : base()
     {
-        desktopDialogService = Locator.Current.Resolve<DesktopDialogService>();
+        dialogService = Locator.Current.Resolve<IDialogService>();
         authenticationService = Locator.Current.Resolve<IAuthenticationService>();
         Title = $"Sign In to {AppConstants.AppShortName}";
-        IsValidating = true;
     }
 
     #region LoginCommand
@@ -56,7 +56,7 @@ public partial class LoginViewModel : PageViewModelBase
             {
                 if (result.availableTenants == null || result.error != null)
                 {
-                    await desktopDialogService.Confirm(
+                    await dialogService.Confirm(
                         $"{provider} Login",
                         $"Error logging in." +
                         (result.error == null ? "" : $"\n\nError: {result.error}"),
@@ -65,7 +65,7 @@ public partial class LoginViewModel : PageViewModelBase
                 }
                 else if (result.availableTenants.Length == 0)
                 {
-                    await desktopDialogService.Confirm("Account Inactive",
+                    await dialogService.Confirm("Account Inactive",
                         "Your account is inactive in all organizations.",
                         cancelText: null);
                     return;
@@ -79,7 +79,7 @@ public partial class LoginViewModel : PageViewModelBase
         }
         catch (Exception ex)
         {
-            await desktopDialogService.Confirm(
+            await dialogService.Confirm(
                 "Error",
                 $"An error occurred during Microsoft login: {ex.Message}",
                 cancelText: null);
@@ -114,11 +114,12 @@ public partial class LoginViewModel : PageViewModelBase
     }
     #endregion CancelLoginCommand
 
-    public override void OnNavigatedTo(NavigationContext ctx)
+    protected override void OnNavigatedTo(NavigationContext ctx)
     {
         base.OnNavigatedTo(ctx);
 
         AuthenticationService.Logout(false, false);
+        IsValidating = true;
     }
 
     #region RegisterCommand

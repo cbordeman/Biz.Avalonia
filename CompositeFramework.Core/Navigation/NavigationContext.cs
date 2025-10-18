@@ -11,11 +11,11 @@ public class NavigationContext
     /// The location.  Initially null.
     /// </summary>
     public ILocation? Location { get; init; }
-    
+
     /// <summary>
     /// Used to pass values during navigation.
     /// </summary>
-    public Dictionary<string, object>? Parameters { get; init; }
+    public Dictionary<string, object> Parameters { get; init; } = null!;
 
     // /// <summary>
     // /// The actual view instance.

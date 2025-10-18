@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Shouldly;
 
 namespace Biz.Shell.ViewModels;
 
@@ -40,25 +39,25 @@ public abstract class NavigationAwareViewModelBase()
     
     /// <summary>Called when the implementer has been navigated to.</summary>
     /// <param name="ctx">The navigation context.</param>
-    public virtual void OnNavigatedTo(NavigationContext ctx)
+    public virtual Task OnNavigatedToAsync(NavigationContext ctx)
     {
-        if (ctx.Parameters == null || ctx.Parameters.Count == 0)
-            return;
+        if (ctx.Parameters.Count == 0)
+            return Task.CompletedTask;
         
         // Public non-static properties with a setter. 
         var properties = this.GetType().GetProperties(
                 BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.CanWrite && p.SetMethod != null && p.SetMethod.IsPublic);
+        properties.ShouldNotBeNull();
+        foreach (var p in ctx.Parameters)
         {
-            properties.ShouldNotBeNull();
-            foreach (var p in ctx.Parameters)
-            {
-                var foundProp = properties.FirstOrDefault(prop => prop.Name == p.Key);
-                if (foundProp == null)
-                    throw new InvalidOperationException($"There is no property on {this.GetType().FullName} named \"{p.Key}\".");
-                foundProp.SetValue(this, p.Value);
-            }
+            var foundProp = properties.FirstOrDefault(prop => prop.Name == p.Key);
+            if (foundProp == null)
+                throw new InvalidOperationException($"There is no property on {this.GetType().FullName} named \"{p.Key}\".");
+            foundProp.SetValue(this, p.Value);
         }
+        
+        return Task.CompletedTask;
     }
     
     // public Task NavigateToAsync(string area, INavigationParameters? parameters = null)
@@ -93,9 +92,5 @@ public abstract class NavigationAwareViewModelBase()
 
     public virtual bool PersistInHistory() => true;
     
-    public Task OnNavigatedToAsync(NavigationContext context)
-    {
-        return Task.CompletedTask;
-    }
     public abstract string Area { get; }
 }

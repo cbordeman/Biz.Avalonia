@@ -1,6 +1,3 @@
-using Biz.Modules.Dashboard;
-using Biz.Modules.Dashboard.Core;
-
 namespace Biz.Shell.ViewModels;
 
 public class SettingsSubViewModel : PageViewModelBase
@@ -26,23 +23,19 @@ public class SettingsSubViewModel : PageViewModelBase
         set => SetProperty(ref field, value);
     } = string.Empty;
 
-    public string? MessageNumber
+    public int MessageNumber
     {
         get;
         set => SetProperty(ref field, value);
-    } = string.Empty;
+    }
 
-    /// <summary>Navigation completed successfully.</summary>
-    /// <param name="navigationContext">Navigation context.</param>
-    public override void OnNavigatedTo(NavigationContext navigationContext)
+    public override Task OnNavigatedToAsync(NavigationContext ctx)
     {
+        // Get and display our parameters
+        MessageText = ctx.Parameters.GetStringOrEmpty("key1");
+        MessageNumber = ctx.Parameters.GetStructOrDefault<int>("key1");
         
-        // // Get and display our parameters
-        // if (navigationContext.Parameters.TryGetValue("key1", out string? value))
-        //     MessageText = value;
-        //
-        // if (navigationContext.Parameters.TryGetValue("key2", out int msgNum))
-        //     MessageNumber = msgNum.ToString();
+        return Task.CompletedTask;
     }
 
     protected override bool OnNavigatingTo(NavigationContext navigationContext)
