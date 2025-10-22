@@ -1,6 +1,4 @@
-﻿using Splat;
-
-namespace CompositeFramework.Modules;
+﻿namespace CompositeFramework.Modules;
 
 public interface IModule
 {

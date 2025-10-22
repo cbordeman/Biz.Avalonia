@@ -1,5 +1,9 @@
 using Data.Config;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Scalar.AspNetCore;
 using Services.Auth;
 using Services.Auth.Jwt;
@@ -120,10 +124,6 @@ class Program
         {
             Console.WriteLine(e);
             throw;
-        }
-        finally
-        {
-            
         }
     }
 }

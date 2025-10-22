@@ -6,7 +6,18 @@ namespace CompositeFramework.Core.Navigation;
 public interface ILocation
 {
     Task OnNavigatedToAsync(NavigationContext context);
-    Task<bool> OnNavigatingFromAsync(NavigationContext newContext); 
+
+    /// <summary>
+    /// Return false to cancel navigation.
+    /// </summary>
+    Task<bool> CanNavigateToAsync(NavigationContext navigationContext);
+    
+    /// <summary>
+    /// Return false to cancel navigation.
+    /// </summary>
+    Task<bool> CanNavigateFromAsync(NavigationContext newContext);
+
+    Task OnNavigatingFromAsync(NavigationContext newContext); 
     Task OnNavigatedFromAsync(NavigationContext navigationContext);
     
     /// <summary>

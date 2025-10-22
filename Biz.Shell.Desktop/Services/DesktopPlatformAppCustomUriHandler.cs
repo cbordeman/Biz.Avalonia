@@ -2,6 +2,7 @@
 using Biz.Modules.AccountManagement.Core;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
+using CompositeFramework.Core.Dialogs;
 using Microsoft.Extensions.Logging;
 using ServiceClients;
 
@@ -11,13 +12,13 @@ public class DesktopPlatformAppCustomUriHandler(
     ILogger<DesktopPlatformAppCustomUriHandler> logger,
     IMainNavigationService navService,
     IAccountApi accountApi,
-    DesktopDialogService desktopDialogService)
+    IDialogService dialogService)
     : PlatformAppCustomUriHandlerBase(logger)
 {
     // ReSharper disable once UnusedMember.Local
     readonly ILogger<DesktopPlatformAppCustomUriHandler> logger = logger;
     readonly IAccountApi accountApi = accountApi;
-    readonly DesktopDialogService desktopDialogService = desktopDialogService;
+    readonly IDialogService dialogService = dialogService;
     
     protected override async Task HandleConfirmUserRegistration(
         string token, string email)
@@ -26,7 +27,7 @@ public class DesktopPlatformAppCustomUriHandler(
         // whether the token was good or the action was successful.
         // But we still tell the user it was.
         await accountApi.ConfirmRegisteredEmail(email, token);
-        await desktopDialogService.Confirm("Account Activated",
+        await dialogService.Confirm("Account Activated",
             "Your email has been confirmed.  You may log in.",
             "OK", null);
         await navService.NavigateWithModuleAsync(

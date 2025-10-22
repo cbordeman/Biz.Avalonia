@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Runtime;
 using Biz.Shell.Services;
-using CompositeFramework.Core;
 using Java.IO;
 using Java.Lang;
 using Microsoft.Extensions.Logging;
@@ -28,7 +28,7 @@ public class AndroidSafeStorage : ISafeStorage
 
     public AndroidSafeStorage(ILogger<AndroidSafeStorage> logger)
     {
-        this.logger = logger ?? throw new ArgumentChecker(nameof(logger));
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         backingFile = new File(MainActivity.Context.FilesDir, "secure_store.json");
 
         try

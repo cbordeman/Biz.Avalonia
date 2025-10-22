@@ -11,10 +11,12 @@ using Biz.Core;
 using Biz.Shell.Desktop.Services;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
+using CompositeFramework.Core.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using Prism.Ioc;
+using Splat;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Biz.Shell.Desktop;
 
@@ -181,7 +183,7 @@ sealed class Program
     {
         try
         {
-            return ContainerLocator.Locator.Current.Resolve<ILogger<Program>>();
+            return Locator.Current.Resolve<ILogger<Program>>();
         }
         catch (Exception)
         {
@@ -193,7 +195,7 @@ sealed class Program
     {
         try
         {
-            var uriHandler = ContainerLocator.Container
+            var uriHandler = Locator.Current
                 .Resolve<PlatformAppCustomUriHandlerBase>();
             await uriHandler.HandleUri(uriString);
         }

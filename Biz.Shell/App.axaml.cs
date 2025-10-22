@@ -9,46 +9,47 @@ using IFormFactorService = Biz.Shell.Services.IFormFactorService;
 
 namespace Biz.Shell;
 
-public class App : Application
+public partial class App : Application
 {
     public override async void Initialize()
     {
         try
         {
             AvaloniaXamlLoader.Load(this);
-            base.Initialize();
 
             PerformRegistrations();
             PlatformHelper.PlatformService?.InitializePlatform();
-            
+
             var authService = Locator.Current.GetService<IAuthenticationService>();
             Debug.Assert(authService != null);
             await authService.InitializeAsync();
         }
         catch (Exception e)
         {
-            var logger = Locator.Current.GetService<ILogger<App>>();
-            Debug.Assert(logger != null, "logger was null");
-            logger.LogError(e, "Failed to initialize application: " +
-                               "{EMessage}", e.Message);
+            //No precompiled XAML found for Biz.Shell.App,
+            //make sure to specify x:Class and include your
+            //XAML file as AvaloniaResource
+
+            Console.WriteLine("Failed to initialize application:\n" +
+                              e.ToString());
             Environment.Exit(1);
         }
     }
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is 
+        if (ApplicationLifetime is
             IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Avoid duplicate validations from both Avalonia and the
             // CommunityToolkit.  More info:
             // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            
+
             desktop.MainWindow = Locator.Current.GetService<MainWindow>();
             ViewModelLocator.SetAutoWireViewModel(desktop.MainWindow!, true);
         }
-        else if (ApplicationLifetime is 
+        else if (ApplicationLifetime is
                  ISingleViewApplicationLifetime singleView)
         {
             singleView.MainView = Locator.Current.GetService<MainSmallView>();
@@ -61,22 +62,22 @@ public class App : Application
     static void PerformRegistrations()
     {
         // Views and ViewModels
-        
+
         // Platform-specific registrations
         PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
         // Register services.
-        SplatRegistrations.RegisterLazySingleton<ConfigurationService>();
-        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
-        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
-        SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
-        
+        // SplatRegistrations.RegisterLazySingleton<ConfigurationService>();
+        // SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
+        // SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
+        // SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
+
         // Get configuration service to access maps API key
         // TODO: Fix this to use the IConfigurationService via dependency
         // injection.
         ConfigurationService? configService = Locator.Current.GetService<ConfigurationService>();
         Debug.Assert(configService != null, "configService was null");
-        
+
         //var mapsApiKey = configService.Maps.BingMapsApiKey;
 
         // Lets you use ILogger<T>
@@ -93,25 +94,25 @@ public class App : Application
             configService.Server.WindowsServicesUrl.ShouldNotBeNull();
             servicesUrl = configService.Server.WindowsServicesUrl;
         }
-        else 
+        else
             throw new InvalidOperationException("Unsupported platform.");
-        
+
         ServiceClientRegistration.AddMainApiClients(servicesUrl);
 
         // Services
-        SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
-        SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
-        SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
-        SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
+        // SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
+        // SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
+        // SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
+        // SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
         // Views - Region Navigation
-        SplatRegistrations.Register<SettingsView>(); 
-        SplatRegistrations.Register<SettingsViewModel>(); 
-        SplatRegistrations.Register<SettingsSubView>();
-        SplatRegistrations.Register<SettingsSubViewModel>();
-        
+        // SplatRegistrations.Register<SettingsView>(); 
+        // SplatRegistrations.Register<SettingsViewModel>(); 
+        // SplatRegistrations.Register<SettingsSubView>();
+        // SplatRegistrations.Register<SettingsSubViewModel>();
+
         // Accessibility
-        Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
+        //Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 
         // Dialogs, etc. 
     }

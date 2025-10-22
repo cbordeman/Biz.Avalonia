@@ -5,6 +5,13 @@ namespace CompositeFramework.Core.Extensions;
 
 public static class StringExtensions
 {
+    /// <summary>
+    /// Replaces text if found at the end of the string.
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="oldStr"></param>
+    /// <param name="newStr"></param>
+    /// <returns></returns>
     public static string? ReplaceEnd(this string? str, string oldStr, string newStr)
     {
         if (str != null && str.EndsWith(oldStr))
@@ -12,6 +19,10 @@ public static class StringExtensions
         return str;
     }
 
+    /// <summary>
+    /// Opens a URL using the platform specific API.
+    /// </summary>
+    /// <param name="url"></param>
     public static void OpenUrlCrossPlatform(this string url)
     {
         ArgumentChecker.ThrowIfNullOrWhiteSpace(url);
@@ -32,12 +43,4 @@ public static class StringExtensions
             Process.Start("open", url!);
         }
     }
-    
-    // public static bool IsView(this string typeName)
-    // {
-    //     foreach (var suffix in CompositeConfiguration.ViewSuffixes)
-    //         if (typeName.EndsWith(suffix))
-    //             return true;
-    //     return false;
-    // }
 }

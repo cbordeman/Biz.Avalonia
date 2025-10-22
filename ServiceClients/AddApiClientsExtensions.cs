@@ -1,4 +1,5 @@
-﻿using Splat;
+﻿using System.Net.Http;
+using Splat;
 
 namespace ServiceClients;
 
@@ -21,7 +22,7 @@ public static class ServiceClientRegistration
         Locator.CurrentMutable.Register(() =>
         {
             var handler = Locator.Current.GetService<TDelegatingHandler>();
-            var httpClient = new HttpClient(handler: handler);
+            var httpClient = new HttpClient(handler: handler!);
             httpClient.BaseAddress = new Uri(baseUrl);
             var svc = Refit.RestService.For<TApi>(httpClient);
             return svc;

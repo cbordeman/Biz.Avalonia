@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Data.Config;
+﻿namespace Data.Config;
 
 public static class DatabaseSettingsExtensions
 {

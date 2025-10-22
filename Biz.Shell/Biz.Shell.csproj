@@ -1,73 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>preview</LangVersion>
-    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
-    <Authors>Chris Bordeman</Authors>
-    <Product />
-    
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.3" />    
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2"/>
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4"/>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
-    <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
-    <PackageReference Include="Lucide.Avalonia" Version="0.1.39" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
-    <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.100" />
-    <PackageReference Include="Responsive.Avalonia" Version="0.1.1" />
-    <PackageReference Include="Shouldly" Version="4.3.0" />
-    <PackageReference Include="Splat" Version="17.0.1" />
-    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="16.1.1" />
-    
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
-    <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
-    <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
-    <ProjectReference Include="..\CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj" />
-    <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />
-    <ProjectReference Include="..\ShadUI\ShadUI.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <Authors>Chris Bordeman</Authors>
+    </PropertyGroup>
 
     <ItemGroup>
-        <Compile Update="Views\MainLargeView.axaml.cs">
-            <DependentUpon>MainLargeView.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
+        <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Styles\General.xaml" />
-      <None Remove="Views\LoginView.xaml" />
-      <None Remove="Views\TenantSelectionView.xaml" />
+        <PackageReference Include="Avalonia" Version="11.3.7"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.7"/>
+
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.7">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+
+        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
+        <PackageReference Include="Lucide.Avalonia" Version="0.1.46"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10"/>
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.77.1"/>
+        <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.120"/>
+        <PackageReference Include="Responsive.Avalonia" Version="0.2.0"/>
+        <PackageReference Include="Shouldly" Version="4.3.0"/>
+        <PackageReference Include="Splat" Version="17.1.1"/>
+        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="17.1.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="appsettings.Development.json" />
-      <EmbeddedResource Include="appsettings.Development.json" />
-      <None Remove="appsettings.json" />
-      <EmbeddedResource Include="appsettings.json" />
+        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj"/>
+        <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj"/>
+        <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj"/>
+        <ProjectReference Include="..\CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj"/>
+        <ProjectReference Include="..\ServiceClients\ServiceClients.csproj"/>
+        <ProjectReference Include="..\ShadUI\ShadUI.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml" />
+        <None Remove="appsettings.Development.json"/>
+        <EmbeddedResource Include="appsettings.Development.json"/>
+        <None Remove="appsettings.json"/>
+        <EmbeddedResource Include="appsettings.json"/>
     </ItemGroup>
+
+    <!--    <ItemGroup>-->
+    <!--        <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml"/>-->
+    <!--    </ItemGroup>-->
+
 </Project>

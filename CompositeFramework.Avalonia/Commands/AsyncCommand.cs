@@ -27,6 +27,7 @@ public class AsyncCommand : ICommand, INotifyPropertyChanged
     /// properties manually.  This bypasses the C# issue of passing
     /// a non-static method to the base constructor.
     /// </summary>
+    // ReSharper disable once MemberCanBeProtected.Global
     public AsyncCommand() { }
     
     public AsyncCommand(Func<Task> execute, Func<bool>? canExecute = null)

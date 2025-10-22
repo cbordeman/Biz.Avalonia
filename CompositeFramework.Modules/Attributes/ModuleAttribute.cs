@@ -1,5 +1,5 @@
-﻿using CompositeFramework.Core;
-using CompositeFramework.Modules.Exceptions;
+﻿using System;
+using CompositeFramework.Core;
 
 namespace CompositeFramework.Modules.Attributes;
 

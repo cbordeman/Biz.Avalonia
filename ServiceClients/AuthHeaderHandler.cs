@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using Biz.Models;
 using JetBrains.Annotations;
 
@@ -32,7 +34,7 @@ public class ServicesAuthHeaderHandler
             };
         }
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenAndProvider.Token);
-        request.Headers.Add(nameof(LoginProvider), tokenAndProvider.LoginProvider.ToString());
+        request.Headers.Add(nameof(LoginProvider), (string?)tokenAndProvider.LoginProvider.ToString());
 
         return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }

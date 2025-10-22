@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Services.Controllers;
 using Shouldly;
 using Tenant = Biz.Models.Tenant;

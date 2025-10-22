@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 
 namespace CompositeFramework.Avalonia.Dialogs;
@@ -58,7 +57,7 @@ public class DialogManager
     /// <returns>The registered Visual for the context or null if none was found</returns>
     public static Visual? GetVisualForContext(object context)
     {
-        return ContextVisualMap.TryGetValue(context, out var result) ? result : null;
+        return ContextVisualMap.GetValueOrDefault(context);
     }
 
     /// <summary>

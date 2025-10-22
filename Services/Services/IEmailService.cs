@@ -20,7 +20,7 @@ public class AzureEmailService(AzureSettings settings,
     {
         // Construct reset link to send via email
         var link = string.Format(
-            AppConstants.ConfirmEmailLinkFormat,
+            format: AppConstants.ConfirmEmailLinkFormat,
             user.Email!, user.Email);
         
         // TODO: insert links for email confirmation

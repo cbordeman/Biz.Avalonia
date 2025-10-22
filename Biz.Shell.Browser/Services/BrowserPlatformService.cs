@@ -4,9 +4,10 @@ using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
+using CompositeFramework.Avalonia.Dialogs;
+using CompositeFramework.Core.Dialogs;
 using Microsoft.Identity.Client;
 using Splat;
-using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
 namespace Biz.Shell.Browser.Services;
 
@@ -17,7 +18,7 @@ public class BrowserPlatformService : IPlatformService
         // Register Android-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
-        SplatRegistrations.RegisterLazySingleton<DesktopDialogService, Desktop.Services.DesktopDialogService>();
+        SplatRegistrations.RegisterLazySingleton<IDialogService, AvaloniaDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WasmSecureStorage>();
     }
     

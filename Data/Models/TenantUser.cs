@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Data.Models;
+﻿namespace Data.Models;
 
 [PrimaryKey(nameof(TenantId), nameof(AppUserId))]
 public class TenantUser

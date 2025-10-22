@@ -25,7 +25,7 @@
         <Setter Property="Width" Value="18" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextAlignment" Value="Center" />
-        <Setter Property="FontFamily" Value="{StaticResource ShadUiIcon}" />
+        <Setter Property="FontFamily" Value="{StaticResource ShadUIIcon}" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="ExtraLight" />
     </Style>

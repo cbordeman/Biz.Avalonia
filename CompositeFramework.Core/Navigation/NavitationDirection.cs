@@ -4,5 +4,5 @@ public enum NavitationDirection
 {
     Forward,
     Backward,
-    Reload
+    Refresh
 }

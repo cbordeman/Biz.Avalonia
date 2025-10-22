@@ -1,4 +1,6 @@
-﻿namespace Services.Auth
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Services.Auth
 {
     /// <summary>
     /// Catches exceptions thrown by the application and returns a
@@ -27,7 +29,7 @@
                 context.Response.ContentType = "application/json";
                 var response = new
                 {
-                    message = badex.Message ?? "Bad Request"
+                    message = badex.Message
                 };
                 await context.Response.WriteAsJsonAsync(response);
             }
@@ -39,7 +41,7 @@
                 context.Response.ContentType = "application/json";
                 var response = new
                 {
-                    message = ex.Message ?? "Unauthorized"
+                    message = ex.Message
                 };
                 await context.Response.WriteAsJsonAsync(response);
             }
@@ -49,7 +51,7 @@
                 context.Response.ContentType = "application/json";
                 var response = new
                 {
-                    message = nfoex.Message ?? "Not Found"
+                    message = nfoex.Message
                 };
                 await context.Response.WriteAsJsonAsync(response);
             }

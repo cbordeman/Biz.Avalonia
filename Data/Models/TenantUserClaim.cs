@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Data.Models;
+﻿namespace Data.Models;
 
 [Index(nameof(ClaimName), IsUnique = true)]
 public class TenantUserClaim

@@ -6,9 +6,9 @@
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     RequestedThemeVariant="Dark">
 
-    <Application.DataTemplates>
-        <infrastructure:ViewLocator />
-    </Application.DataTemplates>
+    <!-- <Application.DataTemplates> -->
+    <!--     <infrastructure:ViewLocator /> -->
+    <!-- </Application.DataTemplates> -->
 
     <Application.Styles>
         <shadui:ShadTheme />
@@ -31,7 +31,7 @@
 
             <!--  Fonts  -->
             <FontFamily x:Key="LucideIcon">avares://Biz.Shell/Assets/Fonts#lucide</FontFamily>
-            <FontFamily x:Key="ShadUiIcon">avares://Biz.Shell/Assets/Fonts#shadui</FontFamily>
+            <FontFamily x:Key="ShadUIIcon">avares://Biz.Shell/Assets/Fonts#shadui</FontFamily>
             <FontFamily x:Key="ManropeFont">avares://Biz.Shell/Assets/Fonts#Manrope</FontFamily>
 
             <ResourceDictionary.MergedDictionaries>

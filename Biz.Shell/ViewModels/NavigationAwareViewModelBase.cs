@@ -10,9 +10,19 @@ public abstract class NavigationAwareViewModelBase
         return Task.CompletedTask;
     }
     
-    public Task<bool> OnNavigatingFromAsync(NavigationContext newContext)
+    public virtual Task<bool> CanNavigateToAsync(NavigationContext navigationContext)
     {
         return Task.FromResult(true);
+    }
+
+    public Task<bool> CanNavigateFromAsync(NavigationContext newContext)
+    {
+        return Task.FromResult(true);
+    }
+    
+    public Task OnNavigatingFromAsync(NavigationContext newContext)
+    {
+        return Task.CompletedTask;
     }
 
     public virtual Task OnNavigatedFromAsync(NavigationContext navigationContext)
@@ -20,6 +30,13 @@ public abstract class NavigationAwareViewModelBase
         return Task.CompletedTask;
     }
     
+    /// <summary>
+    /// Sets any public properties using the navigation parameters,
+    /// usually called from OnNavigatedToAsync().
+    /// Not called automatically. 
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <exception cref="InvalidOperationException"></exception>
     protected void SetPropertiesFromParameters(NavigationContext ctx)
     {
         // Public non-static properties with a setter. 

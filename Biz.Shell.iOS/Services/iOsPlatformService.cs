@@ -4,10 +4,10 @@ using Biz.Mobile.Views;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using CompositeFramework.Avalonia.Dialogs;
+using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Extensions;
 using Microsoft.Identity.Client;
 using Splat;
-using DesktopDialogService = Biz.Shell.Services.DesktopDialogService;
 
 namespace Biz.Shell.iOS.Services;
 
@@ -19,11 +19,11 @@ public class iOsPlatformService : IPlatformService
         // Register Android-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
-        SplatRegistrations.RegisterLazySingleton<DesktopDialogService, MobileDesktopDialogService>();
+        SplatRegistrations.RegisterLazySingleton<IDialogService, AvaloniaDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, iOsSafeStorage>();
         
         // Dialog registration.
-        Locator.CurrentMutable.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
+        //Locator.CurrentMutable.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
     }
 
     public void InitializePlatform()

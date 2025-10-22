@@ -38,11 +38,11 @@ public class SettingsSubViewModel : PageViewModelBase
         return Task.CompletedTask;
     }
 
-    protected override bool OnNavigatingTo(NavigationContext navigationContext)
+    public override Task<bool> CanNavigateToAsync(NavigationContext ctx)
     {
         // Navigation permission sample:
-        return navigationContext.Parameters.ContainsKey("key1") &&
-               navigationContext.Parameters.ContainsKey("key2");
+        return Task.FromResult(ctx.Parameters.ContainsKey("key1") &&
+                               ctx.Parameters.ContainsKey("key2"));
     }
     
     public override string Area => "Settings.Sub1";

@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
     <PackageReference Include="Refit" Version="8.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
-    <PackageReference Include="Splat" Version="17.0.1" />
-    <PackageReference Include="Splat.Core" Version="17.0.1" />
+    <PackageReference Include="Splat" Version="17.1.1" />
+    <PackageReference Include="Splat.Core" Version="17.1.1" />
   </ItemGroup>
 
   <ItemGroup>

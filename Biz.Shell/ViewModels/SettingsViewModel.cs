@@ -22,11 +22,6 @@ namespace Biz.Shell.ViewModels
         //         navParams);
         // });
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            Debug.WriteLine("OnNavigatedFrom()");
-            base.OnNavigatedFrom(navigationContext);
-        }
         public override string Area => "Settings";
     }
 }

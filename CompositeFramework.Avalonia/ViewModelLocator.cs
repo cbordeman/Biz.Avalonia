@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using CompositeFramework.Avalonia.Exceptions;
 using CompositeFramework.Core.Extensions;
 using Splat;

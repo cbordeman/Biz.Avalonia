@@ -6,9 +6,11 @@
     xmlns:converters="clr-namespace:Biz.Shell.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CompositeFramework.Core.ViewModels;assembly=CompositeFramework.Core"
     x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="{x:Type viewModels:BindingValidatingBase}"
     mc:Ignorable="d">
     <!--  Busy Indicator and Background  -->
     <Border Background="{DynamicResource BusyAreaOverlayColor}" IsVisible="{Binding IsBusy}">

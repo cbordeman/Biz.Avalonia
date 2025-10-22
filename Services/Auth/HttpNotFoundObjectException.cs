@@ -1,4 +1,10 @@
-﻿/// <summary>
+﻿using System.IO;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+
+namespace Services.Auth;
+
+/// <summary>
 /// Represents an HTTP request error
 /// </summary>
 public class HttpNotFoundObjectException : IOException
@@ -50,5 +56,5 @@ public class HttpNotFoundObjectException : IOException
     /// <summary>
     /// Gets the HTTP status code for this exception.
     /// </summary>
-    public int StatusCode { get; }
+    public int StatusCode { [UsedImplicitly] get; }
 }

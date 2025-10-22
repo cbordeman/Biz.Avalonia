@@ -188,17 +188,16 @@ public abstract class MainViewModelBase
     [field: AllowNull, MaybeNull]
     public AsyncRelayCommand LogoutCommand => field ??= new AsyncRelayCommand(ExecuteLogoutCommand, CanLogoutCommand);
     static bool CanLogoutCommand() => true;
-    Task ExecuteLogoutCommand()
+    async Task ExecuteLogoutCommand()
     {
         // Opens browser to the sign out page to ensure cookies
         // are cleared and provider actions can execute.
-        AuthService.Logout(true, true);
+        await AuthService.LogoutAsync(true, true);
 
         // Can't set to null because of a bug in the sidebar control.
         // Must set to non-null or the property change doesn't trigger
         // properly.
         CurrentArea = "STUPID BUG";
-        return Task.CompletedTask;
     }
     #endregion LogoutCommand
 }
