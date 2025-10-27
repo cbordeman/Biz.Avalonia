@@ -1,4 +1,5 @@
 using Biz.Shell.Logging;
+using Biz.Shell.Platform;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
 using CompositeFramework.Avalonia;
@@ -11,7 +12,7 @@ namespace Biz.Shell;
 
 public partial class App : Application
 {
-    public override async void Initialize()
+    public override void Initialize()
     {
         try
         {
@@ -22,16 +23,21 @@ public partial class App : Application
 
             var authService = Locator.Current.GetService<IAuthenticationService>();
             Debug.Assert(authService != null);
-            await authService.InitializeAsync();
+            authService
+                .InitializeAsync()
+                .ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                        throw t.Exception;
+                });
+        }
+        catch (TypeResolutionFailedException tx)
+        {
+            Console.WriteLine($"Failed to resolve type:\n{tx.GetBaseException()}");
         }
         catch (Exception e)
         {
-            //No precompiled XAML found for Biz.Shell.App,
-            //make sure to specify x:Class and include your
-            //XAML file as AvaloniaResource
-
-            Console.WriteLine("Failed to initialize application:\n" +
-                              e.ToString());
+            Console.WriteLine($"Failed to initialize application:\n{e}");
             Environment.Exit(1);
         }
     }
@@ -61,21 +67,21 @@ public partial class App : Application
 
     static void PerformRegistrations()
     {
+        SplatRegistrations.SetupIOC();
+        
         // Views and ViewModels
 
         // Platform-specific registrations
         PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
         // Register services.
-        // SplatRegistrations.RegisterLazySingleton<ConfigurationService>();
-        // SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
-        // SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
-        // SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
+        SplatRegistrations.RegisterLazySingleton<IConfigurationService, ConfigurationService>();
+        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
+        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
+        SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
 
         // Get configuration service to access maps API key
-        // TODO: Fix this to use the IConfigurationService via dependency
-        // injection.
-        ConfigurationService? configService = Locator.Current.GetService<ConfigurationService>();
+        var configService = Locator.Current.Resolve<IConfigurationService>();
         Debug.Assert(configService != null, "configService was null");
 
         //var mapsApiKey = configService.Maps.BingMapsApiKey;
@@ -100,19 +106,19 @@ public partial class App : Application
         ServiceClientRegistration.AddMainApiClients(servicesUrl);
 
         // Services
-        // SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
-        // SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
-        // SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
-        // SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
+        SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
+        SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
+        SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
+        SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
         // Views - Region Navigation
-        // SplatRegistrations.Register<SettingsView>(); 
-        // SplatRegistrations.Register<SettingsViewModel>(); 
-        // SplatRegistrations.Register<SettingsSubView>();
-        // SplatRegistrations.Register<SettingsSubViewModel>();
+        SplatRegistrations.Register<SettingsView>(); 
+        SplatRegistrations.Register<SettingsViewModel>(); 
+        SplatRegistrations.Register<SettingsSubView>();
+        SplatRegistrations.Register<SettingsSubViewModel>();
 
         // Accessibility
-        //Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
+        Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 
         // Dialogs, etc. 
     }
@@ -127,5 +133,4 @@ public partial class App : Application
         foreach (var plugin in dataValidationPluginsToRemove)
             BindingPlugins.DataValidators.Remove(plugin);
     }
-
 }

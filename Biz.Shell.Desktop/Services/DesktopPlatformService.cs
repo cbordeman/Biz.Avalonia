@@ -27,6 +27,8 @@ public class DesktopPlatformService : IPlatformService
     
     public void InitializePlatform()
     {
+        SplatRegistrations.SetupIOC();
+        
         // ShadUI dialog registration.
         var dialogService = Locator.Current.GetService<DialogManager>();
         //dialogService.Register<LoginContent, LoginViewModel>();

@@ -1,6 +1,4 @@
-﻿using Biz.Shell.Platform;
-
-namespace Biz.Shell.Infrastructure;
+﻿namespace Biz.Shell.Platform;
 
 public static class PlatformHelper
 {

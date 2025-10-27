@@ -18,6 +18,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
-      <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
-    </ItemGroup>    
+    </ItemGroup>
+
 </Project>

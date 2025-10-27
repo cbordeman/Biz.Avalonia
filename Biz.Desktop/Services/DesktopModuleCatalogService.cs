@@ -1,6 +1,4 @@
-﻿using Biz.Modules.AccountManagement.Core;
-using Biz.Modules.Dashboard.Core;
-using Biz.Shell.Platform;
+﻿using Biz.Shell.Platform;
 using CompositeFramework.Modules;
 
 namespace Biz.Desktop.Services;

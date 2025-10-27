@@ -22,10 +22,5 @@
         <DependentUpon>MessageDialogView.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
-
-    <ItemGroup>
-      
-    </ItemGroup>
-
     
 </Project>

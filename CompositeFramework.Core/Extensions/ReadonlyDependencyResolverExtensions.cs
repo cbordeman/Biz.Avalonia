@@ -10,19 +10,22 @@ public static class ReadonlyDependencyResolverExtensions
     /// <param name="type"></param>
     /// <returns></returns>
     /// <exception cref="TypeResolutionFailedException"></exception>
-    public static object Resolve(this IReadonlyDependencyResolver resolver,
+    public static object Resolve(
+        this IReadonlyDependencyResolver resolver,
         Type type)
     {
         try
         {
             var service = resolver.GetService(type);
             if (service is null)
-                throw new TypeResolutionFailedException(type, null);
+                throw new TypeResolutionFailedException(
+                    resolver, type, null);
             return service;
         }
         catch (Exception? e)
         {
-            throw new TypeResolutionFailedException(type, e);
+            throw new TypeResolutionFailedException(
+                resolver, type, e);
         }
     }
     
@@ -40,12 +43,14 @@ public static class ReadonlyDependencyResolverExtensions
         {
             var service = resolver.GetService<T>();
             if (service is null)
-                throw new TypeResolutionFailedException(typeof(T), null);
+                throw new TypeResolutionFailedException(
+                    resolver, typeof(T), null);
             return service;
         }
         catch (Exception? e)
         {
-            throw new TypeResolutionFailedException(typeof(T), e);
+            throw new TypeResolutionFailedException(
+                resolver, typeof(T), e);
         }
     }
 }
