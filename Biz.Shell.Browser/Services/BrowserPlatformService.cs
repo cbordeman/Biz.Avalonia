@@ -15,6 +15,8 @@ public class BrowserPlatformService : IPlatformService
 {
     public void RegisterPlatformTypes()
     {
+        SplatRegistrations.SetupIOC();
+        
         // Register Android-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();

@@ -16,6 +16,8 @@ public class DesktopPlatformService : IPlatformService
 {
     public void RegisterPlatformTypes()
     {
+        SplatRegistrations.SetupIOC();
+        
         // Register windows-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
@@ -27,8 +29,6 @@ public class DesktopPlatformService : IPlatformService
     
     public void InitializePlatform()
     {
-        SplatRegistrations.SetupIOC();
-        
         // ShadUI dialog registration.
         var dialogService = Locator.Current.GetService<DialogManager>();
         //dialogService.Register<LoginContent, LoginViewModel>();
