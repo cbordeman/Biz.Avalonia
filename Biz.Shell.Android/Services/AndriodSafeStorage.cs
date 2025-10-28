@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Biz.Shell.Services;
+using Biz.Shared.Services;
 using Java.IO;
 using Java.Lang;
 using Microsoft.Extensions.Logging;

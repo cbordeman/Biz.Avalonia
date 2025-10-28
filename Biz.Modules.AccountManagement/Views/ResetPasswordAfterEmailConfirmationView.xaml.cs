@@ -1,4 +1,4 @@
-﻿using Biz.Shell.Views;
+﻿using Biz.Shared.Views;
 using Biz.Modules.AccountManagement.ViewModels;
 
 namespace Biz.Modules.AccountManagement.Views;

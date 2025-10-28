@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Shell.Browser", "Biz.Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Shell.iOS", "Biz.Shell.iOS\Biz.Shell.iOS.csproj", "{7ED4B38B-C865-8683-6177-F796275605C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Shell", "Biz.Shell\Biz.Shell.csproj", "{A76062E5-0EFC-4A6B-A267-2C1152A13A8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Shared", "Biz.Shared\Biz.Shared.csproj", "{A76062E5-0EFC-4A6B-A267-2C1152A13A8F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{1AAD0ADA-3008-46D1-B020-BC47F32B48CD}"
 EndProject

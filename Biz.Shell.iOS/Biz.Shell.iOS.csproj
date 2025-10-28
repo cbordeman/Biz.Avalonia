@@ -30,6 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
-    <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
+    <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
   </ItemGroup>
 </Project>

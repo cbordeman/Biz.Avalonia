@@ -1,4 +1,4 @@
-﻿using Biz.Shell.Platform;
+﻿using Biz.Shared.Platform;
 using CompositeFramework.Modules;
 
 namespace Biz.Desktop.Services;

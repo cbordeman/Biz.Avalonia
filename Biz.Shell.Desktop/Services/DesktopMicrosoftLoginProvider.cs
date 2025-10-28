@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Biz.Shell.Services.Authentication;
-using Biz.Shell.Services.Config;
+using Biz.Shared.Services.Authentication;
+using Biz.Shared.Services.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 using LogLevel = Microsoft.Identity.Client.LogLevel;

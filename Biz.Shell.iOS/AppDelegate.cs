@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.iOS;
+using Biz.Shared;
 using Foundation;
 
 namespace Biz.Shell.iOS;

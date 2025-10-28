@@ -1,0 +1,45 @@
+﻿using System.ComponentModel;
+using Biz.Modules.Dashboard.Core;
+using Biz.Shared.Infrastructure;
+
+namespace Biz.Shared.ViewModels;
+
+public class MainSmallViewModel : MainViewModelBase
+{
+    public List<SidebarItemViewModel> SidebarItems { get; }
+
+    #region CurrentItem
+    public SidebarItemViewModel? CurrentItem
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+    #endregion CurrentItem
+    
+    public MainSmallViewModel()
+    {
+        IsDrawerOpen = false;
+
+        SidebarItems =
+        [
+            new SideBarNavigationItemViewModel(
+                DashboardConstants.DashboardView,
+                DashboardConstants.DashboardView,
+                ResourceNames.Home,
+                DashboardConstants.ModuleName),
+        ];
+    }
+    
+    protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+    {
+        // When CurrentArea changes, select the corresponding
+        // item for highlight.
+        if (args.PropertyName == nameof(CurrentArea)) 
+            CurrentItem = SidebarItems.FirstOrDefault(
+                x => x.ViewName == CurrentArea);
+        
+        base.OnPropertyChanged(args);
+    }
+
+    public override string Area => string.Empty;
+}

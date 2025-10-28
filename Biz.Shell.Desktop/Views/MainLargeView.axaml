@@ -2,16 +2,16 @@
     x:Class="Biz.Shell.Desktop.Views.MainLargeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:Biz.Shell.Converters;assembly=Biz.Shell"
+    xmlns:converters="clr-namespace:Biz.Shared.Converters;assembly=Biz.Shared"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:infrastructure1="clr-namespace:Biz.Shell.Infrastructure;assembly=Biz.Shell"
+    xmlns:infrastructure1="clr-namespace:Biz.Shared.Infrastructure;assembly=Biz.Shared"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sections="clr-namespace:CompositeFramework.Avalonia.Sections;assembly=CompositeFramework.Avalonia"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
-    xmlns:toolbar="clr-namespace:Biz.Shell.ViewModels.Toolbar;assembly=Biz.Shell"
+    xmlns:toolbar="clr-namespace:Biz.Shared.ViewModels.Toolbar;assembly=Biz.Shared"
     xmlns:viewModels="clr-namespace:Biz.Shell.Desktop.ViewModels"
-    xmlns:viewModels1="clr-namespace:Biz.Shell.ViewModels;assembly=Biz.Shell"
-    xmlns:views1="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
+    xmlns:viewModels1="clr-namespace:Biz.Shared.ViewModels;assembly=Biz.Shared"
+    xmlns:views1="clr-namespace:Biz.Shared.Views;assembly=Biz.Shared"
     x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -148,7 +148,7 @@
                                             IsVisible="{Binding !$parent[shadui:Sidebar].Expanded}"
                                             Opacity="{Binding !$parent[shadui:Sidebar].Expanded,
                                                               Converter={x:Static converters:BooleanConverters.Opaque}}"
-                                            Source="avares://Biz.Shell/Assets/user.png">
+                                            Source="avares://Biz.Shared/Assets/user.png">
                                             <shadui:Avatar.Transitions>
                                                 <Transitions>
                                                     <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
@@ -165,7 +165,7 @@
                                                 Margin="0,0,8,0"
                                                 CornerRadius="{DynamicResource XlCornerRadius}"
                                                 Fallback="CN"
-                                                Source="avares://Biz.Shell/Assets/user.png" />
+                                                Source="avares://Biz.Shared/Assets/user.png" />
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Classes="Small" Text="shadui" />
                                                 <TextBlock
@@ -196,7 +196,7 @@
                                             Margin="0,0,8,0"
                                             CornerRadius="{DynamicResource XlCornerRadius}"
                                             Fallback="CN"
-                                            Source="avares://Biz.Shell/Assets/user.png" />
+                                            Source="avares://Biz.Shared/Assets/user.png" />
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <TextBlock Classes="Small" Text="shadui" />
                                             <TextBlock

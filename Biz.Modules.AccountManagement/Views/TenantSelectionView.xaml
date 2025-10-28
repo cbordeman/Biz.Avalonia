@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Biz.Models;assembly=Biz.Models"
     xmlns:viewModels="clr-namespace:Biz.Modules.AccountManagement.ViewModels"
-    xmlns:views="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
+    xmlns:views="clr-namespace:Biz.Shared.Views;assembly=Biz.Shared"
     x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"

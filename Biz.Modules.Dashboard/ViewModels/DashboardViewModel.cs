@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Biz.Shell.Infrastructure;
-using Biz.Shell.ViewModels.Toolbar;
+using Biz.Shared.Infrastructure;
+using Biz.Shared.ViewModels.Toolbar;
 using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Core.Extensions;
 using Splat;

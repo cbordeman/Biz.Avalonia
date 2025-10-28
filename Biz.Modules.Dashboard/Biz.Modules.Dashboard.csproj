@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
+      <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
       <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />      
     </ItemGroup>
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Biz.Shell.Services;
+using Biz.Shared.Services;
 
 namespace Biz.Shell.Desktop.Services;
 

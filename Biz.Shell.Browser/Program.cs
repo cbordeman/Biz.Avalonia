@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
-using Biz.Shell;
+using Biz.Shared;
+using Biz.Shared.Platform;
 using Biz.Shell.Browser.Services;
-using Biz.Shell.Infrastructure;
-using Biz.Shell.Platform;
 
 internal sealed partial class Program
 {

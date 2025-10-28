@@ -1,5 +1,5 @@
 using Biz.Shell.Desktop.ViewModels;
-using Biz.Shell.Views;
+using Biz.Shared.Views;
 
 namespace Biz.Shell.Desktop.Views;
 

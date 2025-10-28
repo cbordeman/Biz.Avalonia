@@ -32,6 +32,6 @@
     <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj" />
     <ProjectReference Include="..\Biz.Modules.Dashboard\Biz.Modules.Dashboard.csproj" />
     <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
-    <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
+    <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
   </ItemGroup>
 </Project>

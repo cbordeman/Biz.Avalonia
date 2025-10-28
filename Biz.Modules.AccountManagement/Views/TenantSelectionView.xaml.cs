@@ -1,5 +1,5 @@
 ﻿using Biz.Modules.AccountManagement.ViewModels;
-using Biz.Shell.Views;
+using Biz.Shared.Views;
 
 namespace Biz.Modules.AccountManagement.Views;
 

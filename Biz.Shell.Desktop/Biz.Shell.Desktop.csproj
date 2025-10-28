@@ -30,7 +30,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj" />
         <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
-        <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
+        <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Biz.Shell.ViewModels;
+using Biz.Shared.ViewModels;
 using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Extensions;

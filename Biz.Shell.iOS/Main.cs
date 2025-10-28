@@ -1,5 +1,5 @@
 using Biz.Shell.iOS.Services;
-using Biz.Shell.Platform;
+using Biz.Shared.Platform;
 using UIKit;
 
 namespace Biz.Shell.iOS;

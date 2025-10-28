@@ -2,8 +2,7 @@
 global using Avalonia;
 global using Avalonia.Controls;
 global using Avalonia.Styling;
-global using Biz.Shell;
-global using Biz.Shell.ViewModels;
+global using Biz.Shared.ViewModels;
 global using Biz.Modules.Dashboard.ViewModels;
 global using Biz.Modules.Dashboard.Views;
-global using Biz.Shell.Services;
+global using Biz.Shared.Services;

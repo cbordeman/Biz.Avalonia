@@ -1,6 +1,6 @@
 ﻿using Biz.Modules.Dashboard.Core;
-using Biz.Shell.Infrastructure;
-using Biz.Shell.ViewModels;
+using Biz.Shared.Infrastructure;
+using Biz.Shared.ViewModels;
 
 namespace Biz.Shell.Desktop.ViewModels;
 

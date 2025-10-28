@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Biz.Modules.AccountManagement.Core;
-using Biz.Shell.Platform;
-using Biz.Shell.Services;
+using Biz.Shared.Platform;
+using Biz.Shared.Services;
 using CompositeFramework.Core.Dialogs;
 using Microsoft.Extensions.Logging;
 using ServiceClients;

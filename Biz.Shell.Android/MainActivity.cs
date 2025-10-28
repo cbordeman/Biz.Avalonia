@@ -5,8 +5,9 @@ using Android.Content.PM;
 using Android.OS;
 using Avalonia;
 using Avalonia.Android;
+using Biz.Shared;
+using Biz.Shared.Platform;
 using Biz.Shell.Android.Services;
-using Biz.Shell.Platform;
 using Microsoft.Identity.Client;
 
 namespace Biz.Shell.Android;

@@ -1,8 +1,8 @@
 ﻿using System;
 using Avalonia.Controls.ApplicationLifetimes;
 using Biz.Mobile.Services;
-using Biz.Shell.Platform;
-using Biz.Shell.Services;
+using Biz.Shared.Platform;
+using Biz.Shared.Services;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Dialogs;
 using Microsoft.Identity.Client;
