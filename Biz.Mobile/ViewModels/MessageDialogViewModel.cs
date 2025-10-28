@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
-using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core;
 using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Navigation;
@@ -36,7 +34,7 @@ public sealed class MessageDialogViewModel
     bool CanOkCommand() => true;
     Task ExecuteOkCommand()
     {
-        return CloseDialogRequest.PublishAsync(true);
+        return CloseDialogRequest.PublishSequentiallyAsync(true);
     }
     #endregion OkCommand
 
@@ -46,7 +44,7 @@ public sealed class MessageDialogViewModel
     bool CanCancelCommand() => true;
     Task ExecuteCancelCommand()
     {
-        return CloseDialogRequest.PublishAsync(false);
+        return CloseDialogRequest.PublishSequentiallyAsync(false);
     }
     #endregion CancelCommand
 
