@@ -15,7 +15,7 @@
     <Authors>Chris Bordeman</Authors>
     <Company>Chris Bordeman</Company>
     <Product />
-    <LangVersion>default</LangVersion>
+    <LangVersion>preview</LangVersion>
     <UserSecretsId>046c0822-6e95-4ccc-b574-9cf421936bf0</UserSecretsId>
     
   </PropertyGroup>

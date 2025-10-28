@@ -4,6 +4,7 @@ using Avalonia.Browser;
 using Biz.Shell;
 using Biz.Shell.Browser.Services;
 using Biz.Shell.Infrastructure;
+using Biz.Shell.Platform;
 
 internal sealed partial class Program
 {
