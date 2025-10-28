@@ -52,13 +52,13 @@ public partial class App : Application
             // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
 
-            desktop.MainWindow = Locator.Current.GetService<MainWindow>();
-            ViewModelLocator.SetAutoWireViewModel(desktop.MainWindow!, true);
+            desktop.MainWindow = Locator.Current.Resolve<MainWindow>();
+            desktop.MainWindow.DataContext = Locator.Current.Resolve<MainWindowViewModel>();
         }
         else if (ApplicationLifetime is
                  ISingleViewApplicationLifetime singleView)
         {
-            singleView.MainView = Locator.Current.GetService<MainSmallView>();
+            singleView.MainView = Locator.Current.Resolve<MainSmallView>();
             ViewModelLocator.SetAutoWireViewModel(singleView.MainView!, true);
         }
 
@@ -69,8 +69,6 @@ public partial class App : Application
     {
         SplatRegistrations.SetupIOC();
         
-        // Views and ViewModels
-
         // Platform-specific registrations
         PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
@@ -111,12 +109,16 @@ public partial class App : Application
         SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
         SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
-        // Views - Region Navigation
+        // Views and ViewModels
+        SplatRegistrations.Register<MainWindow>();
+        SplatRegistrations.Register<MainWindowViewModel>();
+        SplatRegistrations.Register<MainSmallView>();
+        SplatRegistrations.Register<MainSmallViewModel>();
         SplatRegistrations.Register<SettingsView>(); 
         SplatRegistrations.Register<SettingsViewModel>(); 
         SplatRegistrations.Register<SettingsSubView>();
         SplatRegistrations.Register<SettingsSubViewModel>();
-
+        
         // Accessibility
         Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 

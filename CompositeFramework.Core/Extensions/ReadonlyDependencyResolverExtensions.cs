@@ -37,7 +37,8 @@ public static class ReadonlyDependencyResolverExtensions
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="TypeResolutionFailedException"></exception>
-    public static T Resolve<T>(this IReadonlyDependencyResolver resolver)
+    public static T Resolve<T>(
+        this IReadonlyDependencyResolver resolver)
     {
         try
         {

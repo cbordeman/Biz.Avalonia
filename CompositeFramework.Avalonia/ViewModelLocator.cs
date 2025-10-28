@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using CompositeFramework.Avalonia.Exceptions;
+using CompositeFramework.Avalonia.Extensions;
 using CompositeFramework.Core.Extensions;
 using Splat;
 
@@ -7,13 +8,16 @@ namespace CompositeFramework.Avalonia;
 
 public class ViewModelLocator : AvaloniaObject
 {
-    static Func<string, string>? getViewModelTypeFromView;
+    static Func<Type, string> getViewModelTypeFromView =
+        GetViewModelType;
 
+    // This is case sensitive.
     static string[] viewSuffixes =
     [
+        "UserControl",
         "View",
         "Page",
-        "UserControl",
+        "Window",
         "Dialog"
     ];
 
@@ -33,9 +37,8 @@ public class ViewModelLocator : AvaloniaObject
     /// <summary>
     /// Change how the viewmodel name is derived from the view name.
     /// </summary>
-    /// <param name="getViewModelTypeFromViewType"></param>
     public static void ConfigureViewModelNameResolution(
-        Func<string, string>? getViewModelTypeFromViewType = null)
+        Func<Type, string> getViewModelTypeFromViewType)
     {
         getViewModelTypeFromView = getViewModelTypeFromViewType;
     }
@@ -79,20 +82,8 @@ public class ViewModelLocator : AvaloniaObject
 
     private static void WireViewModel(Control view)
     {
-        string? viewModelTypeAssemblyQualifiedName;
-        var viewType = view.GetType();
-        var viewAssemblyQualifiedName = viewType.AssemblyQualifiedName;
-        if (viewAssemblyQualifiedName == null)
-            throw new Exception("View type does not have an AssemblyQualifiedName.");
-
-        if (getViewModelTypeFromView == null)
-            // Uses a convention based approach to VM location.
-            viewModelTypeAssemblyQualifiedName =
-                GetViewModelType(viewAssemblyQualifiedName);
-        else
-            // User user provided menas to get vm type from view.
-            viewModelTypeAssemblyQualifiedName =
-                getViewModelTypeFromView(viewAssemblyQualifiedName);
+        string viewModelTypeAssemblyQualifiedName = 
+            getViewModelTypeFromView(view.GetType());
 
         var viewModelType = Type.GetType(viewModelTypeAssemblyQualifiedName);
         if (viewModelType == null)
@@ -100,6 +91,7 @@ public class ViewModelLocator : AvaloniaObject
 
         try
         {
+            // All VMs must be registered.
             object? viewModel = Locator.Current.Resolve(viewModelType);
 
             if (viewModel == null)
@@ -109,22 +101,32 @@ public class ViewModelLocator : AvaloniaObject
         catch (Exception e)
         {
             throw new AutoWireViewModelTypeCreationException(
-                viewAssemblyQualifiedName,
+                view.GetType(),
                 viewModelTypeAssemblyQualifiedName,
                 e);
         }
-
     }
 
-    static string GetViewModelType(string viewName)
+    static string GetViewModelType(Type viewType)
     {
-        var viewModelName = viewName
-            .Replace(".Views.", ".ViewModels.", StringComparison.OrdinalIgnoreCase);
+        var viewFullName = viewType.FullName;
+        if (viewFullName == null)
+            throw new Exception($"View type {viewType.Name} does not have a FullName.");
+        
+        string viewModelName = viewFullName
+            .Replace(".Views.", ".ViewModels.",
+                StringComparison.OrdinalIgnoreCase);
         foreach (var suffix in viewSuffixes)
-            viewModelName = viewModelName.ReplaceEnd(suffix, "ViewModel");
-        if (viewModelName == viewName)
-            throw new AutoWireViewModelTypeDoesNotFollowConventionException(
-                viewName);
-        return viewModelName!;
+        {
+            if (viewModelName.EndsWith(suffix))
+            {
+                viewModelName = 
+                    $"{viewModelName.AsSpan(0, viewModelName.Length - suffix.Length)}ViewModel";
+                break;
+            }
+        }
+        var aqn = viewType.GetAssemblyQualifiedNameWithNewTypeName(
+            viewModelName);
+        return aqn;
     }
 }

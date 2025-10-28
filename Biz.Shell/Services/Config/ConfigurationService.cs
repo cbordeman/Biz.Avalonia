@@ -24,9 +24,7 @@ namespace Biz.Shell.Services.Config
             var assembly = typeof(ConfigurationService).Assembly;
             using var appsettingsStream = assembly.GetManifestResourceStream("Biz.Shell.appsettings.json");
             if (appsettingsStream != null)
-            {
                 builder.AddJsonStream(appsettingsStream);
-            }
 
             // Load environment-specific settings
 #if DEBUG
