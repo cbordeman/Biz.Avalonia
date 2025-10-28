@@ -1,6 +1,10 @@
+using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Biz.Shell.Desktop.ViewModels;
+using Biz.Shell.ViewModels;
+using CompositeFramework.Core.Navigation;
 
-namespace Biz.Shell.Views
+namespace Biz.Shell.Desktop.Views
 {
     /// <summary>Main window view.</summary>
     public partial class MainWindow : ShadUI.Window

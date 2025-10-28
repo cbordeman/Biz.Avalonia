@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using Splat;
+﻿using Splat;
 
 namespace ServiceClients;
 
@@ -19,7 +18,7 @@ public static class ServiceClientRegistration
     {
         // Register factory for making the API, which resolves
         // the HttpClient instance using the container.
-        Locator.CurrentMutable.Register(() =>
+        Locator.CurrentMutable.RegisterLazySingleton(() =>
         {
             var handler = Locator.Current.GetService<TDelegatingHandler>();
             var httpClient = new HttpClient(handler: handler!);

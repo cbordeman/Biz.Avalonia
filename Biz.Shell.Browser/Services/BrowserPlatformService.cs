@@ -1,9 +1,8 @@
-﻿using Biz.Desktop.Services;
+﻿using System;
+using Avalonia.Controls.ApplicationLifetimes;
 using Biz.Mobile.Services;
-using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
-using Biz.Shell.Services.Authentication;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Dialogs;
 using Microsoft.Identity.Client;
@@ -24,6 +23,11 @@ public class BrowserPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WasmSecureStorage>();
     }
     
+    public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
+    {
+        throw new NotImplementedException();
+    }
+
     public void InitializePlatform()
     {
     }

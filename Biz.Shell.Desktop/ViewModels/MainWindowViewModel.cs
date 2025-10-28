@@ -1,7 +1,10 @@
-using CompositeFramework.Avalonia.Dialogs;
+using System.Diagnostics.CodeAnalysis;
+using Biz.Shell.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 using CompositeFramework.Core.Dialogs;
+using CompositeFramework.Core.Extensions;
 
-namespace Biz.Shell.ViewModels
+namespace Biz.Shell.Desktop.ViewModels
 {
     public class MainWindowViewModel : PageViewModelBase
     {

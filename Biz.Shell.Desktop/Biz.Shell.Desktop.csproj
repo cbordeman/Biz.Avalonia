@@ -6,6 +6,8 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -13,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.7"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.7" />
         <!--        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"/>-->
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.7">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
@@ -26,8 +28,19 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj"/>
-        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj"/>
-        <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj"/>
+        <ProjectReference Include="..\Biz.Desktop\Biz.Desktop.csproj" />
+        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
+        <ProjectReference Include="..\Biz.Shell\Biz.Shell.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\MainLargeView.axaml.cs">
+        <DependentUpon>MainLargeView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

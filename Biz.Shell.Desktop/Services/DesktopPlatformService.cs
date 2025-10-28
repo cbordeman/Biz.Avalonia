@@ -1,13 +1,17 @@
-﻿using Biz.Desktop.Services;
+﻿using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core.Plugins;
+using Biz.Desktop.Services;
 using Biz.Models;
 using Biz.Shell.ClientLoginProviders;
+using Biz.Shell.Desktop.ViewModels;
+using Biz.Shell.Desktop.Views;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Dialogs;
-using Splat;
+using CompositeFramework.Core.Extensions;
 using DialogManager = ShadUI.DialogManager;
 
 namespace Biz.Shell.Desktop.Services;
@@ -25,8 +29,30 @@ public class DesktopPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
+        
+        // Register views and viewmodels
+        SplatRegistrations.RegisterLazySingleton<MainWindow>();
+        SplatRegistrations.RegisterLazySingleton<MainWindowViewModel>();
+        SplatRegistrations.RegisterLazySingleton<MainLargeView>();
+        SplatRegistrations.RegisterLazySingleton<MainLargeViewModel>();
     }
-    
+    public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
+    {
+        if (lifetime is 
+            IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the
+            // CommunityToolkit.  More info:
+            // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+
+            desktop.MainWindow = Locator.Current.Resolve<MainWindow>();
+            desktop.MainWindow.DataContext = Locator.Current.Resolve<MainWindowViewModel>();
+        }
+        else
+            throw new InvalidOperationException("Wrong platform.");
+    }
+
     public void InitializePlatform()
     {
         // ShadUI dialog registration.
@@ -38,5 +64,16 @@ public class DesktopPlatformService : IPlatformService
             <LoginProviderRegistry>();
         authProviderRegistry!.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
             LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
+    }
+    
+    void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // remove each entry found
+        foreach (var plugin in dataValidationPluginsToRemove)
+            BindingPlugins.DataValidators.Remove(plugin);
     }
 }

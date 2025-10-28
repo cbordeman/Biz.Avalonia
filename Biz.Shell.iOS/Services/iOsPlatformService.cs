@@ -1,4 +1,6 @@
-﻿using Biz.Mobile.Services;
+﻿using System;
+using Avalonia.Controls.ApplicationLifetimes;
+using Biz.Mobile.Services;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using CompositeFramework.Avalonia.Dialogs;
@@ -23,9 +25,13 @@ public class IOsPlatformService : IPlatformService
         // Dialog registration.
         //Locator.CurrentMutable.RegisterDialog<MessageDialogView, MessageDialogViewModel>();
     }
+    public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
+    {
+        throw new NotImplementedException();
+    }
 
     public void InitializePlatform()
     {
-        
+        throw new NotImplementedException();
     }
 }

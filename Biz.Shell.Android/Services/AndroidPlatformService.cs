@@ -1,12 +1,17 @@
-﻿using Biz.Mobile.Services;
+﻿using System;
+using Avalonia.Controls.ApplicationLifetimes;
+using Biz.Mobile.Services;
 using Biz.Models;
 using Biz.Shell.ClientLoginProviders;
 using Biz.Shell.Infrastructure;
 using Biz.Shell.Platform;
 using Biz.Shell.Services;
 using Biz.Shell.Services.Authentication;
+using Biz.Shell.Views;
+using CompositeFramework.Avalonia;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Dialogs;
+using CompositeFramework.Core.Extensions;
 using Splat;
 
 namespace Biz.Shell.Android.Services;
@@ -28,7 +33,26 @@ public class AndroidPlatformService : IPlatformService
         //var dialogService = Locator.Current.GetService<IDialogService>();
         //dialogService.RegisterDialog<MessageDialogViewModel, MessageDialogView>(); 
     }
-    
+
+    /// <summary>
+    /// Called after container is built, must create the
+    /// main view and assign it DataContext.
+    /// </summary>
+    public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
+    {
+        if (lifetime is
+            ISingleViewApplicationLifetime singleView)
+        {
+            singleView.MainView = Locator.Current.Resolve<MainSmallView>();
+            ViewModelLocator.SetAutoWireViewModel(singleView.MainView!, true);
+        }
+        else
+            throw new InvalidOperationException("Wrong platform.");
+    }
+
+    /// <summary>
+    /// Called after container has been built, in App.OnInitialized.
+    /// </summary>
     public void InitializePlatform()
     {
         var authProviderRegistry = Locator.Current.GetService

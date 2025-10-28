@@ -1,22 +1,23 @@
-<views:FormFactorAwareUserControl
-    x:Class="Biz.Shell.Views.MainLargeView"
+<views1:FormFactorAwareUserControl
+    x:Class="Biz.Shell.Desktop.Views.MainLargeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Biz.Shell.Converters;assembly=Biz.Shell"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:infrastructure="clr-namespace:Biz.Shell.Infrastructure"
+    xmlns:infrastructure1="clr-namespace:Biz.Shell.Infrastructure;assembly=Biz.Shell"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sections="clr-namespace:CompositeFramework.Avalonia.Sections;assembly=CompositeFramework.Avalonia"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:toolbar="clr-namespace:Biz.Shell.ViewModels.Toolbar;assembly=Biz.Shell"
-    xmlns:views="clr-namespace:Biz.Shell.Views"
-    xmlns:vm="clr-namespace:Biz.Shell.ViewModels"
+    xmlns:viewModels="clr-namespace:Biz.Shell.Desktop.ViewModels"
+    xmlns:viewModels1="clr-namespace:Biz.Shell.ViewModels;assembly=Biz.Shell"
+    xmlns:views1="clr-namespace:Biz.Shell.Views;assembly=Biz.Shell"
     x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:CompileBindings="True"
-    x:DataType="vm:MainLargeViewModel"
-    x:TypeArguments="vm:MainLargeViewModel"
+    x:DataType="viewModels:MainLargeViewModel"
+    x:TypeArguments="viewModels:MainLargeViewModel"
     mc:Ignorable="d">
     <Panel>
         <Grid ColumnDefinitions="Auto,*">
@@ -60,7 +61,7 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <TreeDataTemplate DataType="vm:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
+                            <TreeDataTemplate DataType="viewModels1:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
                                 <StackPanel Spacing="0">
 
                                     <shadui:SidebarItemLabel
@@ -77,7 +78,7 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="vm:SidebarItemViewModel">
+                                            <DataTemplate DataType="viewModels1:SidebarItemViewModel">
                                                 <shadui:SidebarItem
                                                     Command="{Binding Command}"
                                                     CommandParameter="{Binding}"
@@ -147,7 +148,7 @@
                                             IsVisible="{Binding !$parent[shadui:Sidebar].Expanded}"
                                             Opacity="{Binding !$parent[shadui:Sidebar].Expanded,
                                                               Converter={x:Static converters:BooleanConverters.Opaque}}"
-                                            Source="../../Assets/user.png">
+                                            Source="avares://Biz.Shell/Assets/user.png">
                                             <shadui:Avatar.Transitions>
                                                 <Transitions>
                                                     <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
@@ -164,7 +165,7 @@
                                                 Margin="0,0,8,0"
                                                 CornerRadius="{DynamicResource XlCornerRadius}"
                                                 Fallback="CN"
-                                                Source="../../Assets/user.png" />
+                                                Source="avares://Biz.Shell/Assets/user.png" />
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Classes="Small" Text="shadui" />
                                                 <TextBlock
@@ -195,7 +196,7 @@
                                             Margin="0,0,8,0"
                                             CornerRadius="{DynamicResource XlCornerRadius}"
                                             Fallback="CN"
-                                            Source="../../Assets/user.png" />
+                                            Source="avares://Biz.Shell/Assets/user.png" />
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <TextBlock Classes="Small" Text="shadui" />
                                             <TextBlock
@@ -328,7 +329,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Margin="0,15,0,0"
-                    sections:SectionManager.SectionName="{x:Static infrastructure:SectionNames.MainContentSection}">
+                    sections:SectionManager.SectionName="{x:Static infrastructure1:SectionNames.MainContentSection}">
                     <TransitioningContentControl.PageTransition>
                         <PageSlide Duration="0:00:00.2">
                             <PageSlide.SlideInEasing>
@@ -414,4 +415,4 @@
         </Grid>
         <shadui:ToastHost Manager="{Binding ToastManager}" />
     </Panel>
-</views:FormFactorAwareUserControl>
+</views1:FormFactorAwareUserControl>

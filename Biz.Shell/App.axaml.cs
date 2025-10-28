@@ -2,8 +2,6 @@ using Biz.Shell.Logging;
 using Biz.Shell.Platform;
 using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
-using CompositeFramework.Avalonia;
-using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
 using IFormFactorService = Biz.Shell.Services.IFormFactorService;
@@ -44,24 +42,7 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is
-            IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            // Avoid duplicate validations from both Avalonia and the
-            // CommunityToolkit.  More info:
-            // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
-
-            desktop.MainWindow = Locator.Current.Resolve<MainWindow>();
-            desktop.MainWindow.DataContext = Locator.Current.Resolve<MainWindowViewModel>();
-        }
-        else if (ApplicationLifetime is
-                 ISingleViewApplicationLifetime singleView)
-        {
-            singleView.MainView = Locator.Current.Resolve<MainSmallView>();
-            ViewModelLocator.SetAutoWireViewModel(singleView.MainView!, true);
-        }
-
+        PlatformHelper.PlatformService?.OnFrameworkInitializationCompleted(ApplicationLifetime);
         base.OnFrameworkInitializationCompleted();
     }
 
@@ -110,8 +91,6 @@ public partial class App : Application
         SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
         // Views and ViewModels
-        SplatRegistrations.Register<MainWindow>();
-        SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.Register<MainSmallView>();
         SplatRegistrations.Register<MainSmallViewModel>();
         SplatRegistrations.Register<SettingsView>(); 
@@ -123,16 +102,5 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 
         // Dialogs, etc. 
-    }
-
-    void DisableAvaloniaDataAnnotationValidation()
-    {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
-
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-            BindingPlugins.DataValidators.Remove(plugin);
     }
 }

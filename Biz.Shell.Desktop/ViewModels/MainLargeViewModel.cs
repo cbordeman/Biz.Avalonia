@@ -1,6 +1,8 @@
 ﻿using Biz.Modules.Dashboard.Core;
+using Biz.Shell.Infrastructure;
+using Biz.Shell.ViewModels;
 
-namespace Biz.Shell.ViewModels;
+namespace Biz.Shell.Desktop.ViewModels;
 
 public class MainLargeViewModel : MainViewModelBase
 {

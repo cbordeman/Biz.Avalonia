@@ -15,7 +15,6 @@ using CompositeFramework.Core.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using Splat;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Biz.Shell.Desktop;
