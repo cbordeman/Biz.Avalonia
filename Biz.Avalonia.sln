@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3DA99C4E-89E3-4049-9C22-0A7EC60D83D8}"
-	ProjectSection(SolutionItems) = preProject
-		Directory.Packages.props = Directory.Packages.props
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Shell.Android", "Biz.Shell.Android\Biz.Shell.Android.csproj", "{5D2D09FB-B7DA-6672-3C79-BE5EFA3CD61B}"
 EndProject
@@ -63,8 +60,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BBBB0816-10F8-4452-9392-1212AC6A79A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F6E27B50-D2C7-4A57-AACF-68C070041D92}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{CA5ED355-4547-4A8B-93CD-AC68559DE03E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -185,8 +180,6 @@ Global
 		{FC3E88CC-DFF3-43EC-A436-42D1D321F946} = {F6E27B50-D2C7-4A57-AACF-68C070041D92}
 		{6E0C5C88-0D9A-4F1A-A829-C6DBE46491DE} = {F6E27B50-D2C7-4A57-AACF-68C070041D92}
 		{A76062E5-0EFC-4A6B-A267-2C1152A13A8F} = {F6E27B50-D2C7-4A57-AACF-68C070041D92}
-		{44E9BA87-4C90-43F6-BE71-D329AD57B2EA} = {CA5ED355-4547-4A8B-93CD-AC68559DE03E}
-		{63AAF508-2A63-4C79-9F19-44DD32EFCF6F} = {CA5ED355-4547-4A8B-93CD-AC68559DE03E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83CB65B8-011F-4ED7-BCD3-A6CFA935EF7E}
