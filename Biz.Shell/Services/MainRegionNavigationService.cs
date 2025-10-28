@@ -100,7 +100,7 @@ public class MainNavigationService :
                 throw new InvalidOperationException(
                     "Page DataContext must be derived from PageViewModelBase");
             else
-                await PageChanged.PublishAsync(
+                await PageChanged.PublishSequentiallyAsync(
                     new NotifyPageChangedArgs(CurrentArea!, vm));
         }
         catch (Exception e)

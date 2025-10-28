@@ -83,7 +83,7 @@ public class AuthenticationService(IConfigurationService configurationService,
                 IsMfa = false // TODO: set MFA status if applicable
             };
             await authDataStore.SaveAuthDataAsync();
-            await AuthenticationStateChanged.PublishAsync();
+            await AuthenticationStateChanged.PublishSequentiallyAsync();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -214,7 +214,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         authDataStore.Data.Tenant = selectedTenant;
         await authDataStore.SaveAuthDataAsync();
 
-        await AuthenticationStateChanged.PublishAsync();
+        await AuthenticationStateChanged.PublishSequentiallyAsync();
     }
 
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
@@ -261,7 +261,7 @@ public class AuthenticationService(IConfigurationService configurationService,
             };
 
             await authDataStore.SaveAuthDataAsync();
-            await AuthenticationStateChanged.PublishAsync();
+            await AuthenticationStateChanged.PublishSequentiallyAsync();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -295,7 +295,7 @@ public class AuthenticationService(IConfigurationService configurationService,
             };
 
             await authDataStore.SaveAuthDataAsync();
-            await AuthenticationStateChanged.PublishAsync();
+            await AuthenticationStateChanged.PublishSequentiallyAsync();
             return (true, null, null);
         }
         catch (OperationCanceledException)
@@ -325,7 +325,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         CurrentProvider = null;
 
         if (invokeEvent)
-            await AuthenticationStateChanged.PublishAsync();
+            await AuthenticationStateChanged.PublishSequentiallyAsync();
     }
 
     public async Task<User?> GetCurrentUserAsync()

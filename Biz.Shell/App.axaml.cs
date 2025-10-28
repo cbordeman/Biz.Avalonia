@@ -4,6 +4,7 @@ using Biz.Shell.Services.Authentication;
 using Biz.Shell.Services.Config;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
+using ShadUI;
 using IFormFactorService = Biz.Shell.Services.IFormFactorService;
 
 namespace Biz.Shell;
@@ -59,6 +60,7 @@ public partial class App : Application
         SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
         SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
 
+        
         // Get configuration service to access maps API key
         var configService = Locator.Current.Resolve<IConfigurationService>();
         Debug.Assert(configService != null, "configService was null");
@@ -84,6 +86,9 @@ public partial class App : Application
 
         ServiceClientRegistration.AddMainApiClients(servicesUrl);
 
+        // ShadUI services
+        SplatRegistrations.RegisterLazySingleton<ToastManager>();
+        
         // Services
         SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
         SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();

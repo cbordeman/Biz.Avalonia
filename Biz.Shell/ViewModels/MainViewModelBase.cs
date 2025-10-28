@@ -60,7 +60,7 @@ public abstract class MainViewModelBase
     protected MainViewModelBase()
     {
         ToastManager = Locator.Current.Resolve<ToastManager>();
-
+        
         AuthService = Locator.Current.Resolve<IAuthenticationService>();
         AuthService.AuthenticationStateChanged.Subscribe(() =>
         {

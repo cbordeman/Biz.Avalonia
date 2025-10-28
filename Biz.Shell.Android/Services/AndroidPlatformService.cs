@@ -34,10 +34,6 @@ public class AndroidPlatformService : IPlatformService
         //dialogService.RegisterDialog<MessageDialogViewModel, MessageDialogView>(); 
     }
 
-    /// <summary>
-    /// Called after container is built, must create the
-    /// main view and assign it DataContext.
-    /// </summary>
     public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
     {
         if (lifetime is
@@ -49,10 +45,7 @@ public class AndroidPlatformService : IPlatformService
         else
             throw new InvalidOperationException("Wrong platform.");
     }
-
-    /// <summary>
-    /// Called after container has been built, in App.OnInitialized.
-    /// </summary>
+    
     public void InitializePlatform()
     {
         var authProviderRegistry = Locator.Current.GetService

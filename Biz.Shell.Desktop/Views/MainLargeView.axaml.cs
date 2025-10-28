@@ -1,5 +1,4 @@
 using Biz.Shell.Desktop.ViewModels;
-using Biz.Shell.ViewModels;
 using Biz.Shell.Views;
 
 namespace Biz.Shell.Desktop.Views;

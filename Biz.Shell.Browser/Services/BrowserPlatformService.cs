@@ -30,11 +30,6 @@ public class BrowserPlatformService : IPlatformService
 
     public void InitializePlatform()
     {
-    }
-    
-    public AcquireTokenInteractiveParameterBuilder PrepareMsalTokenRequest(AcquireTokenInteractiveParameterBuilder builder)
-    {
-        // TODO: implement
-        return builder;
+        throw new NotImplementedException();
     }
 }

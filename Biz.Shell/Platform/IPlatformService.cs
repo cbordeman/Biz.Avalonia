@@ -5,18 +5,19 @@ namespace Biz.Shell.Platform;
 public interface IPlatformService
 {
     /// <summary>
-    /// Called before container has been built, in the startup of each platform project.
+    /// Called first, before container has been built.
     /// </summary>
     void RegisterPlatformTypes();
 
     /// <summary>
-    /// Called after container is built, must create the
+    /// Called second, after container has been built.
+    /// </summary>
+    void InitializePlatform();
+    
+    /// <summary>
+    /// Called last, must create the
     /// main view and assign it DataContext.
     /// </summary>
     void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime);
-    
-    /// <summary>
-    /// Called after container has been built, in App.OnInitialized.
-    /// </summary>
-    void InitializePlatform();
+
 }

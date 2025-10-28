@@ -13,40 +13,57 @@ public sealed class AsyncEvent
 
     public void Subscribe(Func<Task> handler)
     {
-        ArgumentChecker.ThrowIfNull(handler);
+        ArgumentNullException.ThrowIfNull(handler);
 
-        ImmutableArray<Func<Task>> original, updated;
-        do
-        {
-            original = subscribers;
-            updated = original.Add(handler);
-            // Atomically swap if _subscribers is still original
-        } while (Interlocked.CompareExchange(
-                     ref subscribers, updated, original) != original);
+        ImmutableInterlocked.Update(
+            ref subscribers,
+            s => s.Add(handler));
     }
 
     public void Unsubscribe(Func<Task> handler)
     {
-        ArgumentChecker.ThrowIfNull(handler);
+        ArgumentNullException.ThrowIfNull(handler);
 
-        ImmutableArray<Func<Task>> original, updated;
-        do
-        {
-            original = subscribers;
-            updated = original.Remove(handler);
-            if (updated == original)
-                // handler not found, break early
-                break;
-            // Atomically swap if subscribers is still original
-        } while (Interlocked.CompareExchange(
-                     ref subscribers, updated, original) != original);
+        // Atomically update the subscribers list
+        ImmutableInterlocked.Update(
+            ref subscribers,
+            s => s.Remove(handler));
+
+        // Note: Remove will have no effect if handler not found
     }
 
-    public async Task PublishAsync()
+
+    /// <summary>
+    /// Invokes all handlers simultaneously.
+    /// </summary>
+    /// <exception cref="AggregateException"></exception>
+    public Task PublishParallelAsync()
     {
         var snapshot = subscribers;
+        return Task.WhenAll(snapshot.Select(h => h()));
+    }
+    
+    /// <summary>
+    /// Publish one at a time, awaiting each.
+    /// </summary>
+    /// <exception cref="AggregateException"></exception>
+    public async Task PublishSequentiallyAsync()
+    {
+        var snapshot = subscribers;
+        var len = snapshot.Length;
+        List<Exception>? exceptions = null;
         foreach (var handler in snapshot)
-            await handler().ConfigureAwait(false);
+            try
+            {
+                await handler().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                exceptions ??= new List<Exception>(len);
+                exceptions.Add(e);
+            }
+        if (exceptions != null)
+            throw new AggregateException(exceptions);
     }
 }
 
@@ -61,40 +78,52 @@ public sealed class AsyncEvent<T>
 
     public void Subscribe(Func<T, Task> handler)
     {
-        ArgumentChecker.ThrowIfNull(handler);
+        ArgumentNullException.ThrowIfNull(handler);
 
-        ImmutableArray<Func<T, Task>> original, updated;
-        do
-        {
-            original = subscribers;
-            updated = original.Add(handler);
-            // Atomically swap if _subscribers is still original
-        } while (Interlocked.CompareExchange(
-                     ref subscribers, updated, original) != original);
+        ImmutableInterlocked.Update(
+            ref subscribers,
+            s => s.Add(handler));
     }
 
     public void Unsubscribe(Func<T, Task> handler)
     {
-        ArgumentChecker.ThrowIfNull(handler);
+        ArgumentNullException.ThrowIfNull(handler);
 
-        ImmutableArray<Func<T, Task>> original, updated;
-        do
-        {
-            original = subscribers;
-            updated = original.Remove(handler);
-            if (updated == original)
-                // handler not found, break early
-                break;
-            // Atomically swap if subscribers is still original
-        } while (Interlocked.CompareExchange(
-                     ref subscribers, updated, original) != original);
+        ImmutableInterlocked.Update(
+            ref subscribers,
+            s => s.Remove(handler));
     }
 
-    public async Task PublishAsync(T arg)
+    /// <summary>
+    /// Invokes all handlers concurrently.
+    /// </summary>
+    /// <exception cref="AggregateException"></exception>
+    public Task PublishParallelAsync(T arg)
     {
         var snapshot = subscribers;
+        return Task.WhenAll(snapshot.Select(h => h(arg)));
+    }
+
+    /// <summary>
+    /// Invokes handlers one at a time, sequentially awaiting each.
+    /// </summary>
+    /// <exception cref="AggregateException"></exception>
+    public async Task PublishSequentiallyAsync(T arg)
+    {
+        var snapshot = subscribers;
+        var len = snapshot.Length;
+        List<Exception>? exceptions = null;
         foreach (var handler in snapshot)
-            await handler(arg).ConfigureAwait(false);
+            try
+            {
+                await handler(arg).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                exceptions ??= new List<Exception>(len);
+                exceptions.Add(e);
+            }
+        if (exceptions != null)
+            throw new AggregateException(exceptions);
     }
 }
-
