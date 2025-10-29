@@ -78,7 +78,7 @@ public class AzureEmailService(AzureSettings settings,
             logger.LogInformation("Email Sent: {Recipient}", recipient);
         else
         {
-            logger.LogWarning("Failed to send email (Status = {Status}).  Recipient: {Recipient}", emailSendOperation.Value.Status, recipient);
+            Log.Logger.Warning("Failed to send email (Status = {Status}).  Recipient: {Recipient}", emailSendOperation.Value.Status, recipient);
             throw new Exception(@$"Failed to send email to recipient ""{recipient}.""");
         }
     }

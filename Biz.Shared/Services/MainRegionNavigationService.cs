@@ -75,7 +75,7 @@ public class MainNavigationService :
             // If we don't redirect to Login because of an exception, it
             // isn't catastrophic.  Server operations will simply fail
             // because of the lack of a token.
-            logger.LogError(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));
+            Log.Logger.Error(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));
         }
     }
 
@@ -84,7 +84,7 @@ public class MainNavigationService :
         if (args.Result != NavigationResult.Success)
         {
             if (args.Result == NavigationResult.Error)
-                logger.LogError(args.Error, $"Navigation failed: " +
+                Log.Logger.Error(args.Error, $"Navigation failed: " +
                                             $"{args.Context.ViewName}");
             return;
         }
@@ -105,7 +105,7 @@ public class MainNavigationService :
         }
         catch (Exception e)
         {
-            logger.LogError(
+            Log.Logger.Error(
                 e,
                 "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
                 nameof(MainNavigationService),
@@ -133,7 +133,7 @@ public class MainNavigationService :
         }
         catch (Exception e)
         {
-            logger.LogError(
+            Log.Logger.Error(
                 e,
                 "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
                 nameof(MainNavigationService),

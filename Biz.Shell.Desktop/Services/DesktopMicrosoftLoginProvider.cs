@@ -1,20 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Biz.Shared.Services.Authentication;
+﻿using Biz.Shared.Services.Authentication;
 using Biz.Shared.Services.Config;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
+using Serilog.Events;
 using LogLevel = Microsoft.Identity.Client.LogLevel;
 
 namespace Biz.Shell.Desktop.Services;
 
 public class DesktopMicrosoftLoginProvider : MicrosoftLoginProviderBase
 {
-    public DesktopMicrosoftLoginProvider(ILogger<DesktopMicrosoftLoginProvider> logger,
+    public DesktopMicrosoftLoginProvider(
         IConfigurationService configurationService)
-        : base(logger, configurationService) { }
+        : base(configurationService) { }
 
     protected override void CreateMsalClient()
     {
@@ -30,14 +26,14 @@ public class DesktopMicrosoftLoginProvider : MicrosoftLoginProviderBase
                 {
                     if (message != null)
                     {
-                        Logger.Log(
+                        Log.Logger.Write(
                             level switch
                             {
-                                LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
-                                LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
-                                LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
-                                LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
-                                LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
+                                LogLevel.Error => LogEventLevel.Error,
+                                LogLevel.Warning => LogEventLevel.Warning,
+                                LogLevel.Info => LogEventLevel.Information,
+                                LogLevel.Always => LogEventLevel.Information,
+                                LogLevel.Verbose => LogEventLevel.Verbose,
                                 _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
                             },
                             $"MSAL: {message}");
@@ -84,7 +80,7 @@ public class DesktopMicrosoftLoginProvider : MicrosoftLoginProviderBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "ERROR: Microsoft login failed: {Name} {ExMessage}", ex.GetType().Name, ex.Message);
+            Log.Logger.Error(ex, "ERROR: Microsoft login failed: {Name} {ExMessage}", ex.GetType().Name, ex.Message);
         }
 
         var internalUserId = result == null ? null : $"M-{result.Account.HomeAccountId.Identifier}";

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -8,7 +7,6 @@ using Android.Runtime;
 using Biz.Shared.Services;
 using Java.IO;
 using Java.Lang;
-using Microsoft.Extensions.Logging;
 using Xamarin.Google.Crypto.Tink;
 using Xamarin.Google.Crypto.Tink.Aead;
 using Xamarin.Google.Crypto.Tink.Integration.Android;
@@ -20,15 +18,13 @@ namespace Biz.Shell.Android.Services;
 
 public class AndroidSafeStorage : ISafeStorage
 {
-    private readonly ILogger<AndroidSafeStorage> logger;
     private readonly File backingFile;
     private readonly Lock syncRoot = new();
 
     private readonly IAead aead;
 
-    public AndroidSafeStorage(ILogger<AndroidSafeStorage> logger)
+    public AndroidSafeStorage()
     {
-        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         backingFile = new File(MainActivity.Context.FilesDir, "secure_store.json");
 
         try
@@ -57,7 +53,7 @@ public class AndroidSafeStorage : ISafeStorage
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Failed to initialize secure storage");
+            Log.Logger.Error(e, "Failed to initialize secure storage");
             throw;
         }
     }
@@ -77,7 +73,7 @@ public class AndroidSafeStorage : ISafeStorage
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to decrypt storage file.");
+                Log.Logger.Error(ex, "Failed to decrypt storage file.");
                 return new Dictionary<string, string>();
             }
         }
@@ -97,7 +93,7 @@ public class AndroidSafeStorage : ISafeStorage
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to encrypt storage file.");
+                Log.Logger.Error(ex, "Failed to encrypt storage file.");
                 throw;
             }
         }

@@ -1,4 +1,3 @@
-using Biz.Shared.Logging;
 using Biz.Shared.Platform;
 using Biz.Shared.Services.Authentication;
 using Biz.Shared.Services.Config;
@@ -73,13 +72,8 @@ public partial class App : Application
 
         //var mapsApiKey = configService.Maps.BingMapsApiKey;
 
-        // Lets you use ILogger<T>
-        LoggingSetup.RegisterMicrosoftLoggerFactoryWithSplat();
+        ClientLogging.Initialize();
 
-        var lf = Locator.Current.GetService<ILoggerFactory>();
-        var logger = lf!.CreateLogger<App>();
-        logger.LogInformation("App.Initialize: Starting up");
-        
         string servicesUrl;
         if (OperatingSystem.IsAndroid())
         {

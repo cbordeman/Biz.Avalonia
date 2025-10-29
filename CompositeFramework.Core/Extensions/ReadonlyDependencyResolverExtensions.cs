@@ -1,4 +1,6 @@
-﻿namespace CompositeFramework.Core.Extensions;
+﻿using Splat;
+
+namespace CompositeFramework.Core.Extensions;
 
 public static class ReadonlyDependencyResolverExtensions
 {

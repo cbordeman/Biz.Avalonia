@@ -84,7 +84,7 @@ public static partial class Auth
             catch (Exception e)
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
-                logger.LogError(e, "Failed saving new user to database.");
+                Log.Logger.Error(e, "Failed saving new user to database.");
                 throw;
             }
 

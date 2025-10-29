@@ -5,13 +5,8 @@ public class FormFactorService : IFormFactorService
     const double PhoneMaxWidth = 600;
     const double TabletMaxWidth = 900;
 
-    double lastKnownWidth = 0;
+    double lastKnownWidth;
 
-    public FormFactorService()
-    {
-        
-    }
-    
     public FormFactor CurrentFormFactor { get; private set; }
 
     public event Notify? Changed;

@@ -6,17 +6,14 @@ namespace Biz.Shared.Services.Authentication;
 class SecureStorageAuthDataStore : IAuthDataStore
 {
     readonly ISafeStorage secureStorage;
-    readonly ILogger<SecureStorageAuthDataStore> logger;
 
     const string AuthDataKey = "auth_data"; // Key for SecureStorage
 
     public AuthData? Data { get; set; }
 
-    public SecureStorageAuthDataStore(ISafeStorage secureStorage, 
-        ILogger<SecureStorageAuthDataStore> logger)
+    public SecureStorageAuthDataStore(ISafeStorage secureStorage)
     {
         this.secureStorage = secureStorage;
-        this.logger = logger;
     }
     
     public async Task RestoreAuthDataAsync()
@@ -40,7 +37,7 @@ class SecureStorageAuthDataStore : IAuthDataStore
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Error restoring auth data");;
+            Log.Logger.Error(e, "Error restoring auth data");
         }
     }
 

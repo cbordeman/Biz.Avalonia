@@ -1,1 +1,2 @@
-﻿global using Splat;
+﻿global using Serilog;
+global using Splat;

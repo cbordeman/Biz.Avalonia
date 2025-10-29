@@ -13,7 +13,6 @@ namespace Biz.Shared.Services.Authentication;
 public class AuthenticationService(IConfigurationService configurationService,
     IAuthDataStore authDataStore,
     ITenantsApi tenantsApi,
-    ILogger<AuthenticationService> logger,
     LoginProviderRegistry loginProviderRegistry)
     : IAuthenticationService
 {
@@ -86,7 +85,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, $"Google login failed: {ex.Message}");
+            Log.Logger.Warning(ex, $"Google login failed: {ex.Message}");
             return (false, null, ex.Message);
         }
     }
@@ -109,7 +108,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
         catch (Exception e)
         {
-            logger.LogError(e,
+            Log.Logger.Error(e,
                 "No registered login provider for {LoginProvider}: " +
                 "{EMessage}",
                 providerEnum,
@@ -124,7 +123,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
+            Log.Logger.Error(e, $"ERROR: Failed to get available tenants: {e.Message}");
             return (false, null, e.Message);
         }
 
@@ -149,12 +148,12 @@ public class AuthenticationService(IConfigurationService configurationService,
                     isMfa);
             }
 
-            logger.LogError("Result was NULL.");
+            Log.Logger.Error("Result was NULL.");
             return (false, null, "Login failed");
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"ERROR: Failed to get available tenants: {e.Message}");
+            Log.Logger.Error(e, $"ERROR: Failed to get available tenants: {e.Message}");
             return (false, null, e.Message);
         }
 
@@ -189,7 +188,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         switch (availableTenants.Length)
         {
             case 0:
-                logger.LogWarning("No available tenants found for user {UserId}", authDataStore.Data.Id);
+                Log.Logger.Warning("No available tenants found for user {UserId}", authDataStore.Data.Id);
                 // No tenants available, no login.
                 return (false, null, "No tenants available");
             case 1:
@@ -221,19 +220,19 @@ public class AuthenticationService(IConfigurationService configurationService,
             var authCode = await LaunchFacebookAuthAsync(authUrl);
             if (string.IsNullOrEmpty(authCode))
             {
-                logger.LogInformation("Facebook authentication was cancelled by user");
+                Log.Logger.Information("Facebook authentication was cancelled by user");
                 return (false, null, null);
             }
             var accessToken = await ExchangeCodeForTokenAsync(authCode, facebookConfig);
             if (string.IsNullOrEmpty(accessToken))
             {
-                logger.LogWarning("Failed to obtain Facebook access token");
+                Log.Logger.Warning("Failed to obtain Facebook access token");
                 return (false, null, "Failed to obtain token.");
             }
             var facebookUserProfile = await GetFacebookUserProfileAsync(accessToken);
             if (facebookUserProfile == null)
             {
-                logger.LogError("Failed to retrieve Facebook user profile");
+                Log.Logger.Error("Failed to retrieve Facebook user profile");
                 return (false, null, "Failed to retrieve user profile.");
             }
 
@@ -264,7 +263,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, $"Facebook login failed: {ex.Message}");
+            Log.Logger.Warning(ex, $"Facebook login failed: {ex.Message}");
             return (false, null, ex.Message);
         }
     }
@@ -298,7 +297,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, $"Apple login failed: {ex.Message}");
+            Log.Logger.Warning(ex, $"Apple login failed: {ex.Message}");
             return (false, null, ex.Message);
         }
     }
@@ -381,17 +380,17 @@ public class AuthenticationService(IConfigurationService configurationService,
             if (authResult.Properties.TryGetValue("code", out string? authCode))
                 return authCode;
 
-            logger.LogError("No authorization code found in callback");
+            Log.Logger.Error("No authorization code found in callback");
             return null;
         }
         catch (TaskCanceledException)
         {
-            logger.LogInformation("Facebook authentication was cancelled by user");
+            Log.Logger.Information("Facebook authentication was cancelled by user");
             return null;
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, $"Failed to launch Facebook auth: {ex.Message}");
+            Log.Logger.Warning(ex, $"Failed to launch Facebook auth: {ex.Message}");
             return null;
         }
     }
@@ -420,13 +419,13 @@ public class AuthenticationService(IConfigurationService configurationService,
             }
             else
             {
-                logger.LogError($"Facebook token exchange failed: Status code {response.StatusCode}");
+                Log.Logger.Error($"Facebook token exchange failed: Status code {response.StatusCode}");
                 return null;
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, $"Failed to exchange code for token: {ex.Message}");
+            Log.Logger.Error(ex, $"Failed to exchange code for token: {ex.Message}");
             return null;
         }
     }
@@ -450,13 +449,13 @@ public class AuthenticationService(IConfigurationService configurationService,
             }
             else
             {
-                logger.LogError($"Failed to get Facebook user profile: {response.StatusCode}");
+                Log.Logger.Error($"Failed to get Facebook user profile: {response.StatusCode}");
                 return null;
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, $"Failed to get Facebook user profile: {ex.Message}");
+            Log.Logger.Error(ex, $"Failed to get Facebook user profile: {ex.Message}");
             return null;
         }
     }
@@ -486,7 +485,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, $"Failed to validate Facebook token: {ex.Message}");
+            Log.Logger.Warning(ex, $"Failed to validate Facebook token: {ex.Message}");
             return false;
         }
     }

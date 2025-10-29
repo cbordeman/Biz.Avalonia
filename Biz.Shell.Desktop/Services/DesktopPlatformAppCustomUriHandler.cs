@@ -1,22 +1,17 @@
-﻿using System.Threading.Tasks;
-using Biz.Modules.AccountManagement.Core;
+﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
 using CompositeFramework.Core.Dialogs;
-using Microsoft.Extensions.Logging;
 using ServiceClients;
 
 namespace Biz.Shell.Desktop.Services;
 
 public class DesktopPlatformAppCustomUriHandler(
-    ILogger<DesktopPlatformAppCustomUriHandler> logger,
     IMainNavigationService navService,
     IAccountApi accountApi,
     IDialogService dialogService)
-    : PlatformAppCustomUriHandlerBase(logger)
+    : PlatformAppCustomUriHandlerBase()
 {
-    // ReSharper disable once UnusedMember.Local
-    readonly ILogger<DesktopPlatformAppCustomUriHandler> logger = logger;
     readonly IAccountApi accountApi = accountApi;
     readonly IDialogService dialogService = dialogService;
     

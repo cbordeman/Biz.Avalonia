@@ -8,14 +8,11 @@ public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
 {
     protected readonly IConfigurationService ConfigurationService;
     protected IPublicClientApplication? MsalClient;
-    protected readonly ILogger<MicrosoftLoginProviderBase> Logger;
 
     public LoginProvider LoginProvider => LoginProvider.Microsoft;
     
-    protected MicrosoftLoginProviderBase(ILogger<MicrosoftLoginProviderBase> logger,
-        IConfigurationService configurationService)
+    protected MicrosoftLoginProviderBase(IConfigurationService configurationService)
     {
-        this.Logger = logger;
         this.ConfigurationService = configurationService;
 
         // ReSharper disable once VirtualMemberCallInConstructor
@@ -67,11 +64,11 @@ public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
 
         try
         {
-            Logger.LogInformation($"User logged out: {nameof(MicrosoftLoginProviderBase)}");
+            Log.Logger.Information($"User logged out: {nameof(MicrosoftLoginProviderBase)}");
         }
         catch (Exception e)
         {
-            Logger.LogError(e, "Failed to log out: {EMessage}", e.Message);
+            Log.Logger.Error(e, "Failed to log out: {EMessage}", e.Message);
         }
     }
 }

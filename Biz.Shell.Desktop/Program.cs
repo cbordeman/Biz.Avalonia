@@ -123,7 +123,7 @@ sealed class Program
             if (logger == null)
                 Debug.WriteLine($"Failed to send IPC message \"{uri}\": {ex.Message}");
             else
-                logger.LogError(ex, "Failed to send IPC message \"{Uri}\": {ExMessage}", uri, ex.Message);
+                Log.Logger.Error(ex, "Failed to send IPC message \"{Uri}\": {ExMessage}", uri, ex.Message);
         }
     }
 
@@ -165,7 +165,7 @@ sealed class Program
                 if (logger == null)
                     Debug.WriteLine($"IPC server error: {ex}");
                 else
-                    logger.LogError("IPC server error: {Exception}", ex);
+                    Log.Logger.Error("IPC server error: {Exception}", ex);
 
                 // Wait a bit before restarting listener
                 await Task.Delay(1000);
@@ -200,7 +200,7 @@ sealed class Program
             if (logger == null)
                 Debug.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
             else
-                logger.LogError(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+                Log.Logger.Error(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
         }
     }
 }

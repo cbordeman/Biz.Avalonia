@@ -28,5 +28,6 @@ global using CompositeFramework.Core.Extensions;
 global using CompositeFramework.Core.Navigation;
 global using CompositeFramework.Modules;
 global using Microsoft.Extensions.Logging;
+global using Serilog;
 global using Shouldly;
 global using Splat;

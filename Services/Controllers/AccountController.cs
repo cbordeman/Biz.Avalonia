@@ -138,7 +138,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogWarning(
+            Log.Logger.Warning(
                 "1 Failed email confirmation {Email}: {Model}.", 
                 email, ModelState.Serialize());
             return;
@@ -176,7 +176,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogWarning(
+            Log.Logger.Warning(
                 "3 Failed change email {ModelUserId} {ModelNewEmail}: {Model}.", 
                 model.UserId, model.NewEmail, ModelState.Serialize());
         }
@@ -204,7 +204,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogWarning(
+            Log.Logger.Warning(
                 "4 Failed change email {UserId} {NewEmail}: {Model}.", 
                 userId, email, ModelState.Serialize());
             return;

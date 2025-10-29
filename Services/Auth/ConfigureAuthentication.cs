@@ -78,7 +78,7 @@ public static IServiceCollection ConfigureAuthentication(
             OnAuthenticationFailed = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
-                logger.LogWarning("Local JWT authentication failed: {Message}", context.Exception.Message);
+                Log.Logger.Warning("Local JWT authentication failed: {Message}", context.Exception.Message);
                 return Task.CompletedTask;
             }
         };
@@ -119,7 +119,7 @@ public static IServiceCollection ConfigureAuthentication(
             OnAuthenticationFailed = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
-                logger.LogWarning("Microsoft authentication failed: {Message}", context.Exception.Message);
+                Log.Logger.Warning("Microsoft authentication failed: {Message}", context.Exception.Message);
                 return Task.CompletedTask;
             },
             OnChallenge = context =>
@@ -127,7 +127,7 @@ public static IServiceCollection ConfigureAuthentication(
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
                 if (context.Error != null)
                 {
-                    logger.LogWarning("OnChallenge error: {Error}, {Description}", context.Error, context.ErrorDescription);
+                    Log.Logger.Warning("OnChallenge error: {Error}, {Description}", context.Error, context.ErrorDescription);
                 }
                 return Task.CompletedTask;
             },
@@ -164,7 +164,7 @@ public static IServiceCollection ConfigureAuthentication(
                 if (!response.IsSuccessStatusCode)
                 {
                     var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
-                    logger.LogError("Facebook token validation failed (HTTP error). StatusCode: {StatusCode}", response.StatusCode);
+                    Log.Logger.Error("Facebook token validation failed (HTTP error). StatusCode: {StatusCode}", response.StatusCode);
                     context.Fail("Facebook token validation failed (HTTP error).");
                     return;
                 }
@@ -177,7 +177,7 @@ public static IServiceCollection ConfigureAuthentication(
                 if (!isValid || expiresAt <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                 {
                     var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
-                    logger.LogWarning("Facebook token is invalid or expired.");
+                    Log.Logger.Warning("Facebook token is invalid or expired.");
                     context.Fail("Facebook token is invalid or expired.");
                     return;
                 }

@@ -4,17 +4,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Biz.Shared.Services.Authentication;
 using Biz.Shared.Services.Config;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
-using LogLevel = Microsoft.Identity.Client.LogLevel;
 
 namespace Biz.Shell.Android.Services;
 
 public class AndroidMicrosoftLoginProvider : MicrosoftLoginProviderBase
 {
-    public AndroidMicrosoftLoginProvider(ILogger<AndroidMicrosoftLoginProvider> logger,
-        IConfigurationService configurationService)
-        : base(logger, configurationService) { }
+    public AndroidMicrosoftLoginProvider(IConfigurationService configurationService)
+        : base(configurationService) { }
 
     protected override void CreateMsalClient()
     {
@@ -34,17 +31,16 @@ public class AndroidMicrosoftLoginProvider : MicrosoftLoginProviderBase
                 {
                     if (message != null)
                     {
-                        Logger.Log(
-                            level switch
-                            {
-                                LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
-                                LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
-                                LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
-                                LogLevel.Always => Microsoft.Extensions.Logging.LogLevel.Information,
-                                LogLevel.Verbose => Microsoft.Extensions.Logging.LogLevel.Debug,
-                                _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
-                            },
-                            $"MSAL: {message}");
+                        LogEventLevel lel = level switch
+                        {
+                            LogLevel.Error => LogEventLevel.Error,
+                            LogLevel.Warning => LogEventLevel.Warning,
+                            LogLevel.Info => LogEventLevel.Information,
+                            LogLevel.Always => LogEventLevel.Information,
+                            LogLevel.Verbose => LogEventLevel.Verbose,
+                            _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
+                        };
+                        Log.Logger.Write(lel, $"MSAL: {message}");
                     }
                 },
                 LogLevel.Info,
@@ -89,7 +85,7 @@ public class AndroidMicrosoftLoginProvider : MicrosoftLoginProviderBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "ERROR: Microsoft login failed: {Name} {ExMessage}", ex.GetType().Name, ex.Message);
+            Log.Logger.Error(ex, "ERROR: Microsoft login failed: {Name} {ExMessage}", ex.GetType().Name, ex.Message);
         }
 
         var internalUserId = result == null ? null : $"M-{result.Account.HomeAccountId.Identifier}";

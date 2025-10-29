@@ -1,10 +1,7 @@
 ﻿namespace Biz.Shared.Platform;
 
-public abstract class PlatformAppCustomUriHandlerBase(
-    ILogger<PlatformAppCustomUriHandlerBase> logger)
+public abstract class PlatformAppCustomUriHandlerBase()
 {
-    readonly ILogger<PlatformAppCustomUriHandlerBase> logger = logger;
-
     protected abstract Task HandleConfirmUserRegistration(
         string token, string email);
     protected abstract Task HandleConfirmForgotPassword(
@@ -41,7 +38,7 @@ public abstract class PlatformAppCustomUriHandlerBase(
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+            Log.Logger.Error(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
         }
     }
 }
