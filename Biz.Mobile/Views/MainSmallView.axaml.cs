@@ -1,6 +1,7 @@
-using Biz.Shared.ViewModels;
+using Biz.Mobile.ViewModels;
+using Biz.Shared.Views;
 
-namespace Biz.Shared.Views;
+namespace Biz.Mobile.Views;
 
 public partial class MainSmallView : FormFactorAwareUserControl<MainSmallViewModel>
 {

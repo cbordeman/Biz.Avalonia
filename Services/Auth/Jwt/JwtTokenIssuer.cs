@@ -9,8 +9,7 @@ using ServiceClients.Models;
 
 namespace Services.Auth.Jwt;
 
-public class JwtTokenIssuer(JwtIssuerSettings settings,
-    IDbContextFactory<AppDbContext> dbContextFactory) 
+public class JwtTokenIssuer(JwtIssuerSettings settings) 
     : IJwtTokenIssuer, IDisposable
 {
 

@@ -32,15 +32,4 @@
         <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
         <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Views\MainLargeView.axaml.cs">
-        <DependentUpon>MainLargeView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
 </Project>

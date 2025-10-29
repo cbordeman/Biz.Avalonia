@@ -1,13 +1,14 @@
 ﻿using System;
 using Avalonia.Controls.ApplicationLifetimes;
 using Biz.Mobile.Services;
+using Biz.Mobile.ViewModels;
+using Biz.Mobile.Views;
 using Biz.Models;
 using Biz.Shared.ClientLoginProviders;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
 using Biz.Shared.Services.Authentication;
-using Biz.Shared.Views;
 using CompositeFramework.Avalonia;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Dialogs;
@@ -29,6 +30,10 @@ public class AndroidPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
 
+        SplatRegistrations.Register<MainSmallView>();
+        SplatRegistrations.Register<MainSmallViewModel>();
+
+        
         // Prism style dialog registration.
         //var dialogService = Locator.Current.GetService<IDialogService>();
         //dialogService.RegisterDialog<MessageDialogViewModel, MessageDialogView>(); 

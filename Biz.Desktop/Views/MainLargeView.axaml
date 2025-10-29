@@ -1,5 +1,5 @@
 <views1:FormFactorAwareUserControl
-    x:Class="Biz.Shell.Desktop.Views.MainLargeView"
+    x:Class="Biz.Desktop.Views.MainLargeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Biz.Shared.Converters;assembly=Biz.Shared"
@@ -9,7 +9,7 @@
     xmlns:sections="clr-namespace:CompositeFramework.Avalonia.Sections;assembly=CompositeFramework.Avalonia"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:toolbar="clr-namespace:Biz.Shared.ViewModels.Toolbar;assembly=Biz.Shared"
-    xmlns:viewModels="clr-namespace:Biz.Shell.Desktop.ViewModels"
+    xmlns:viewModels="clr-namespace:Biz.Desktop.ViewModels"
     xmlns:viewModels1="clr-namespace:Biz.Shared.ViewModels;assembly=Biz.Shared"
     xmlns:views1="clr-namespace:Biz.Shared.Views;assembly=Biz.Shared"
     x:Name="Root"

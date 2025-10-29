@@ -10,16 +10,29 @@ public class ViewLocator : IDataTemplate
         if (param is null)
             return null;
 
-        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
+        var vmType = param.GetType();
+        string name = vmType.FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var vwType = vmType.Assembly.GetType(name);
 
-        if (type != null)
+        if (vwType == null)
+            return new TextBlock
+            {
+                Text = $"Not Found: {name}"
+            };
+
+        try
         {
-            var control = (Control)Activator.CreateInstance(type)!;
-            return control;
+            var control = Locator.Current.Resolve(vwType);
+            return (Control)control;
         }
-
-        return new TextBlock { Text = "Not Found: " + name };
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new TextBlock
+            {
+                Text = $"Couldn't resolve: {vwType.AssemblyQualifiedName}"
+            };
+        }
     }
 
     public bool Match(object? data)

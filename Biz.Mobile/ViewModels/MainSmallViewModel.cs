@@ -1,8 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shared.Infrastructure;
+using Biz.Shared.ViewModels;
 
-namespace Biz.Shared.ViewModels;
+namespace Biz.Mobile.ViewModels;
 
 public class MainSmallViewModel : MainViewModelBase
 {

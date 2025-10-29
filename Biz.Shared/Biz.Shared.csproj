@@ -27,8 +27,9 @@
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
         <PackageReference Include="Lucide.Avalonia" Version="0.1.46"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10" />
         <PackageReference Include="Microsoft.Identity.Client" Version="4.77.1"/>
         <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.120"/>
         <PackageReference Include="Responsive.Avalonia" Version="0.2.0"/>
@@ -38,7 +39,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="17.1.1"/>
+        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="17.1.1" />
     </ItemGroup>
 
     <ItemGroup>

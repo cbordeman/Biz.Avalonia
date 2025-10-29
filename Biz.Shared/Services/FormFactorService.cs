@@ -1,11 +1,16 @@
 ﻿namespace Biz.Shared.Services;
 
-public class ViewControlService : IFormFactorService
+public class FormFactorService : IFormFactorService
 {
     const double PhoneMaxWidth = 600;
     const double TabletMaxWidth = 900;
 
     double lastKnownWidth = 0;
+
+    public FormFactorService()
+    {
+        
+    }
     
     public FormFactor CurrentFormFactor { get; private set; }
 

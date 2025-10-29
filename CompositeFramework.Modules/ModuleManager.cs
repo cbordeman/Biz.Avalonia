@@ -5,50 +5,18 @@ using CompositeFramework.Modules.Exceptions;
 
 namespace CompositeFramework.Modules;
 
-public static class ModularityInitializer
-{
-    /// <summary>
-    /// Registers the required types for Modularity.
-    /// Alternatively, you can register your own
-    /// IModuleManager and IModuleIndex implementations.
-    /// <br/>
-    /// Call with a type resolver, which typically invokes
-    /// something RegisterSingleton() on the container
-    /// of your choice.  The first argument will be an
-    /// interface, and the second is the implementing type.
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// ModularityInitializer
-    ///     .RegisterRequiredTypes((i, ct) => services.RegisterSingleton(t, ct));
-    /// </code>
-    /// </example>
-    public static void RegisterRequiredTypes(
-        Action<Type, Type> registerSingletonType)
-    {
-        registerSingletonType(typeof(IModuleManager), 
-            typeof(ModuleManager));
-        registerSingletonType(typeof(IModuleIndex), 
-            typeof(StandardModuleIndex));
-    }
-}
-
 public class ModuleManager : IModuleManager
 {
     readonly List<ModuleDataAndInstance> loadedModules = new();
-    readonly Func<Type, IModule> moduleFactory;
 
     public IModuleIndex ModuleIndex { get; }
     public IReadOnlyCollection<ModuleDataAndInstance>
         LoadedModules => loadedModules.AsReadOnly();
 
-    public ModuleManager(IModuleIndex moduleIndex,
-        Func<Type, IModule> moduleFactory)
+    public ModuleManager(
+        IModuleIndex moduleIndex)
     {
-        ArgumentChecker.ThrowIfNull(moduleFactory);
-
         ModuleIndex = moduleIndex;
-        this.moduleFactory = moduleFactory;
     }
 
     public async Task<ModuleDataAndInstance> LoadModuleAsync(string name)
@@ -130,7 +98,7 @@ public class ModuleManager : IModuleManager
         IModule? moduleInstance;
         try
         {
-            moduleInstance = moduleFactory(moduleType)!;
+            moduleInstance = (IModule)Activator.CreateInstance(moduleType)!;
             if (moduleInstance == null)
                 throw new Exception($"GetService({moduleType.FullName}) returned " +
                                     $"null for {moduleType.FullName}.");

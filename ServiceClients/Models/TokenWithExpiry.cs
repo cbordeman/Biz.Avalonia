@@ -1,3 +1,3 @@
 ﻿namespace ServiceClients.Models;
 
-public class TokenWithExpiry(string Token, DateTime Expiry);
+public record TokenWithExpiry(string Token, DateTime Expiry);

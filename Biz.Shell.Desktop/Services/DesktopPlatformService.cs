@@ -1,10 +1,10 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Biz.Desktop.Services;
+using Biz.Desktop.ViewModels;
+using Biz.Desktop.Views;
 using Biz.Models;
 using Biz.Shared.ClientLoginProviders;
-using Biz.Shell.Desktop.ViewModels;
-using Biz.Shell.Desktop.Views;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;

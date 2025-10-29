@@ -1,18 +1,13 @@
 using Biz.Shared.Logging;
 using Biz.Shared.Platform;
-using Biz.Shared.Services;
 using Biz.Shared.Services.Authentication;
 using Biz.Shared.Services.Config;
-using Biz.Shared.ViewModels;
-using Biz.Shared.Views;
+using CompositeFramework.Avalonia.Navigation;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
 using ShadUI;
-using IFormFactorService = Biz.Shared.Services.IFormFactorService;
 
 namespace Biz.Shared;
-
-using IFormFactorService = Services.IFormFactorService;
 
 public partial class App : Application
 {
@@ -60,11 +55,17 @@ public partial class App : Application
         PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
         // Register services.
+        SplatRegistrations.RegisterLazySingleton<IContextNavigationService, SectionNavigationService>();
         SplatRegistrations.RegisterLazySingleton<IConfigurationService, ConfigurationService>();
         SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
         SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
         SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
-
+        SplatRegistrations.RegisterLazySingleton<IFormFactorService, FormFactorService>();
+        SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
+        SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
+        SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
+        
+        ModularityInitializer.RegisterRequiredTypes();
         
         // Get configuration service to access maps API key
         var configService = Locator.Current.Resolve<IConfigurationService>();
@@ -75,6 +76,10 @@ public partial class App : Application
         // Lets you use ILogger<T>
         LoggingSetup.RegisterMicrosoftLoggerFactoryWithSplat();
 
+        var lf = Locator.Current.GetService<ILoggerFactory>();
+        var logger = lf!.CreateLogger<App>();
+        logger.LogInformation("App.Initialize: Starting up");
+        
         string servicesUrl;
         if (OperatingSystem.IsAndroid())
         {
@@ -89,24 +94,18 @@ public partial class App : Application
         else
             throw new InvalidOperationException("Unsupported platform.");
 
+        
+        
         ServiceClientRegistration.AddMainApiClients(servicesUrl);
 
         // ShadUI services
         SplatRegistrations.RegisterLazySingleton<ToastManager>();
-        
-        // Services
-        SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
-        SplatRegistrations.RegisterLazySingleton<IFormFactorService, ViewControlService>();
-        SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
-        SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
 
         // Views and ViewModels
-        SplatRegistrations.Register<MainSmallView>();
-        SplatRegistrations.Register<MainSmallViewModel>();
-        SplatRegistrations.Register<SettingsView>(); 
-        SplatRegistrations.Register<SettingsViewModel>(); 
-        SplatRegistrations.Register<SettingsSubView>();
-        SplatRegistrations.Register<SettingsSubViewModel>();
+        SplatRegistrations.RegisterLazySingleton<SettingsView>(); 
+        SplatRegistrations.RegisterLazySingleton<SettingsViewModel>(); 
+        SplatRegistrations.RegisterLazySingleton<SettingsSubView>();
+        SplatRegistrations.RegisterLazySingleton<SettingsSubViewModel>();
         
         // Accessibility
         Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);

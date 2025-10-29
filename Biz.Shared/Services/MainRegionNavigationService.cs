@@ -1,7 +1,6 @@
 ﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shared.Services.Authentication;
-using Biz.Shared.ViewModels;
 
 namespace Biz.Shared.Services;
 
@@ -59,7 +58,7 @@ public class MainNavigationService :
     {
         try
         {
-            if (!authenticationService.IsAuthenticated)
+            if (!await authenticationService.IsAuthenticated())
                 // Redirect to login page
                 await NavigateWithModuleAsync(
                     AccountManagementConstants.ModuleName,
@@ -124,7 +123,7 @@ public class MainNavigationService :
                     AccountManagementConstants.LoginView &&
                 args.Context.ViewName != 
                     AccountManagementConstants.TenantSelectionView &&
-                !AuthenticationService.IsAuthenticated)
+                !await AuthenticationService.IsAuthenticated())
             {
                 // Redirect to login page
                 await NavigateWithModuleAsync(

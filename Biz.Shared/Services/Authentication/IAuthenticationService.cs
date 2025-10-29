@@ -5,8 +5,8 @@ namespace Biz.Shared.Services.Authentication
     public interface IAuthenticationService
     {
         Task InitializeAsync();
-        bool IsAuthenticated { get; }
-        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)> 
+        Task<bool> IsAuthenticated();
+        Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
             LoginWithProviderAsync(
             LoginProvider providerEnum, CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);

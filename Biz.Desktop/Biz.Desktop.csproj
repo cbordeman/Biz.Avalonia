@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         
@@ -18,6 +18,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\MainLargeView.axaml" />
+      <AdditionalFiles Include="Views\MainWindow.axaml" />
     </ItemGroup>
 
 </Project>

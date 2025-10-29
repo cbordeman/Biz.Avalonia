@@ -3,7 +3,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Biz.Shared.Logging;
 
-public static class LoggingSetup
+public static class Log
 {
     private static ILoggerFactory? loggerFactory;
 
@@ -24,9 +24,7 @@ public static class LoggingSetup
                 .UseMicrosoftExtensionsLoggingWithWrappingFullLogger(loggerFactory);
 
             // Register the ILoggerFactory instance directly for later resolution
-#pragma warning disable CA2263
-            Locator.CurrentMutable.RegisterConstant(loggerFactory, typeof(ILoggerFactory));
-#pragma warning restore CA2263
+            Locator.CurrentMutable.RegisterConstant(loggerFactory);
         }
         catch (Exception e)
         {

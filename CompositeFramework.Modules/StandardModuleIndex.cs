@@ -15,7 +15,7 @@ public class StandardModuleIndex : IModuleIndex
 
     public IReadOnlyCollection<ModuleMetadata> Modules =>
         modules.AsReadOnly();
-
+    
     public virtual void AddModule(string name,
         string assemblyQualifiedType,
         params string[] dependencies)

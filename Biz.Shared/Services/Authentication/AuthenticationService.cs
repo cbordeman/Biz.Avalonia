@@ -17,7 +17,7 @@ public class AuthenticationService(IConfigurationService configurationService,
     LoginProviderRegistry loginProviderRegistry)
     : IAuthenticationService
 {
-    public AsyncEvent AuthenticationStateChanged { get; }= new();
+    public AsyncEvent AuthenticationStateChanged { get; } = new();
 
     public IClientLoginProvider? CurrentProvider { get; private set; }
     public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
@@ -39,30 +39,24 @@ public class AuthenticationService(IConfigurationService configurationService,
         }
     }
 
-    public bool IsAuthenticated
+    public async Task<bool> IsAuthenticated()
     {
-        get
-        {
-            if (authDataStore.Data == null)
-                authDataStore
-                    .RestoreAuthDataAsync()
-                    .LogExceptionsAndForget(
-                        "Restoring auth data",
-                        logger);
-            if (authDataStore.Data == null || authDataStore.Data.LoginProvider == null)
-                return false;
+        if (authDataStore.Data == null)
+            await authDataStore.RestoreAuthDataAsync();
+                
+        if (authDataStore.Data == null || authDataStore.Data.LoginProvider == null)
+            return false;
 
-            if (authDataStore.Data.Tenant == null || authDataStore.Data.Tenant.TenantId < 1)
-                return false;
+        if (authDataStore.Data.Tenant == null || authDataStore.Data.Tenant.TenantId < 1)
+            return false;
 
-            // If it's a Facebook token, validate it
-            // if (authDataStore.Data.LoginProvider == LoginProvider.Facebook)
-            //     return await ValidateFacebookTokenAsync(authDataStore.Data.AccessToken!);
+        // If it's a Facebook token, validate it
+        // if (authDataStore.Data.LoginProvider == LoginProvider.Facebook)
+        //     return await ValidateFacebookTokenAsync(authDataStore.Data.AccessToken!);
 
-            if (authDataStore.Data.ExpiresAt <= DateTimeOffset.UtcNow.AddMinutes(-5))
-                return false;
-            return true;
-        }
+        if (authDataStore.Data.ExpiresAt <= DateTimeOffset.UtcNow.AddMinutes(-5))
+            return false;
+        return true;
     }
 
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
@@ -102,7 +96,7 @@ public class AuthenticationService(IConfigurationService configurationService,
         LoginProvider providerEnum,
         CancellationToken ct)
     {
-        if (IsAuthenticated)
+        if (await IsAuthenticated())
             await LogoutAsync(false, false);
 
         try
@@ -330,7 +324,7 @@ public class AuthenticationService(IConfigurationService configurationService,
 
     public async Task<User?> GetCurrentUserAsync()
     {
-        if (!IsAuthenticated)
+        if (!await IsAuthenticated())
             return null;
 
         if (authDataStore.Data == null)

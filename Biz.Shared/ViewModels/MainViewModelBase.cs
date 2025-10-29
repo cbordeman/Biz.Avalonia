@@ -1,7 +1,5 @@
 ﻿using Biz.Modules.Dashboard.Core;
-using Biz.Shared.Services;
 using Biz.Shared.Services.Authentication;
-using Biz.Shared.Views;
 using ShadUI;
 
 namespace Biz.Shared.ViewModels;
@@ -64,10 +62,9 @@ public abstract class MainViewModelBase
         ToastManager = Locator.Current.Resolve<ToastManager>();
         
         AuthService = Locator.Current.Resolve<IAuthenticationService>();
-        AuthService.AuthenticationStateChanged.Subscribe(() =>
+        AuthService.AuthenticationStateChanged.Subscribe(async () =>
         {
-            IsLoggedIn = AuthService.IsAuthenticated;
-            return Task.CompletedTask;
+            IsLoggedIn = await AuthService.IsAuthenticated();
         });
 
         MainContentNavigationService =
@@ -167,7 +164,7 @@ public abstract class MainViewModelBase
     {
         try
         {
-            IsLoggedIn = AuthService.IsAuthenticated;
+            IsLoggedIn = await AuthService.IsAuthenticated();
 
             // This executes after regions are loaded.
             MainContentNavigationService.Initialize();

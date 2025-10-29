@@ -1,5 +1,5 @@
 ﻿namespace ServiceClients.Models;
 
-public class TokenResponse(
+public record TokenResponse(
     TokenWithExpiry AccessToken,
     TokenWithExpiry RefreshToken);

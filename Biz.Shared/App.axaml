@@ -6,9 +6,9 @@
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     RequestedThemeVariant="Dark">
 
-    <!-- <Application.DataTemplates> -->
-    <!--     <infrastructure:ViewLocator /> -->
-    <!-- </Application.DataTemplates> -->
+    <Application.DataTemplates>
+        <infrastructure:ViewLocator />
+    </Application.DataTemplates>
 
     <Application.Styles>
         <shadui:ShadTheme />
