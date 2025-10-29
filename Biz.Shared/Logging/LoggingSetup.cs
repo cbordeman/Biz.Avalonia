@@ -3,7 +3,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Biz.Shared.Logging;
 
-public static class Log
+public static class LoggingSetup
 {
     private static ILoggerFactory? loggerFactory;
 
