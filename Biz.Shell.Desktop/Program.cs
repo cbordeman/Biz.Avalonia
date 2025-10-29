@@ -119,11 +119,7 @@ sealed class Program
         }
         catch (Exception ex)
         {
-            var logger = GetLogger();
-            if (logger == null)
-                Debug.WriteLine($"Failed to send IPC message \"{uri}\": {ex.Message}");
-            else
-                Log.Logger.Error(ex, "Failed to send IPC message \"{Uri}\": {ExMessage}", uri, ex.Message);
+            Console.WriteLine($"Failed to send IPC message \"{uri}\": {ex.Message}");
         }
     }
 
@@ -161,29 +157,13 @@ sealed class Program
             }
             catch (Exception ex)
             {
-                var logger = GetLogger();
-                if (logger == null)
-                    Debug.WriteLine($"IPC server error: {ex}");
-                else
-                    Log.Logger.Error("IPC server error: {Exception}", ex);
-
+                Console.WriteLine($"IPC server error: {ex}");
+                
                 // Wait a bit before restarting listener
                 await Task.Delay(1000);
             }
         }
         // ReSharper disable once FunctionNeverReturns
-    }
-
-    static ILogger? GetLogger()
-    {
-        try
-        {
-            return Locator.Current.Resolve<ILogger<Program>>();
-        }
-        catch (Exception)
-        {
-            return null;
-        }
     }
 
     static async void PlatformHandleUri(string uriString)
@@ -196,11 +176,7 @@ sealed class Program
         }
         catch (Exception e)
         {
-            var logger = GetLogger();
-            if (logger == null)
-                Debug.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
-            else
-                Log.Logger.Error(e, $"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+            Console.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
         }
     }
 }

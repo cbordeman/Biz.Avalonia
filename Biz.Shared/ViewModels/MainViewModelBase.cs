@@ -175,8 +175,6 @@ public abstract class MainViewModelBase
         }
         catch (Exception e)
         {
-            var logger = Locator.Current
-                .Resolve<ILogger<MainViewModelBase>>();
             Log.Logger.Error(e, 
                 "In {ClassName}.{MethodName}: {EMessage}", 
                 nameof(MainViewModelBase), nameof(OnViewLoaded), e.Message);

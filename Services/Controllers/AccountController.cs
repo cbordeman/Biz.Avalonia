@@ -5,6 +5,7 @@ using Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Serilog.Events;
 using ServiceClients.Models;
 using Services.Auth;
 using Services.Auth.Jwt;
@@ -25,8 +26,7 @@ namespace Services.Controllers;
 public class AccountController(UserManager<AppUser> userManager,
     JwtTokenIssuer jwtTokService,
     IDbContextFactory<AppDbContext> dbContextFactory,
-    IEmailService emailService,
-    ILogger<AccountController> logger)
+    IEmailService emailService)
     : ControllerBase, IAccountApi
 {
     [HttpPost(IAccountApi.LoginPath)]
@@ -152,7 +152,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in updateResult.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogCritical(
+            Log.Logger.Fatal(
                 "2 Failed to update username = email during email registration confirmation {Username} = {Email}.", 
                 oldUserName, email);
         }
@@ -218,7 +218,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in updateResult.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            logger.LogCritical(
+            Log.Logger.Fatal(
                 "5 Failed to update username = email during email change confirmation {Username} = {Email}.", 
                 oldUserName, email);
         }

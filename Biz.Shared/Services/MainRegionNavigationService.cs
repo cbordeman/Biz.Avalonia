@@ -11,7 +11,6 @@ public class MainNavigationService :
     readonly IContextNavigationService navigationService;
     IAuthenticationService AuthenticationService =>
         Locator.Current.Resolve<IAuthenticationService>();
-    readonly ILogger<MainNavigationService> logger;
     readonly IAuthenticationService authenticationService;
     readonly IModuleManager moduleManager;
 
@@ -25,12 +24,10 @@ public class MainNavigationService :
     public AsyncEvent<NotifyPageChangedArgs> PageChanged { get; } = new();
 
     public MainNavigationService(
-        ILogger<MainNavigationService> logger,
         IAuthenticationService authenticationService,
         IModuleManager moduleManager,
         IContextNavigationService navigationService)
     {
-        this.logger = logger;
         this.authenticationService = authenticationService;
         this.moduleManager = moduleManager;
         this.navigationService = navigationService;
