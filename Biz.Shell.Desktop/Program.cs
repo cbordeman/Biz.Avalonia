@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Threading;
@@ -9,9 +8,7 @@ using Biz.Shared.Platform;
 using Biz.Shell.Desktop.Services;
 using CompositeFramework.Core.Extensions;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Biz.Shell.Desktop;
 
@@ -28,6 +25,8 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        ClientLogging.Initialize();
+        
         try
         {
             // ReSharper disable once UnusedVariable
@@ -63,7 +62,7 @@ sealed class Program
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Log.Logger.Error(e, "Error during startup: {Message}.", e.Message);
             throw;
         }
     }
@@ -117,9 +116,9 @@ sealed class Program
             writer.WriteLine(uri);
             writer.Flush();
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine($"Failed to send IPC message \"{uri}\": {ex.Message}");
+            Log.Logger.Error(e, $"Failed to send IPC message \"{uri}\": {e.Message}");
         }
     }
 
@@ -155,9 +154,9 @@ sealed class Program
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine($"IPC server error: {ex}");
+                Log.Logger.Error(e, "IPC server error: {Message}.", e.Message);
                 
                 // Wait a bit before restarting listener
                 await Task.Delay(1000);
@@ -176,7 +175,8 @@ sealed class Program
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Failed to handle URI {uriString}: {e.GetType().Name}: {e.Message}");
+            Log.Logger.Error(e, "Failed to handle URI {uriString}: {ExceptionType}: {Message}",
+                uriString, e.GetType().Name, e.Message);
         }
     }
 }

@@ -72,8 +72,6 @@ public partial class App : Application
 
         //var mapsApiKey = configService.Maps.BingMapsApiKey;
 
-        ClientLogging.Initialize();
-
         string servicesUrl;
         if (OperatingSystem.IsAndroid())
         {

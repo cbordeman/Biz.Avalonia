@@ -26,12 +26,22 @@ public class MainActivity : AvaloniaMainActivity<App>
     
     protected override void OnCreate(Bundle? savedInstanceState)
     {
-        PlatformHelper.PlatformService = new AndroidPlatformService();
-        GetActivity = () => this;
+        ClientLogging.Initialize();
+
+        try
+        {
+            PlatformHelper.PlatformService = new AndroidPlatformService();
+            GetActivity = () => this;
         
-        Context = this.ApplicationContext!;
+            Context = this.ApplicationContext!;
         
-        base.OnCreate(savedInstanceState);
+            base.OnCreate(savedInstanceState);
+        }
+        catch (Exception e)
+        {
+            Log.Logger.Error(e, "Error during startup: {Message}.", e.Message);
+            throw;
+        }
     }
 
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
