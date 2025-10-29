@@ -15,7 +15,7 @@ public class StandardModuleIndex : IModuleIndex
 
     public IReadOnlyCollection<ModuleMetadata> Modules =>
         modules.AsReadOnly();
-    
+
     public virtual void AddModule(string name,
         string assemblyQualifiedType,
         params string[] dependencies)
@@ -41,30 +41,28 @@ public class StandardModuleIndex : IModuleIndex
 
         // Does not load assemblies into memory or
         // initialize them.
-        await Task.Run(() =>
+        var directory = Path.GetDirectoryName(fileSpec)!;
+        var fulldirectory = Path.GetFullPath(directory);
+        if (!Directory.Exists(directory))
+            throw new DirectoryNotFoundException(directory);
+        var pattern = Path.GetFileName(fileSpec);
+        if (string.IsNullOrWhiteSpace(pattern))
+            throw new ArgumentException(
+                "No file pattern specified.  " +
+                "Should match only module DLLs, " +
+                "such as *.Modules.*.dll");
+
+        foreach (string file in Directory.GetFiles(directory))
         {
-            var directory = Path.GetDirectoryName(fileSpec);
-            if (!Directory.Exists(directory))
-                throw new DirectoryNotFoundException(directory);
-            var pattern = Path.GetFileName(fileSpec);
-            if (string.IsNullOrWhiteSpace(pattern))
-                throw new ArgumentException(
-                    "No file pattern specified.  " +
-                    "Should match only module DLLs, " +
-                    "such as *.Modules.*.dll");
+            var filePath = Path.Combine(directory, file);
 
-            foreach (string file in Directory.GetFiles(directory))
-            {
-                var filePath = Path.Combine(directory, file);
+            var moduleMetadata = GetAssemblyMetadata(filePath);
 
-                var moduleMetadata = GetAssemblyMetadata(filePath);
-
-                if (modules.Any(m => m.Name == moduleMetadata.Name))
-                    throw new ModuleAlreadyAddedException(
-                        moduleMetadata.Name);
-                modules.Add(moduleMetadata);
-            }
-        });
+            if (modules.Any(m => m.Name == moduleMetadata.Name))
+                throw new ModuleAlreadyAddedException(
+                    moduleMetadata.Name);
+            modules.Add(moduleMetadata);
+        }
     }
 
     protected virtual ModuleMetadata GetAssemblyMetadata(string filePath)
@@ -81,7 +79,7 @@ public class StandardModuleIndex : IModuleIndex
             throw new AssemblyDoesNotContainModuleException(filePath);
         var moduleAttribute =
             moduleClass.CustomAttributes.FirstOrDefault(
-                a => a.AttributeType.GetType() == 
+                a => a.AttributeType.GetType() ==
                      typeof(ModuleAttribute));
         if (moduleAttribute == null)
             throw new MissingModuleAttributeException(moduleClass.Name);
@@ -98,7 +96,11 @@ public class StandardModuleIndex : IModuleIndex
             throw new MissingModuleAttributeException(moduleClass.Name);
         var aqn = GetAssemblyQualifiedName(moduleClass);
         var moduleMetadata = new ModuleMetadata(
-            moduleName, filePath, aqn, false, moduleDependencies);
+            moduleName,
+            filePath,
+            aqn,
+            false,
+            moduleDependencies);
 
         return moduleMetadata;
     }

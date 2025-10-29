@@ -16,6 +16,6 @@ public static class ObjectExtensions
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string Serialize(this object obj) =>
+    public static string SerializeToJson(this object obj) =>
         JsonSerializer.Serialize(obj, JsonSerializationOptions);
 }

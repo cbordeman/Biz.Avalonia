@@ -36,6 +36,24 @@ public class DesktopPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<MainLargeView>();
         SplatRegistrations.RegisterLazySingleton<MainLargeViewModel>();
     }
+    
+    public void InitializePlatform()
+    {
+        // ShadUI dialog registration.
+        var dialogService = Locator.Current.GetService<DialogManager>();
+        //dialogService.Register<LoginContent, LoginViewModel>();
+        //dialogService.Register<AboutContent, AboutViewModel>();
+
+        var authProviderRegistry = Locator.Current.GetService
+            <LoginProviderRegistry>();
+        authProviderRegistry!.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
+            LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
+    }
+
+    /// <summary>
+    /// Called last, must create the
+    /// main view and assign it DataContext.
+    /// </summary>
     public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
     {
         if (lifetime is 
@@ -53,18 +71,6 @@ public class DesktopPlatformService : IPlatformService
             throw new InvalidOperationException("Wrong platform.");
     }
 
-    public void InitializePlatform()
-    {
-        // ShadUI dialog registration.
-        var dialogService = Locator.Current.GetService<DialogManager>();
-        //dialogService.Register<LoginContent, LoginViewModel>();
-        //dialogService.Register<AboutContent, AboutViewModel>();
-        
-        var authProviderRegistry = Locator.Current.GetService
-            <LoginProviderRegistry>();
-        authProviderRegistry!.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
-            LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
-    }
     
     void DisableAvaloniaDataAnnotationValidation()
     {

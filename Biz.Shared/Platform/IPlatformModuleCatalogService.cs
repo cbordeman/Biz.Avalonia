@@ -2,5 +2,5 @@
 
 public interface IPlatformModuleCatalogService
 {
-    void ConfigureModuleCatalog(IModuleIndex moduleIndex);
+    void ConfigureModuleIndex();
 }

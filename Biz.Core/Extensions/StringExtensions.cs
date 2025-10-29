@@ -8,7 +8,7 @@ public static class StringExtensions
     /// Deserializes from Json.
     /// </summary>
     /// <param name="str"></param>
-    public static T? Deserialize<T>(this string str)
+    public static T? DeserializeJson<T>(this string str)
     {
         return JsonSerializer.Deserialize<T>(str);
     }

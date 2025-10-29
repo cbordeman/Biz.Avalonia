@@ -123,7 +123,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ConfirmRegisteredEmail(string email, string token)
     {
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByEmailAsync(email);
         if (user == null)
@@ -140,7 +140,7 @@ public class AccountController(UserManager<AppUser> userManager,
                 ModelState.AddModelError(string.Empty, error.Description);
             Log.Logger.Warning(
                 "1 Failed email confirmation {Email}: {Model}.", 
-                email, ModelState.Serialize());
+                email, ModelState.SerializeToJson());
             return;
         }
 
@@ -162,7 +162,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ChangeUserEmail([FromBody] ChangeEmailRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -178,7 +178,7 @@ public class AccountController(UserManager<AppUser> userManager,
                 ModelState.AddModelError(string.Empty, error.Description);
             Log.Logger.Warning(
                 "3 Failed change email {ModelUserId} {ModelNewEmail}: {Model}.", 
-                model.UserId, model.NewEmail, ModelState.Serialize());
+                model.UserId, model.NewEmail, ModelState.SerializeToJson());
         }
     }
 
@@ -206,7 +206,7 @@ public class AccountController(UserManager<AppUser> userManager,
                 ModelState.AddModelError(string.Empty, error.Description);
             Log.Logger.Warning(
                 "4 Failed change email {UserId} {NewEmail}: {Model}.", 
-                userId, email, ModelState.Serialize());
+                userId, email, ModelState.SerializeToJson());
             return;
         }
 
@@ -230,7 +230,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ChangeUserPassword([FromBody] ChangePasswordRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -242,7 +242,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
         }
     }
 
@@ -250,7 +250,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ChangeName([FromBody] ChangeNameRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -264,7 +264,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ChangePhone([FromBody] ChangePhoneRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByIdAsync(model.UserId!);
         if (user == null)
@@ -282,7 +282,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ForgotPassword([FromBody] ForgotPasswordRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByEmailAsync(model.Email!);
         if (user == null || !await userManager.IsEmailConfirmedAsync(user))
@@ -307,7 +307,7 @@ public class AccountController(UserManager<AppUser> userManager,
     public async Task ResetPassword([FromBody] ResetPasswordRequest model)
     {
         if (!ModelState.IsValid)
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
 
         var user = await userManager.FindByEmailAsync(model.Email!);
         // To prevent email enumeration, treat non-existent user same as valid
@@ -323,7 +323,7 @@ public class AccountController(UserManager<AppUser> userManager,
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-            throw new BadHttpRequestException(ModelState.Serialize());
+            throw new BadHttpRequestException(ModelState.SerializeToJson());
         }
     }
 

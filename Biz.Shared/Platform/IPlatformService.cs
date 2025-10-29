@@ -19,5 +19,4 @@ public interface IPlatformService
     /// main view and assign it DataContext.
     /// </summary>
     void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime);
-
 }

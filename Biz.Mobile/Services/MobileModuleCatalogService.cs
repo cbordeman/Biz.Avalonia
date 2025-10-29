@@ -4,19 +4,24 @@ using Biz.Modules.Dashboard;
 using Biz.Modules.Dashboard.Core;
 using Biz.Shared.Platform;
 using CompositeFramework.Modules;
+using Splat;
 
 namespace Biz.Mobile.Services;
 
 public class MobileModuleCatalogService : IPlatformModuleCatalogService
 {
-    public void ConfigureModuleCatalog(IModuleIndex moduleCatalog)
+    public void ConfigureModuleIndex()
     {
+        var moduleIndex = Locator.Current.GetService<IModuleIndex>();
+        if (moduleIndex is null)
+            return;
+        
         // The call to AddModule() is for the non-directory loaded
         // scenario.  Only desktop supports directory loading.
-        moduleCatalog.AddModule(
+        moduleIndex.AddModule(
             DashboardConstants.ModuleName,
             typeof(DashboardModule).AssemblyQualifiedName!);
-        moduleCatalog.AddModule(
+        moduleIndex.AddModule(
             AccountManagementConstants.ModuleName,
             typeof(AccountManagementModule).AssemblyQualifiedName!);
     }

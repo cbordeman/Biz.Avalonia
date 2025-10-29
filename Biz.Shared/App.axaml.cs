@@ -17,6 +17,11 @@ public partial class App : Application
             AvaloniaXamlLoader.Load(this);
 
             PerformRegistrations();
+            
+            // initialize module index.
+            var moduleCatalogService = Locator.Current.GetService<IPlatformModuleCatalogService>();
+            moduleCatalogService?.ConfigureModuleIndex();
+            
             PlatformHelper.PlatformService?.InitializePlatform();
 
             var authService = Locator.Current.GetService<IAuthenticationService>();
@@ -43,6 +48,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         PlatformHelper.PlatformService?.OnFrameworkInitializationCompleted(ApplicationLifetime);
+        
         base.OnFrameworkInitializationCompleted();
     }
 
