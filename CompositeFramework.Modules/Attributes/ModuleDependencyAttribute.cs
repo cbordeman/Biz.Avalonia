@@ -12,6 +12,9 @@ namespace CompositeFramework.Modules.Attributes;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ModuleDependencyAttribute : Attribute
 {
+    /// <summary>
+    /// Name of the dependent module.
+    /// </summary>
     public string DependentModuleName { get; }
     
     public ModuleDependencyAttribute(string dependentModuleName)

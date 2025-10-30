@@ -7,7 +7,7 @@ public class AssemblyDoesNotContainModuleException : Exception
     public string FilePath { get; }
     
     public AssemblyDoesNotContainModuleException(string filePath) : 
-        base($"Assembly {filePath} " +
-             $"doesn't contain any classes that derive from IModule.") =>
+        base($"Assembly {Path.GetFileNameWithoutExtension(filePath)} " +
+             $"doesn't contain any classes that inherit from IModule.") =>
         FilePath = filePath;
 }

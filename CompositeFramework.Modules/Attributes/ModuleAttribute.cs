@@ -10,6 +10,9 @@ namespace CompositeFramework.Modules.Attributes;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class ModuleAttribute : Attribute
 {
+    /// <summary>
+    /// The name of the module.
+    /// </summary>   
     public string Name { get; }
 
     public ModuleAttribute(string name)
