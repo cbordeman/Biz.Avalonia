@@ -25,15 +25,16 @@ public interface IModuleIndex
         params string[] dependencies);
     
     /// <summary>
-    /// Add all modules that fit the given file spec and
-    /// directory on disk.  Can be called multiple times.
-    /// Uses the [Module] and [ModuleDependency] attributes
-    /// on your IModule class.
+    /// Add all modules that fit the given file spec in a location on disk.
+    /// Can be called multiple times, and supports exclude specs.
+    /// Requires the [Module] and [ModuleDependency] attributes
+    /// be present on your IModule class.
     /// </summary>
     /// <example>
     /// <code>
-    /// AddModuleFiles("../Modules/*.Module.dll");
+    /// AddModuleFiles("../Modules",
+    ///     includeSpec: "*.Module.dll", excludeSpec: ["*.Core.dll"]);
     /// </code>
     /// </example>
-    Task AddModuleFiles(string fileSpec);
+    IEnumerable<string> AddModuleFilesDirectory(string rootDir, string includeSpec, params IEnumerable<string> excludeSpecs);
 }

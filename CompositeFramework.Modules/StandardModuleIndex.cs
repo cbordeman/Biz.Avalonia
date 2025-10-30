@@ -1,6 +1,8 @@
 ﻿using CompositeFramework.Core;
 using CompositeFramework.Modules.Attributes;
 using CompositeFramework.Modules.Exceptions;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using Mono.Cecil;
 
 namespace CompositeFramework.Modules;
@@ -35,26 +37,31 @@ public class StandardModuleIndex : IModuleIndex
         modules.Add(moduleData);
     }
 
-    public async virtual Task AddModuleFiles(string fileSpec)
+    public virtual IEnumerable<string> AddModuleFilesDirectory(
+        string rootDir, 
+        string includeFileSpec, 
+        params IEnumerable<string> excludeFileSpecs)
     {
-        ArgumentChecker.ThrowIfNullOrWhiteSpace(fileSpec);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(rootDir);
+        ArgumentChecker.ThrowIfNullOrWhiteSpace(includeFileSpec);
 
         // Does not load assemblies into memory or
         // initialize them.
-        var directory = Path.GetDirectoryName(fileSpec)!;
-        var fulldirectory = Path.GetFullPath(directory);
-        if (!Directory.Exists(directory))
-            throw new DirectoryNotFoundException(directory);
-        var pattern = Path.GetFileName(fileSpec);
-        if (string.IsNullOrWhiteSpace(pattern))
-            throw new ArgumentException(
-                "No file pattern specified.  " +
-                "Should match only module DLLs, " +
-                "such as *.Modules.*.dll");
-
-        foreach (string file in Directory.GetFiles(directory))
+        var fullDirectory = Path.GetFullPath(rootDir);
+        var dirInfo = new DirectoryInfo(fullDirectory);
+        if (!dirInfo.Exists)
+            throw new DirectoryNotFoundException(fullDirectory);
+        
+        var matcher = new Matcher(StringComparison.OrdinalIgnoreCase);
+        matcher.AddInclude(includeFileSpec);
+        foreach (var excludeSpec in excludeFileSpecs)
+            matcher.AddExclude(excludeSpec);
+        var result = matcher.Execute(new DirectoryInfoWrapper(dirInfo));
+        var matchedFiles = result.Files.Select(file => Path.Combine(rootDir, file.Path));
+        
+        foreach (string file in matchedFiles)
         {
-            var filePath = Path.Combine(directory, file);
+            var filePath = Path.Combine(fullDirectory, file);
 
             var moduleMetadata = GetAssemblyMetadata(filePath);
 
@@ -63,46 +70,66 @@ public class StandardModuleIndex : IModuleIndex
                     moduleMetadata.Name);
             modules.Add(moduleMetadata);
         }
+        return matchedFiles;
     }
 
     protected virtual ModuleMetadata GetAssemblyMetadata(string filePath)
     {
-        // Load assembly in reflection-only context inside this AppDomain
-        var assembly = AssemblyDefinition.ReadAssembly(filePath);
-
-        // Find the first IModule.
-        var moduleClass = assembly.MainModule.Types.FirstOrDefault(type =>
-            type.IsClass &&
-            type.Interfaces.Any(i =>
-                i.InterfaceType.Name == typeof(IModule).FullName));
-        if (moduleClass == null)
-            throw new AssemblyDoesNotContainModuleException(filePath);
-        var moduleAttribute =
-            moduleClass.CustomAttributes.FirstOrDefault(
+        AssemblyDefinition? assembly;
+        TypeDefinition? moduleClass;
+        CustomAttribute? moduleAttribute;
+        string[] moduleDependencies;
+        string moduleName;
+        string aqn;
+        ModuleMetadata moduleMetadata;
+        try
+        {
+            // Load assembly metadata in reflection-only context
+            // using Mono.Cecil. 
+            assembly = AssemblyDefinition.ReadAssembly(filePath);
+            
+            // Find the first IModule.
+            moduleClass = null;
+            foreach (var type in assembly.MainModule.Types)
+            {
+                if (type.IsClass && type.Interfaces.Any(i => i.InterfaceType.Name == typeof(IModule).FullName))
+                {
+                    moduleClass = type;
+                    break;
+                }
+            }
+            if (moduleClass == null)
+                throw new AssemblyDoesNotContainModuleException(filePath);
+            moduleAttribute = moduleClass.CustomAttributes.FirstOrDefault(
                 a => a.AttributeType.GetType() ==
                      typeof(ModuleAttribute));
-        if (moduleAttribute == null)
-            throw new MissingModuleAttributeException(moduleClass.Name);
-        var moduleDependencies = moduleClass
-            .CustomAttributes.Where(a =>
-                a.AttributeType.GetType() ==
-                typeof(ModuleDependencyAttribute))
-            .Select(ca => (string)ReadCustomAttributeProperty(ca,
-                nameof(ModuleDependencyAttribute.DependentModuleName))!)
-            .ToArray();
-        var moduleName = (string)ReadCustomAttributeProperty(moduleAttribute,
-            nameof(ModuleAttribute.Name))!;
-        if (string.IsNullOrWhiteSpace(moduleName))
-            throw new MissingModuleAttributeException(moduleClass.Name);
-        var aqn = GetAssemblyQualifiedName(moduleClass);
-        var moduleMetadata = new ModuleMetadata(
-            moduleName,
-            filePath,
-            aqn,
-            false,
-            moduleDependencies);
+            if (moduleAttribute == null)
+                throw new MissingModuleAttributeException(moduleClass.Name);
+            moduleDependencies = moduleClass
+                .CustomAttributes.Where(a =>
+                    a.AttributeType.GetType() ==
+                    typeof(ModuleDependencyAttribute))
+                .Select(ca => (string)ReadCustomAttributeProperty(ca,
+                    nameof(ModuleDependencyAttribute.DependentModuleName))!)
+                .ToArray();
+            moduleName = (string)ReadCustomAttributeProperty(moduleAttribute,
+                nameof(ModuleAttribute.Name))!;
+            if (string.IsNullOrWhiteSpace(moduleName))
+                throw new MissingModuleAttributeException(moduleClass.Name);
+            aqn = GetAssemblyQualifiedName(moduleClass);
+            moduleMetadata = new ModuleMetadata(
+                moduleName,
+                filePath,
+                aqn,
+                false,
+                moduleDependencies);
 
-        return moduleMetadata;
+            return moduleMetadata;
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
     }
 
     static object? ReadCustomAttributeProperty(CustomAttribute ca, string propertyName)

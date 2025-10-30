@@ -39,7 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj"/>
+        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
         <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj"/>
         <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj"/>
         <ProjectReference Include="..\CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj"/>
