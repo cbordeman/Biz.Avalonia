@@ -5,4 +5,4 @@
 /// </summary>
 /// <param name="Name"></param>
 /// <param name="Value"></param>
-public record NavParam(string Name, object Value);
+public record NavParam(string Name, object? Value);

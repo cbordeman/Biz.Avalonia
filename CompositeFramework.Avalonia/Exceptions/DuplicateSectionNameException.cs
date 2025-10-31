@@ -1,6 +1,4 @@
-﻿using Avalonia.Controls;
-
-namespace CompositeFramework.Avalonia.Exceptions;
+﻿namespace CompositeFramework.Avalonia.Exceptions;
  
 public class DuplicateSectionNameException(Control control,
     string duplicateSectionName) 

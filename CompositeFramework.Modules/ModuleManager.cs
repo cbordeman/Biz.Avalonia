@@ -65,9 +65,9 @@ public class ModuleManager : IModuleManager
             ArgumentChecker.ThrowIfNullOrWhiteSpace(moduleMetadata.FilePath);
             if (!File.Exists(moduleMetadata.FilePath!))
                 throw new FileNotFoundException(moduleMetadata.FilePath);
+            
             try
             {
-                moduleMetadata.State = ModuleState.LoadingSelf;
                 Assembly.LoadFrom(moduleMetadata.FilePath!);
             }
             catch (Exception e)

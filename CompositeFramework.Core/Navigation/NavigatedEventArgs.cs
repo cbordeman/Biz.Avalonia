@@ -1,4 +1,7 @@
 ﻿namespace CompositeFramework.Core.Navigation;
 
 public record NavigatedEventArgs(
-    NavigationResult Result, string Error, NavigationContext Context);
+    NavigationResult Result,
+    string LocationName,
+    Exception? Exception, 
+    NavigationContext Context);

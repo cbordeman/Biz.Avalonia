@@ -8,22 +8,7 @@ public class NavigationContext
     public NavitationDirection Direction { get; init; }
 
     /// <summary>
-    /// The location.  Must be set;
+    /// The location.  May be null if couldn't create.
     /// </summary>
-    public ILocation Location { get; init; } = null!;
-
-    /// <summary>
-    /// Used to pass values during navigation.
-    /// </summary>
-    public Dictionary<string, object> Parameters { get; init; } = null!;
-
-    // /// <summary>
-    // /// The actual view instance.
-    // /// </summary>
-    // public object View { get; init; }
-    
-    /// <summary>
-    /// The view name the location is registered as. 
-    /// </summary>
-    public string ViewName { get; init; } = null!;
+    public ILocation? Location { get; set; }
 }

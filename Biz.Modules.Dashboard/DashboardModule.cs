@@ -16,7 +16,7 @@ public class DashboardModule : IModule
     {
         var contextNavigationService = 
             Locator.Current.GetService<IContextNavigationService>();
-        contextNavigationService!.RegisterForNavigation<DashboardView, DashboardViewModel>(
+        contextNavigationService!.RegisterForNavigation<DashboardViewModel, DashboardView>(
             DashboardConstants.DashboardView);
     }
     

@@ -2,25 +2,19 @@
 
 public enum NavigationResult
 {
-    Success = 0,
+    Success,
     
     /// <summary>
-    /// If OperationCanceledException was thrown during
-    /// IContextNavigationService.NavigateToAsync() or by
-    /// the methods in INavigationAware.
-    /// </summary>
-    Cancelled = 1,
-    
-    /// <summary>
-    /// Value when IAllowNavigation.CanNavigateToAsync
+    /// Value when ILocation.OnNavigatingFromAsync()
+    /// returned false.
     /// returns false.
     /// </summary>
-    NotAllowed = 2,
+    Cancelled,
     
     /// <summary>
     /// When an exception other than OperationCancelledException
     /// is thrown during
     /// IContextNavigationService.NavigateToAsync().
     /// </summary>
-    Error = 3
+    Error
 }

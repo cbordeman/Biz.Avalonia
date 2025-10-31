@@ -78,7 +78,7 @@ public class StandardModuleIndex : IModuleIndex
             }
             return matchedFiles;            
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // Catch for debug
             throw;
@@ -131,8 +131,9 @@ public class StandardModuleIndex : IModuleIndex
 
             return moduleMetadata;
         }
-        catch (Exception e)
+        catch (Exception)
         {
+            // Catch for debug.
             throw;
         }
     }

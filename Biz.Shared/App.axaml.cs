@@ -1,7 +1,9 @@
 using Biz.Shared.Platform;
 using Biz.Shared.Services.Authentication;
 using Biz.Shared.Services.Config;
+using CompositeFramework.Avalonia;
 using CompositeFramework.Avalonia.Navigation;
+using CompositeFramework.Avalonia.Sections;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
 using ShadUI;
@@ -23,7 +25,7 @@ public partial class App : Application
             moduleCatalogService?.ConfigureModuleIndex();
             
             PlatformHelper.PlatformService?.InitializePlatform();
-
+            
             var authService = Locator.Current.GetService<IAuthenticationService>();
             Debug.Assert(authService != null);
             authService
@@ -54,13 +56,15 @@ public partial class App : Application
 
     static void PerformRegistrations()
     {
+        // Register CompositeFramework.Avalonia services.
+        CompositeAvaloniaInitializer.RegisterDefaultServices();
+        
         SplatRegistrations.SetupIOC();
         
         // Platform-specific registrations
         PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
-        // Register services.
-        SplatRegistrations.RegisterLazySingleton<IContextNavigationService, SectionNavigationService>();
+        // Register our services.
         SplatRegistrations.RegisterLazySingleton<IConfigurationService, ConfigurationService>();
         SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
         SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();

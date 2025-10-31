@@ -32,17 +32,15 @@ public class SettingsSubViewModel : PageViewModelBase
     public override Task OnNavigatedToAsync(NavigationContext ctx)
     {
         // Get and display our parameters
-        MessageText = ctx.Parameters.GetStringOrEmpty("key1");
-        MessageNumber = ctx.Parameters.GetStructOrDefault<int>("key1");
+        MessageText = NavigationParameters.GetStringOrEmpty("key1");
+        MessageNumber = NavigationParameters.GetValueOrDefault<int>("key1");
         
         return Task.CompletedTask;
     }
 
     public override Task<bool> CanNavigateToAsync(NavigationContext ctx)
     {
-        // Navigation permission sample:
-        return Task.FromResult(ctx.Parameters.ContainsKey("key1") &&
-                               ctx.Parameters.ContainsKey("key2"));
+        return Task.FromResult(true);
     }
     
     public override string Area => "Settings.Sub1";

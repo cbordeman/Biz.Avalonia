@@ -35,4 +35,9 @@ public class ModuleMetadata
         State = isInMemory ? ModuleState.InMemory : ModuleState.NotLoaded;
         Dependencies = dependencies;
     }
+
+    public override string ToString()
+    {
+        return $"{Name} ({State})";
+    }
 }

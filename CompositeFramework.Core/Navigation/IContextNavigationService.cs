@@ -23,44 +23,50 @@ public interface IContextNavigationService
     AsyncEvent<NavigatedEventArgs> Navigated { get; }
     
     /// <summary>
-    /// Navigates to a new location.
+    /// Navigates to a new location.  Clears forward history.
     /// </summary>
     /// <param name="location"></param>
     /// <param name="parameters"></param>
     /// <returns>True if navigation was successful and not
     /// cancelled or disallowed.</returns>
-    Task<bool> NavigateToAsync(string location, params NavParam[] parameters);
+    Task<NavigationResult> NavigateToAsync(string location, params NavParam[] parameters);
     
     /// <summary>
     /// Navigates backward.
     /// </summary>
     /// <param name="toLocation"></param>
     /// <returns></returns>
-    Task<bool> GoBackAsync(ILocation? toLocation = null);
+    Task<NavigationResult> GoBackAsync(ILocation? toLocation = null);
+    Task<NavigationResult> GoForwardAsync(ILocation? toLocation = null);
     
     /// <summary>
-    /// Clears all locations from history.
+    /// Clears all locations from history but the
+    /// current location.
     /// </summary>
     void ClearHistory();
 
     /// <summary>
-    /// All locations navigated to where
-    /// INavigationAware.AddToHistory is true.
+    /// Clears all locations from forward history.
+    /// </summary>
+    void ClearForwardHistory();
+    
+    /// <summary>
+    /// All locations navigated to where AddToHistory is true.
     /// </summary>
     IReadOnlyCollection<ILocation> History { get; }
     
     /// <summary>
-    /// Index of the current location.  -1 if no location.
+    /// Forward history where AddToHistory is true.
+    /// Wiped on forward navigation to a new location.
     /// </summary>
-    int CurrentLocationIndex { get; }
-
+    IReadOnlyCollection<ILocation> ForwardHistory { get; }
+    
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
 
     void RegisterForNavigation<TViewModel, TView>
         (string? locationName = null)
-        where TViewModel : INotifyPropertyChanged
-        where TView : ILocation; 
+        where TViewModel : INotifyPropertyChanged, ILocation;
 
-    IReadOnlyDictionary<string, ViewModelViewBinding> Registrations { get; }
+    IReadOnlyDictionary<string, ViewModelLocationBinding> Registrations { get; }
 }

@@ -78,65 +78,75 @@ public class MainNavigationService :
 
     async Task Navigated(NavigatedEventArgs args)
     {
-        if (args.Result != NavigationResult.Success)
+        switch (args.Result)
         {
-            if (args.Result == NavigationResult.Error)
-                Log.Logger.Error(args.Error, $"Navigation failed: " +
-                                            $"{args.Context.ViewName}");
-            return;
-        }
-
-        try
-        {
-            args.Context.Location.ShouldNotBeNull();
+            case NavigationResult.Error:
+                if (args.Result == NavigationResult.Error)
+                    Log.Logger.Error(args.Exception, 
+                        $"Navigation failed: " + 
+                        $"{args.LocationName}");
+                return;
+        
+            case NavigationResult.Cancelled:
+                return;
             
-            CurrentPage = args.Context.ViewName;
-            CurrentArea = args.Context.Location.Area;
+            case NavigationResult.Success:
+                try
+                {
+                    args.Context.ShouldNotBeNull();
+                    args.Context.Location.ShouldNotBeNull();
+            
+                    CurrentPage = args.LocationName;
+                    CurrentArea = args.Context.Location.Area;
 
-            if (args.Context.Location is not PageViewModelBase vm)
-                throw new InvalidOperationException(
-                    "Page DataContext must be derived from PageViewModelBase");
-            else
-                await PageChanged.PublishSequentiallyAsync(
-                    new NotifyPageChangedArgs(CurrentArea!, vm));
-        }
-        catch (Exception e)
-        {
-            Log.Logger.Error(
-                e,
-                "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
-                nameof(MainNavigationService),
-                nameof(Navigated),
-                args.Context.ViewName,
-                e.Message);
-        }
+                    if (args.Context.Location is not PageViewModelBase vm)
+                        throw new InvalidOperationException(
+                            "Page DataContext must be derived from PageViewModelBase");
+                    else
+                        await PageChanged.PublishSequentiallyAsync(
+                            new NotifyPageChangedArgs(CurrentArea!, vm));
+                }
+                catch (Exception e)
+                {
+                    Log.Logger.Error(
+                        e,
+                        "In (1) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
+                        nameof(MainNavigationService),
+                        nameof(Navigated),
+                        args.LocationName,
+                        e.Message);
+                }
 
-        try
-        {
-            // We must re-check the page we're still authenticated on
-            // every navigation, even though we do check this on
-            // authentication events in AuthenticationService.
-            if (args.Context.ViewName != 
-                    AccountManagementConstants.LoginView &&
-                args.Context.ViewName != 
-                    AccountManagementConstants.TenantSelectionView &&
-                !await AuthenticationService.IsAuthenticated())
-            {
-                // Redirect to login page
-                await NavigateWithModuleAsync(
-                    AccountManagementConstants.ModuleName,
-                    AccountManagementConstants.LoginView);
-            }
-        }
-        catch (Exception e)
-        {
-            Log.Logger.Error(
-                e,
-                "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
-                nameof(MainNavigationService),
-                nameof(Navigated),
-                args.Context.ViewName,
-                e.Message);
+                try
+                {
+                    // We must re-check the page we're still authenticated on
+                    // every navigation, even though we do check this on
+                    // authentication events in AuthenticationService.
+                    if (args.LocationName != 
+                        AccountManagementConstants.LoginView &&
+                        args.LocationName != AccountManagementConstants
+                            .TenantSelectionView &&
+                        !await AuthenticationService.IsAuthenticated())
+                    {
+                        // Redirect to login page
+                        await NavigateWithModuleAsync(
+                            AccountManagementConstants.ModuleName,
+                            AccountManagementConstants.LoginView);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Logger.Error(
+                        e,
+                        "In (2) {ClassName}.{MethodName}() url: {CtxUri}, Error: {EMessage}",
+                        nameof(MainNavigationService),
+                        nameof(Navigated),
+                        args.LocationName,
+                        e.Message);
+                }
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(args.Result.ToString());
         }
     }
 

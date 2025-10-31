@@ -13,9 +13,9 @@ public class AccountManagementModule : IModule
     public void PerformRegistrations()
     { 
         var contextNavigationService = Locator.Current.Resolve<IContextNavigationService>();
-        contextNavigationService.RegisterForNavigation<LoginView, LoginViewModel>(
+        contextNavigationService.RegisterForNavigation<LoginViewModel, LoginView>(
             AccountManagementConstants.LoginView);
-        contextNavigationService.RegisterForNavigation<TenantSelectionView, TenantSelectionViewModel>(
+        contextNavigationService.RegisterForNavigation<TenantSelectionViewModel, TenantSelectionView>(
             AccountManagementConstants.TenantSelectionView);
     }
     

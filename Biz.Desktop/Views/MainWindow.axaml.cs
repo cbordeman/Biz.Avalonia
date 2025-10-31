@@ -1,4 +1,6 @@
+using System;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Biz.Desktop.ViewModels;
 using CompositeFramework.Core.Navigation;
@@ -22,8 +24,25 @@ namespace Biz.Desktop.Views
         {
             base.OnLoaded(e);
 
+            this.AddHandler(PointerPressedEvent, PointerPressedHandler, handledEventsToo: true);
+            
             if (DataContext is IOnViewLoaded onViewLoaded)
                 onViewLoaded.OnViewLoaded();
+        }
+        
+        void PointerPressedHandler(object? sender, PointerPressedEventArgs e)
+        {
+            var properties = e.GetCurrentPoint(this).Properties;
+            if (properties.IsXButton1Pressed)
+            {
+                // Handle "Back" button
+                throw new NotImplementedException();
+            }
+            else if (properties.IsXButton2Pressed)
+            {
+                // Handle "Forward" button
+                throw new NotImplementedException();
+            }
         }
 
         void OnFullScreen(object? sender, RoutedEventArgs e)

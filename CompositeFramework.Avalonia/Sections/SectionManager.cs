@@ -1,35 +1,35 @@
-﻿using Avalonia.Controls;
-using CompositeFramework.Avalonia.Exceptions;
-
-namespace CompositeFramework.Avalonia.Sections;
+﻿namespace CompositeFramework.Avalonia.Sections;
 
 public class SectionManager : AvaloniaObject
 {
-    static readonly Dictionary<string, Control> 
-        SectionNameRegistrations = new();
+    public static IReadOnlyDictionary<string, ContentControl>
+         SectionNameRegistrations => SectionNameRegistrationsInternal;
+    
+    static readonly Dictionary<string, ContentControl> 
+        SectionNameRegistrationsInternal = new();
     
     // ReSharper disable once MemberCanBePrivate.Global
     public static readonly AttachedProperty<string?> SectionNameProperty =
-        AvaloniaProperty.RegisterAttached<ViewModelLocator, Control, string?>(
+        AvaloniaProperty.RegisterAttached<ViewModelLocator, ContentControl, string?>(
             "SectionName",
             defaultValue: null);
 
     static SectionManager()
     {
-        SectionNameProperty.Changed.AddClassHandler<Control>(OnSectionNameChanged);
+        SectionNameProperty.Changed.AddClassHandler<ContentControl>(OnSectionNameChanged);
     }
 
-    public static void SetSectionName(Control element, string? sectionName)
+    public static void SetSectionName(ContentControl element, string? sectionName)
     {
         element.SetValue(SectionNameProperty, sectionName);
     }
 
-    public static string? GetSectionName(Control element)
+    public static string? GetSectionName(ContentControl element)
     {
         return element.GetValue(SectionNameProperty);
     }
 
-    private static void OnSectionNameChanged(Control element, AvaloniaPropertyChangedEventArgs e)
+    private static void OnSectionNameChanged(ContentControl element, AvaloniaPropertyChangedEventArgs e)
     {
         var oldSectionName = e.OldValue as string;
         var newSectionName = e.NewValue as string;
@@ -41,13 +41,13 @@ public class SectionManager : AvaloniaObject
         
         // Remove old section.
         if (oldSectionName != null)
-            SectionNameRegistrations.Remove(oldSectionName);
+            SectionNameRegistrationsInternal.Remove(oldSectionName);
 
         if (newSectionName == null)
             return;
         
         // Add new section name.
-        if (!SectionNameRegistrations.TryAdd(newSectionName, element))
+        if (!SectionNameRegistrationsInternal.TryAdd(newSectionName, element))
             throw new DuplicateSectionNameException(element, newSectionName);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia.Controls.ApplicationLifetimes;
 using CompositeFramework.Core.Dialogs;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Dto;
