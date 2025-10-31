@@ -64,6 +64,13 @@ public interface IContextNavigationService
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
 
+    /// <summary>
+    /// Associates a viewmodel with its view for navigation.  Does <i>not</i>
+    /// register types with the container.
+    /// </summary>
+    /// <param name="locationName"></param>
+    /// <typeparam name="TViewModel"></typeparam>
+    /// <typeparam name="TView"></typeparam>
     void RegisterForNavigation<TViewModel, TView>
         (string? locationName = null)
         where TViewModel : INotifyPropertyChanged, ILocation;

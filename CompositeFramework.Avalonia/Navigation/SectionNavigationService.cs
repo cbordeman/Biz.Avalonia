@@ -61,7 +61,13 @@ public class SectionNavigationService
                     $"before navigating.");
 
             // Not that the locator could be returning a singleton.
-            var vmLocation = (ILocation)Locator.Current.GetService(vmBinding.ViewModelType)!;
+            var vm = Locator.Current.Resolve(vmBinding.ViewModelType);
+            if (vm is not ILocation vmLocation)
+            {
+                throw new Exception($"Type {vmBinding.ViewModelType} must " +
+                                    $"implement {nameof(ILocation)} to be " +
+                                    $"used as a navigation location.");
+            }
             vmLocation.NavigationParameters = parameters;
             vmLocation.LocationName = location;
             newNavCtx.Location = vmLocation;
@@ -86,7 +92,13 @@ public class SectionNavigationService
             }
 
             // Swap the view.
-            var view = (Control)Locator.Current.Resolve(vmBinding.ViewType);
+            var v = Locator.Current.Resolve(vmBinding.ViewType);
+            if (vm is not Control view)
+            {
+                throw new Exception($"Type {vmBinding.ViewType} must " +
+                                    $"derive from {nameof(Control)} to be " +
+                                    $"used as a navigation view.");
+            }
             view.DataContext = vmLocation;
             control.Content = view;
 
@@ -151,7 +163,7 @@ public class SectionNavigationService
         locationName ??= typeof(TViewModel).FullName!;
 
         ArgumentChecker.ThrowIfNullOrWhiteSpace(locationName);
-
+        
         if (!registrations.TryAdd(locationName,
                 new ViewModelLocationBinding(typeof(TViewModel), typeof(TView))))
         {

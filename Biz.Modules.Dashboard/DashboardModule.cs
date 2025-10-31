@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Biz.Modules.Dashboard.Core;
+using CompositeFramework.Avalonia.Navigation;
 using CompositeFramework.Core.Navigation;
 using CompositeFramework.Modules;
 using CompositeFramework.Modules.Attributes;
@@ -14,6 +15,11 @@ public class DashboardModule : IModule
 {
     public void PerformRegistrations()
     {
+        SplatRegistrations.SetupIOC();
+        
+        SplatRegistrations.RegisterLazySingleton<DashboardViewModel>();
+        SplatRegistrations.RegisterLazySingleton<DashboardView>();
+        
         var contextNavigationService = 
             Locator.Current.GetService<IContextNavigationService>();
         contextNavigationService!.RegisterForNavigation<DashboardViewModel, DashboardView>(
