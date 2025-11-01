@@ -29,6 +29,7 @@ public class DesktopPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
+        SplatRegistrations.RegisterLazySingleton<DesktopMicrosoftLoginProvider>();
         
         // Register views and viewmodels
         SplatRegistrations.RegisterLazySingleton<MainWindow>();
@@ -70,7 +71,6 @@ public class DesktopPlatformService : IPlatformService
         else
             throw new InvalidOperationException("Wrong platform.");
     }
-
     
     void DisableAvaloniaDataAnnotationValidation()
     {

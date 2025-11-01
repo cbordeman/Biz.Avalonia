@@ -9,7 +9,7 @@ public class ViewLocator : IDataTemplate
     {
         if (param is null)
             return null;
-
+        
         var vmType = param.GetType();
         string name = vmType.FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
         var vwType = vmType.Assembly.GetType(name);
@@ -37,7 +37,6 @@ public class ViewLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return true;
-        //return data is INotifyPropertyChanged;
+        return data is INotifyPropertyChanged;
     }
 }

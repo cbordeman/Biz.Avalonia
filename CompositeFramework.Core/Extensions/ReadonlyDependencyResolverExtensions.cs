@@ -5,7 +5,7 @@ namespace CompositeFramework.Core.Extensions;
 public static class ReadonlyDependencyResolverExtensions
 {
     /// <summary>
-    /// A safe version of Splat's GetServie{T}() method.
+    /// A safer version of Splat's GetService{T}() method.
     /// Instead of returning null, throws an exception.
     /// </summary>
     /// <param name="resolver"></param>

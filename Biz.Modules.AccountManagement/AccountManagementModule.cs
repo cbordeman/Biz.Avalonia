@@ -16,6 +16,8 @@ public class AccountManagementModule : IModule
         
         SplatRegistrations.RegisterLazySingleton<TenantSelectionViewModel>();
         SplatRegistrations.RegisterLazySingleton<TenantSelectionView>();
+        SplatRegistrations.RegisterLazySingleton<LoginViewModel>();
+        SplatRegistrations.RegisterLazySingleton<LoginView>();
         
         var contextNavigationService = Locator.Current.Resolve<IContextNavigationService>();
         contextNavigationService.RegisterForNavigation<LoginViewModel, LoginView>(

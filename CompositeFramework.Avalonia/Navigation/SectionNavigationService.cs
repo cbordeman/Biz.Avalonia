@@ -52,7 +52,6 @@ public class SectionNavigationService
             
         try
         {
-            var control = (ContentControl)Context!;
             if (!registrations.TryGetValue(location, out var vmBinding))
                 throw new Exception(
                     $"No navigation registration found for " +
@@ -64,9 +63,11 @@ public class SectionNavigationService
             var vm = Locator.Current.Resolve(vmBinding.ViewModelType);
             if (vm is not ILocation vmLocation)
             {
-                throw new Exception($"Type {vmBinding.ViewModelType} must " +
-                                    $"implement {nameof(ILocation)} to be " +
-                                    $"used as a navigation location.");
+                throw new TypeConstraintNotMetException(
+                    Locator.Current,
+                    vmBinding.ViewModelType,
+                    $"Must implement {nameof(ILocation)} to be " +
+                    $"used as a navigation location", null);
             }
             vmLocation.NavigationParameters = parameters;
             vmLocation.LocationName = location;
@@ -93,14 +94,25 @@ public class SectionNavigationService
 
             // Swap the view.
             var v = Locator.Current.Resolve(vmBinding.ViewType);
-            if (vm is not Control view)
+            if (v is not Control view)
             {
-                throw new Exception($"Type {vmBinding.ViewType} must " +
-                                    $"derive from {nameof(Control)} to be " +
-                                    $"used as a navigation view.");
+                throw new TypeConstraintNotMetException(
+                    Locator.Current,
+                    vmBinding.ViewType,
+                        $"Must derive from {nameof(Control)} to be " +
+                        $"used as a navigation view.", null);
             }
             view.DataContext = vmLocation;
-            control.Content = view;
+            if (Context is not ContentControl contentControl)
+            {
+                throw new TypeConstraintNotMetException(
+                    Locator.Current,
+                    Context.GetType(),
+                    $"Must be a {nameof(ContentControl)} to be used " +
+                    $"as a section.",
+                    null);
+            }
+            contentControl.Content = view;
 
             // Adjust history
             ClearForwardHistory();

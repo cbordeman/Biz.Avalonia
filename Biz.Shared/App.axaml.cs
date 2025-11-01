@@ -96,8 +96,7 @@ public partial class App : Application
         else
             throw new InvalidOperationException("Unsupported platform.");
 
-        
-        
+        // API Clients for services.
         ServiceClientRegistration.AddMainApiClients(servicesUrl);
 
         // ShadUI services
@@ -112,6 +111,13 @@ public partial class App : Application
         // Accessibility
         Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 
+        // Navigation
+        var navService = Locator.Current.Resolve<IContextNavigationService>();
+        navService.RegisterForNavigation<SettingsViewModel, SettingsView>(
+            GlobalConstants.SettingsView);
+        navService.RegisterForNavigation<SettingsSubViewModel, SettingsSubView>(
+            GlobalConstants.SettingsSubView);
+        
         // Dialogs, etc. 
     }
 }
