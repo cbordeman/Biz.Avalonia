@@ -2,6 +2,9 @@
 
 public class SectionManager : AvaloniaObject
 {
+    /// <summary>
+    /// Provides the content control associated with each section name.
+    /// </summary>
     public static IReadOnlyDictionary<string, ContentControl>
          SectionNameRegistrations => SectionNameRegistrationsInternal;
     
