@@ -171,7 +171,7 @@ public abstract class MainViewModelBase
                 .Resolve<IContextNavigationService>();
             navigation.Context = SectionManager.SectionNameRegistrations
                 [SectionNames.MainContentSection];
-            
+             
             IsLoggedIn = await AuthService.IsAuthenticated();
 
             // This executes after regions are loaded.
