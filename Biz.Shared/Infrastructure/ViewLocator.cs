@@ -15,10 +15,7 @@ public class ViewLocator : IDataTemplate
         var vwType = vmType.Assembly.GetType(name);
 
         if (vwType == null)
-            return new TextBlock
-            {
-                Text = $"Not Found: {name}"
-            };
+            return new TextBlock { Text = $"Not Found: {name}" };
 
         try
         {

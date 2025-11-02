@@ -167,7 +167,8 @@ public abstract class MainViewModelBase
         {
             // Set context for main navigation service instance
             // to the main content section.
-            var navigation = Locator.Current.Resolve<IContextNavigationService>();
+            var navigation = Locator.Current
+                .Resolve<IContextNavigationService>();
             navigation.Context = SectionManager.SectionNameRegistrations
                 [SectionNames.MainContentSection];
             
