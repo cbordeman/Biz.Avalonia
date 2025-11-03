@@ -7,7 +7,9 @@ namespace CompositeFramework.Avalonia.Navigation;
 
 /// <summary>
 /// Implementation of ISectionNavigationService that navigates
-/// within a single space.
+/// within a single section.  Call Initialize(sectionName) before use.
+/// In AXAML, set SectionManager.SectionName on a ContentControl (or
+/// derived type).
 /// </summary>
 public class SectionNavigationService
     : ISectionNavigationService
@@ -39,7 +41,11 @@ public class SectionNavigationService
     
     public void Initialize(string sectionName)
     {
-        ContentControl = SectionManager.SectionNameRegistrations[sectionName];        
+        if (!SectionManager.SectionNameRegistrations.TryGetValue(
+                sectionName, out var cc))
+            throw new NavigationSectionNameNotFoundException(
+                sectionName, this);
+        ContentControl = cc;        
     }
 
     public AsyncEvent<NavigatedEventArgs> Navigated { get; } = new();
@@ -50,7 +56,7 @@ public class SectionNavigationService
         ArgumentChecker.ThrowIfNullOrWhiteSpace(location);
         
         if (ContentControl == null)
-            throw new NavigationContextNotSetException();
+            throw new NavigationSectionNameNotSetException();
 
         var newNavCtx = new NavigationContext()
         {
@@ -66,7 +72,7 @@ public class SectionNavigationService
                     $"IContextNavigationService.  Call RegisterForNavigation() " +
                     $"before navigating.");
 
-            // Not that the locator could be returning a singleton.
+            // Note that the locator could be returning a singleton.
             var vm = Locator.Current.Resolve(vmBinding.ViewModelType);
             if (vm is not ILocation vmLocation)
             {

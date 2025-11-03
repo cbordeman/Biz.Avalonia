@@ -1,5 +1,8 @@
 ﻿namespace CompositeFramework.Avalonia.Navigation;
 
+/// <summary>
+/// Use in AXAML to assign the section name for a ContentControl.
+/// </summary>
 public class SectionManager : AvaloniaObject
 {
     /// <summary>
