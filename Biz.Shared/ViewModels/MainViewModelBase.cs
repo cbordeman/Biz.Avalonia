@@ -1,6 +1,6 @@
 ﻿using Biz.Modules.Dashboard.Core;
 using Biz.Shared.Services.Authentication;
-using CompositeFramework.Avalonia.Sections;
+using CompositeFramework.Avalonia.Navigation;
 using ShadUI;
 
 namespace Biz.Shared.ViewModels;
@@ -168,9 +168,8 @@ public abstract class MainViewModelBase
             // Set context for main navigation service instance
             // to the main content section.
             var navigation = Locator.Current
-                .Resolve<IContextNavigationService>();
-            navigation.Context = SectionManager.SectionNameRegistrations
-                [SectionNames.MainContentSection];
+                .Resolve<ISectionNavigationService>();
+            navigation.Initialize(SectionNames.MainContentSection);
              
             IsLoggedIn = await AuthService.IsAuthenticated();
 

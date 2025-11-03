@@ -6,14 +6,16 @@ using Splat;
 namespace CompositeFramework.Avalonia.Navigation;
 
 /// <summary>
-/// Implementation of IContextNavigationService that navigates
+/// Implementation of ISectionNavigationService that navigates
 /// within a single space.
 /// </summary>
 public class SectionNavigationService
-    : IContextNavigationService
+    : ISectionNavigationService
 {
-    public object? Context { get; set; }
+    ContentControl? ContentControl { get; set; }
 
+    public string? SectionName { get; set; }
+    
     readonly Stack<LocationWithViewInstance> history = [];
     public IReadOnlyCollection<ILocation> History =>
         history
@@ -27,13 +29,18 @@ public class SectionNavigationService
             .Where(l => l.Location.AddToHistory)
             .Select(x => x.Location)
             .ToArray();
-
+    
     public ICommand NavigateForwardCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
     readonly ConcurrentDictionary<string, ViewModelLocationBinding> registrations = new();
     public IReadOnlyDictionary<string, ViewModelLocationBinding> Registrations =>
         registrations;
+    
+    public void Initialize(string sectionName)
+    {
+        ContentControl = SectionManager.SectionNameRegistrations[sectionName];        
+    }
 
     public AsyncEvent<NavigatedEventArgs> Navigated { get; } = new();
 
@@ -42,7 +49,7 @@ public class SectionNavigationService
     {
         ArgumentChecker.ThrowIfNullOrWhiteSpace(location);
         
-        if (Context == null)
+        if (ContentControl == null)
             throw new NavigationContextNotSetException();
 
         var newNavCtx = new NavigationContext()
@@ -99,17 +106,16 @@ public class SectionNavigationService
                 throw new TypeConstraintNotMetException(
                     Locator.Current,
                     vmBinding.ViewType,
-                        $"Must derive from {nameof(Control)} to be " +
+                        $"View must derive from {nameof(Control)} to be " +
                         $"used as a navigation view.", null);
             }
             view.DataContext = vmLocation;
-            if (Context is not ContentControl contentControl)
+            if (ContentControl is not { } contentControl)
             {
                 throw new TypeConstraintNotMetException(
                     Locator.Current,
-                    Context.GetType(),
-                    $"Must be a {nameof(ContentControl)} to be used " +
-                    $"as a section.",
+                    ContentControl.GetType(),
+                    $"Section target must be a {nameof(global::Avalonia.Controls.ContentControl)}.",
                     null);
             }
             contentControl.Content = view;

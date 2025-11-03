@@ -8,7 +8,7 @@ public class MainNavigationService :
     IMainNavigationService, IDisposable
 {
     bool initialized;
-    readonly IContextNavigationService navigationService;
+    readonly ISectionNavigationService navigationService;
     IAuthenticationService AuthenticationService =>
         Locator.Current.Resolve<IAuthenticationService>();
     readonly IAuthenticationService authenticationService;
@@ -26,7 +26,7 @@ public class MainNavigationService :
     public MainNavigationService(
         IAuthenticationService authenticationService,
         IModuleManager moduleManager,
-        IContextNavigationService navigationService)
+        ISectionNavigationService navigationService)
     {
         this.authenticationService = authenticationService;
         this.moduleManager = moduleManager;

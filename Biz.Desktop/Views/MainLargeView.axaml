@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:infrastructure1="clr-namespace:Biz.Shared.Infrastructure;assembly=Biz.Shared"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sections="clr-namespace:CompositeFramework.Avalonia.Sections;assembly=CompositeFramework.Avalonia"
+    xmlns:navigation="clr-namespace:CompositeFramework.Avalonia.Navigation;assembly=CompositeFramework.Avalonia"
     xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:toolbar="clr-namespace:Biz.Shared.ViewModels.Toolbar;assembly=Biz.Shared"
     xmlns:viewModels="clr-namespace:Biz.Desktop.ViewModels"
@@ -329,7 +329,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Margin="0,15,0,0"
-                    sections:SectionManager.SectionName="{x:Static infrastructure1:SectionNames.MainContentSection}">
+                    navigation:SectionManager.SectionName="{x:Static infrastructure1:SectionNames.MainContentSection}">
                     <TransitioningContentControl.PageTransition>
                         <PageSlide Duration="0:00:00.2">
                             <PageSlide.SlideInEasing>

@@ -5,7 +5,7 @@ public interface IDialogViewModel
     /// <summary>
     /// Set by the dialog service.  Do not set it yourself.
     /// </summary>
-    IContextNavigationService? DialogNavigationService { get; set; }
+    ISectionNavigationService? DialogNavigationService { get; set; }
     
     /// <summary>
     /// Called by the dialog service when the dialog is

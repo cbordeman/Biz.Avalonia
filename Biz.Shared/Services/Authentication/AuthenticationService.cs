@@ -305,7 +305,7 @@ public class AuthenticationService(IConfigurationService configurationService,
     public async Task LogoutAsync(bool invokeEvent, bool clearBrowserCache)
     {
         // Clear history
-        var nav = Locator.Current.Resolve<IContextNavigationService>();
+        var nav = Locator.Current.Resolve<ISectionNavigationService>();
         nav.ClearHistory();
 
         if (CurrentProvider != null)

@@ -4,17 +4,17 @@ using System.Windows.Input;
 namespace CompositeFramework.Core.Navigation;
 
 /// <summary>
-/// Instances of This service can be created for different
-/// contexts, such as the main navigation area, a title, a tab,
-/// or a dialog.  
+/// Instances of this service are created for different
+/// sections, such as the main navigation area, a title, a tab,
+/// or a dialog. 
 /// </summary>
-public interface IContextNavigationService
+public interface ISectionNavigationService
 {
     /// <summary>
-    /// The context to which the service is bound, such as a
-    /// section name.
+    /// The section name to which this instance is bound.  Set
+    /// via the Initialize() method.
     /// </summary>
-    object? Context { get; set; }
+    string? SectionName { get; }
     
     /// <summary>
     /// Invoked after any navigation event, even if cancelled
@@ -76,4 +76,10 @@ public interface IContextNavigationService
         where TViewModel : INotifyPropertyChanged, ILocation;
 
     IReadOnlyDictionary<string, ViewModelLocationBinding> Registrations { get; }
+
+    /// <summary>
+    /// Call this before navigating.
+    /// </summary>
+    /// <param name="sectionName"></param>
+    void Initialize(string sectionName);
 }

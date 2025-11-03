@@ -11,7 +11,7 @@ namespace Biz.Mobile.ViewModels;
 public sealed class MessageDialogViewModel
     : BindingValidatingBase, IDialogViewModel
 {
-    public IContextNavigationService? DialogNavigationService { get; set; }
+    public ISectionNavigationService? DialogNavigationService { get; set; }
     
     public string? Title { get; set => SetProperty(ref field, value); }
     public string? Message { get; set => SetProperty(ref field, value); }

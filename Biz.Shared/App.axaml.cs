@@ -3,7 +3,6 @@ using Biz.Shared.Services.Authentication;
 using Biz.Shared.Services.Config;
 using CompositeFramework.Avalonia;
 using CompositeFramework.Avalonia.Navigation;
-using CompositeFramework.Avalonia.Sections;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
 using ShadUI;
@@ -112,7 +111,7 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);
 
         // Navigation
-        var navService = Locator.Current.Resolve<IContextNavigationService>();
+        var navService = Locator.Current.Resolve<ISectionNavigationService>();
         navService.RegisterForNavigation<SettingsViewModel, SettingsView>(
             GlobalConstants.SettingsView);
         navService.RegisterForNavigation<SettingsSubViewModel, SettingsSubView>(

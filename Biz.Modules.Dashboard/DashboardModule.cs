@@ -21,7 +21,7 @@ public class DashboardModule : IModule
         SplatRegistrations.RegisterLazySingleton<DashboardView>();
         
         var contextNavigationService = 
-            Locator.Current.GetService<IContextNavigationService>();
+            Locator.Current.GetService<ISectionNavigationService>();
         contextNavigationService!.RegisterForNavigation<DashboardViewModel, DashboardView>(
             DashboardConstants.DashboardView);
     }

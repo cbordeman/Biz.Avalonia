@@ -1,4 +1,4 @@
-﻿namespace CompositeFramework.Avalonia.Sections;
+﻿namespace CompositeFramework.Avalonia.Navigation;
 
 public class SectionManager : AvaloniaObject
 {

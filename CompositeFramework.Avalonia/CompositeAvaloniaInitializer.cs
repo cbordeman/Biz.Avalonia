@@ -13,6 +13,6 @@ public static class CompositeAvaloniaInitializer
     {
         SplatRegistrations.SetupIOC();
         
-        SplatRegistrations.RegisterLazySingleton<IContextNavigationService, SectionNavigationService>();
+        SplatRegistrations.RegisterLazySingleton<ISectionNavigationService, SectionNavigationService>();
     }
 }
