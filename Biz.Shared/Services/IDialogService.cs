@@ -10,6 +10,18 @@ public interface IDialogService
         where TViewModel: IDialogViewModel
         where TView: Control;
 
-    Task<TReturn> Show<TReturn>(string dialogName, params NavParam[] parameters);
+    /// <summary>
+    /// Call by dialog name.  Returns the viewmodel.
+    /// </summary>
+    Task<IDialogViewModel> Show(string dialogName, params NavParam[] parameters);
+    
+    /// <summary>
+    /// Pass in the viewmodel.
+    /// </summary>
+    Task Show(IDialogViewModel vm, params NavParam[] parameters);
+    
+    /// <summary>
+    /// Closes an open dialog.
+    /// </summary>
     Task Close(IDialogViewModel dialogViewModel);
 }

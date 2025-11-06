@@ -2,7 +2,7 @@
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
-public class LoginViewModel : PageViewModelBase
+public class LoginViewModel : PageViewModelBase, IDialogViewModel
 {
     CancellationTokenSource? loginCancellationTokenSource;
     readonly IDialogService dialogService;
@@ -137,5 +137,15 @@ public class LoginViewModel : PageViewModelBase
     #endregion ForgotPasswordCommand
     
     public override bool PersistInHistory() => false;
-    public override string Area => "Account";   
+    public override string Area => "Account";
+    
+    public async Task OpenedAsync(params NavParam[] parameters)
+    {
+        
+    }
+    
+    public async Task ClosedAsync()
+    {
+        
+    }
 }

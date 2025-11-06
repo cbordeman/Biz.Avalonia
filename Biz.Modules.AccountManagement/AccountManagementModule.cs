@@ -11,24 +11,24 @@ namespace Biz.Modules.AccountManagement;
 public class AccountManagementModule : IModule
 {
     public void PerformRegistrations()
-    { 
+    {
         SplatRegistrations.SetupIOC();
-        
+
         SplatRegistrations.RegisterLazySingleton<TenantSelectionViewModel>();
         SplatRegistrations.RegisterLazySingleton<TenantSelectionView>();
         SplatRegistrations.RegisterLazySingleton<LoginViewModel>();
         SplatRegistrations.RegisterLazySingleton<LoginView>();
-        
+
         var contextNavigationService = Locator.Current.Resolve<ISectionNavigationService>();
         contextNavigationService.RegisterForNavigation<LoginViewModel, LoginView>(
             AccountManagementConstants.LoginView);
         contextNavigationService.RegisterForNavigation<TenantSelectionViewModel, TenantSelectionView>(
             AccountManagementConstants.TenantSelectionView);
-        
+
         // ShadUI dialog registration.
         var dialogService = Locator.Current.Resolve<IDialogService>();
-        dialogService.RegisterDialog<LoginViewModel, LoginView>();
-        //dialogService.Register<AboutContent, AboutViewModel>();
+        dialogService.RegisterDialog<LoginViewModel, LoginView>(
+            AccountManagementConstants.LoginView);
     }
     
     public Task InitializedAsync() => Task.CompletedTask;

@@ -56,7 +56,7 @@ public class ShadUiDialogService(DialogManager dialogManager)
 #pragma warning restore SPLATDI001
     }
 
-    public async Task<T> Show<T>(string dialogName, params NavParam[] parameters)
+    public async Task<IDialogViewModel> Show(string dialogName, params NavParam[] parameters)
     {
         if (!dialogNameMap.TryGetValue(dialogName, out var value))
             throw new InvalidOperationException($"Dialog Name \"{dialogName}\" not registered.");
@@ -71,10 +71,30 @@ public class ShadUiDialogService(DialogManager dialogManager)
             .Show();
         
         await dlgVm.OpenedAsync(parameters);
+        
+        return dlgVm;
     }
-    
-    public async Task Close<T>(IDialogViewModel dialogViewModel, T result)
+
+    public async Task Show(IDialogViewModel vm, params NavParam[] parameters)
     {
-                
+        ArgumentNullException.ThrowIfNull(vm);
+        
+        var viewType = dialogNameMap.Values.FirstOrDefault(v => v.ViewModelType == vm.GetType())?.ViewType; 
+        if (viewType == null)
+            throw new InvalidOperationException($"Dialog ViewModel " +
+                $"{vm.GetType().AssemblyQualifiedName}\" not registered " +
+                $"in Dialog Service.");
+        
+        dialogManager.CreateDialog(vm)
+            .Dismissible()
+            .Show();
+        
+        await vm.OpenedAsync(parameters);
+    }
+
+    public async Task Close(IDialogViewModel dialogViewModel)
+    {
+        dialogManager.Close(dialogViewModel);
+        await dialogViewModel.ClosedAsync();
     }
 }
