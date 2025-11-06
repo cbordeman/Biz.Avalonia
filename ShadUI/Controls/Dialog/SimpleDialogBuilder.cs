@@ -17,7 +17,7 @@ public sealed class SimpleDialogBuilder
         _manager = manager;
     }
 
-    internal string PrimaryButtonText { get; set; } = string.Empty;
+    internal string? PrimaryButtonText { get; set; } = string.Empty;
     internal Action? PrimaryCallback { get; set; }
     internal Func<Task>? PrimaryCallbackAsync { get; set; }
     internal DialogButtonStyle PrimaryButtonStyle { get; set; } = DialogButtonStyle.Primary;

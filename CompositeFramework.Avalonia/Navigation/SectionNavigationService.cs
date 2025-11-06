@@ -5,6 +5,8 @@ using Splat;
 
 namespace CompositeFramework.Avalonia.Navigation;
 
+
+
 /// <summary>
 /// Implementation of ISectionNavigationService that navigates
 /// within a single section.  Call Initialize(sectionName) before use.
@@ -35,8 +37,8 @@ public class SectionNavigationService
     public ICommand NavigateForwardCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
-    readonly ConcurrentDictionary<string, ViewModelLocationBinding> registrations = new();
-    public IReadOnlyDictionary<string, ViewModelLocationBinding> Registrations =>
+    readonly ConcurrentDictionary<string, ViewModelViewBinding> registrations = new();
+    public IReadOnlyDictionary<string, ViewModelViewBinding> Registrations =>
         registrations;
     
     public void Initialize(string sectionName)
@@ -189,7 +191,7 @@ public class SectionNavigationService
         ArgumentChecker.ThrowIfNullOrWhiteSpace(locationName);
         
         if (!registrations.TryAdd(locationName,
-                new ViewModelLocationBinding(typeof(TViewModel), typeof(TView))))
+                new ViewModelViewBinding(typeof(TViewModel), typeof(TView))))
         {
             throw new DuplicateNavigationRegistrationException
                 <TViewModel, TView>(locationName);

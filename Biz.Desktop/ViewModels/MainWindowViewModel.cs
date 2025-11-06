@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Biz.Shared.Services;
 using Biz.Shared.ViewModels;
 using CommunityToolkit.Mvvm.Input;
-using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Extensions;
 using Splat;
 

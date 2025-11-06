@@ -3,8 +3,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Biz.Mobile.Services;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
-using CompositeFramework.Avalonia.Dialogs;
-using CompositeFramework.Core.Dialogs;
 using Splat;
 
 namespace Biz.Shell.iOS.Services;
@@ -19,7 +17,6 @@ public class IOsPlatformService : IPlatformService
         // Register Android-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
-        SplatRegistrations.RegisterLazySingleton<IDialogService, AvaloniaDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, iOsSafeStorage>();
         
         // Dialog registration.

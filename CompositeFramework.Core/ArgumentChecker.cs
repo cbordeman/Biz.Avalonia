@@ -15,12 +15,12 @@ public static class ArgumentChecker
                 parameterName);
     }
     
-    public static void ThrowIfNull(
-        object? argument, 
-        [CallerArgumentExpression(nameof(argument))] 
-        string? paramName = null)
-    {
-        if (argument is null)
-            throw new ArgumentNullException(paramName);
-    }
+    // public static void ThrowIfNull(
+    //     object? argument, 
+    //     [CallerArgumentExpression(nameof(argument))] 
+    //     string? paramName = null)
+    // {
+    //     if (argument is null)
+    //         throw new ArgumentNullException(paramName);
+    // }
 }

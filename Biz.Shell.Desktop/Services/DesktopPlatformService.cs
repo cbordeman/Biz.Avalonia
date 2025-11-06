@@ -9,10 +9,7 @@ using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
 using Biz.Shared.Services.Authentication;
-using CompositeFramework.Avalonia.Dialogs;
-using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Extensions;
-using DialogManager = ShadUI.DialogManager;
 
 namespace Biz.Shell.Desktop.Services;
 
@@ -25,7 +22,7 @@ public class DesktopPlatformService : IPlatformService
         // Register windows-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
-        SplatRegistrations.RegisterLazySingleton<IDialogService, AvaloniaDialogService>();
+        SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
@@ -41,7 +38,7 @@ public class DesktopPlatformService : IPlatformService
     public void InitializePlatform()
     {
         // ShadUI dialog registration.
-        var dialogService = Locator.Current.GetService<DialogManager>();
+        var dialogService = Locator.Current.GetService<IDialogService>();
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
 

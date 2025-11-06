@@ -8,8 +8,7 @@ namespace CompositeFramework.Core;
 public sealed class AsyncEvent
 {
     // Immutable array reference storing subscribers
-    private ImmutableArray<Func<Task>> subscribers = 
-        ImmutableArray<Func<Task>>.Empty;
+    ImmutableArray<Func<Task>> subscribers = [];
 
     public void Subscribe(Func<Task> handler)
     {
@@ -68,13 +67,13 @@ public sealed class AsyncEvent
 }
 
 /// <summary>
-/// A thread-safe pub/sub mechanism that supports async publish. 
+/// A thread-safe pub/sub mechanism that supports async publish.
+/// Type parameter is the payload type. 
 /// </summary>
 public sealed class AsyncEvent<T>
 {
     // Immutable array reference storing subscribers
-    private ImmutableArray<Func<T, Task>> subscribers = 
-        ImmutableArray<Func<T, Task>>.Empty;
+    ImmutableArray<Func<T, Task>> subscribers = [];
 
     public void Subscribe(Func<T, Task> handler)
     {

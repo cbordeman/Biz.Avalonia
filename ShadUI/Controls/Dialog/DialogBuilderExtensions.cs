@@ -27,7 +27,7 @@ public static class DialogBuilderExtensions
     /// <param name="callback">The method that is called once the button is clicked</param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Primary" /></param>
     /// <returns>The modified <see cref="SimpleDialogBuilder" /> instance</returns>
-    public static SimpleDialogBuilder WithPrimaryButton(this SimpleDialogBuilder builder, string text,
+    public static SimpleDialogBuilder WithPrimaryButton(this SimpleDialogBuilder builder, string? text,
         Action? callback = null,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Primary)
     {
@@ -45,7 +45,7 @@ public static class DialogBuilderExtensions
     /// <param name="asyncCallback">The asynchronous method that is called once the button is clicked</param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Primary" /></param>
     /// <returns>The modified <see cref="SimpleDialogBuilder" /> instance</returns>
-    public static SimpleDialogBuilder WithPrimaryButton(this SimpleDialogBuilder builder, string text,
+    public static SimpleDialogBuilder WithPrimaryButton(this SimpleDialogBuilder builder, string? text,
         Func<Task>? asyncCallback = null,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Primary)
     {

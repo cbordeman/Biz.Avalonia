@@ -10,8 +10,6 @@ using Biz.Shared.Platform;
 using Biz.Shared.Services;
 using Biz.Shared.Services.Authentication;
 using CompositeFramework.Avalonia;
-using CompositeFramework.Avalonia.Dialogs;
-using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Extensions;
 using Splat;
 
@@ -26,17 +24,11 @@ public class AndroidPlatformService : IPlatformService
         // Register Android-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
-        SplatRegistrations.RegisterLazySingleton<IDialogService, AvaloniaDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
 
         SplatRegistrations.Register<MainSmallView>();
         SplatRegistrations.Register<MainSmallViewModel>();
-
-        
-        // Prism style dialog registration.
-        //var dialogService = Locator.Current.GetService<IDialogService>();
-        //dialogService.RegisterDialog<MessageDialogViewModel, MessageDialogView>(); 
     }
 
     public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)

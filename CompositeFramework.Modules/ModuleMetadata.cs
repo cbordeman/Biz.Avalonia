@@ -18,8 +18,8 @@ public class ModuleMetadata
         bool isInMemory,
         string[] dependencies)
     {
-        ArgumentChecker.ThrowIfNull(name);
-        ArgumentChecker.ThrowIfNull(assemblyQualifiedName);
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(assemblyQualifiedName);
     
         if (filePath is not null && filePath.Length == 0)
             throw new ArgumentException("FullPath must not be empty.", 

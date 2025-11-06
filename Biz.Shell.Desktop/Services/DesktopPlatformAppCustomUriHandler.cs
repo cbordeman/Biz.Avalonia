@@ -1,7 +1,6 @@
 ﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
-using CompositeFramework.Core.Dialogs;
 using ServiceClients;
 
 namespace Biz.Shell.Desktop.Services;
@@ -23,8 +22,7 @@ public class DesktopPlatformAppCustomUriHandler(
         // But we still tell the user it was.
         await accountApi.ConfirmRegisteredEmail(email, token);
         await dialogService.Confirm("Account Activated",
-            "Your email has been confirmed.  You may log in.",
-            "OK", null);
+            "Your email has been confirmed.  You may log in.");
         await navService.NavigateWithModuleAsync(
             AccountManagementConstants.ModuleName,
             AccountManagementConstants.LoginView);

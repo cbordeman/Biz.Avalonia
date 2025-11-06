@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using CompositeFramework.Core.Dialogs;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
@@ -61,15 +58,13 @@ public class LoginViewModel : PageViewModelBase
                     await dialogService.Confirm(
                         $"{provider} Login",
                         $"Error logging in." +
-                        (result.error == null ? "" : $"\n\nError: {result.error}"),
-                        cancelText: null);
+                        (result.error == null ? "" : $"\n\nError: {result.error}"));
                     return;
                 }
                 else if (result.availableTenants.Length == 0)
                 {
                     await dialogService.Confirm("Account Inactive",
-                        "Your account is inactive in all organizations.",
-                        cancelText: null);
+                        "Your account is inactive in all organizations.");
                     return;
                 }
                 await GoToTenantSelectionPage(result.availableTenants);
@@ -83,8 +78,7 @@ public class LoginViewModel : PageViewModelBase
         {
             await dialogService.Confirm(
                 "Error",
-                $"An error occurred during Microsoft login: {ex.Message}",
-                cancelText: null);
+                $"An error occurred during Microsoft login: {ex.Message}");
         }
         finally
         {
@@ -96,7 +90,7 @@ public class LoginViewModel : PageViewModelBase
 
     async Task GoToTenantSelectionPage(Tenant[] availableTenants)
     {
-        ArgumentChecker.ThrowIfNull(availableTenants);
+        ArgumentNullException.ThrowIfNull(availableTenants);
 
         var mainNavService = Locator.Current.Resolve<IMainNavigationService>();
         await mainNavService.NavigateWithModuleAsync(

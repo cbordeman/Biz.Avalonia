@@ -24,6 +24,11 @@ public class AccountManagementModule : IModule
             AccountManagementConstants.LoginView);
         contextNavigationService.RegisterForNavigation<TenantSelectionViewModel, TenantSelectionView>(
             AccountManagementConstants.TenantSelectionView);
+        
+        // ShadUI dialog registration.
+        var dialogService = Locator.Current.Resolve<IDialogService>();
+        dialogService.RegisterDialog<LoginViewModel, LoginView>();
+        //dialogService.Register<AboutContent, AboutViewModel>();
     }
     
     public Task InitializedAsync() => Task.CompletedTask;

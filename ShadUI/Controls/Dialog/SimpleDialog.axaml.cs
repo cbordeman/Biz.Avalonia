@@ -47,10 +47,10 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(MessageProperty, value);
     }
 
-    public static readonly StyledProperty<string> PrimaryButtonTextProperty =
+    public static readonly StyledProperty<string?> PrimaryButtonTextProperty =
         AvaloniaProperty.Register<SimpleDialog, string>(nameof(PrimaryButtonText));
 
-    public string PrimaryButtonText
+    public string? PrimaryButtonText
     {
         get => GetValue(PrimaryButtonTextProperty);
         set => SetValue(PrimaryButtonTextProperty, value);

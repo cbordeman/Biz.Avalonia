@@ -66,16 +66,13 @@ public interface ISectionNavigationService
 
     /// <summary>
     /// Associates a viewmodel with its view for navigation.  Does <i>not</i>
-    /// register types with the container.
+    /// You must register types with the container.
     /// </summary>
-    /// <param name="locationName"></param>
-    /// <typeparam name="TViewModel"></typeparam>
-    /// <typeparam name="TView"></typeparam>
     void RegisterForNavigation<TViewModel, TView>
         (string? locationName = null)
         where TViewModel : INotifyPropertyChanged, ILocation;
 
-    IReadOnlyDictionary<string, ViewModelLocationBinding> Registrations { get; }
+    IReadOnlyDictionary<string, ViewModelViewBinding> Registrations { get; }
 
     /// <summary>
     /// Call this before navigating.
