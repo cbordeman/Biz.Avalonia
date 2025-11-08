@@ -1,5 +1,6 @@
 ﻿using Biz.Modules.AccountManagement.ViewModels;
 using Biz.Modules.AccountManagement.Views;
+using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Modules;
 using CompositeFramework.Modules.Attributes;
 

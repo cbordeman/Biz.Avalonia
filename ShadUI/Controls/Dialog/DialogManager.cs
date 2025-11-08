@@ -96,6 +96,16 @@ public sealed class DialogManager
         return this;
     }
 
+    public DialogManager Register(Type viewType, Type contextType) 
+    {
+        if (!typeof(Control).IsAssignableFrom(viewType))
+            throw new InvalidOperationException("View type must be a Control.");
+        
+        CustomDialogs.Add(contextType, viewType);
+        return this;
+    }
+
+    
     internal readonly Dictionary<Type, Action> OnCancelCallbacks = [];
     internal readonly Dictionary<Type, Func<Task>> OnCancelAsyncCallbacks = [];
     internal readonly Dictionary<Type, Action> OnSuccessCallbacks = [];

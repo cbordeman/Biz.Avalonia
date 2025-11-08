@@ -9,6 +9,7 @@ using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
 using Biz.Shared.Services.Authentication;
+using CompositeFramework.Core.Dialogs;
 using CompositeFramework.Core.Extensions;
 
 namespace Biz.Shell.Desktop.Services;

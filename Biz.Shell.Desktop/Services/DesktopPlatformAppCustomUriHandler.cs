@@ -1,6 +1,7 @@
 ﻿using Biz.Modules.AccountManagement.Core;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
+using CompositeFramework.Core.Dialogs;
 using ServiceClients;
 
 namespace Biz.Shell.Desktop.Services;

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Biz.Shared.Services;
+namespace CompositeFramework.Core.Dialogs;
 
 public interface IDialogViewModel : INotifyPropertyChanged
 {

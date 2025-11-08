@@ -1,83 +1,101 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CompositeFramework.Core.Dialogs;
 using ShadUI;
 
 namespace Biz.Shared.Services;
 
-public partial class ShadUiDialogService : ObservableObject, IDialogService
+public class ShadUiDialogService 
+    : ObservableObject, IDialogService
 {
+    readonly ModuleManager moduleManager;
+    
     /// <summary>
     /// This should be set, or bound in XAML.
     /// </summary>
     public DialogManager DialogManager { get; set; }
 
-    readonly Dictionary<string, ViewModelViewBinding> dialogNameMap = new();
+    readonly Dictionary<string, Type> dialogNameViewModelMap = new();
 
-    public ShadUiDialogService(DialogManager dialogManager)
+    public ShadUiDialogService(
+        ModuleManager moduleManager,
+        DialogManager dialogManager)
     {
+        this.moduleManager = moduleManager;
         DialogManager = dialogManager;
     }
     
     public Task<bool> Confirm(
         string title, string message, 
-        string? okText = null, string? cancelText = null)
+        string? okText = null, bool showCancel = false,
+        string? cancelText = null,
+        CompositeDialogOptions? options = null)
     {
         var tcs = new TaskCompletionSource<bool>();
-        
+
         var dialogBuilder = DialogManager
             .CreateDialog(title, message)
             .WithPrimaryButton(
-                okText ?? "OK", 
-                () => tcs.TrySetResult(true))
-            .WithMinWidth(300)
-            .Dismissible();
-
-        if (cancelText != null)
-            dialogBuilder
-                .WithCancelButton(cancelText ?? "Cancel",
-                    () => tcs.TrySetResult(false));
-
-        dialogBuilder
-            .Show();
+                okText ?? "OK",
+                () => tcs.TrySetResult(true));
+        
+        if (showCancel)
+            dialogBuilder.WithCancelButton(cancelText ?? "Cancel", 
+                () => tcs.TrySetResult(false));
+        
+        dialogBuilder.Show();
         
         return tcs.Task;
     }
-    
+
+    static DialogBuilder<T> SetDialogParameters<T>(
+        DialogBuilder<T> db,
+        CompositeDialogOptions? options = null)
+    {
+        if (options == null)
+            return db;
+        
+        if (options.MinWidth > 0)
+            db = db.WithMinWidth(options.MinWidth);
+        if (options.MaxWidth > 0)
+            db = db.WithMaxWidth(options.MaxWidth);
+
+        return db;
+    }
+
     public void RegisterDialog<TViewModel, TView>(
         string? dialogName = null)
         where TViewModel : IDialogViewModel
-        where TView : Control
     {
         dialogName ??= typeof(TViewModel).AssemblyQualifiedName;
         if (dialogName == null)
             throw new InvalidOperationException("Dialog Name is null and type has no AssemblyQualifiedName.");
-        if (dialogNameMap.ContainsKey(dialogName!))
+        if (dialogNameViewModelMap.ContainsKey(dialogName))
             throw new InvalidOperationException($"Dialog name \"{dialogName}\" already registered.");
-        dialogNameMap.Add(dialogName,
-            new ViewModelViewBinding(typeof(TViewModel), typeof(TView)));
+        dialogNameViewModelMap.Add(dialogName, typeof(TViewModel));
 
         DialogManager dm1 = new();
-#pragma warning disable SPLATDI001
-        dm1.Register<TView, TViewModel>();
-#pragma warning restore SPLATDI001
+        dm1.Register(typeof(TView), typeof(TViewModel));
     }
 
     public async Task<IDialogViewModel> Show(
-        string moduleName,
-        string dialogName, params NavParam[] parameters)
+        string? moduleName,
+        string dialogName, 
+        CompositeDialogOptions? options = null,
+        params NavParam[] parameters)
     {
-        ArgumentNullException.ThrowIfNull(moduleName);
+        if (moduleName != null)
+            await moduleManager.LoadModuleAsync(moduleName);
         
-        if (!dialogNameMap.TryGetValue(dialogName, out var value))
+        if (!dialogNameViewModelMap.TryGetValue(dialogName, out var value))
             throw new InvalidOperationException($"Dialog Name \"{dialogName}\" not registered.");
-        var (vmType, viewType) = value;
+        var vmType = value;
         var vm = Locator.Current.Resolve(vmType);
-        var view = Locator.Current.Resolve(viewType);
         if (vm is not IDialogViewModel dlgVm)
             throw new InvalidOperationException($"Dialog ViewModel \"{vmType.AssemblyQualifiedName}\" does not implement {nameof(IDialogViewModel)}.");
         
-        DialogManager.CreateDialog(vm)
-            .Dismissible()
-            .Show();
+        var db = DialogManager.CreateDialog(dlgVm);
+        db = SetDialogParameters(db);
+        db.Show();
         
         await dlgVm.OpenedAsync(parameters);
         
@@ -85,22 +103,20 @@ public partial class ShadUiDialogService : ObservableObject, IDialogService
     }
 
     public async Task Show(
-        string moduleName,
-        IDialogViewModel vm, params NavParam[] parameters)
+        string? moduleName,
+        IDialogViewModel vm, 
+        CompositeDialogOptions? options = null,
+        params NavParam[] parameters)
     {
-        ArgumentNullException.ThrowIfNull(moduleName);
         ArgumentNullException.ThrowIfNull(vm);
+
+        if (moduleName != null)
+            await moduleManager.LoadModuleAsync(moduleName);
         
-        var viewType = dialogNameMap.Values.FirstOrDefault(v => v.ViewModelType == vm.GetType())?.ViewType; 
-        if (viewType == null)
-            throw new InvalidOperationException($"Dialog ViewModel " +
-                $"{vm.GetType().AssemblyQualifiedName}\" not registered " +
-                $"in Dialog Service.");
-        
-        DialogManager.CreateDialog(vm)
-            .Dismissible()
-            .Show();
-        
+        var db = DialogManager.CreateDialog(vm);
+        SetDialogParameters(db);
+        db.Show();
+
         await vm.OpenedAsync(parameters);
     }
 

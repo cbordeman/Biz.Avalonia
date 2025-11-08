@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CompositeFramework.Core.Dialogs;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 

@@ -1,6 +1,7 @@
 ﻿using Biz.Modules.Dashboard.Core;
 using Biz.Shared.Services.Authentication;
 using CompositeFramework.Avalonia.Navigation;
+using CompositeFramework.Core.Dialogs;
 using ShadUI;
 
 namespace Biz.Shared.ViewModels;
