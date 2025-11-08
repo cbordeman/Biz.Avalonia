@@ -16,105 +16,115 @@
     x:TypeArguments="viewModels:LoginViewModel"
     mc:Ignorable="d">
 
-    <Border BorderBrush="BlueViolet" BorderThickness="10">
-        <Grid RowDefinitions="*,Auto">
-            <ScrollViewer Margin="{OnPlatform Default='-110,50,0,0', iOS='0,30,0,0', Android='0,30,0,0'}">
-                <StackPanel HorizontalAlignment="Center">
-                    <StackPanel Spacing="5">
-                        <TextBlock
-                            Margin="5,0,0,5"
-                            Classes="Large"
-                            Text="Log in using email:" />
+    <!-- <Border BorderBrush="BlueViolet" BorderThickness="10"> -->
+    <Grid RowDefinitions="*,Auto">
+        <ScrollViewer Margin="{OnPlatform Default='-110,50,0,0', iOS='0,30,0,0', Android='0,30,0,0'}">
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock
+                        Margin="5,0,0,5"
+                        Classes="Large"
+                        Text="Log in using email" />
 
-                        <TextBox Text="{Binding Email}" Watermark="Enter Email" />
-                        <TextBox
-                            PasswordChar="{x:Static core:AppConstants.PasswordChar}"
-                            Text="{Binding Password}"
-                            Watermark="Enter Password" />
-                        <HyperlinkButton HorizontalAlignment="Center" NavigateUri="{Binding RegisterCommand}">
+                    <TextBox
+                        Margin="0,0,0,5"
+                        Text="{Binding Email}"
+                        Watermark="Enter Email" />
+                    <TextBox
+                        PasswordChar="{x:Static core:AppConstants.PasswordChar}"
+                        Text="{Binding Password}"
+                        Watermark="Enter Password" />
+
+                    <StackPanel
+                        Margin="0,5,0,0"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <HyperlinkButton HorizontalAlignment="Left" NavigateUri="{Binding RegisterCommand}">
                             Register New User
                         </HyperlinkButton>
-                        <HyperlinkButton HorizontalAlignment="Center" NavigateUri="{Binding ForgotPasswordCommand}">
+                        <HyperlinkButton HorizontalAlignment="Right" NavigateUri="{Binding ForgotPasswordCommand}">
                             Need help signing in?
                         </HyperlinkButton>
-
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            Text="-or-" />
-
                     </StackPanel>
 
-                    <StackPanel Margin="0,15,0,0" Spacing="8">
-                        <!--  Google Login Button  -->
-                        <Button
-                            Classes="Large"
-                            Command="{CompiledBinding LoginCommand}"
-                            CommandParameter="{x:Static models:LoginProvider.Google}"
-                            IsEnabled="{CompiledBinding IsNotBusy}">
-                            <StackPanel Orientation="Horizontal">
-                                <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
-                                <TextBlock Margin="7,0,0,0" Text="Continue with Google" />
-                            </StackPanel>
-                        </Button>
+                    <TextBlock
+                        Margin="0,15,0,0"
+                        HorizontalAlignment="Center"
+                        Classes="Large"
+                        Text="-or-" />
 
-                        <!--  Microsoft Login Button  -->
-                        <Button
-                            Classes="Large"
-                            Command="{CompiledBinding LoginCommand}"
-                            CommandParameter="{x:Static models:LoginProvider.Microsoft}"
-                            IsEnabled="{CompiledBinding IsNotBusy}">
-                            <StackPanel Orientation="Horizontal">
-                                <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
-                                <TextBlock Margin="7,0,0,0" Text="Continue with Microsoft" />
-                            </StackPanel>
-                        </Button>
-
-                        <!--  Facebook Login Button  -->
-                        <Button
-                            Classes="Large"
-                            Command="{CompiledBinding LoginCommand}"
-                            CommandParameter="{x:Static models:LoginProvider.Facebook}"
-                            IsEnabled="{CompiledBinding IsNotBusy}">
-                            <StackPanel Orientation="Horizontal">
-                                <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
-                                <TextBlock Margin="7,0,0,0" Text="Continue with Facebook" />
-                            </StackPanel>
-                        </Button>
-
-                        <!--  Apple Login Button  -->
-                        <Button
-                            Classes="Large"
-                            Command="{CompiledBinding LoginCommand}"
-                            CommandParameter="{x:Static models:LoginProvider.Apple}"
-                            IsEnabled="{CompiledBinding IsNotBusy}">
-                            <StackPanel Orientation="Horizontal">
-                                <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
-                                <TextBlock Margin="7,0,0,0" Text="Continue with Apple" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
                 </StackPanel>
-            </ScrollViewer>
 
-            <!--  Footer  -->
-            <TextBlock
-                Grid.Row="1"
-                Margin="{OnPlatform Default='-110,0,0,0',
-                                    iOS='0,0,0,0',
-                                    Android='0,0,0,0'}"
-                HorizontalAlignment="Center"
-                Classes="Footer"
-                Text="By continuing, you agree to our Terms of Service and Privacy Policy" />
+                <StackPanel Margin="0,20,0,10" Spacing="8">
+                    <!--  Google Login Button  -->
+                    <Button
+                        Classes="Large"
+                        Command="{CompiledBinding LoginCommand}"
+                        CommandParameter="{x:Static models:LoginProvider.Google}"
+                        IsEnabled="{CompiledBinding IsNotBusy}">
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
+                            <TextBlock Margin="7,0,0,0" Text="Continue with Google" />
+                        </StackPanel>
+                    </Button>
 
-            <views:ProgressBorder
-                Grid.Row="0"
-                Margin="{OnPlatform Default='-110,0,0,0',
-                                    iOS='0,0,0,0',
-                                    Android='0,0,0,0'}"
-                CancelCommand="{Binding CancelLoginCommand}"
-                CancelContent="Cancel Login"
-                IsBusy="{Binding IsBusy}" />
-        </Grid>
-    </Border>
+                    <!--  Microsoft Login Button  -->
+                    <Button
+                        Classes="Large"
+                        Command="{CompiledBinding LoginCommand}"
+                        CommandParameter="{x:Static models:LoginProvider.Microsoft}"
+                        IsEnabled="{CompiledBinding IsNotBusy}">
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
+                            <TextBlock Margin="7,0,0,0" Text="Continue with Microsoft" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Facebook Login Button  -->
+                    <Button
+                        Classes="Large"
+                        Command="{CompiledBinding LoginCommand}"
+                        CommandParameter="{x:Static models:LoginProvider.Facebook}"
+                        IsEnabled="{CompiledBinding IsNotBusy}">
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
+                            <TextBlock Margin="7,0,0,0" Text="Continue with Facebook" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Apple Login Button  -->
+                    <Button
+                        Classes="Large"
+                        Command="{CompiledBinding LoginCommand}"
+                        CommandParameter="{x:Static models:LoginProvider.Apple}"
+                        IsEnabled="{CompiledBinding IsNotBusy}">
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
+                            <TextBlock Margin="7,0,0,0" Text="Continue with Apple" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!--  Footer  -->
+        <TextBlock
+            Grid.Row="1"
+            Margin="{OnPlatform Default='-110,0,0,0',
+                                iOS='0,0,0,0',
+                                Android='0,0,0,0'}"
+            HorizontalAlignment="Center"
+            Classes="Footer"
+            Text="*By continuing, you agree to our Terms of Service and Privacy Policy" />
+
+        <views:ProgressBorder
+            Grid.Row="0"
+            Margin="{OnPlatform Default='-110,0,0,0',
+                                iOS='0,0,0,0',
+                                Android='0,0,0,0'}"
+            CancelCommand="{Binding CancelLoginCommand}"
+            CancelContent="Cancel Login"
+            IsBusy="{Binding IsBusy}" />
+    </Grid>
+    <!-- </Border> -->
 </views:FormFactorAwareUserControl>

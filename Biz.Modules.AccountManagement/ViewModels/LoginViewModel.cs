@@ -36,7 +36,7 @@ public class LoginViewModel : PageViewModelBase
     {
         dialogService = Locator.Current.Resolve<IDialogService>();
         authenticationService = Locator.Current.Resolve<IAuthenticationService>();
-        Title = $"Sign In to {AppConstants.AppShortName}";
+        Title = $"Sign In to {AppConstants.AppShortName} *";
     }
 
     #region LoginCommand
