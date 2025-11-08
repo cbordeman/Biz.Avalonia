@@ -78,7 +78,7 @@ public class StandardModuleIndex : IModuleIndex
             }
             return matchedFiles;            
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // Catch for debug
             throw;

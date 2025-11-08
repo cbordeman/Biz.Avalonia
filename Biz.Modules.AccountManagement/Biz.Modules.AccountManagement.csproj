@@ -31,18 +31,6 @@
     <PropertyGroup>
         <ModulesOutputPath>$(SolutionDir)Biz.Shell.Desktop\bin\$(Configuration)\$(TargetFramework)\Modules</ModulesOutputPath>
     </PropertyGroup>
-    <Target Name="CopyModuleToShell" AfterTargets="Build">
-        <Copy
-                SourceFiles="$(OutputPath)$(AssemblyName).dll;$(OutputPath)$(AssemblyName).pdb"
-                DestinationFolder="$(ModulesOutputPath)"
-                SkipUnchangedFiles="true" />
-
-        <!-- Copy dependencies -->
-        <Copy
-                SourceFiles="@(ReferenceCopyLocalPaths)"
-                DestinationFolder="$(ModulesOutputPath)"
-                SkipUnchangedFiles="true" />
-    </Target>
 
 
 </Project>

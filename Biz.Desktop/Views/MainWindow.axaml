@@ -66,5 +66,7 @@
         </StackPanel>
     </shadUi:Window.RightWindowTitleBarContent>
 
-    <ContentControl Content="{Binding Main}" />
+    <Border BorderBrush="Red" BorderThickness="5">
+        <ContentControl Content="{Binding Main}" />
+    </Border>
 </shadUi:Window>

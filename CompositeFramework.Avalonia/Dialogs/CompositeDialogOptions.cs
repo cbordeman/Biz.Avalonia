@@ -1,4 +1,4 @@
-﻿namespace CompositeFramework.Core.Dialogs;
+﻿namespace CompositeFramework.Avalonia.Dialogs;
 
 public class CompositeDialogOptions
 {

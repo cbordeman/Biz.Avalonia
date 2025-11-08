@@ -12,8 +12,12 @@ public class DesktopModuleCatalogService : IPlatformModuleCatalogService
         if (moduleIndex is null)
             return;
         
-        var matches = moduleIndex.AddModuleFilesDirectory(
-            rootDir: "Modules",
+        var matches1 = moduleIndex.AddModuleFilesDirectory(
+            rootDir: "../../../../Biz.Modules.AccountManagement/bin/Debug/net9.0",
+            includeSpec: "*.Modules.*.dll",
+            excludeSpecs: "*.Core.dll");
+        var matches2 = moduleIndex.AddModuleFilesDirectory(
+            rootDir: "../../../../Biz.Modules.Dashboard/bin/Debug/net9.0",
             includeSpec: "*.Modules.*.dll",
             excludeSpecs: "*.Core.dll");
     }

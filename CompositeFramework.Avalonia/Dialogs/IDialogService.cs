@@ -1,4 +1,4 @@
-﻿namespace CompositeFramework.Core.Dialogs;
+﻿namespace CompositeFramework.Avalonia.Dialogs;
 
 public interface IDialogService
 {
@@ -9,7 +9,8 @@ public interface IDialogService
         CompositeDialogOptions? options = null);
 
     void RegisterDialog<TViewModel, TView>(string? dialogName = null)
-        where TViewModel : IDialogViewModel;
+        where TViewModel : IDialogViewModel
+        where TView : Control;
     
     /// <summary>
     /// Call by dialog name.  Returns the viewmodel.

@@ -1,29 +1,21 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using CompositeFramework.Core.Dialogs;
+using CompositeFramework.Avalonia.Dialogs;
 using ShadUI;
 
 namespace Biz.Shared.Services;
 
-public class ShadUiDialogService 
+public class ShadUiDialogService(ModuleManager moduleManager,
+    DialogManager dialogManager) 
     : ObservableObject, IDialogService
 {
-    readonly ModuleManager moduleManager;
-    
+
     /// <summary>
     /// This should be set, or bound in XAML.
     /// </summary>
-    public DialogManager DialogManager { get; set; }
+    public DialogManager DialogManager { get; set; } = dialogManager;
 
     readonly Dictionary<string, Type> dialogNameViewModelMap = new();
 
-    public ShadUiDialogService(
-        ModuleManager moduleManager,
-        DialogManager dialogManager)
-    {
-        this.moduleManager = moduleManager;
-        DialogManager = dialogManager;
-    }
-    
     public Task<bool> Confirm(
         string title, string message, 
         string? okText = null, bool showCancel = false,
@@ -47,7 +39,7 @@ public class ShadUiDialogService
         return tcs.Task;
     }
 
-    static DialogBuilder<T> SetDialogParameters<T>(
+    static DialogBuilder<T> SetDialogOptions<T>(
         DialogBuilder<T> db,
         CompositeDialogOptions? options = null)
     {
@@ -64,7 +56,7 @@ public class ShadUiDialogService
 
     public void RegisterDialog<TViewModel, TView>(
         string? dialogName = null)
-        where TViewModel : IDialogViewModel
+        where TViewModel : IDialogViewModel where TView : Control
     {
         dialogName ??= typeof(TViewModel).AssemblyQualifiedName;
         if (dialogName == null)
@@ -74,7 +66,9 @@ public class ShadUiDialogService
         dialogNameViewModelMap.Add(dialogName, typeof(TViewModel));
 
         DialogManager dm1 = new();
-        dm1.Register(typeof(TView), typeof(TViewModel));
+#pragma warning disable SPLATDI001
+        dm1.Register<TView, TViewModel>();
+#pragma warning restore SPLATDI001
     }
 
     public async Task<IDialogViewModel> Show(
@@ -94,7 +88,7 @@ public class ShadUiDialogService
             throw new InvalidOperationException($"Dialog ViewModel \"{vmType.AssemblyQualifiedName}\" does not implement {nameof(IDialogViewModel)}.");
         
         var db = DialogManager.CreateDialog(dlgVm);
-        db = SetDialogParameters(db);
+        db = SetDialogOptions(db);
         db.Show();
         
         await dlgVm.OpenedAsync(parameters);
@@ -114,7 +108,7 @@ public class ShadUiDialogService
             await moduleManager.LoadModuleAsync(moduleName);
         
         var db = DialogManager.CreateDialog(vm);
-        SetDialogParameters(db);
+        SetDialogOptions(db);
         db.Show();
 
         await vm.OpenedAsync(parameters);

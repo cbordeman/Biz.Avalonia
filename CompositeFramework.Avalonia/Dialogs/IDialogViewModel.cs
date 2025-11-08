@@ -1,6 +1,4 @@
-using System.ComponentModel;
-
-namespace CompositeFramework.Core.Dialogs;
+namespace CompositeFramework.Avalonia.Dialogs;
 
 public interface IDialogViewModel : INotifyPropertyChanged
 {

@@ -316,7 +316,7 @@
                 </shadui:Sidebar.Footer>
             </shadui:Sidebar>
 
-            <!--  Header and Toolbar  -->
+            <!--  Header, Main Content, and Toolbar  -->
             <Grid
                 Grid.Column="1"
                 Margin="10,10,0,0"

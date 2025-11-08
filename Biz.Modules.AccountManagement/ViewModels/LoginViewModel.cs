@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CompositeFramework.Core.Dialogs;
+using CompositeFramework.Avalonia.Dialogs;
 
 namespace Biz.Modules.AccountManagement.ViewModels;
 
-public class LoginViewModel : PageViewModelBase, IDialogViewModel
+public class LoginViewModel : PageViewModelBase
 {
     CancellationTokenSource? loginCancellationTokenSource;
     readonly IDialogService dialogService;
@@ -139,14 +139,4 @@ public class LoginViewModel : PageViewModelBase, IDialogViewModel
     
     public override bool PersistInHistory() => false;
     public override string Area => "Account";
-    
-    public async Task OpenedAsync(params NavParam[] parameters)
-    {
-        
-    }
-    
-    public async Task ClosedAsync()
-    {
-        
-    }
 }

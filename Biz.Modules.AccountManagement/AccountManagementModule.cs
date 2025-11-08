@@ -1,6 +1,6 @@
 ﻿using Biz.Modules.AccountManagement.ViewModels;
 using Biz.Modules.AccountManagement.Views;
-using CompositeFramework.Core.Dialogs;
+using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Modules;
 using CompositeFramework.Modules.Attributes;
 
@@ -27,9 +27,9 @@ public class AccountManagementModule : IModule
             AccountManagementConstants.TenantSelectionView);
 
         // Dialog registration.
-        var dialogService = Locator.Current.Resolve<IDialogService>();
-        dialogService.RegisterDialog<LoginViewModel, LoginView>(
-            AccountManagementConstants.LoginView);
+        //var dialogService = Locator.Current.Resolve<IDialogService>();
+        // dialogService.RegisterDialog<LoginViewModel, LoginView>(
+        //     AccountManagementConstants.LoginView);
     }
     
     public Task InitializedAsync() => Task.CompletedTask;
