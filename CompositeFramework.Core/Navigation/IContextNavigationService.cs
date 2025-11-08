@@ -79,4 +79,6 @@ public interface ISectionNavigationService
     /// </summary>
     /// <param name="sectionName"></param>
     void Initialize(string sectionName);
+    
+    Task Refresh(string alternateLocationName);
 }

@@ -8,4 +8,8 @@
 /// <param name="ViewInstance"></param>
 internal record LocationWithViewInstance(ILocation Location,
     // ReSharper disable once NotAccessedPositionalProperty.Global
-    object? ViewInstance);
+    object? ViewInstance)
+{
+    /// <summary></summary>
+    public ILocation Location { get; set; } = Location;
+}

@@ -49,6 +49,25 @@ public class SectionNavigationService
                 sectionName, this);
         ContentControl = cc;        
     }
+    
+    public async Task Refresh(string alternateLocationName)
+    {
+        if (history.TryPeek(out var location))
+        {
+            location.Location =(ILocation) Locator.Current.Resolve(
+                location.Location.GetType());
+            await location.Location.OnNavigatedToAsync(
+                new NavigationContext()
+                {
+                    Direction = NavitationDirection.Refresh,
+                    Location = location.Location }
+                );
+        }
+        else
+        {
+            await NavigateToAsync(alternateLocationName);
+        }
+    }
 
     public AsyncEvent<NavigatedEventArgs> Navigated { get; } = new();
 

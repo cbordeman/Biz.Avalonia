@@ -13,12 +13,16 @@ public interface IDialogService
     /// <summary>
     /// Call by dialog name.  Returns the viewmodel.
     /// </summary>
-    Task<IDialogViewModel> Show(string dialogName, params NavParam[] parameters);
+    Task<IDialogViewModel> Show(
+        string moduleName,
+        string dialogName, params NavParam[] parameters);
     
     /// <summary>
     /// Pass in the viewmodel.
     /// </summary>
-    Task Show(IDialogViewModel vm, params NavParam[] parameters);
+    Task Show(
+        string moduleName,
+        IDialogViewModel vm, params NavParam[] parameters);
     
     /// <summary>
     /// Closes an open dialog.
