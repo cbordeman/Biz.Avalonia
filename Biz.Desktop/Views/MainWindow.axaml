@@ -5,6 +5,7 @@
     xmlns:converters="clr-namespace:Biz.Shared.Converters;assembly=Biz.Shared"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="clr-namespace:Biz.Shared.Services;assembly=Biz.Shared"
     xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:Biz.Desktop.ViewModels"
     Name="Window"
@@ -28,9 +29,9 @@
             Data="{x:Static shadUi:Icons.Logo}" />
     </shadUi:Window.LogoContent>
 
-    <!-- <shadUi:Window.Hosts> -->
-    <!--     <shadUi:DialogHost Manager="{Binding DialogService.DialogHost}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadUi:Window}}" /> -->
-    <!-- </shadUi:Window.Hosts> -->
+    <shadUi:Window.Hosts>
+        <shadUi:DialogHost Manager="{Binding Main.((services:ShadUiDialogService)DialogService).DialogManager}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadUi:Window}}" />
+    </shadUi:Window.Hosts>
 
     <shadUi:Window.RightWindowTitleBarContent>
         <StackPanel Orientation="Horizontal" Spacing="8">

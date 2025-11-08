@@ -16,6 +16,9 @@ public abstract class MainViewModelBase
     protected readonly IMainNavigationService MainContentNavigationService;
     protected readonly IAuthenticationService AuthService;
     
+    // This must be public so MainWindow can bind to its DialogHost property.
+    public IDialogService DialogService { get; }
+    
     #region IsDrawerOpen
     public bool IsDrawerOpen
     {
@@ -60,6 +63,8 @@ public abstract class MainViewModelBase
 
     protected MainViewModelBase()
     {
+        DialogService = Locator.Current.Resolve<IDialogService>();
+        
         ToastManager = Locator.Current.Resolve<ToastManager>();
         
         AuthService = Locator.Current.Resolve<IAuthenticationService>();

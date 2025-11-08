@@ -5,8 +5,6 @@ using Splat;
 
 namespace CompositeFramework.Avalonia.Navigation;
 
-
-
 /// <summary>
 /// Implementation of ISectionNavigationService that navigates
 /// within a single section.  Call Initialize(sectionName) before use.

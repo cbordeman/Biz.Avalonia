@@ -73,6 +73,8 @@ public partial class App : Application
         SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
         SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
         
+        SplatRegistrations.RegisterLazySingleton<DialogManager>();
+        
         ModularityInitializer.RegisterRequiredTypes();
         
         // Get configuration service to access maps API key

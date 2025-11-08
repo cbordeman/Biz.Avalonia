@@ -1,11 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Biz.Shared.Services;
 using Biz.Shared.ViewModels;
 using CommunityToolkit.Mvvm.Input;
-using CompositeFramework.Core.Extensions;
-using Splat;
 
 namespace Biz.Desktop.ViewModels
 {
@@ -19,15 +16,10 @@ namespace Biz.Desktop.ViewModels
         }
         #endregion Main
 
-        // This must be public so MainWindow can bind to its DialogHost property.
-        public IDialogService DialogService { get; }
-        
         public MainWindowViewModel( 
             MainLargeViewModel mainLargeViewModel)
         {
             Main = mainLargeViewModel;
-            DialogService = Locator.Current
-                .Resolve<IDialogService>();
             Title = "Shell (Window)";
         }
         
@@ -37,7 +29,7 @@ namespace Biz.Desktop.ViewModels
         bool CanTryCloseCommand() => true;
         async Task ExecuteTryCloseCommand()
         {
-            if (await DialogService.Confirm(
+            if (await Main.DialogService.Confirm(
                     "Close", "Do you really want to exit?",
                     "Yes", "No")) 
                 Environment.Exit(0);

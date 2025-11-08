@@ -1,24 +1,29 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using ShadUI;
 
 namespace Biz.Shared.Services;
 
-public class ShadUiDialogService(DialogManager dialogManager) 
-    : IDialogService
+public partial class ShadUiDialogService : ObservableObject, IDialogService
 {
     /// <summary>
     /// This should be set, or bound in XAML.
     /// </summary>
-    public object? DialogHost { get; set; }
+    public DialogManager DialogManager { get; set; }
 
     readonly Dictionary<string, ViewModelViewBinding> dialogNameMap = new();
 
+    public ShadUiDialogService(DialogManager dialogManager)
+    {
+        DialogManager = dialogManager;
+    }
+    
     public Task<bool> Confirm(
         string title, string message, 
         string? okText = null, string? cancelText = null)
     {
         var tcs = new TaskCompletionSource<bool>();
         
-        var dialogBuilder = dialogManager
+        var dialogBuilder = DialogManager
             .CreateDialog(title, message)
             .WithPrimaryButton(
                 okText ?? "OK", 
@@ -70,7 +75,7 @@ public class ShadUiDialogService(DialogManager dialogManager)
         if (vm is not IDialogViewModel dlgVm)
             throw new InvalidOperationException($"Dialog ViewModel \"{vmType.AssemblyQualifiedName}\" does not implement {nameof(IDialogViewModel)}.");
         
-        dialogManager.CreateDialog(vm)
+        DialogManager.CreateDialog(vm)
             .Dismissible()
             .Show();
         
@@ -92,7 +97,7 @@ public class ShadUiDialogService(DialogManager dialogManager)
                 $"{vm.GetType().AssemblyQualifiedName}\" not registered " +
                 $"in Dialog Service.");
         
-        dialogManager.CreateDialog(vm)
+        DialogManager.CreateDialog(vm)
             .Dismissible()
             .Show();
         
@@ -101,7 +106,7 @@ public class ShadUiDialogService(DialogManager dialogManager)
 
     public async Task Close(IDialogViewModel dialogViewModel)
     {
-        dialogManager.Close(dialogViewModel);
+        DialogManager.Close(dialogViewModel);
         await dialogViewModel.ClosedAsync();
     }
 }

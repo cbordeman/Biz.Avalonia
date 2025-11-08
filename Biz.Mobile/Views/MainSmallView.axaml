@@ -7,6 +7,7 @@
     xmlns:infrastructure1="clr-namespace:Biz.Shared.Infrastructure;assembly=Biz.Shared"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigation="clr-namespace:CompositeFramework.Avalonia.Navigation;assembly=CompositeFramework.Avalonia"
+    xmlns:services="clr-namespace:Biz.Shared.Services;assembly=Biz.Shared"
     xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:toolbar="clr-namespace:Biz.Shared.ViewModels.Toolbar;assembly=Biz.Shared"
     xmlns:viewModels="clr-namespace:Biz.Mobile.ViewModels"
@@ -24,9 +25,13 @@
         ColumnDefinitions="Auto,*,Auto"
         RowDefinitions="Auto,*">
 
+        <shadUi:DialogHost Manager="{Binding ((services:ShadUiDialogService)DialogService).DialogManager}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadUi:Window}}" />
+
         <!--  Hamburger button  -->
         <Button
             x:Name="HamburgerButton"
+            Grid.Row="0"
+            Grid.Column="0"
             Width="64"
             Height="64"
             Margin="0,0,10,0"
