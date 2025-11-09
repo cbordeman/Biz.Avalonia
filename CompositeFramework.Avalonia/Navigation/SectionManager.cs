@@ -1,4 +1,6 @@
-﻿namespace CompositeFramework.Avalonia.Navigation;
+﻿using CompositeFramework.Avalonia.Controls;
+
+namespace CompositeFramework.Avalonia.Navigation;
 
 /// <summary>
 /// Use in AXAML to assign the section name for a ContentControl.
@@ -56,4 +58,16 @@ public class SectionManager : AvaloniaObject
         if (!SectionNameRegistrationsInternal.TryAdd(newSectionName, element))
             throw new DuplicateSectionNameException(element, newSectionName);
     }
+
+    public static void ChangeSlideDirection(string sectionName, 
+        bool isSlideLeft)
+    {
+        if (!SectionNameRegistrationsInternal.TryGetValue(sectionName, out var element))
+            throw new KeyNotFoundException($"Section {sectionName} not found.");
+        else if (element is not ReversibleTransitioningContentControl slidingContentControl)
+            throw new InvalidCastException($"Section {sectionName} is not a SlidingContentControl.");
+        else
+            slidingContentControl.SlideLeft = isSlideLeft;
+    }
+    
 }

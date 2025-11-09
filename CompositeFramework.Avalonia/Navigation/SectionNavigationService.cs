@@ -176,9 +176,94 @@ public class SectionNavigationService
         return NavigationResult.Success;
     }
 
-    public Task<NavigationResult> GoBackAsync(ILocation? toLocation = null)
+    public Task<NavigationResult> GoBackAsync()
     {
-        throw new NotImplementedException();
+        if (history.Count == 0)
+            throw new InvalidOperationException("Cannot go back.  History is empty.");
+        
+        if (ContentControl == null)
+            throw new NavigationSectionNameNotSetException();
+
+        var newNavCtx = new NavigationContext()
+        {
+            Direction = NavitationDirection.Backward,
+        };
+            
+        try
+        {
+            vmLocation.NavigationParameters = parameters;
+            vmLocation.LocationName = location;
+            newNavCtx.Location = vmLocation;
+            
+            // Tell current page we're navigating.
+            ILocation? currentLocation = null;
+            if (history.Count > 0)
+            {
+                currentLocation = history.Peek().Location;
+                var ok = await currentLocation
+                    .OnNavigatingFromAsync(newNavCtx);
+                if (!ok)
+                {
+                    await Navigated.PublishSequentiallyAsync(
+                        new NavigatedEventArgs(
+                            NavigationResult.Cancelled,
+                            location,
+                            null,
+                            newNavCtx));
+                    return NavigationResult.Cancelled;
+                }
+            }
+
+            // Swap the view.
+            var v = Locator.Current.Resolve(vmBinding.ViewType);
+            if (v is not Control view)
+            {
+                throw new TypeConstraintNotMetException(
+                    Locator.Current,
+                    vmBinding.ViewType,
+                        $"View must derive from {nameof(Control)} to be " +
+                        $"used as a navigation view.", null);
+            }
+            view.DataContext = vmLocation;
+            if (ContentControl is not { } contentControl)
+            {
+                throw new TypeConstraintNotMetException(
+                    Locator.Current,
+                    ContentControl.GetType(),
+                    $"Section target must be a {nameof(global::Avalonia.Controls.ContentControl)}.",
+                    null);
+            }
+            contentControl.Content = view;
+
+            // Adjust history
+            ClearForwardHistory();
+            history.Push(new LocationWithViewInstance(
+                vmLocation,
+                vmLocation.KeepViewAlive ? view : null));
+
+            // After navigation
+            if (currentLocation != null)
+                await currentLocation.OnNavigatedFromAsync(newNavCtx);
+            await vmLocation.OnNavigatedToAsync(newNavCtx);
+        }
+        catch (Exception e)
+        {
+            await Navigated.PublishSequentiallyAsync(
+                new NavigatedEventArgs(
+                    NavigationResult.Error,
+                    location,
+                    e, 
+                    newNavCtx));
+            return NavigationResult.Error;
+        }
+        
+        await Navigated.PublishSequentiallyAsync(
+            new NavigatedEventArgs(
+                NavigationResult.Success,
+                location,
+                null,
+                newNavCtx));
+        return NavigationResult.Success;
     }
     
     public Task<NavigationResult> GoForwardAsync(ILocation? toLocation = null)

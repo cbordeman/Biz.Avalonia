@@ -36,7 +36,7 @@ public interface ISectionNavigationService
     /// </summary>
     /// <param name="toLocation"></param>
     /// <returns></returns>
-    Task<NavigationResult> GoBackAsync(ILocation? toLocation = null);
+    Task<NavigationResult> GoBackAsync();
     Task<NavigationResult> GoForwardAsync(ILocation? toLocation = null);
     
     /// <summary>

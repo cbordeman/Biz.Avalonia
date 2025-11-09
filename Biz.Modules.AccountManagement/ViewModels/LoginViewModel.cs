@@ -60,6 +60,8 @@ public class LoginViewModel : PageViewModelBase
                         $"{provider} Login",
                         $"Error logging in." +
                         (result.error == null ? "" : $"\n\nError: {result.error}"));
+                    var navService = Locator.Current.Resolve<ISectionNavigationService>();
+                    await navService.GoBackAsync();
                     return;
                 }
                 else if (result.availableTenants.Length == 0)

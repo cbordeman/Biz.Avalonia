@@ -2,6 +2,7 @@
     x:Class="Biz.Desktop.Views.MainLargeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:CompositeFramework.Avalonia.Controls;assembly=CompositeFramework.Avalonia"
     xmlns:converters="clr-namespace:Biz.Shared.Converters;assembly=Biz.Shared"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:infrastructure1="clr-namespace:Biz.Shared.Infrastructure;assembly=Biz.Shared"
@@ -325,10 +326,10 @@
                 RowDefinitions="Auto,*">
 
                 <!--  Main Content  -->
-                <TransitioningContentControl
+                <controls:ReversibleTransitioningContentControl
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
-                    Margin="0,15,0,0"
+                    Margin="0,10,0,0"
                     navigation:SectionManager.SectionName="{x:Static infrastructure1:SectionNames.MainContentSection}">
                     <TransitioningContentControl.PageTransition>
                         <PageSlide Duration="0:00:00.2">
@@ -337,7 +338,7 @@
                             </PageSlide.SlideInEasing>
                         </PageSlide>
                     </TransitioningContentControl.PageTransition>
-                </TransitioningContentControl>
+                </controls:ReversibleTransitioningContentControl>
 
                 <!--  Header  -->
                 <StackPanel
