@@ -19,7 +19,7 @@ public class SectionNavigationService
     public string? SectionName { get; set; }
 
     readonly Stack<LocationWithViewInstance> history = [];
-    public IReadOnlyCollection<ILocation> History =>
+    public ILocation[] History =>
         history
             // Exclude last item
             .Except(history.Reverse().Take(1))
@@ -154,7 +154,7 @@ public class SectionNavigationService
                                 null,
                                 newNavCtx));
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
                         // Eat
                     }
@@ -225,7 +225,7 @@ public class SectionNavigationService
                     null,
                     newNavCtx));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             // Eat
         }
@@ -244,8 +244,8 @@ public class SectionNavigationService
         // Find location to go back to.  Remove from top
         // of history and add to forwardHistory.  Only save
         // locations where AddToHistory is true.
-        LocationWithViewInstance? targetLocation = null;
-        ILocation? currentLocation = null;
+        LocationWithViewInstance? targetLocation;
+        ILocation? currentLocation;
         int curIndex = history.Count - 1;
         var h = history.ToArray();
         while (true)
@@ -292,7 +292,7 @@ public class SectionNavigationService
             await Navigated.PublishSequentiallyAsync(
                 new NavigatedEventArgs(
                     NavigationResult.Error,
-                    currentLocation?.LocationName,
+                    currentLocation.LocationName,
                     e,
                     newNavCtx));
             return NavigationResult.Error;
@@ -307,7 +307,7 @@ public class SectionNavigationService
                     null,
                     newNavCtx));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             // Eat
         }

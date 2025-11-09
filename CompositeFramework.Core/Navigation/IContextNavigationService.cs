@@ -56,7 +56,7 @@ public interface ISectionNavigationService
     /// All locations navigated to where AddToHistory is true.
     /// Does not include CurrentLocation.
     /// </summary>
-    IReadOnlyCollection<ILocation> History { get; }
+    ILocation[] History { get; }
     
     /// <summary>
     /// Forward history where AddToHistory is true.
