@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Biz.Desktop.ViewModels;
+using CompositeFramework.Core.Extensions;
 using CompositeFramework.Core.Navigation;
+using Splat;
 
 namespace Biz.Desktop.Views
 {
@@ -36,7 +38,9 @@ namespace Biz.Desktop.Views
             if (properties.IsXButton1Pressed)
             {
                 // Handle "Back" button
-                throw new NotImplementedException();
+                var nav = Locator.Current.Resolve<ISectionNavigationService>();
+                if (nav.History.Count > 0)
+                    nav.GoBackAsync().ContinueWith(t => { });
             }
             else if (properties.IsXButton2Pressed)
             {

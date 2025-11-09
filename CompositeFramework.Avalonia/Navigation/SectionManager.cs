@@ -60,14 +60,11 @@ public class SectionManager : AvaloniaObject
     }
 
     public static void ChangeSlideDirection(string sectionName, 
-        bool isSlideLeft)
+        bool isReverse)
     {
         if (!SectionNameRegistrationsInternal.TryGetValue(sectionName, out var element))
             throw new KeyNotFoundException($"Section {sectionName} not found.");
-        else if (element is not ReversibleTransitioningContentControl slidingContentControl)
-            throw new InvalidCastException($"Section {sectionName} is not a SlidingContentControl.");
-        else
-            slidingContentControl.SlideLeft = isSlideLeft;
+        else if (element is ReversibleTransitioningContentControl slidingContentControl)
+            slidingContentControl.Reverse = isReverse;
     }
-    
 }

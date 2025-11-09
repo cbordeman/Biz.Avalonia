@@ -4,12 +4,11 @@
 /// Used to hold an instance of the view for locations where
 /// location.KeepViewAlive is true.
 /// </summary>
-/// <param name="Location"></param>
-/// <param name="ViewInstance"></param>
-internal record LocationWithViewInstance(ILocation Location,
-    // ReSharper disable once NotAccessedPositionalProperty.Global
+internal record LocationWithViewInstance(
+    ILocation Location,
+    Type ViewType,
     object? ViewInstance)
 {
-    /// <summary></summary>
     public ILocation Location { get; set; } = Location;
+    public Type ViewType { get; init; } = ViewType;
 }

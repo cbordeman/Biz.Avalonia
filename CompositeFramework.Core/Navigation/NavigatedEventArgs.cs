@@ -2,6 +2,6 @@
 
 public record NavigatedEventArgs(
     NavigationResult Result,
-    string LocationName,
+    string? LocationName,
     Exception? Exception, 
     NavigationContext Context);

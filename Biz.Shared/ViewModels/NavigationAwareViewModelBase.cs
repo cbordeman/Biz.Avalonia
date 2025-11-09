@@ -5,6 +5,8 @@ namespace Biz.Shared.ViewModels;
 public abstract class NavigationAwareViewModelBase
     : FormFactorAwareViewModel, ILocation
 {
+    public virtual bool AddToHistory => true;
+    
     public virtual Task OnNavigatedToAsync(NavigationContext ctx)
     {
         return Task.CompletedTask;
@@ -14,10 +16,14 @@ public abstract class NavigationAwareViewModelBase
     {
         return Task.FromResult(true);
     }
-    
-    public Task<bool> OnNavigatingFromAsync(NavigationContext newContext)
+    public virtual Task<bool> CanNavigateForwardAsync(NavigationContext newContext)
     {
         return Task.FromResult(true);
+    }
+
+    public Task OnNavigatingFromAsync(NavigationContext newContext)
+    {
+        return Task.CompletedTask;
     }
 
     public virtual Task OnNavigatedFromAsync(NavigationContext navigationContext)

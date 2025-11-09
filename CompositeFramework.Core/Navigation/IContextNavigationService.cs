@@ -50,8 +50,11 @@ public interface ISectionNavigationService
     /// </summary>
     void ClearForwardHistory();
     
+    ILocation? CurrentLocation { get; }
+    
     /// <summary>
     /// All locations navigated to where AddToHistory is true.
+    /// Does not include CurrentLocation.
     /// </summary>
     IReadOnlyCollection<ILocation> History { get; }
     
@@ -80,5 +83,5 @@ public interface ISectionNavigationService
     /// <param name="sectionName"></param>
     void Initialize(string sectionName);
     
-    Task Refresh(string alternateLocationName);
+    Task<NavigationResult> Refresh(string alternateLocationName);
 }

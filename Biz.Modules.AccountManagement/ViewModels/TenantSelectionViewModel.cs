@@ -45,4 +45,6 @@ public class TenantSelectionViewModel : PageViewModelBase
     public override bool PersistInHistory() => false;
 
     public override string Area => "Account";
+    
+    public override bool AddToHistory => false;
 }

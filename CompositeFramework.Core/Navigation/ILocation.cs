@@ -11,13 +11,17 @@ public interface ILocation
     /// Return false to cancel navigation.
     /// </summary>
     Task<bool> CanNavigateToAsync(NavigationContext navigationContext);
-    
+
     /// <summary>
     /// Return false to disallow (NavigationResult.NotAllowed).
+    /// Back navigation is always allowed.
     /// </summary>
     /// <param name="newContext"></param>
     /// <returns></returns>
-    Task<bool> OnNavigatingFromAsync(NavigationContext newContext); 
+    Task<bool> CanNavigateForwardAsync(NavigationContext newContext) => 
+        Task.FromResult(true);
+    
+    Task OnNavigatingFromAsync(NavigationContext newContext); 
     Task OnNavigatedFromAsync(NavigationContext navigationContext);
     
     /// <summary>

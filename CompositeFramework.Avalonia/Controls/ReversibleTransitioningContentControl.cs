@@ -3,12 +3,14 @@
 namespace CompositeFramework.Avalonia.Controls;
 
 /// <summary>
-/// A TransitioningContentControl with a SlideLeft property.
+/// A TransitioningContentControl with a Reverse property.
 /// </summary>
 public class ReversibleTransitioningContentControl : TransitioningContentControl
 {
-    public static readonly StyledProperty<bool> SlideLeftProperty =
-        AvaloniaProperty.Register<ReversibleTransitioningContentControl, bool>(nameof(SlideLeft));
+    protected override Type StyleKeyOverride => typeof(TransitioningContentControl);
+    
+    public static readonly StyledProperty<bool> ReverseProperty =
+        AvaloniaProperty.Register<ReversibleTransitioningContentControl, bool>(nameof(Reverse));
 
     IPageTransition? innerTransition;
     bool ignoreTransitionChanging;
@@ -16,17 +18,16 @@ public class ReversibleTransitioningContentControl : TransitioningContentControl
     public ReversibleTransitioningContentControl()
     {
         innerTransition = PageTransition;
-
         this.PropertyChanged += OnPropertyChanged;
-
-        UpdateTransition();
     }
 
-    private void OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void OnPropertyChanged(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
     {
         // Need to save the initial transition.
-        innerTransition ??= PageTransition;
-
+        if (innerTransition == null)
+            innerTransition = PageTransition;
+        
         if (PageTransition == null)
         {
             innerTransition = PageTransition;
@@ -36,41 +37,51 @@ public class ReversibleTransitioningContentControl : TransitioningContentControl
         // To prevent infinite loop while replacing PageTransition
         // with a wrapper.
         if (ignoreTransitionChanging)
-        {
-            ignoreTransitionChanging = false;
             return;
-        }
-
+        
         if (e.Property == PageTransitionProperty)
         {
-            innerTransition = PageTransition;
+            innerTransition = e.NewValue as IPageTransition;
             UpdateTransition();
         }
-        else if (e.Property == SlideLeftProperty)
-            UpdateTransition();
+        else if (e.Property == ReverseProperty)
+        {
+            if (PageTransition is DelegatedPageTransition dt)
+                dt.Reverse = Reverse;
+        }
     }
 
     private void UpdateTransition()
     {
+        if (ignoreTransitionChanging)
+            return;
+        
         if (innerTransition == null)
             throw new InvalidOperationException("PageTransition cannot be null.");
-        ignoreTransitionChanging = true;
-        PageTransition = 
-            new DelegatedPageTransition(innerTransition!, SlideLeft);
+        try
+        {
+            ignoreTransitionChanging = true;
+            PageTransition =
+                new DelegatedPageTransition(innerTransition!, Reverse);
+        }
+        finally
+        {
+            ignoreTransitionChanging = false;
+        }
     }
 
-    public bool SlideLeft
+    public bool Reverse
     {
-        get => GetValue(SlideLeftProperty);
-        set => SetValue(SlideLeftProperty, value);
+        get => GetValue(ReverseProperty);
+        set => SetValue(ReverseProperty, value);
     }
 }
 
-// public class SlideLeftRightTransition : IPageTransition
+// public class ReverseRightTransition : IPageTransition
 // {
 //     private readonly TimeSpan duration;
 //
-//     public SlideLeftRightTransition(TimeSpan duration)
+//     public ReverseRightTransition(TimeSpan duration)
 //     {
 //         this.duration = duration;
 //     }
@@ -154,13 +165,26 @@ public class ReversibleTransitioningContentControl : TransitioningContentControl
 /// <summary>
 /// IPageTransition wrapper that applies forceForward parameter.
 /// </summary>
-/// <param name="inner"></param>
-/// <param name="forceForward"></param>
-public class DelegatedPageTransition(IPageTransition inner,
-    bool forceForward) : IPageTransition
+public class DelegatedPageTransition : IPageTransition
 {
-
+    public override string ToString() => nameof(DelegatedPageTransition);
+    
+    public IPageTransition Inner { get; }
+    public bool Reverse { get; set; }
+    
+    /// <summary>
+    /// IPageTransition wrapper that applies forceForward parameter.
+    /// </summary>
+    /// <param name="inner"></param>
+    /// <param name="reverse"></param>
+    public DelegatedPageTransition(IPageTransition inner,
+        bool reverse)
+    {
+        this.Inner = inner;
+        this.Reverse = reverse;
+    }
+    
     public Task Start(Visual? from, Visual? to, bool forward1, 
         CancellationToken cancellationToken) =>
-        inner.Start(from, to, forceForward, cancellationToken);
+        Inner.Start(from, to, !Reverse, cancellationToken);
 }
