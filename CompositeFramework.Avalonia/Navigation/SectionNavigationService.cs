@@ -19,26 +19,13 @@ public class SectionNavigationService
     public string? SectionName { get; set; }
 
     readonly Stack<LocationWithViewInstance> history = [];
-    public IReadOnlyCollection<ILocation> History
-    {
-        get
-        {
-            var h = history.ToArray();
-            bool? h1 = null;
-            bool? h2 = null;
-            if (h.Length > 0)
-                h1 = h[0].Location.AddToHistory;
-            if (h.Length > 1)
-                h2 = h[1].Location.AddToHistory;
-            
-            return history
-                // Exclude last item
-                .Except(history.Reverse().Take(1))
-                .Where(l => l.Location.AddToHistory)
-                .Select(x => x.Location)
-                .ToArray();
-        }
-    }
+    public IReadOnlyCollection<ILocation> History =>
+        history
+            // Exclude last item
+            .Except(history.Reverse().Take(1))
+            .Where(l => l.Location.AddToHistory)
+            .Select(x => x.Location)
+            .ToArray();
 
     readonly List<LocationWithViewInstance> forwardHistory = [];
     public IReadOnlyCollection<ILocation> ForwardHistory =>
