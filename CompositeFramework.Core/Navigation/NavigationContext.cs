@@ -5,7 +5,7 @@ public class NavigationContext
     /// <summary>
     /// True when navigation is backward.
     /// </summary>
-    public NavitationDirection Direction { get; init; }
+    public NavigationDirection Direction { get; init; }
 
     /// <summary>
     /// The location.  May be null if couldn't create.

@@ -1,4 +1,6 @@
-﻿using CompositeFramework.Avalonia.Controls;
+﻿using Avalonia.Input;
+using CompositeFramework.Avalonia.Controls;
+using NavigationDirection = CompositeFramework.Core.Navigation.NavigationDirection;
 
 namespace CompositeFramework.Avalonia.Navigation;
 
@@ -59,12 +61,12 @@ public class SectionManager : AvaloniaObject
             throw new DuplicateSectionNameException(element, newSectionName);
     }
 
-    public static void ChangeSlideDirection(string sectionName, 
-        bool isReverse)
+    public static void ChangeSlideAnimation(string sectionName, 
+        NavigationDirection direction)
     {
         if (!SectionNameRegistrationsInternal.TryGetValue(sectionName, out var element))
             throw new KeyNotFoundException($"Section {sectionName} not found.");
         else if (element is ReversibleTransitioningContentControl slidingContentControl)
-            slidingContentControl.Reverse = isReverse;
+            slidingContentControl.Direction = direction;
     }
 }

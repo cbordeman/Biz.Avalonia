@@ -7,8 +7,9 @@
 internal record LocationWithViewInstance(
     ILocation Location,
     Type ViewType,
-    object? ViewInstance)
+    Control? ViewInstance)
 {
     public ILocation Location { get; set; } = Location;
     public Type ViewType { get; init; } = ViewType;
+    public Control? ViewInstance { get; set; } = ViewInstance;
 }

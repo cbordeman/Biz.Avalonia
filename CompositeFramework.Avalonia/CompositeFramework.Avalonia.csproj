@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CompositeFramework.Core\CompositeFramework.Core.csproj" />
+      <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
     </ItemGroup>
 
     <ItemGroup>

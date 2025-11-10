@@ -1,6 +1,6 @@
 namespace CompositeFramework.Core.Navigation;
 
-public enum NavitationDirection
+public enum NavigationDirection
 {
     Forward,
     Backward,

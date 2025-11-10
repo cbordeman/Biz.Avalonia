@@ -56,10 +56,16 @@ public class MainNavigationService :
         try
         {
             if (!await authenticationService.IsAuthenticated())
+            {
+                // Clear history
+                var nav = Locator.Current.Resolve<ISectionNavigationService>();
+                nav.ClearHistory();
+                
                 // Redirect to login page
                 await NavigateWithModuleAsync(
                     AccountManagementConstants.ModuleName,
                     AccountManagementConstants.LoginView);
+            }
             else
                 // Go to dashboard.  Note that the region journal has been
                 // emptied so there's no back history to go to.
@@ -156,10 +162,7 @@ public class MainNavigationService :
         if (!initialized)
             throw new InvalidOperationException("Not initialized.");
 
-        if (module != null)
-            await moduleManager.LoadModuleAsync(module);
-        
-        await navigationService.NavigateToAsync(area, parameters);
+        await navigationService.NavigateToAsync(module, area, parameters);
     }
 
     public void Dispose()

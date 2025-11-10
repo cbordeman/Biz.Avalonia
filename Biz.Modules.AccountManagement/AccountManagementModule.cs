@@ -15,10 +15,10 @@ public class AccountManagementModule : IModule
     {
         SplatRegistrations.SetupIOC();
 
-        SplatRegistrations.RegisterLazySingleton<TenantSelectionViewModel>();
-        SplatRegistrations.RegisterLazySingleton<TenantSelectionView>();
-        SplatRegistrations.RegisterLazySingleton<LoginViewModel>();
-        SplatRegistrations.RegisterLazySingleton<LoginView>();
+        SplatRegistrations.Register<TenantSelectionViewModel>();
+        SplatRegistrations.Register<TenantSelectionView>();
+        SplatRegistrations.Register<LoginViewModel>();
+        SplatRegistrations.Register<LoginView>();
 
         var contextNavigationService = Locator.Current.Resolve<ISectionNavigationService>();
         contextNavigationService.RegisterForNavigation<LoginViewModel, LoginView>(

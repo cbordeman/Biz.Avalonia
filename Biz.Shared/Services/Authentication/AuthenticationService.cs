@@ -10,7 +10,8 @@ using ServiceClients;
 
 namespace Biz.Shared.Services.Authentication;
 
-public class AuthenticationService(IConfigurationService configurationService,
+public class AuthenticationService(
+    IConfigurationService configurationService,
     IAuthDataStore authDataStore,
     ITenantsApi tenantsApi,
     LoginProviderRegistry loginProviderRegistry)
@@ -304,10 +305,6 @@ public class AuthenticationService(IConfigurationService configurationService,
 
     public async Task LogoutAsync(bool invokeEvent, bool clearBrowserCache)
     {
-        // Clear history
-        var nav = Locator.Current.Resolve<ISectionNavigationService>();
-        nav.ClearHistory();
-
         if (CurrentProvider != null)
             await CurrentProvider.LogoutAsync(clearBrowserCache);
 

@@ -17,8 +17,8 @@ public class DashboardModule : IModule
     {
         SplatRegistrations.SetupIOC();
         
-        SplatRegistrations.RegisterLazySingleton<DashboardViewModel>();
-        SplatRegistrations.RegisterLazySingleton<DashboardView>();
+        SplatRegistrations.Register<DashboardViewModel>();
+        SplatRegistrations.Register<DashboardView>();
         
         var contextNavigationService = 
             Locator.Current.GetService<ISectionNavigationService>();

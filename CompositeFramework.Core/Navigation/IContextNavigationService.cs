@@ -21,15 +21,17 @@ public interface ISectionNavigationService
     /// or an exception is thrown.
     /// </summary>
     AsyncEvent<NavigatedEventArgs> Navigated { get; }
-    
+
     /// <summary>
     /// Navigates to a new location.  Clears forward history.
     /// </summary>
+    /// <param name="moduleName"></param>
     /// <param name="location"></param>
     /// <param name="parameters"></param>
     /// <returns>True if navigation was successful and not
     /// cancelled or disallowed.</returns>
-    Task<NavigationResult> NavigateToAsync(string location, params NavParam[] parameters);
+    Task<NavigationResult> NavigateToAsync(
+        string? moduleName, string location, params NavParam[] parameters);
     
     /// <summary>
     /// Navigates backward.
@@ -62,7 +64,7 @@ public interface ISectionNavigationService
     /// Forward history where AddToHistory is true.
     /// Wiped on forward navigation to a new location.
     /// </summary>
-    IReadOnlyCollection<ILocation> ForwardHistory { get; }
+    ILocation[] ForwardHistory { get; }
     
     ICommand NavigateForwardCommand { get; }
     ICommand NavigateBackCommand { get; }
@@ -82,6 +84,22 @@ public interface ISectionNavigationService
     /// </summary>
     /// <param name="sectionName"></param>
     void Initialize(string sectionName);
-    
-    Task<NavigationResult> Refresh(string alternateLocationName);
+
+    /// <summary>
+    /// Refreshes the location.  If createNew is true, a new viewmodel
+    /// and view are created.
+    /// </summary>
+    /// <param name="alternateLocationName">If the current page cannot
+    /// be determined, this location will be navigated to.</param>
+    /// <param name="alternativeModulename">The name of the modul to load
+    /// for the alternative page.</param>
+    /// <param name="createNew">If true, creates a new viewmodel
+    /// and view.  If false, the view will be recreated if it is
+    /// not not persisted by the navigation service,
+    /// but the viewmodel will be reused.</param>
+    /// <returns></returns>
+    Task<NavigationResult> Refresh(
+        string? alternativeModulename,
+        string alternateLocationName,
+        bool createNew = true);
 }

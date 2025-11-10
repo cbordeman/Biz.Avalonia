@@ -104,10 +104,10 @@ public partial class App : Application
         SplatRegistrations.RegisterLazySingleton<ToastManager>();
 
         // Views and ViewModels
-        SplatRegistrations.RegisterLazySingleton<SettingsView>(); 
-        SplatRegistrations.RegisterLazySingleton<SettingsViewModel>(); 
-        SplatRegistrations.RegisterLazySingleton<SettingsSubView>();
-        SplatRegistrations.RegisterLazySingleton<SettingsSubViewModel>();
+        SplatRegistrations.Register<SettingsView>(); 
+        SplatRegistrations.Register<SettingsViewModel>(); 
+        SplatRegistrations.Register<SettingsSubView>();
+        SplatRegistrations.Register<SettingsSubViewModel>();
         
         // Accessibility
         Locator.CurrentMutable.RegisterConstant(SemanticScreenReader.Default);

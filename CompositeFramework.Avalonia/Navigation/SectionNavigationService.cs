@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Windows.Input;
 using CompositeFramework.Core.Extensions;
+using CompositeFramework.Modules;
 using Splat;
 
 namespace CompositeFramework.Avalonia.Navigation;
@@ -14,6 +15,7 @@ namespace CompositeFramework.Avalonia.Navigation;
 public class SectionNavigationService
     : ISectionNavigationService
 {
+    readonly IModuleManager moduleManager;
     ContentControl? ContentControl { get; set; }
 
     public string? SectionName { get; set; }
@@ -21,14 +23,14 @@ public class SectionNavigationService
     readonly Stack<LocationWithViewInstance> history = [];
     public ILocation[] History =>
         history
-            // Exclude last item
+            // Exclude last item, which is the current location.
             .Except(history.Reverse().Take(1))
             .Where(l => l.Location.AddToHistory)
             .Select(x => x.Location)
             .ToArray();
 
     readonly List<LocationWithViewInstance> forwardHistory = [];
-    public IReadOnlyCollection<ILocation> ForwardHistory =>
+    public ILocation[] ForwardHistory =>
         forwardHistory
             .Where(l => l.Location.AddToHistory)
             .Select(x => x.Location)
@@ -40,6 +42,11 @@ public class SectionNavigationService
     readonly ConcurrentDictionary<string, ViewModelViewBinding> registrations = new();
     public IReadOnlyDictionary<string, ViewModelViewBinding> Registrations =>
         registrations;
+
+    public SectionNavigationService(IModuleManager moduleManager)
+    {
+        this.moduleManager = moduleManager;
+    }
 
     public void Initialize(string sectionName)
     {
@@ -53,18 +60,47 @@ public class SectionNavigationService
         ContentControl = cc;
     }
 
-    public async Task<NavigationResult> Refresh(string alternateLocationName)
+    public async Task<NavigationResult> Refresh(
+        string? alternativeModulename,
+        string alternateLocationName,
+        bool createNew = true)
     {
+        if (ContentControl == null)
+            throw new NavigationSectionNameNotSetException();
+
         if (history.TryPeek(out var location))
         {
             try
             {
-                location.Location = (ILocation)Locator.Current.Resolve(
-                    location.Location.GetType());
+                var vmBinding = registrations
+                    [location.Location.LocationName];
+                var view = location.ViewInstance;
+
+                if (createNew || view == null)
+                    view = (Control)Locator.Current
+                        .Resolve(vmBinding.ViewType);
+
+                if (createNew)
+                {
+                    // Recreate a new ViewModel.
+                    var name = location.Location.LocationName;
+                    location.Location = (ILocation)Locator.Current.Resolve(
+                        location.Location.GetType());
+                    location.Location.LocationName = name;
+                }
+                view.DataContext = location.Location;
+                ContentControl.Content = view;
+
+                SectionManager.ChangeSlideAnimation(SectionName!,
+                    NavigationDirection.Refresh);
+
+                if (location.Location.KeepViewAlive)
+                    location.ViewInstance = view;
+
                 await location.Location.OnNavigatedToAsync(
                     new NavigationContext()
                     {
-                        Direction = NavitationDirection.Refresh,
+                        Direction = NavigationDirection.Refresh,
                         Location = location.Location
                     }
                 );
@@ -82,7 +118,7 @@ public class SectionNavigationService
                             new NavigationContext()
                             {
                                 Location = location.Location,
-                                Direction = NavitationDirection.Refresh
+                                Direction = NavigationDirection.Refresh
                             }));
                 }
                 catch (Exception exception)
@@ -93,12 +129,15 @@ public class SectionNavigationService
             }
         }
         else
-            return await NavigateToAsync(alternateLocationName);
+            return await NavigateToAsync(
+                alternativeModulename,
+                alternateLocationName);
     }
 
     public AsyncEvent<NavigatedEventArgs> Navigated { get; } = new();
 
-    public async Task<NavigationResult> NavigateToAsync(string location,
+    public async Task<NavigationResult> NavigateToAsync(
+        string? moduleName, string location,
         params NavParam[] parameters)
     {
         ArgumentChecker.ThrowIfNullOrWhiteSpace(SectionName);
@@ -107,9 +146,12 @@ public class SectionNavigationService
         if (ContentControl == null)
             throw new NavigationSectionNameNotSetException();
 
+        if (moduleName != null)
+            await moduleManager.LoadModuleAsync(moduleName);
+
         var newNavCtx = new NavigationContext()
         {
-            Direction = NavitationDirection.Forward,
+            Direction = NavigationDirection.Forward,
         };
 
         try
@@ -163,7 +205,8 @@ public class SectionNavigationService
             }
 
             // Swap the view.
-            SectionManager.ChangeSlideDirection(SectionName!, false);
+            SectionManager.ChangeSlideAnimation(SectionName!,
+                NavigationDirection.Forward);
             var v = Locator.Current.Resolve(vmBinding.ViewType);
             if (v is not Control view)
             {
@@ -263,7 +306,7 @@ public class SectionNavigationService
 
         var newNavCtx = new NavigationContext()
         {
-            Direction = NavitationDirection.Backward,
+            Direction = NavigationDirection.Backward,
             Location = targetLocation.Location
         };
 
@@ -276,7 +319,8 @@ public class SectionNavigationService
 
             // Going back, use reverse animation.  Only works if user
             // used ReversibleTransitioningContentControl.
-            SectionManager.ChangeSlideDirection(SectionName!, true);
+            SectionManager.ChangeSlideAnimation(SectionName!,
+                NavigationDirection.Backward);
 
             // If didn't save view instance, create new one.
             var view = targetLocation.ViewInstance ??
