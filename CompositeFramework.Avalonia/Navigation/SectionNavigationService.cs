@@ -355,7 +355,10 @@ public class SectionNavigationService
 
             // If didn't save view instance, create new one.
             var view = targetLocation.ViewInstance ??
-                       Locator.Current.Resolve(targetLocation.ViewType);
+                       (Control?) Locator.Current.Resolve(targetLocation.ViewType);
+            if (view == null)
+                throw new Exception("View instance is null.");
+            view.DataContext = targetLocation.Location; 
             ContentControl.Content = view;
             
             // After navigation
