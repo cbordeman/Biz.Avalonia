@@ -151,6 +151,8 @@ public class SectionNavigationService
             Direction = NavigationDirection.Forward,
         };
 
+        var oldCurrent = current;
+        
         try
         {
             if (!registrations.TryGetValue(location, out var vmBinding))
@@ -239,7 +241,8 @@ public class SectionNavigationService
             // At this point, history and current location
             // are already adjusted, so handler can initiate
             // navigation itself without corrupting state.
-            await current.Location.OnNavigatingFromAsync(newNavCtx);
+            if (oldCurrent != null)
+                await current.Location.OnNavigatingFromAsync(newNavCtx);
             
             // Swap the view.
             
@@ -260,7 +263,8 @@ public class SectionNavigationService
             // Inform old and new current page.  Must do this
             // after adjusting history because these handlers
             // may want to navigate to another page.
-            await vmLocation.OnNavigatedFromAsync(newNavCtx);
+            if (oldCurrent != null)
+                await oldCurrent.Location.OnNavigatedFromAsync(newNavCtx);
             await current.Location.OnNavigatedToAsync(newNavCtx);
         }
         catch (Exception e)
@@ -324,7 +328,6 @@ public class SectionNavigationService
         if (targetLocation == null)
             throw new InvalidOperationException(
                 "No back history.  Shouldn't get here.");
-        
         
         var oldCurrent = current;
         current = targetLocation;
