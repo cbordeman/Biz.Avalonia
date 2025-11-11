@@ -12,4 +12,9 @@ internal record LocationWithViewInstance(
     public ILocation Location { get; set; } = Location;
     public Type ViewType { get; init; } = ViewType;
     public Control? ViewInstance { get; set; } = ViewInstance;
+
+    public override string ToString()
+    {
+        return Location.LocationName;
+    }
 }

@@ -1,17 +1,16 @@
 ﻿using System.Diagnostics;
 using Biz.Configuration;
-using Biz.Models;
 using Microsoft.Identity.Client;
 using Serilog;
 
-namespace Biz.Authentication;
+namespace Biz.Authentication.ClientLoginProvider;
 
 public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
 {
     protected readonly IConfigurationService ConfigurationService;
     protected IPublicClientApplication? MsalClient;
 
-    public LoginProvider LoginProvider => LoginProvider.Microsoft;
+    public Models.LoginProvider LoginProvider => Models.LoginProvider.Microsoft;
     
     protected MicrosoftLoginProviderBase(IConfigurationService configurationService)
     {

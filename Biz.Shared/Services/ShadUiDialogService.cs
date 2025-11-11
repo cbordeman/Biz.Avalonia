@@ -28,11 +28,20 @@ public class ShadUiDialogService(ModuleManager moduleManager,
             .CreateDialog(title, message)
             .WithPrimaryButton(
                 okText ?? "OK",
-                () => tcs.TrySetResult(true));
-        
+                () => tcs.TrySetResult(true)) ;
+
         if (showCancel)
-            dialogBuilder.WithCancelButton(cancelText ?? "Cancel", 
-                () => tcs.TrySetResult(false));
+        {
+            dialogBuilder =
+                dialogBuilder
+                    .WithCancelButton(cancelText ?? "Cancel",
+                        () => tcs.TrySetResult(false));
+        }
+        else
+        {
+            dialogBuilder = dialogBuilder
+                .WithCancelButton(null);
+        }
         
         dialogBuilder.Show();
         

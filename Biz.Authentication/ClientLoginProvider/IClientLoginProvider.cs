@@ -1,7 +1,6 @@
-﻿using Biz.Models;
-using Microsoft.Identity.Client;
+﻿using Microsoft.Identity.Client;
 
-namespace Biz.Authentication;
+namespace Biz.Authentication.ClientLoginProvider;
 
 /// <summary>
 /// Provides client side code for a single login
@@ -9,7 +8,7 @@ namespace Biz.Authentication;
 /// </summary>
 public interface IClientLoginProvider
 {
-    LoginProvider LoginProvider { get; }
+    Models.LoginProvider LoginProvider { get; }
     Task<(AuthenticationResult? authenticationResult, string? internalUserId)> 
         LoginAsync(CancellationToken ct);
     Task LogoutAsync(bool clearBrowserCache);

@@ -60,7 +60,8 @@ public class LoginViewModel : PageViewModelBase
                     await dialogService.Confirm(
                         $"{provider} Login",
                         $"Error logging in." +
-                        (result.error == null ? "" : $"\n\nError: {result.error}"));
+                        (result.error == null ? "" : $"\n\nError: {result.error}"),
+                        null, false, ".");
                     var navService = Locator.Current.Resolve<ISectionNavigationService>();
                     await navService.GoBackAsync();
                     return;

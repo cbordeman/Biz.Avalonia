@@ -16,10 +16,6 @@ public class AccountManagementModule : IModule
     {
         SplatRegistrations.SetupIOC();
         
-        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
-        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
-        SplatRegistrations.RegisterLazySingleton<ILoginProviderRegistry, LoginProviderRegistry>();
-        
         SplatRegistrations.Register<TenantSelectionViewModel>();
         SplatRegistrations.Register<TenantSelectionView>();
         SplatRegistrations.Register<LoginViewModel>();

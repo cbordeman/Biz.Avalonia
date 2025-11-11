@@ -23,8 +23,6 @@ public class SectionNavigationService
     readonly Stack<LocationWithViewInstance> history = [];
     public ILocation[] History =>
         history
-            // Exclude last item, which is the current location.
-            .Except(history.Reverse().Take(1))
             .Where(l => l.Location.AddToHistory)
             .Select(x => x.Location)
             .ToArray();
@@ -65,73 +63,72 @@ public class SectionNavigationService
         string alternateLocationName,
         bool createNew = true)
     {
-        if (ContentControl == null)
-            throw new NavigationSectionNameNotSetException();
+        if (SectionName == null || ContentControl == null)
+            throw new NavigationSectionNameNotSetException(
+                ContentControl, SectionName);
 
-        if (history.TryPeek(out var location))
-        {
-            try
-            {
-                var vmBinding = registrations
-                    [location.Location.LocationName];
-                var view = location.ViewInstance;
-
-                if (createNew || view == null)
-                    view = (Control)Locator.Current
-                        .Resolve(vmBinding.ViewType);
-
-                if (createNew)
-                {
-                    // Recreate a new ViewModel.
-                    var name = location.Location.LocationName;
-                    location.Location = (ILocation)Locator.Current.Resolve(
-                        location.Location.GetType());
-                    location.Location.LocationName = name;
-                }
-                view.DataContext = location.Location;
-                ContentControl.Content = view;
-
-                SectionManager.ChangeSlideAnimation(SectionName!,
-                    NavigationDirection.Refresh);
-
-                if (location.Location.KeepViewAlive)
-                    location.ViewInstance = view;
-
-                await location.Location.OnNavigatedToAsync(
-                    new NavigationContext()
-                    {
-                        Direction = NavigationDirection.Refresh,
-                        Location = location.Location
-                    }
-                );
-                return NavigationResult.Success;
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    await Navigated.PublishSequentiallyAsync(
-                        new NavigatedEventArgs(
-                            NavigationResult.Error,
-                            location.Location.LocationName,
-                            e,
-                            new NavigationContext()
-                            {
-                                Location = location.Location,
-                                Direction = NavigationDirection.Refresh
-                            }));
-                }
-                catch (Exception exception)
-                {
-                    // Eat
-                }
-                return NavigationResult.Error;
-            }
-        }
-        else
+        if (current == null)
             return await NavigateToAsync(
                 alternativeModulename,
                 alternateLocationName);
+        
+        try
+        {
+            var vmBinding = registrations
+                [current.Location.LocationName];
+            var view = current.ViewInstance;
+
+            if (createNew || view == null)
+                view = (Control)Locator.Current
+                    .Resolve(vmBinding.ViewType);
+
+            if (createNew)
+            {
+                // Recreate a new ViewModel.
+                var name = current.Location.LocationName;
+                current.Location = (ILocation)Locator.Current.Resolve(
+                    current.Location.GetType());
+                current.Location.LocationName = name;
+            }
+            view.DataContext = current.Location;
+            ContentControl.Content = view;
+
+            SectionManager.ChangeSlideAnimation(SectionName!,
+                NavigationDirection.Refresh);
+
+            if (current.Location.KeepViewAlive)
+                current.ViewInstance = view;
+
+            await current.Location.OnNavigatedToAsync(
+                new NavigationContext()
+                {
+                    Direction = NavigationDirection.Refresh,
+                    Location = current.Location
+                }
+            );
+            return NavigationResult.Success;
+        }
+        catch (Exception e)
+        {
+            try
+            {
+                await Navigated.PublishSequentiallyAsync(
+                    new NavigatedEventArgs(
+                        NavigationResult.Error,
+                        current.Location.LocationName,
+                        e,
+                        new NavigationContext()
+                        {
+                            Location = current.Location,
+                            Direction = NavigationDirection.Refresh
+                        }));
+            }
+            catch (Exception exception)
+            {
+                // Eat
+            }
+            return NavigationResult.Error;
+        }
     }
 
     public AsyncEvent<NavigatedEventArgs> Navigated { get; } = new();
@@ -143,8 +140,8 @@ public class SectionNavigationService
         ArgumentChecker.ThrowIfNullOrWhiteSpace(SectionName);
         ArgumentChecker.ThrowIfNullOrWhiteSpace(location);
 
-        if (ContentControl == null)
-            throw new NavigationSectionNameNotSetException();
+        if (SectionName == null || ContentControl == null)
+            throw new NavigationSectionNameNotSetException(ContentControl, SectionName);
 
         if (moduleName != null)
             await moduleManager.LoadModuleAsync(moduleName);
@@ -179,11 +176,9 @@ public class SectionNavigationService
             newNavCtx.Location = vmLocation;
 
             // Tell current page we're navigating.
-            ILocation? currentLocation = null;
-            if (history.Count > 0)
+            if (current != null)
             {
-                currentLocation = history.Peek().Location;
-                var ok = await currentLocation
+                var ok = await current.Location
                     .CanNavigateForwardAsync(newNavCtx);
                 if (!ok)
                 {
@@ -203,10 +198,8 @@ public class SectionNavigationService
                     return NavigationResult.Cancelled;
                 }
             }
-
-            // Swap the view.
-            SectionManager.ChangeSlideAnimation(SectionName!,
-                NavigationDirection.Forward);
+            
+            // Create view now since it is used in events.
             var v = Locator.Current.Resolve(vmBinding.ViewType);
             if (v is not Control view)
             {
@@ -218,6 +211,42 @@ public class SectionNavigationService
                     null);
             }
             view.DataContext = vmLocation;
+            
+            // Adjust history
+            ClearForwardHistory();
+
+            // Push current location onto history.
+            if (current != null)
+            {
+                history.Push(new LocationWithViewInstance(
+                    current.Location,
+                    current.ViewType,
+                    current.Location.KeepViewAlive ? 
+                        current.ViewInstance : null));
+            }
+            
+            // Set new current location.
+            // Note that we hold a referene to view
+            // here, in current.ViewInstance.  This
+            // is not necessarily stored for history
+            // items.
+            current = new LocationWithViewInstance(
+                vmLocation,
+                vmBinding.ViewType,
+                view);
+            
+            // Tell current page we're navigating.
+            // At this point, history and current location
+            // are already adjusted, so handler can initiate
+            // navigation itself without corrupting state.
+            await current.Location.OnNavigatingFromAsync(newNavCtx);
+            
+            // Swap the view.
+            
+            // Adjust animation.
+            SectionManager.ChangeSlideAnimation(SectionName!,
+                NavigationDirection.Forward);
+            
             if (ContentControl is not { } contentControl)
             {
                 throw new TypeConstraintNotMetException(
@@ -228,18 +257,11 @@ public class SectionNavigationService
             }
             contentControl.Content = view;
 
-            // Inform new page.
-            if (currentLocation != null)
-                await currentLocation.OnNavigatedFromAsync(newNavCtx);
-            await vmLocation.OnNavigatedToAsync(newNavCtx);
-
-            // Adjust history last so no side effects from user
-            // exceptions.
-            ClearForwardHistory();
-            history.Push(new LocationWithViewInstance(
-                vmLocation,
-                vmBinding.ViewType,
-                vmLocation.KeepViewAlive ? view : null));
+            // Inform old and new current page.  Must do this
+            // after adjusting history because these handlers
+            // may want to navigate to another page.
+            await vmLocation.OnNavigatedFromAsync(newNavCtx);
+            await current.Location.OnNavigatedToAsync(newNavCtx);
         }
         catch (Exception e)
         {
@@ -277,33 +299,36 @@ public class SectionNavigationService
 
     public async Task<NavigationResult> GoBackAsync()
     {
-        if (history.Count(l => l.Location.AddToHistory) < 2)
+        if (!history.Any(l => l.Location.AddToHistory))
             throw new InvalidOperationException(
                 "Cannot go back.  History is empty.");
-
+        if (current == null)
+            throw new Exception("Current is null while history exists.");
+        
         if (ContentControl == null)
             throw new NavigationSectionNameNotSetException();
 
-        // Find location to go back to.  Remove from top
-        // of history and add to forwardHistory.  Only save
-        // locations where AddToHistory is true.
-        LocationWithViewInstance? targetLocation;
-        ILocation? currentLocation;
-        int curIndex = history.Count - 1;
-        var h = history.ToArray();
-        while (true)
+        // Adjust history and find location to go
+        // back to.
+        LocationWithViewInstance? targetLocation = null;
+        while (history.Count > 0)
         {
-            var top = h[curIndex];
-            if (top.Location.AddToHistory)
+            var h = history.Pop();
+            forwardHistory.Insert(0, h);
+            if (h.Location.AddToHistory)
             {
-                currentLocation = top.Location;
-                targetLocation = h[curIndex - 1];
+                targetLocation = h;
                 break;
             }
-            else
-                curIndex--;
         }
-
+        if (targetLocation == null)
+            throw new InvalidOperationException(
+                "No back history.  Shouldn't get here.");
+        
+        
+        var oldCurrent = current;
+        current = targetLocation;
+            
         var newNavCtx = new NavigationContext()
         {
             Direction = NavigationDirection.Backward,
@@ -313,7 +338,10 @@ public class SectionNavigationService
         try
         {
             // Tell current page we're navigating.
-            await currentLocation.OnNavigatingFromAsync(newNavCtx);
+            // At this point, history and current location
+            // are already adjusted, so handler can initiate
+            // navigation itself without corrupting state.
+            await oldCurrent.Location.OnNavigatingFromAsync(newNavCtx);
 
             // Swap the view.
 
@@ -326,9 +354,9 @@ public class SectionNavigationService
             var view = targetLocation.ViewInstance ??
                        Locator.Current.Resolve(targetLocation.ViewType);
             ContentControl.Content = view;
-
+            
             // After navigation
-            await currentLocation.OnNavigatedFromAsync(newNavCtx);
+            await oldCurrent.Location.OnNavigatedFromAsync(newNavCtx);
             await targetLocation.Location.OnNavigatedToAsync(newNavCtx);
         }
         catch (Exception e)
@@ -336,7 +364,7 @@ public class SectionNavigationService
             await Navigated.PublishSequentiallyAsync(
                 new NavigatedEventArgs(
                     NavigationResult.Error,
-                    currentLocation.LocationName,
+                    current.Location.LocationName,
                     e,
                     newNavCtx));
             return NavigationResult.Error;
@@ -347,28 +375,13 @@ public class SectionNavigationService
             await Navigated.PublishSequentiallyAsync(
                 new NavigatedEventArgs(
                     NavigationResult.Success,
-                    currentLocation.LocationName,
+                    current.Location.LocationName,
                     null,
                     newNavCtx));
         }
         catch (Exception ex)
         {
             // Eat
-        }
-
-        // Adjust history last so that errors don't corrupt history.
-        while (true)
-        {
-            var top = history.Peek();
-            if (top.Location.AddToHistory)
-            {
-                // Move location from history to forwardHistory.
-                var popped = history.Pop();
-                forwardHistory.Insert(0, popped);
-                break;
-            }
-            else
-                history.Pop();
         }
 
         return NavigationResult.Success;
@@ -385,7 +398,7 @@ public class SectionNavigationService
 
         // Clear normal history, except top of the stack,
         // which is the current location.
-        if (history.Count > 1)
+        if (history.Count >= 1)
         {
             var cur = history.Peek();
             history.Clear();
@@ -396,15 +409,9 @@ public class SectionNavigationService
     public void ClearForwardHistory() =>
         forwardHistory.Clear();
 
-    public ILocation? CurrentLocation
-    {
-        get
-        {
-            if (history.Count == 0)
-                return null;
-            return history.Peek().Location;
-        }
-    }
+    LocationWithViewInstance? current;
+
+    public ILocation? CurrentLocation => current?.Location;
 
     public void RegisterForNavigation<TViewModel, TView>
         (string? locationName = null)

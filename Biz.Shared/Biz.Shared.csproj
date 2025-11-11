@@ -53,10 +53,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="ClientLoginProviders\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml"/>
     </ItemGroup>
 

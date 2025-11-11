@@ -63,6 +63,9 @@ public partial class App : Application
         PlatformHelper.PlatformService?.RegisterPlatformTypes();
 
         // Register our services.
+        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
+        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
+        SplatRegistrations.RegisterLazySingleton<ILoginProviderRegistry, LoginProviderRegistry>();
         SplatRegistrations.RegisterLazySingleton<IConfigurationService, ConfigurationService>();
         SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
         SplatRegistrations.RegisterLazySingleton<IFormFactorService, FormFactorService>();

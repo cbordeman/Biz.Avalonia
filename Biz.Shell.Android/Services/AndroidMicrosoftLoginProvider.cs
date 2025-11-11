@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Biz.Authentication;
+using Biz.Authentication.ClientLoginProvider;
 using Biz.Configuration;
 using Microsoft.Identity.Client;
 

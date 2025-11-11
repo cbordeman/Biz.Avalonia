@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Biz.Authentication;
+using Biz.Authentication.ClientLoginProvider;
 using Biz.Desktop.Services;
 using Biz.Desktop.ViewModels;
 using Biz.Desktop.Views;
@@ -42,8 +43,6 @@ public class DesktopPlatformService : IPlatformService
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
 
-        
-        
         var authProviderRegistry = Locator.Current.Resolve
             <ILoginProviderRegistry>();
         authProviderRegistry!.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
@@ -75,7 +74,7 @@ public class DesktopPlatformService : IPlatformService
     {
         // Get an array of plugins to remove
         var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>();
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
         // remove each entry found
         foreach (var plugin in dataValidationPluginsToRemove)
