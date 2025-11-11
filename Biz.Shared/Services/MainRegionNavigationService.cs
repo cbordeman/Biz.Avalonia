@@ -1,6 +1,6 @@
 ﻿using Biz.Modules.AccountManagement.Core;
+using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Biz.Modules.Dashboard.Core;
-using Biz.Shared.Services.Authentication;
 
 namespace Biz.Shared.Services;
 
@@ -12,7 +12,7 @@ public class MainNavigationService :
     IAuthenticationService AuthenticationService =>
         Locator.Current.Resolve<IAuthenticationService>();
     readonly IAuthenticationService authenticationService;
-    readonly IModuleManager moduleManager;
+    //readonly IModuleManager moduleManager;
 
     // this is the full page url
     public string? CurrentPage { get; private set; }
@@ -25,11 +25,11 @@ public class MainNavigationService :
 
     public MainNavigationService(
         IAuthenticationService authenticationService,
-        IModuleManager moduleManager,
+        //IModuleManager moduleManager,
         ISectionNavigationService navigationService)
     {
         this.authenticationService = authenticationService;
-        this.moduleManager = moduleManager;
+        //this.moduleManager = moduleManager;
         this.navigationService = navigationService;
     }
 

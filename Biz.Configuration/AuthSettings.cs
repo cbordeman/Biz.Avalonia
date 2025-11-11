@@ -2,7 +2,7 @@
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable UnusedMember.Global
 
-namespace Biz.Shared.Services.Config;
+namespace Biz.Configuration;
 
 public class AuthSettings
 {

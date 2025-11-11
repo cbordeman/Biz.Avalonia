@@ -1,6 +1,7 @@
-using Biz.Shared.ClientLoginProviders;
+using Biz.Models;
+using CompositeFramework.Core;
 
-namespace Biz.Shared.Services.Authentication
+namespace Biz.Modules.AccountManagement.Core.Services.Authentication
 {
     public interface IAuthenticationService
     {

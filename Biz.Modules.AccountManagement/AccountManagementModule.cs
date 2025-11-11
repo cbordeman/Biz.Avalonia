@@ -1,8 +1,10 @@
-﻿using Biz.Modules.AccountManagement.ViewModels;
+﻿using Biz.Modules.AccountManagement.Core.Services.Authentication;
+using Biz.Modules.AccountManagement.Services.Authentication;
+using Biz.Modules.AccountManagement.ViewModels;
 using Biz.Modules.AccountManagement.Views;
-using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Modules;
 using CompositeFramework.Modules.Attributes;
+using ServiceClients;
 
 namespace Biz.Modules.AccountManagement;
 
@@ -14,7 +16,11 @@ public class AccountManagementModule : IModule
     public void PerformRegistrations()
     {
         SplatRegistrations.SetupIOC();
-
+        
+        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
+        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
+        SplatRegistrations.RegisterLazySingleton<ILoginProviderRegistry, LoginProviderRegistry>();
+        
         SplatRegistrations.Register<TenantSelectionViewModel>();
         SplatRegistrations.Register<TenantSelectionView>();
         SplatRegistrations.Register<LoginViewModel>();

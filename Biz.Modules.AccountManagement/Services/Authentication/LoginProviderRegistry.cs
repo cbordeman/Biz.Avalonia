@@ -1,20 +1,15 @@
-﻿using Biz.Shared.ClientLoginProviders;
+﻿using Biz.Modules.AccountManagement.Core.Services.Authentication;
 
-namespace Biz.Shared.Services.Authentication;
+namespace Biz.Modules.AccountManagement.Services.Authentication;
 
-public record LoginProviderDescriptor(
-    string Name,
-    string GeomertyResourceKey,
-    Type ProviderType);
-
-public class LoginProviderRegistry
+public class LoginProviderRegistry : ILoginProviderRegistry
 {
     readonly Dictionary<LoginProvider, LoginProviderDescriptor> 
         loginProviders = new();
     
     public void RegisterLoginProvider<T>(
         LoginProvider providerEnum, string name, 
-        string geomertyResourceKey)
+        string geometryResourceKey)
         where T : class, IClientLoginProvider
     {
         if (loginProviders.ContainsKey(providerEnum))
@@ -22,9 +17,9 @@ public class LoginProviderRegistry
                 $"Login provider for {providerEnum} is already registered.");
         loginProviders.Add(providerEnum, 
             new LoginProviderDescriptor(
-                name, geomertyResourceKey, typeof(T)));
+                name, geometryResourceKey, typeof(T)));
     }
 
-    public ReadOnlyDictionary<LoginProvider, LoginProviderDescriptor> 
+    public IReadOnlyDictionary<LoginProvider, LoginProviderDescriptor> 
         Descriptors => loginProviders.AsReadOnly();
 }

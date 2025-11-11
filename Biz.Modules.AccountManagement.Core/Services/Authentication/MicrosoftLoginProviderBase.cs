@@ -1,8 +1,10 @@
-﻿using Biz.Shared.ClientLoginProviders;
-using Biz.Shared.Services.Config;
+﻿using System.Diagnostics;
+using Biz.Configuration;
+using Biz.Models;
 using Microsoft.Identity.Client;
+using Serilog;
 
-namespace Biz.Shared.Services.Authentication;
+namespace Biz.Modules.AccountManagement.Core.Services.Authentication;
 
 public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
 {

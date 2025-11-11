@@ -1,8 +1,7 @@
+using Biz.Configuration;
+using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Biz.Shared.Platform;
-using Biz.Shared.Services.Authentication;
-using Biz.Shared.Services.Config;
 using CompositeFramework.Avalonia;
-using CompositeFramework.Avalonia.Navigation;
 using Microsoft.Maui.Accessibility;
 using ServiceClients;
 using ShadUI;
@@ -65,12 +64,9 @@ public partial class App : Application
 
         // Register our services.
         SplatRegistrations.RegisterLazySingleton<IConfigurationService, ConfigurationService>();
-        SplatRegistrations.RegisterLazySingleton<IAuthDataStore, SecureStorageAuthDataStore>();
-        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
         SplatRegistrations.RegisterLazySingleton<ServicesAuthHeaderHandler>();
         SplatRegistrations.RegisterLazySingleton<IFormFactorService, FormFactorService>();
         SplatRegistrations.RegisterLazySingleton<IMainNavigationService, MainNavigationService>();
-        SplatRegistrations.RegisterLazySingleton<LoginProviderRegistry>();
         SplatRegistrations.RegisterLazySingleton<INotificationService, NotificationService>();
         
         SplatRegistrations.RegisterLazySingleton<DialogManager>();

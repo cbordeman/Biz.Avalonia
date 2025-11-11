@@ -1,5 +1,5 @@
-﻿using Biz.Shared.Services.Authentication;
-using Biz.Shared.Services.Config;
+﻿using Biz.Configuration;
+using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Microsoft.Identity.Client;
 using Serilog.Events;
 using LogLevel = Microsoft.Identity.Client.LogLevel;

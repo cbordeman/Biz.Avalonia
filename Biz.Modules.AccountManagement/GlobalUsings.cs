@@ -8,7 +8,6 @@ global using Biz.Core.DataAnnotations;
 global using Biz.Models;
 global using Biz.Modules.AccountManagement.Core;
 global using Biz.Shared.Services;
-global using Biz.Shared.Services.Authentication;
 global using Biz.Shared.ViewModels;
 global using CommunityToolkit.Mvvm.Input;
 global using CompositeFramework.Core;

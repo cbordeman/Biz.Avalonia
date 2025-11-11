@@ -1,5 +1,3 @@
-using Biz.Shared.Services.Authentication;
-
 namespace Biz.Shared.Platform;
 
 public interface IPlatformService

@@ -1,6 +1,7 @@
-﻿using Microsoft.Identity.Client;
+﻿using Biz.Models;
+using Microsoft.Identity.Client;
 
-namespace Biz.Shared.ClientLoginProviders;
+namespace Biz.Modules.AccountManagement.Core.Services.Authentication;
 
 /// <summary>
 /// Provides client side code for a single login

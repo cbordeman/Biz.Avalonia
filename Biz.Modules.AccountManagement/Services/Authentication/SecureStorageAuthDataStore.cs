@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
+using Serilog;
 using ServiceClients;
 
-namespace Biz.Shared.Services.Authentication;
+namespace Biz.Modules.AccountManagement.Services.Authentication;
 
 class SecureStorageAuthDataStore : IAuthDataStore
 {

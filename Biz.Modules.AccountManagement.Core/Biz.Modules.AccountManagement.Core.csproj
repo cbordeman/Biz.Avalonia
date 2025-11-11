@@ -7,4 +7,19 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Biz.Configuration\Biz.Configuration.csproj" />
+      <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />
+      <ProjectReference Include="..\Biz.Models\Biz.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Identity.Client" Version="4.79.0" />
+      <PackageReference Include="Serilog" Version="4.3.0" />
+    </ItemGroup>
+
 </Project>

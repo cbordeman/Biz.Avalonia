@@ -1,17 +1,12 @@
-using Biz.Services.Config;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 
-namespace Biz.Shared.Services.Config
+namespace Biz.Configuration
 {
-    public interface IConfigurationService
-    {
-        AuthSettings Authentication { get; }
-        MapsSettings Maps { get; }
-        ServerSettings Server { get; }
-    }
-
     public class ConfigurationService : IConfigurationService
     {
+        const string NameOfConfigurationAssembly = "Biz.Configuration";
+        
         readonly AuthSettings auth;
         readonly MapsSettings maps;
         readonly ServerSettings server;
@@ -21,31 +16,31 @@ namespace Biz.Shared.Services.Config
             var builder = new ConfigurationBuilder();
             
             // Load base appsettings.json
-            var assembly = typeof(ConfigurationService).Assembly;
-            using var appsettingsStream = assembly.GetManifestResourceStream("Biz.Shared.appsettings.json");
+            var assembly = Assembly.GetAssembly(typeof(IConfigurationService));
+            using var appsettingsStream = assembly!.GetManifestResourceStream($"{NameOfConfigurationAssembly}.appsettings.json");
             if (appsettingsStream != null)
                 builder.AddJsonStream(appsettingsStream);
 
             // Load environment-specific settings
 #if DEBUG
-            using var devStream = assembly.GetManifestResourceStream("Biz.Shared.appsettings.Development.json");
+            using var devStream = assembly.GetManifestResourceStream($"{NameOfConfigurationAssembly}.appsettings.Development.json");
             if (devStream != null)
             {
                 builder.AddJsonStream(devStream);
             }
 #endif
 
-            IConfiguration configuration1 = builder.Build();
+            IConfiguration config = builder.Build();
 
             // Bind configuration sections to strongly typed objects
             auth = new AuthSettings();
-            configuration1.GetSection("Authentication").Bind(auth);
+            config.GetSection(nameof(Authentication)).Bind(auth);
             
             maps = new MapsSettings();
-            configuration1.GetSection("Maps").Bind(maps);
+            config.GetSection(nameof(Maps)).Bind(maps);
 
             server = new ServerSettings();
-            configuration1.GetSection("Server").Bind(server);
+            config.GetSection(nameof(Server)).Bind(server);
         }
 
         public AuthSettings Authentication => auth;

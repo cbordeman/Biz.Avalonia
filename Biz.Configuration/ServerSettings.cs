@@ -1,4 +1,4 @@
-﻿namespace Biz.Services.Config;
+﻿namespace Biz.Configuration;
 
 public class ServerSettings
 {

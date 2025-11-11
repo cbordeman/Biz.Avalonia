@@ -4,11 +4,10 @@ using Biz.Desktop.Services;
 using Biz.Desktop.ViewModels;
 using Biz.Desktop.Views;
 using Biz.Models;
-using Biz.Shared.ClientLoginProviders;
+using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
-using Biz.Shared.Services.Authentication;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Extensions;
 
@@ -43,8 +42,10 @@ public class DesktopPlatformService : IPlatformService
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
 
-        var authProviderRegistry = Locator.Current.GetService
-            <LoginProviderRegistry>();
+        
+        
+        var authProviderRegistry = Locator.Current.Resolve
+            <ILoginProviderRegistry>();
         authProviderRegistry!.RegisterLoginProvider<DesktopMicrosoftLoginProvider>(
             LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
     }
@@ -74,7 +75,7 @@ public class DesktopPlatformService : IPlatformService
     {
         // Get an array of plugins to remove
         var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>();
 
         // remove each entry found
         foreach (var plugin in dataValidationPluginsToRemove)
