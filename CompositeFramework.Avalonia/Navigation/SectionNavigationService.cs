@@ -14,7 +14,7 @@ namespace CompositeFramework.Avalonia.Navigation;
 /// </summary>
 public class SectionNavigationService
     : ISectionNavigationService
-{
+{ 
     readonly IModuleManager moduleManager;
     ContentControl? ContentControl { get; set; }
 
