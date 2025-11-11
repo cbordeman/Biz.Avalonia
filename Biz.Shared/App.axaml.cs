@@ -1,5 +1,5 @@
+using Biz.Authentication;
 using Biz.Configuration;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Biz.Shared.Platform;
 using CompositeFramework.Avalonia;
 using Microsoft.Maui.Accessibility;

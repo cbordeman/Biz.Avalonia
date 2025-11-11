@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Biz.Authentication;
 using Biz.Configuration;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Microsoft.Identity.Client;
 
 namespace Biz.Shell.Android.Services;

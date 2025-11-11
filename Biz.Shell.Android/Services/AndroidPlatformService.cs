@@ -1,15 +1,12 @@
 ﻿using System;
 using Avalonia.Controls.ApplicationLifetimes;
+using Biz.Authentication;
 using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Models;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
-using Biz.Modules.AccountManagement.Services;
-using Biz.Modules.AccountManagement.Services.Authentication;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
-using Biz.Shared.Services;
 using CompositeFramework.Avalonia;
 using CompositeFramework.Core.Extensions;
 using Splat;

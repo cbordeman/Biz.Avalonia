@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Biz.Authentication;
 using Biz.Shared.Services;
 using CloudNimble.BlazorEssentials.IndexedDb;
 using JetBrains.Annotations;

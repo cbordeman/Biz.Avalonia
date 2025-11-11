@@ -1,6 +1,6 @@
 ﻿using Biz.Models;
 
-namespace Biz.Modules.AccountManagement.Core.Services.Authentication;
+namespace Biz.Authentication;
 
 public interface ILoginProviderRegistry
 {

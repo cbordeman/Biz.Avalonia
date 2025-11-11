@@ -1,4 +1,4 @@
-﻿namespace Biz.Modules.AccountManagement.Core.Services.Authentication;
+﻿namespace Biz.Authentication;
 
 public record LoginProviderDescriptor(
     string Name,

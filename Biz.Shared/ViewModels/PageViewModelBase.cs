@@ -1,4 +1,4 @@
-﻿using Biz.Modules.AccountManagement.Core.Services.Authentication;
+﻿using Biz.Authentication;
 using Biz.Shared.ViewModels.Toolbar;
 
 // ReSharper disable UnusedMember.Global

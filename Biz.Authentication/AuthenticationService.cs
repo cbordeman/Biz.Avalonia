@@ -1,15 +1,18 @@
 using System.Text.Json;
 using Biz.Configuration;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
+using Biz.Models;
+using CompositeFramework.Core;
+using CompositeFramework.Core.Extensions;
 using Microsoft.Maui.Authentication;
 using Serilog;
 using ServiceClients;
 using Shouldly;
+using Splat;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Biz.Modules.AccountManagement.Services.Authentication;
+namespace Biz.Authentication;
 
 public class AuthenticationService(
     IConfigurationService configurationService,

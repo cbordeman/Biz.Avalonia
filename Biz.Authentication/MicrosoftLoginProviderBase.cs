@@ -4,7 +4,7 @@ using Biz.Models;
 using Microsoft.Identity.Client;
 using Serilog;
 
-namespace Biz.Modules.AccountManagement.Core.Services.Authentication;
+namespace Biz.Authentication;
 
 public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
 {

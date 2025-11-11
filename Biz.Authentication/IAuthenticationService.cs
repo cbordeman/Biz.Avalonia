@@ -1,7 +1,7 @@
 using Biz.Models;
 using CompositeFramework.Core;
 
-namespace Biz.Modules.AccountManagement.Core.Services.Authentication
+namespace Biz.Authentication
 {
     public interface IAuthenticationService
     {

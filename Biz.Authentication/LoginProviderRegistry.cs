@@ -1,6 +1,6 @@
-﻿using Biz.Modules.AccountManagement.Core.Services.Authentication;
+﻿using Biz.Models;
 
-namespace Biz.Modules.AccountManagement.Services.Authentication;
+namespace Biz.Authentication;
 
 public class LoginProviderRegistry : ILoginProviderRegistry
 {

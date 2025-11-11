@@ -27,6 +27,10 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Authentication\" />
+    </ItemGroup>
+
     <!--  The next PropertyGroup and Target goes in every module csproj.  -->
     <PropertyGroup>
         <ModulesOutputPath>$(SolutionDir)Biz.Shell.Desktop\bin\$(Configuration)\$(TargetFramework)\Modules</ModulesOutputPath>

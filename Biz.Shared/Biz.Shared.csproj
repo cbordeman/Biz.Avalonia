@@ -27,7 +27,6 @@
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
         <PackageReference Include="Lucide.Avalonia" Version="0.1.46"/>
         <PackageReference Include="Microsoft.Identity.Client" Version="4.79.0"/>
-        <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.120"/>
         <PackageReference Include="Responsive.Avalonia" Version="0.2.0"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
         <PackageReference Include="Shouldly" Version="4.3.0"/>
@@ -38,6 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Biz.Authentication\Biz.Authentication.csproj" />
         <ProjectReference Include="..\Biz.Configuration\Biz.Configuration.csproj"/>
         <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj"/>
         <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj"/>

@@ -1,5 +1,5 @@
-﻿using Biz.Modules.AccountManagement.Core;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
+﻿using Biz.Authentication;
+using Biz.Modules.AccountManagement.Core;
 using Biz.Modules.Dashboard.Core;
 
 namespace Biz.Shared.Services;

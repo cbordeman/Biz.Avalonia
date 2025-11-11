@@ -1,4 +1,4 @@
-﻿namespace Biz.Shared.Services;
+﻿namespace Biz.Authentication;
 
 /// <summary>
 /// A secure storage API, implemented differently for each OS platform.

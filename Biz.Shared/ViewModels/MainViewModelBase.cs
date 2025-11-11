@@ -1,4 +1,4 @@
-﻿using Biz.Modules.AccountManagement.Core.Services.Authentication;
+﻿using Biz.Authentication;
 using Biz.Modules.Dashboard.Core;
 using CompositeFramework.Avalonia.Dialogs;
 using ShadUI;

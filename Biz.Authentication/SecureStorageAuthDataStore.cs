@@ -1,10 +1,11 @@
 ﻿using System.Text.Json;
+using Biz.Models;
 using Serilog;
 using ServiceClients;
 
-namespace Biz.Modules.AccountManagement.Services.Authentication;
+namespace Biz.Authentication;
 
-class SecureStorageAuthDataStore : IAuthDataStore
+public class SecureStorageAuthDataStore : IAuthDataStore
 {
     readonly ISafeStorage secureStorage;
 

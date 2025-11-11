@@ -1,5 +1,4 @@
-﻿using Biz.Modules.AccountManagement.Core.Services.Authentication;
-using Biz.Modules.AccountManagement.Services.Authentication;
+﻿using Biz.Authentication;
 using Biz.Modules.AccountManagement.ViewModels;
 using Biz.Modules.AccountManagement.Views;
 using CompositeFramework.Modules;

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
-using Biz.Modules.AccountManagement.Services;
+using Biz.Authentication;
 using CompositeFramework.Avalonia.Dialogs;
 
 namespace Biz.Modules.AccountManagement.ViewModels;

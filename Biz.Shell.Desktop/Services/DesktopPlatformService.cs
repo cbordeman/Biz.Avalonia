@@ -1,10 +1,10 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
+using Biz.Authentication;
 using Biz.Desktop.Services;
 using Biz.Desktop.ViewModels;
 using Biz.Desktop.Views;
 using Biz.Models;
-using Biz.Modules.AccountManagement.Core.Services.Authentication;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
 using Biz.Shared.Services;
