@@ -29,8 +29,7 @@ public class AccountManagementModule : IModule
 
         // Dialog registration.
         //var dialogService = Locator.Current.Resolve<IDialogService>();
-        // dialogService.RegisterDialog<LoginViewModel, LoginView>(
-        //     AccountManagementConstants.LoginView);
+        
     }
     
     public Task InitializedAsync() => Task.CompletedTask;

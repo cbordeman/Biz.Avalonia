@@ -5,7 +5,7 @@ using Biz.Modules.Dashboard.Core;
 namespace Biz.Shared.Services;
 
 public class MainNavigationService :
-    IMainNavigationService, IDisposable
+    IMainNavigationService
 {
     bool initialized;
     readonly ISectionNavigationService navigationService;
@@ -46,12 +46,12 @@ public class MainNavigationService :
         navigationService.Navigated.Subscribe(Navigated);
 
         authenticationService.AuthenticationStateChanged
-            .Subscribe(AuthStateChanged);
+            .Subscribe(OnAuthStateChanged);
 
         initialized = true;
     }
 
-    async Task AuthStateChanged()
+    async Task OnAuthStateChanged()
     {
         try
         {
@@ -78,7 +78,7 @@ public class MainNavigationService :
             // If we don't redirect to Login because of an exception, it
             // isn't catastrophic.  Server operations will simply fail
             // because of the lack of a token.
-            Log.Logger.Error(exception, "In {ClassName}.{MethodName}()", nameof(AuthStateChanged), nameof(AuthStateChanged));
+            Log.Logger.Error(exception, "In {ClassName}.{MethodName}()", nameof(OnAuthStateChanged), nameof(OnAuthStateChanged));
         }
     }
 
@@ -163,10 +163,5 @@ public class MainNavigationService :
             throw new InvalidOperationException("Not initialized.");
 
         await navigationService.NavigateToAsync(module, area, parameters);
-    }
-
-    public void Dispose()
-    {
-        navigationService.Navigated.Unsubscribe(Navigated);
     }
 }
