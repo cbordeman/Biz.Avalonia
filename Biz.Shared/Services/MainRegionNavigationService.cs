@@ -60,18 +60,26 @@ public class MainNavigationService :
                 // Clear history
                 var nav = Locator.Current.Resolve<ISectionNavigationService>();
                 nav.ClearHistory();
-                
+
                 // Redirect to login page
                 await NavigateWithModuleAsync(
                     AccountManagementConstants.ModuleName,
                     AccountManagementConstants.LoginView);
             }
+            else if (navigationService.History.Length > 0)
+            {
+                // Go back to the page we came from now
+                // that we are authenticated.
+                await navigationService.GoBackAsync();
+            }
             else
+            {
                 // Go to dashboard.  Note that the region journal has been
                 // emptied so there's no back history to go to.
                 await NavigateWithModuleAsync(
                     DashboardConstants.ModuleName,
                     DashboardConstants.DashboardView);
+            }
         }
         catch (Exception exception)
         {
@@ -88,20 +96,20 @@ public class MainNavigationService :
         {
             case NavigationResult.Error:
                 if (args.Result == NavigationResult.Error)
-                    Log.Logger.Error(args.Exception, 
-                        $"Navigation failed: " + 
+                    Log.Logger.Error(args.Exception,
+                        $"Navigation failed: " +
                         $"{args.LocationName}");
                 return;
-        
+
             case NavigationResult.Cancelled:
                 return;
-            
+
             case NavigationResult.Success:
                 try
                 {
                     args.Context.ShouldNotBeNull();
                     args.Context.Location.ShouldNotBeNull();
-            
+
                     CurrentPage = args.LocationName;
                     CurrentArea = args.Context.Location.Area;
 
@@ -128,7 +136,7 @@ public class MainNavigationService :
                     // We must re-check the page we're still authenticated on
                     // every navigation, even though we do check this on
                     // authentication events in AuthenticationService.
-                    if (args.LocationName != 
+                    if (args.LocationName !=
                         AccountManagementConstants.LoginView &&
                         args.LocationName != AccountManagementConstants
                             .TenantSelectionView &&
@@ -164,4 +172,5 @@ public class MainNavigationService :
 
         await navigationService.NavigateToAsync(module, area, parameters);
     }
+
 }

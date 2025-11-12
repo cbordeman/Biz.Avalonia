@@ -14,7 +14,7 @@ namespace CompositeFramework.Avalonia.Navigation;
 /// </summary>
 public class SectionNavigationService
     : ISectionNavigationService
-{ 
+{
     readonly IModuleManager moduleManager;
     ContentControl? ContentControl { get; set; }
 
@@ -65,13 +65,14 @@ public class SectionNavigationService
     {
         if (SectionName == null || ContentControl == null)
             throw new NavigationSectionNameNotSetException(
-                ContentControl, SectionName);
+                ContentControl,
+                SectionName);
 
         if (current == null)
             return await NavigateToAsync(
                 alternativeModulename,
                 alternateLocationName);
-        
+
         try
         {
             var vmBinding = registrations
@@ -152,7 +153,7 @@ public class SectionNavigationService
         };
 
         var oldCurrent = current;
-        
+
         try
         {
             if (!registrations.TryGetValue(location, out var vmBinding))
@@ -200,7 +201,7 @@ public class SectionNavigationService
                     return NavigationResult.Cancelled;
                 }
             }
-            
+
             // Create view now since it is used in events.
             var v = Locator.Current.Resolve(vmBinding.ViewType);
             if (v is not Control view)
@@ -213,7 +214,7 @@ public class SectionNavigationService
                     null);
             }
             view.DataContext = vmLocation;
-            
+
             // Adjust history
             ClearForwardHistory();
 
@@ -223,10 +224,10 @@ public class SectionNavigationService
                 history.Push(new LocationWithViewInstance(
                     current.Location,
                     current.ViewType,
-                    current.Location.KeepViewAlive ? 
+                    current.Location.KeepViewAlive ?
                         current.ViewInstance : null));
             }
-            
+
             // Set new current location.
             // Note that we hold a referene to view
             // here, in current.ViewInstance.  This
@@ -236,20 +237,20 @@ public class SectionNavigationService
                 vmLocation,
                 vmBinding.ViewType,
                 view);
-            
+
             // Tell current page we're navigating.
             // At this point, history and current location
             // are already adjusted, so handler can initiate
             // navigation itself without corrupting state.
             if (oldCurrent != null)
                 await current.Location.OnNavigatingFromAsync(newNavCtx);
-            
+
             // Swap the view.
-            
+
             // Adjust animation.
             SectionManager.ChangeSlideAnimation(SectionName!,
                 NavigationDirection.Forward);
-            
+
             if (ContentControl is not { } contentControl)
             {
                 throw new TypeConstraintNotMetException(
@@ -308,7 +309,7 @@ public class SectionNavigationService
                 "Cannot go back.  History is empty.");
         if (current == null)
             throw new Exception("Current is null while history exists.");
-        
+
         if (ContentControl == null)
             throw new NavigationSectionNameNotSetException();
 
@@ -328,10 +329,10 @@ public class SectionNavigationService
         if (targetLocation == null)
             throw new InvalidOperationException(
                 "No back history.  Shouldn't get here.");
-        
+
         var oldCurrent = current;
         current = targetLocation;
-            
+
         var newNavCtx = new NavigationContext()
         {
             Direction = NavigationDirection.Backward,
@@ -355,12 +356,12 @@ public class SectionNavigationService
 
             // If didn't save view instance, create new one.
             var view = targetLocation.ViewInstance ??
-                       (Control?) Locator.Current.Resolve(targetLocation.ViewType);
+                       (Control?)Locator.Current.Resolve(targetLocation.ViewType);
             if (view == null)
                 throw new Exception("View instance is null.");
-            view.DataContext = targetLocation.Location; 
+            view.DataContext = targetLocation.Location;
             ContentControl.Content = view;
-            
+
             // After navigation
             await oldCurrent.Location.OnNavigatedFromAsync(newNavCtx);
             await targetLocation.Location.OnNavigatedToAsync(newNavCtx);
@@ -401,15 +402,7 @@ public class SectionNavigationService
     public void ClearHistory()
     {
         ClearForwardHistory();
-
-        // Clear normal history, except top of the stack,
-        // which is the current location.
-        if (history.Count >= 1)
-        {
-            var cur = history.Peek();
-            history.Clear();
-            history.Push(cur);
-        }
+        history.Clear();
     }
 
     public void ClearForwardHistory() =>
