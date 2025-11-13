@@ -23,8 +23,8 @@ public class DesktopPlatformService : IPlatformService
         // Register windows-specific types, except dialogs, which are 
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, DesktopModuleCatalogService>();
-        SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
+        SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
         

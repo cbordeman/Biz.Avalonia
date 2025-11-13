@@ -24,8 +24,7 @@ public partial class App : Application
             
             PlatformHelper.PlatformService?.InitializePlatform();
             
-            var authService = Locator.Current.GetService<IAuthenticationService>();
-            Debug.Assert(authService != null);
+            var authService = Locator.Current.Resolve<IAuthenticationService>();
             authService
                 .InitializeAsync()
                 .ContinueWith(t =>
@@ -37,6 +36,7 @@ public partial class App : Application
         catch (TypeResolutionFailedException tx)
         {
             Console.WriteLine($"Failed to resolve type:\n{tx.GetBaseException()}");
+            Environment.Exit(-1);
         }
         catch (Exception e)
         {

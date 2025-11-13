@@ -26,9 +26,9 @@ public class AndroidPlatformService : IPlatformService
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
-        SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
         SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, MobilePlatformAppCustomUriHandler>();
+        SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
         
         // Register views and viewmodels
         SplatRegistrations.Register<MainSmallView>();
@@ -42,10 +42,18 @@ public class AndroidPlatformService : IPlatformService
         //dialogService.Register<LoginContent, LoginViewModel>();
         //dialogService.Register<AboutContent, AboutViewModel>();
 
-        var authProviderRegistry = Locator.Current.GetService
-            <LoginProviderRegistry>();
-        authProviderRegistry!.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
-            LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
+        var authProviderRegistry = Locator.Current.Resolve
+            <ILoginProviderRegistry>();
+
+        try
+        {
+            authProviderRegistry!.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
+                LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
+        }
+        catch (Exception exception)
+        {
+            throw;
+        }
     }
     
     public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)

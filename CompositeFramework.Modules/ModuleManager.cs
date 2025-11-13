@@ -62,17 +62,19 @@ public class ModuleManager : IModuleManager
         {
             moduleMetadata.State = ModuleState.LoadingSelf;
 
-            ArgumentChecker.ThrowIfNullOrWhiteSpace(moduleMetadata.FilePath);
-            if (!File.Exists(moduleMetadata.FilePath!))
-                throw new FileNotFoundException(moduleMetadata.FilePath);
-            
-            try
+            if (moduleMetadata.FilePath != null)
             {
-                Assembly.LoadFrom(moduleMetadata.FilePath!);
-            }
-            catch (Exception e)
-            {
-                throw new ModuleLoadException(name, moduleMetadata.FilePath!, e);
+                if (!File.Exists(moduleMetadata.FilePath!))
+                    throw new FileNotFoundException(moduleMetadata.FilePath);
+
+                try
+                {
+                    Assembly.LoadFrom(moduleMetadata.FilePath!);
+                }
+                catch (Exception e)
+                {
+                    throw new ModuleLoadException(name, moduleMetadata.FilePath!, e);
+                }
             }
         }
 
