@@ -8,7 +8,9 @@ using Biz.Mobile.Views;
 using Biz.Models;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
+using Biz.Shared.Services;
 using CompositeFramework.Avalonia;
+using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Extensions;
 using Splat;
 
@@ -25,28 +27,36 @@ public class AndroidPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
-
+        SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
+        SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, MobilePlatformAppCustomUriHandler>();
+        
+        // Register views and viewmodels
         SplatRegistrations.Register<MainSmallView>();
         SplatRegistrations.Register<MainSmallViewModel>();
     }
 
-    public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
-    {
-        if (lifetime is
-            ISingleViewApplicationLifetime singleView)
-        {
-            singleView.MainView = Locator.Current.Resolve<MainSmallView>();
-            ViewModelLocator.SetAutoWireViewModel(singleView.MainView!, true);
-        }
-        else
-            throw new InvalidOperationException("Wrong platform.");
-    }
-    
     public void InitializePlatform()
     {
+        // ShadUI dialog registration.
+        var dialogService = Locator.Current.GetService<IDialogService>();
+        //dialogService.Register<LoginContent, LoginViewModel>();
+        //dialogService.Register<AboutContent, AboutViewModel>();
+
         var authProviderRegistry = Locator.Current.GetService
             <LoginProviderRegistry>();
         authProviderRegistry!.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
             LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
+    }
+    
+    public void OnFrameworkInitializationCompleted(IApplicationLifetime? lifetime)
+    {
+        if (lifetime is 
+            ISingleViewApplicationLifetime singleView)
+        {
+            singleView.MainView = Locator.Current.Resolve<MainSmallView>();
+            singleView.MainView.DataContext = Locator.Current.Resolve<MainSmallViewModel>();
+        }
+        else
+            throw new InvalidOperationException("Wrong platform.");
     }
 }
