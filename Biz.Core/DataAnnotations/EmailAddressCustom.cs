@@ -17,7 +17,8 @@ public class EmailAddressCustomAttribute : ValidationAttribute
         // Convert the value to a string
         string? val = Convert.ToString(value, CultureInfo.CurrentCulture);
 
-        // Automatically pass if value is null or empty. RequiredAttribute should be used to assert a value is not empty.
+        // Automatically pass if value is null or empty.
+        // RequiredAttribute should be used to assert a value is not empty.
         if (string.IsNullOrEmpty(val))
             return true;
 
