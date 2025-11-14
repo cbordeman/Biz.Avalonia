@@ -6,6 +6,17 @@ namespace Biz.Modules.AccountManagement.ViewModels;
 
 public class LoginViewModel : PageViewModelBase
 {
+    #region ShowDialogCommand
+    [field: AllowNull, MaybeNull]
+    public AsyncRelayCommand ShowDialogCommand => field ??= new AsyncRelayCommand(ExecuteShowDialogCommand, CanShowDialogCommand);
+    static bool CanShowDialogCommand() => true;
+    async Task ExecuteShowDialogCommand()
+    {
+        await dialogService.Confirm("Account Activated",
+            "Your email has been confirmed.  You may log in.");
+    }
+    #endregion ShowDialogCommand
+    
     CancellationTokenSource? loginCancellationTokenSource;
     readonly IDialogService dialogService;
     readonly IAuthenticationService authenticationService;
@@ -93,7 +104,7 @@ public class LoginViewModel : PageViewModelBase
     }
     #endregion LoginCommand
 
-    async Task GoToTenantSelectionPage(Tenant[] availableTenants)
+    static async Task GoToTenantSelectionPage(Tenant[] availableTenants)
     {
         ArgumentNullException.ThrowIfNull(availableTenants);
 

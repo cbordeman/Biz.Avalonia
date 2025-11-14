@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace Biz.Models;
+﻿namespace Biz.Core;
 
 public enum LoginProvider : byte
 {

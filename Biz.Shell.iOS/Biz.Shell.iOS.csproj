@@ -9,7 +9,7 @@
     <PackageId>Biz.Shell.iOS</PackageId>
     <Authors>Chris Bordeman</Authors>
     <Company>Chris Bordeman</Company>
-    <LangVersion>default</LangVersion>
+    <LangVersion>preview</LangVersion>
     <Product />
     
   </PropertyGroup>
@@ -32,4 +32,8 @@
     <ProjectReference Include="..\Biz.Mobile\Biz.Mobile.csproj" />
     <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <NoWarn>CA1416</NoWarn>
+  </PropertyGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace Biz.Models;
+﻿using Biz.Core;
+
+namespace Biz.Models;
 
 public record User(
     string Id,

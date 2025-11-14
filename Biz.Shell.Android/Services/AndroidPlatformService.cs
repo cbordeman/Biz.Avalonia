@@ -1,15 +1,13 @@
 ﻿using System;
 using Avalonia.Controls.ApplicationLifetimes;
 using Biz.Authentication;
-using Biz.Authentication.ClientLoginProvider;
+using Biz.Core;
 using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;
 using Biz.Models;
 using Biz.Shared.Infrastructure;
 using Biz.Shared.Platform;
-using Biz.Shared.Services;
-using CompositeFramework.Avalonia;
 using CompositeFramework.Avalonia.Dialogs;
 using CompositeFramework.Core.Extensions;
 using Splat;
@@ -26,7 +24,7 @@ public class AndroidPlatformService : IPlatformService
         // registered in RegisterDialogs().
         SplatRegistrations.RegisterLazySingleton<IPlatformModuleCatalogService, MobileModuleCatalogService>();
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
-        SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
+        SplatRegistrations.RegisterLazySingleton<IDialogService, AndroidDialogService>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, MobilePlatformAppCustomUriHandler>();
         SplatRegistrations.RegisterLazySingleton<AndroidMicrosoftLoginProvider>();
         

@@ -2,6 +2,7 @@
 using Avalonia.Data.Core.Plugins;
 using Biz.Authentication;
 using Biz.Authentication.ClientLoginProvider;
+using Biz.Core;
 using Biz.Desktop.Services;
 using Biz.Desktop.ViewModels;
 using Biz.Desktop.Views;
@@ -26,7 +27,6 @@ public class DesktopPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
-        //SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
         SplatRegistrations.RegisterLazySingleton<DesktopMicrosoftLoginProvider>();
         
         // Register views and viewmodels

@@ -59,7 +59,7 @@
                     <Button
                         Classes="Large"
                         Command="{CompiledBinding LoginCommand}"
-                        CommandParameter="{x:Static models:LoginProvider.Google}"
+                        CommandParameter="{x:Static core:LoginProvider.Google}"
                         IsEnabled="{CompiledBinding IsNotBusy}">
                         <StackPanel Orientation="Horizontal">
                             <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Google}}" />
@@ -71,7 +71,7 @@
                     <Button
                         Classes="Large"
                         Command="{CompiledBinding LoginCommand}"
-                        CommandParameter="{x:Static models:LoginProvider.Microsoft}"
+                        CommandParameter="{x:Static core:LoginProvider.Microsoft}"
                         IsEnabled="{CompiledBinding IsNotBusy}">
                         <StackPanel Orientation="Horizontal">
                             <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Microsoft}}" />
@@ -83,7 +83,7 @@
                     <Button
                         Classes="Large"
                         Command="{CompiledBinding LoginCommand}"
-                        CommandParameter="{x:Static models:LoginProvider.Facebook}"
+                        CommandParameter="{x:Static core:LoginProvider.Facebook}"
                         IsEnabled="{CompiledBinding IsNotBusy}">
                         <StackPanel Orientation="Horizontal">
                             <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Facebook}}" />
@@ -95,7 +95,7 @@
                     <Button
                         Classes="Large"
                         Command="{CompiledBinding LoginCommand}"
-                        CommandParameter="{x:Static models:LoginProvider.Apple}"
+                        CommandParameter="{x:Static core:LoginProvider.Apple}"
                         IsEnabled="{CompiledBinding IsNotBusy}">
                         <StackPanel Orientation="Horizontal">
                             <PathIcon Data="{StaticResource {x:Static infrastructure:ResourceNames.Apple}}" />
@@ -106,6 +106,8 @@
             </StackPanel>
         </ScrollViewer>
 
+        <Button Grid.Row="1" Command="{Binding ShowDialogCommand}">Show Dialog</Button>
+
         <!--  Footer  -->
         <TextBlock
             Grid.Row="1"
@@ -115,6 +117,7 @@
             HorizontalAlignment="Center"
             Classes="Footer"
             Text="*By continuing, you agree to our Terms of Service and Privacy Policy" />
+
 
         <views:ProgressBorder
             Grid.Row="0"

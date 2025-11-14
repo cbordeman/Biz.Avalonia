@@ -2,6 +2,9 @@
 
 public interface IDialogService
 {
+    void RegisterDialogHost<T>(string name)
+        where T : ContentControl;
+    
     Task<bool> Confirm(
         string title, string message,
         string? okText = null, bool showCancel = false,

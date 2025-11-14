@@ -6,7 +6,7 @@ namespace Biz.Shared.Services;
 
 public class ShadUiDialogService(ModuleManager moduleManager,
     DialogManager dialogManager) 
-    : ObservableObject, IDialogService
+    : BaseDialogService
 {
 
     /// <summary>
@@ -16,7 +16,12 @@ public class ShadUiDialogService(ModuleManager moduleManager,
 
     readonly Dictionary<string, Type> dialogNameViewModelMap = new();
 
-    public Task<bool> Confirm(
+    public void RegisterDialogControl(string dialogControlName, ContentControl dialogControl)
+    {
+        throw new NotImplementedException($"{nameof(ShadUiDialogService)} doesn't support custom dialog controls yet.");
+    }
+
+    public override Task<bool> Confirm(
         string title, string message, 
         string? okText = null, bool showCancel = false,
         string? cancelText = null,
@@ -63,9 +68,8 @@ public class ShadUiDialogService(ModuleManager moduleManager,
         return db;
     }
 
-    public void RegisterDialog<TViewModel, TView>(
+    public override void RegisterDialog<TViewModel, TView>(
         string? dialogName = null)
-        where TViewModel : IDialogViewModel where TView : Control
     {
         dialogName ??= typeof(TViewModel).AssemblyQualifiedName;
         if (dialogName == null)
@@ -80,7 +84,7 @@ public class ShadUiDialogService(ModuleManager moduleManager,
 #pragma warning restore SPLATDI001
     }
 
-    public async Task<IDialogViewModel> Show(
+    public override async Task<IDialogViewModel> Show(
         string? moduleName,
         string dialogName, 
         CompositeDialogOptions? options = null,
@@ -105,7 +109,7 @@ public class ShadUiDialogService(ModuleManager moduleManager,
         return dlgVm;
     }
 
-    public async Task Show(
+    public override async Task Show(
         string? moduleName,
         IDialogViewModel vm, 
         CompositeDialogOptions? options = null,
@@ -123,7 +127,7 @@ public class ShadUiDialogService(ModuleManager moduleManager,
         await vm.OpenedAsync(parameters);
     }
 
-    public async Task Close(IDialogViewModel dialogViewModel)
+    public override async Task Close(IDialogViewModel dialogViewModel)
     {
         DialogManager.Close(dialogViewModel);
         await dialogViewModel.ClosedAsync();

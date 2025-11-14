@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Biz.Configuration;
+using Biz.Core;
 using Microsoft.Identity.Client;
 using Serilog;
 
@@ -10,7 +11,7 @@ public abstract class MicrosoftLoginProviderBase : IClientLoginProvider
     protected readonly IConfigurationService ConfigurationService;
     protected IPublicClientApplication? MsalClient;
 
-    public Models.LoginProvider LoginProvider => Models.LoginProvider.Microsoft;
+    public LoginProvider LoginProvider => LoginProvider.Microsoft;
     
     protected MicrosoftLoginProviderBase(IConfigurationService configurationService)
     {

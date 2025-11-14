@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Biz.Core;
+using Microsoft.Identity.Client;
 
 namespace Biz.Authentication.ClientLoginProvider;
 
@@ -8,7 +9,7 @@ namespace Biz.Authentication.ClientLoginProvider;
 /// </summary>
 public interface IClientLoginProvider
 {
-    Models.LoginProvider LoginProvider { get; }
+    LoginProvider LoginProvider { get; }
     Task<(AuthenticationResult? authenticationResult, string? internalUserId)> 
         LoginAsync(CancellationToken ct);
     Task LogoutAsync(bool clearBrowserCache);
