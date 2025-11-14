@@ -25,7 +25,10 @@
         ColumnDefinitions="Auto,*,Auto"
         RowDefinitions="Auto,*">
 
-        <shadUi:DialogHost Manager="{Binding ((services:ShadUiDialogService)DialogService).DialogManager}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadUi:Window}}" />
+        <shadUi:DialogHost
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="3"
+            Manager="{Binding ((services:ShadUiDialogService)DialogService).DialogManager}" />
 
         <!--  Hamburger button  -->
         <Button

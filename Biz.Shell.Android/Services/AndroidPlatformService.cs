@@ -28,7 +28,7 @@ public class AndroidPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, AndroidSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, MobilePlatformAppCustomUriHandler>();
-        SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, AndroidMicrosoftLoginProvider>();
+        SplatRegistrations.RegisterLazySingleton<AndroidMicrosoftLoginProvider>();
         
         // Register views and viewmodels
         SplatRegistrations.Register<MainSmallView>();

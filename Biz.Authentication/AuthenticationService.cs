@@ -45,7 +45,7 @@ public class AuthenticationService(
     {
         if (authDataStore.Data == null)
             await authDataStore.RestoreAuthDataAsync();
-                
+
         if (authDataStore.Data == null || authDataStore.Data.LoginProvider == null)
             return false;
 
@@ -94,7 +94,7 @@ public class AuthenticationService(
     // }
 
     public async Task<(bool isLoggedIn, Tenant[]? availableTenants,
-            string? error)> 
+            string? error)>
         LoginWithProviderAsync(
         LoginProvider providerEnum,
         CancellationToken ct)

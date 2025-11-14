@@ -71,7 +71,7 @@ public class AndroidMicrosoftLoginProvider : MicrosoftLoginProviderBase
             catch (MsalUiRequiredException)
             {
                 result = await builder
-                    .WithUseEmbeddedWebView(true)
+                    //.WithUseEmbeddedWebView(true)
                     .ExecuteAsync(ct);
             }
         }

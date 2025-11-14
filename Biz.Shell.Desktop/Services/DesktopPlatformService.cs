@@ -26,7 +26,8 @@ public class DesktopPlatformService : IPlatformService
         SplatRegistrations.RegisterLazySingleton<ISafeStorage, WindowsSafeStorage>();
         SplatRegistrations.RegisterLazySingleton<IDialogService, ShadUiDialogService>();
         SplatRegistrations.RegisterLazySingleton<PlatformAppCustomUriHandlerBase, DesktopPlatformAppCustomUriHandler>();
-        SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
+        //SplatRegistrations.RegisterLazySingleton<IClientLoginProvider, DesktopMicrosoftLoginProvider>();
+        SplatRegistrations.RegisterLazySingleton<DesktopMicrosoftLoginProvider>();
         
         // Register views and viewmodels
         SplatRegistrations.RegisterLazySingleton<MainWindow>();
