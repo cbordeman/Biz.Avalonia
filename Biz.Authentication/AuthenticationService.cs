@@ -201,7 +201,8 @@ public class AuthenticationService(
                 await CompleteLogin(availableTenants[0]);
                 return (true, [availableTenants[0]], null);
             default:
-                // Caller must show a tenant selection UI then call
+                // Caller must show the tenant selection UI then
+                // call CompleteLogin().
                 return (false, availableTenants, null);
         }
     }
