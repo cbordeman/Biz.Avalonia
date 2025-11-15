@@ -26,10 +26,10 @@ public class MainSmallViewModel : MainViewModelBase
         SidebarItems =
         [
             new SideBarNavigationItemViewModel(
-                DashboardConstants.DashboardView,
-                DashboardConstants.DashboardView,
-                ResourceNames.Home,
-                DashboardConstants.ModuleName),
+                viewName: DashboardConstants.DashboardView,
+                displayName: "Dashboard",
+                geometryStyleResourceName: ResourceNames.Home,
+                moduleName: DashboardConstants.ModuleName),
         ];
     }
     

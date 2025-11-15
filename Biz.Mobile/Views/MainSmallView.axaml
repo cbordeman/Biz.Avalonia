@@ -200,12 +200,12 @@
             </SplitView.Content>
         </SplitView>
 
-        <shadUi:DialogHost
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Manager="{Binding ((services:ShadUiDialogService)DialogService).DialogManager}" />
+        <!--  <shadUi:DialogHost  -->
+        <!--  Grid.Row="0"  -->
+        <!--  Grid.RowSpan="2"  -->
+        <!--  Grid.Column="0"  -->
+        <!--  Grid.ColumnSpan="3"  -->
+        <!--  Manager="{Binding ((services:ShadUiDialogService)DialogService).DialogManager}" />  -->
 
     </Grid>
 </views:FormFactorAwareUserControl>

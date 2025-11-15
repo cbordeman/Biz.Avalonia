@@ -1,9 +1,5 @@
 using Data.Config;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Scalar.AspNetCore;
 using Services.Auth;
 using Services.Auth.Jwt;
@@ -15,6 +11,7 @@ class Program
 {
     public static void Main(string[] args)
     {
+        WebApplication app;
         try
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -50,7 +47,8 @@ class Program
                 var dbSettings = provider.GetRequiredService<DatabaseSettings>();
 
                 var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-                optionsBuilder.ApplyDatabaseProvider(dbSettings)
+                optionsBuilder
+                    .ApplyDatabaseProvider(dbSettings)
                     // Must apply this here instead of on AppDbContext for some reason,
                     // otherwise it will not work with the PooledDbContextFactory and
                     // will throw an exception.
@@ -81,7 +79,7 @@ class Program
             // Wider ASP.Net logs.
             //builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Information);
 
-            var app = builder.Build();
+            app = builder.Build();
 
             try
             {
@@ -117,12 +115,19 @@ class Program
             app.UseAuthorization();
 
             app.MapControllers();
-
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("\nError during startup: {Message}.");
+            throw;
+        }
+        try
+        {
             app.Run();
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            Console.WriteLine(e);
+            Console.WriteLine("\nError during runtime: {Message}.");
             throw;
         }
     }

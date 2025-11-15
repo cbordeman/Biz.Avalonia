@@ -22,10 +22,10 @@ public class MainLargeViewModel : MainViewModelBase
                 Children =
                 [
                     new SideBarNavigationItemViewModel(
-                        DashboardConstants.DashboardView,
-                        DashboardConstants.ModuleName, 
-                        ResourceNames.Home,
-                        DashboardConstants.ModuleName),
+                        viewName: DashboardConstants.DashboardView,
+                        displayName: "Dashboard", 
+                        geometryStyleResourceName: ResourceNames.Home,
+                        moduleName: DashboardConstants.ModuleName),
                     // new SideBarNavigationItemViewModel(
                     //     "SettingsView",
                     //     "Settings",
