@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Biz.Core;
-using Biz.Core.DataAnnotations;
+using Core;
+using Core.DataAnnotations;
 
 namespace ServiceClients.Models;
 

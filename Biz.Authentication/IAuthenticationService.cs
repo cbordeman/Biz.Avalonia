@@ -1,5 +1,5 @@
 using Biz.Authentication.ClientLoginProvider;
-using Biz.Core;
+using Core;
 using Biz.Models;
 using CompositeFramework.Core;
 

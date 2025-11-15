@@ -1,4 +1,4 @@
-﻿using Biz.Core;
+﻿using Core;
 
 namespace Biz.Models;
 

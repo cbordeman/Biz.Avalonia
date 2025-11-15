@@ -1,4 +1,4 @@
-﻿namespace Biz.Core;
+﻿namespace Core;
 
 public enum LoginProvider : byte
 {

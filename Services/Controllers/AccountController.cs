@@ -1,11 +1,9 @@
 ﻿using System.Text;
-using Biz.Core.Extensions;
 using Biz.Models.Account;
+using Core.Extensions;
 using Data.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Serilog.Events;
 using ServiceClients.Models;
 using Services.Auth;
 using Services.Auth.Jwt;

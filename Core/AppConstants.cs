@@ -1,4 +1,4 @@
-﻿namespace Biz.Core;
+﻿namespace Core;
 
 // ReSharper disable MemberCanBePrivate.Global
 

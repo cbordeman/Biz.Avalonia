@@ -9,8 +9,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Biz.Configuration\Biz.Configuration.csproj" />
-      <ProjectReference Include="..\Biz.Core\Biz.Core.csproj" />
-      <ProjectReference Include="..\Biz.Models\Biz.Models.csproj" />
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Models\Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>

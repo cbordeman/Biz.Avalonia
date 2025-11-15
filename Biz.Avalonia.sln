@@ -31,9 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceClients", "ServiceClients\ServiceClients.csproj", "{FC3E88CC-DFF3-43EC-A436-42D1D321F946}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Models", "Biz.Models\Biz.Models.csproj", "{63AAF508-2A63-4C79-9F19-44DD32EFCF6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{63AAF508-2A63-4C79-9F19-44DD32EFCF6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Core", "Biz.Core\Biz.Core.csproj", "{44E9BA87-4C90-43F6-BE71-D329AD57B2EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{44E9BA87-4C90-43F6-BE71-D329AD57B2EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biz.Desktop", "Biz.Desktop\Biz.Desktop.csproj", "{707407B3-B55D-4066-BD4C-24B2A84123D1}"
 	ProjectSection(ProjectDependencies) = postProject

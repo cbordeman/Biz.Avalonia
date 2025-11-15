@@ -2,7 +2,7 @@
 using System.Reflection;
 using Avalonia;
 using Avalonia.Threading;
-using Biz.Core;
+using Core;
 using Biz.Shared;
 using Biz.Shared.Platform;
 using Biz.Shell.Desktop.Services;

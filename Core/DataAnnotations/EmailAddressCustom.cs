@@ -2,9 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Biz.Core.Extensions;
+using Core.Extensions;
 
-namespace Biz.Core.DataAnnotations;
+namespace Core.DataAnnotations;
 
 public class EmailAddressCustomAttribute : ValidationAttribute
 {

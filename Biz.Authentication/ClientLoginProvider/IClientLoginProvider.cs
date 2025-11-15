@@ -1,4 +1,4 @@
-﻿using Biz.Core;
+﻿using Core;
 using Microsoft.Identity.Client;
 
 namespace Biz.Authentication.ClientLoginProvider;

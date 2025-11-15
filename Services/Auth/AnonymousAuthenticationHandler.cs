@@ -1,5 +1,5 @@
 ﻿using System.Text.Encodings.Web;
-using Biz.Core;
+using Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

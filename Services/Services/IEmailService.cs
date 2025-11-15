@@ -1,6 +1,6 @@
 ﻿using Azure;
 using Azure.Communication.Email;
-using Biz.Core;
+using Core;
 using Data.Models;
 using Services.Config;
 using Shouldly;

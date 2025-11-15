@@ -1,8 +1,8 @@
 using Biz.Authentication.ClientLoginProvider;
-using Biz.Core;
 using Biz.Models;
 using CompositeFramework.Core;
 using CompositeFramework.Core.Extensions;
+using Core;
 using Serilog;
 using ServiceClients;
 using Shouldly;

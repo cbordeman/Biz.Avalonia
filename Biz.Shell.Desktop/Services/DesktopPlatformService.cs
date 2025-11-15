@@ -2,7 +2,7 @@
 using Avalonia.Data.Core.Plugins;
 using Biz.Authentication;
 using Biz.Authentication.ClientLoginProvider;
-using Biz.Core;
+using Core;
 using Biz.Desktop.Services;
 using Biz.Desktop.ViewModels;
 using Biz.Desktop.Views;

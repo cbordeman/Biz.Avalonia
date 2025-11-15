@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Biz.Core;
+using Core;
 using Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;

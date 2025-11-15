@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Biz.Configuration;
-using Biz.Core;
+using Core;
 using Microsoft.Identity.Client;
 using Serilog;
 

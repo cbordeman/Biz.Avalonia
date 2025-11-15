@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia.Controls.ApplicationLifetimes;
 using Biz.Authentication;
-using Biz.Core;
+using Core;
 using Biz.Mobile.Services;
 using Biz.Mobile.ViewModels;
 using Biz.Mobile.Views;

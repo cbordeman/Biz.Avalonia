@@ -1,4 +1,4 @@
-﻿using Biz.Core;
+﻿using Core;
 using Microsoft.AspNetCore.Identity;
 
 namespace Data.Models;
