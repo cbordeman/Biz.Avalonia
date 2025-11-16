@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -13,8 +14,11 @@ namespace Biz.Desktop.Views
     /// <summary>Main window.</summary>
     public partial class MainWindow : ShadUI.Window
     {
+        readonly Thickness thickness0 = new Thickness(0);
+        readonly Thickness thickness1 = new Thickness(1);
+
         bool navigating;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,30 +35,31 @@ namespace Biz.Desktop.Views
 
             this.AddHandler(PointerPressedEvent, PointerPressedHandler, handledEventsToo: true);
             this.AddHandler(KeyDownEvent, KeyPressedEventHandler);
-            
+
             if (DataContext is IOnViewLoaded onViewLoaded)
                 onViewLoaded.OnViewLoaded();
         }
-        
+
         void KeyPressedEventHandler(object? sender, KeyEventArgs e)
         {
             if (navigating)
                 return;
-            
+
             if (e.Key == Key.F5)
             {
                 try
                 {
                     var nav = Locator.Current.Resolve<ISectionNavigationService>();
                     navigating = true;
-                    nav.Refresh(
-                        DashboardConstants.DashboardView, 
-                        DashboardConstants.ModuleName)
+                    nav
+                        .Refresh(
+                            DashboardConstants.DashboardView,
+                            DashboardConstants.ModuleName)
                         .ContinueWith(t =>
-                    {
-                        if (t.IsFaulted)
-                            throw t.Exception;
-                    });                
+                        {
+                            if (t.IsFaulted)
+                                throw t.Exception;
+                        });
                 }
                 finally
                 {
@@ -74,11 +79,13 @@ namespace Biz.Desktop.Views
                     navigating = true;
                     var nav = Locator.Current.Resolve<ISectionNavigationService>();
                     if (nav.History.Length > 0)
-                        nav.GoBackAsync().ContinueWith(t =>
-                        {
-                            if (t.IsFaulted)
-                                throw t.Exception;
-                        });
+                        nav
+                            .GoBackAsync()
+                            .ContinueWith(t =>
+                            {
+                                if (t.IsFaulted)
+                                    throw t.Exception;
+                            });
                 }
                 finally
                 {
@@ -94,11 +101,13 @@ namespace Biz.Desktop.Views
                     navigating = true;
                     var nav = Locator.Current.Resolve<ISectionNavigationService>();
                     if (nav.History.Length > 0)
-                        nav.GoForwardAsync().ContinueWith(t =>
-                        {
-                            if (t.IsFaulted)
-                                throw t.Exception;
-                        });
+                        nav
+                            .GoForwardAsync()
+                            .ContinueWith(t =>
+                            {
+                                if (t.IsFaulted)
+                                    throw t.Exception;
+                            });
                 }
                 finally
                 {
@@ -127,6 +136,16 @@ namespace Biz.Desktop.Views
 
             if (DataContext is MainWindowViewModel viewModel)
                 viewModel.TryCloseCommand.Execute(null);
+        }
+        
+        void WindowBase_OnResized(object? sender, 
+            WindowResizedEventArgs args)
+        {
+            if (WindowState == WindowState.FullScreen ||
+                WindowState == WindowState.Maximized)
+                BorderThickness = thickness0;
+            else
+                BorderThickness = thickness1;
         }
     }
 }

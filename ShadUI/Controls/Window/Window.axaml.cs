@@ -450,7 +450,11 @@ public class Window : Avalonia.Controls.Window
                 ToggleMaxButtonVisibility(CanMaximize);
                 Margin = RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                     ? new Thickness(0)
-                    : new Thickness(7);
+                    // Changed from 7 to 6 to fix off-by-one
+                    // issue when maximized when moving the
+                    // mouse to the top right corner and the
+                    // Close button not being under the mouse.
+                    : new Thickness(6);
                 break;
             case WindowState.Normal:
                 ToggleMaxButtonVisibility(CanMaximize);

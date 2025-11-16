@@ -50,7 +50,7 @@
     </ControlTheme>
 
     <ControlTheme x:Key="WindowTheme" TargetType="shadui:Window">
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="-1" />
         <Setter Property="Background" Value="{DynamicResource MainBackgroundColor}" />
         <Setter Property="TransparencyLevelHint" Value="Transparent" />
         <Setter Property="SystemDecorations" Value="{OnPlatform Full, Linux=None, x:TypeArguments=SystemDecorations}" />
@@ -110,7 +110,7 @@
                                                         </StackPanel.Styles>
                                                         <ContentPresenter
                                                             Name="RightButtons"
-                                                            Margin="0,3,0,2"
+                                                            Margin="0,0,0,2"
                                                             Content="{TemplateBinding RightWindowTitleBarContent}"
                                                             IsVisible="{TemplateBinding RightWindowTitleBarContent,
                                                                                         Converter={x:Static ObjectConverters.IsNotNull}}" />

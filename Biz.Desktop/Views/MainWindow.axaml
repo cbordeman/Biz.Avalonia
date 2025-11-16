@@ -17,10 +17,10 @@
     x:CompileBindings="True"
     x:DataType="viewModels:MainWindowViewModel"
     Icon="avares://Biz.Shared/Assets/logo.ico"
+    Resized="WindowBase_OnResized"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <!--  BorderThickness="{Binding ElementName=Window, Path=MyBorderThickness, Mode=TwoWay}"  -->
     <shadUi:Window.LogoContent>
         <PathIcon
             Width="14"
