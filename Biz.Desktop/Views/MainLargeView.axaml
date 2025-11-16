@@ -103,232 +103,22 @@
                 </ScrollViewer>
 
                 <shadui:Sidebar.Footer>
-                    <StackPanel>
-                        <!--  Settings  -->
-                        <shadui:SidebarItem
-                            Command="{Binding NavigateSettingsCommand}"
-                            Content="Settings"
-                            Route="Settings"
-                            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
-                                                  Converter={x:Static converters:BooleanConverters.NullOrString},
-                                                  ConverterParameter='Settings'}">
-                            <shadui:SidebarItem.Icon>
-                                <PathIcon Data="{StaticResource gear}" />
-                            </shadui:SidebarItem.Icon>
-                        </shadui:SidebarItem>
-
-                        <!--  Logout  -->
-                        <shadui:SidebarItem
-                            Command="{Binding LogoutCommand}"
-                            Content="Sign Out"
-                            IsVisible="{Binding IsLoggedIn}"
-                            Route="NO"
-                            ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
-                                                  Converter={x:Static converters:BooleanConverters.NullOrString},
-                                                  ConverterParameter='Sign Out'}">
-                            <shadui:SidebarItem.Icon>
-                                <PathIcon Data="{StaticResource leave}" />
-                            </shadui:SidebarItem.Icon>
-                            <shadui:SidebarItem.Resources />
-                        </shadui:SidebarItem>
-
-                        <Menu Margin="0,10,0,0" Classes="Single">
-                            <MenuItem
-                                Padding="8,0"
-                                HorizontalAlignment="Stretch"
-                                shadui:MenuItemAssist.PopupHorizontalOffset="4"
-                                shadui:MenuItemAssist.PopupPlacement="RightEdgeAlignedBottom"
-                                shadui:MenuItemAssist.PopupVerticalOffset="4"
-                                Classes="NoPressedAnimation"
-                                CornerRadius="{DynamicResource LgCornerRadius}">
-                                <MenuItem.Header>
-                                    <Panel>
-                                        <shadui:Avatar
-                                            CornerRadius="{DynamicResource LgCornerRadius}"
-                                            Fallback="CN"
-                                            IsVisible="{Binding !$parent[shadui:Sidebar].Expanded}"
-                                            Opacity="{Binding !$parent[shadui:Sidebar].Expanded,
-                                                              Converter={x:Static converters:BooleanConverters.Opaque}}"
-                                            Source="avares://Biz.Shared/Assets/user.png">
-                                            <shadui:Avatar.Transitions>
-                                                <Transitions>
-                                                    <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
-                                                </Transitions>
-                                            </shadui:Avatar.Transitions>
-                                        </shadui:Avatar>
-                                        <Grid
-                                            Margin="0,8"
-                                            ColumnDefinitions="Auto * Auto"
-                                            IsVisible="{Binding $parent[shadui:Sidebar].Expanded}">
-                                            <shadui:Avatar
-                                                Width="36"
-                                                Height="36"
-                                                Margin="0,0,8,0"
-                                                CornerRadius="{DynamicResource XlCornerRadius}"
-                                                Fallback="CN"
-                                                Source="avares://Biz.Shared/Assets/user.png" />
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                <TextBlock Classes="Small" Text="shadui" />
-                                                <TextBlock
-                                                    Margin="0,-4,0,0"
-                                                    Classes="Caption"
-                                                    Text="m@example.com" />
-                                            </StackPanel>
-                                            <Viewbox
-                                                Grid.Column="2"
-                                                Width="16"
-                                                Height="16">
-                                                <TextBlock
-                                                    Classes="LucideIcon"
-                                                    Foreground="{DynamicResource ForegroundColor}"
-                                                    Text="&#57873;" />
-                                            </Viewbox>
-                                        </Grid>
-                                    </Panel>
-                                </MenuItem.Header>
-                                <shadui:MenuItemAssist.Label>
-                                    <Grid
-                                        Width="220"
-                                        HorizontalAlignment="Stretch"
-                                        ColumnDefinitions="Auto *">
-                                        <shadui:Avatar
-                                            Width="36"
-                                            Height="36"
-                                            Margin="0,0,8,0"
-                                            CornerRadius="{DynamicResource XlCornerRadius}"
-                                            Fallback="CN"
-                                            Source="avares://Biz.Shared/Assets/user.png" />
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock Classes="Small" Text="shadui" />
-                                            <TextBlock
-                                                Margin="0,-4,0,0"
-                                                Classes="Caption"
-                                                Text="m@example.com" />
-                                        </StackPanel>
-                                    </Grid>
-                                </shadui:MenuItemAssist.Label>
-                                <Separator />
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme"
-                                    Header="About">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#57599;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme"
-                                    Header="Readme">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#57443;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui"
-                                    Header="Source repository">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#57862;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui?tab=MIT-1-ov-file#readme"
-                                    Header="MIT License">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#57874;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui?tab=coc-ov-file#readme"
-                                    Header="Code of Conduct">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#58071;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui?tab=security-ov-file"
-                                    Header="Security">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#57692;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Command="{Binding OpenUrlCommand}"
-                                    CommandParameter="https://github.com/accntech/shad-ui/activity"
-                                    Header="Activity">
-                                    <MenuItem.Icon>
-                                        <Viewbox Width="16" Height="16">
-                                            <TextBlock
-                                                Classes="LucideIcon"
-                                                Foreground="{DynamicResource MutedColor}"
-                                                Text="&#57400;" />
-                                        </Viewbox>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
-                                <!-- <MenuItem Command="{Binding TryCloseCommand}" Header="Close application"> -->
-                                <!--     <MenuItem.Icon> -->
-                                <!--         <Viewbox Width="16" Height="16"> -->
-                                <!--  <TextBlock  -->
-                                <!--  Classes="LucideIcon"  -->
-                                <!--  Foreground="{DynamicResource MutedColor}"  -->
-                                <!--  Text="&#57668;" />  -->
-                                <!--         </Viewbox> -->
-                                <!--     </MenuItem.Icon> -->
-                                <!-- </MenuItem> -->
-                            </MenuItem>
-                        </Menu>
-                    </StackPanel>
+                    <StackPanel />
                 </shadui:Sidebar.Footer>
             </shadui:Sidebar>
 
             <!--  Header, Main Content, and Toolbar  -->
             <Grid
                 Grid.Column="1"
-                Margin="10,10,0,0"
+                Margin="0,10,0,0"
                 HorizontalAlignment="Stretch"
-                ColumnDefinitions="*,Auto"
+                ColumnDefinitions="*,Auto,Auto"
                 RowDefinitions="Auto,*">
 
                 <!--  Main Content  -->
                 <controls:ReversibleTransitioningContentControl
                     Grid.Row="1"
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     Margin="0,10,0,0"
                     navigation:SectionManager.SectionName="{x:Static infrastructure1:SectionNames.MainContentSection}">
                     <TransitioningContentControl.PageTransition>
@@ -341,12 +131,15 @@
                 </controls:ReversibleTransitioningContentControl>
 
                 <!--  Header  -->
+
+                <!--  Title icon and text  -->
                 <StackPanel
                     Grid.Row="0"
                     Grid.Column="0"
-                    Margin="0,3,0,0"
+                    Margin="0,0,0,0"
                     Orientation="Horizontal"
                     Spacing="0">
+                    <!--  Title icon  -->
                     <Viewbox
                         Width="28"
                         VerticalAlignment="Stretch"
@@ -354,6 +147,7 @@
                                             Converter={x:Static converters:StringConverters.NotNullOrEmpty}}">
                         <PathIcon Data="{Binding CurrentPage.TitleGeometryResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}}" />
                     </Viewbox>
+                    <!--  Title text  -->
                     <TextBlock
                         VerticalAlignment="Center"
                         Classes="Header"
@@ -412,6 +206,153 @@
                         </DataTemplate>
                     </ItemsControl.DataTemplates>
                 </ItemsControl>
+
+                <!--  Profile button and menu on right  -->
+                <Menu
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Margin="20,0,8,0"
+                    Padding="0"
+                    Classes="Single">
+                    <MenuItem
+                        Padding="0"
+                        HorizontalAlignment="Stretch"
+                        shadui:MenuItemAssist.PopupHorizontalOffset="0"
+                        shadui:MenuItemAssist.PopupPlacement="BottomEdgeAlignedRight"
+                        shadui:MenuItemAssist.PopupVerticalOffset="6"
+                        Classes="NoPressedAnimation"
+                        CornerRadius="9999">
+                        <MenuItem.Header>
+                            <Border
+                                Padding="4"
+                                BorderBrush="{DynamicResource BorderColor}"
+                                BorderThickness="1"
+                                CornerRadius="9999">
+
+                                <shadui:Avatar
+                                    CornerRadius="9999"
+                                    Fallback="CN"
+                                    Source="avares://Biz.Shared/Assets/user.png" />
+
+                            </Border>
+                        </MenuItem.Header>
+                        <shadui:MenuItemAssist.Label>
+                            <Grid
+                                Width="220"
+                                HorizontalAlignment="Stretch"
+                                ColumnDefinitions="Auto *">
+                                <shadui:Avatar
+                                    Width="36"
+                                    Height="36"
+                                    Margin="0,0,8,0"
+                                    CornerRadius="9999"
+                                    Fallback="CN"
+                                    Source="avares://Biz.Shared/Assets/user.png" />
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Classes="Small" Text="shadui" />
+                                    <TextBlock
+                                        Margin="0,-4,0,0"
+                                        Classes="Caption"
+                                        Text="m@example.com" />
+                                </StackPanel>
+                            </Grid>
+                        </shadui:MenuItemAssist.Label>
+                        <Separator />
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme"
+                            Header="About">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#57599;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme"
+                            Header="Readme">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#57443;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui"
+                            Header="Source repository">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#57862;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui?tab=MIT-1-ov-file#readme"
+                            Header="MIT License">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#57874;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui?tab=coc-ov-file#readme"
+                            Header="Code of Conduct">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#58071;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui?tab=security-ov-file"
+                            Header="Security">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#57692;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/accntech/shad-ui/activity"
+                            Header="Activity">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="&#57400;" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                    </MenuItem>
+                </Menu>
             </Grid>
         </Grid>
         <shadui:ToastHost Manager="{Binding ToastManager}" />
