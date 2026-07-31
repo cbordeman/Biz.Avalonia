@@ -5,13 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Android.Runtime;
 using Biz.Authentication;
-using Biz.Shared.Services;
 using Java.IO;
 using Java.Lang;
 using Xamarin.Google.Crypto.Tink;
 using Xamarin.Google.Crypto.Tink.Aead;
 using Xamarin.Google.Crypto.Tink.Integration.Android;
-using Exception = System.Exception;
 
 namespace Biz.Shell.Android.Services;
 

@@ -7,6 +7,10 @@ using Serilog;
 using ServiceClients;
 using Shouldly;
 using Splat;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global

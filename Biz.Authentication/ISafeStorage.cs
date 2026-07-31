@@ -1,4 +1,6 @@
-﻿namespace Biz.Authentication;
+﻿using System.Threading.Tasks;
+
+namespace Biz.Authentication;
 
 /// <summary>
 /// A secure storage API, implemented differently for each OS platform.

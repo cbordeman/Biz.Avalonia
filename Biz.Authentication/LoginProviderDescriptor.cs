@@ -1,4 +1,6 @@
-﻿namespace Biz.Authentication;
+﻿using System;
+
+namespace Biz.Authentication;
 
 public record LoginProviderDescriptor(
     string Name,

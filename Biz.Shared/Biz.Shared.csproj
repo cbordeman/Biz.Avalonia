@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.7"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.7"/>
+        <PackageReference Include="Avalonia" Version="11.3.7" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.7" />
 
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.7">
@@ -21,16 +21,17 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
 
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 
-        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10"/>
-        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
-        <PackageReference Include="Lucide.Avalonia" Version="0.1.46"/>
-        <PackageReference Include="Microsoft.Identity.Client" Version="4.79.0"/>
-        <PackageReference Include="Responsive.Avalonia" Version="0.2.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
+        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
+        <PackageReference Include="Lucide.Avalonia" Version="0.1.46" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.87.0" />
+        <PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.90" />
+        <PackageReference Include="Responsive.Avalonia" Version="0.2.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-        <PackageReference Include="Shouldly" Version="4.3.0"/>
+        <PackageReference Include="Shouldly" Version="4.3.0" />
         <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,22 +40,22 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Biz.Authentication\Biz.Authentication.csproj" />
-        <ProjectReference Include="..\Biz.Configuration\Biz.Configuration.csproj"/>
-        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj"/>
-        <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj"/>
-        <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj"/>
-        <ProjectReference Include="..\CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj"/>
-        <ProjectReference Include="..\ServiceClients\ServiceClients.csproj"/>
-        <ProjectReference Include="..\ShadUI\ShadUI.csproj"/>
+        <ProjectReference Include="..\Biz.Configuration\Biz.Configuration.csproj" />
+        <ProjectReference Include="..\Biz.Modules.AccountManagement.Core\Biz.Modules.AccountManagement.Core.csproj" />
+        <ProjectReference Include="..\Biz.Modules.Dashboard.Core\Biz.Modules.Dashboard.Core.csproj" />
+        <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
+        <ProjectReference Include="..\CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj" />
+        <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />
+        <ProjectReference Include="..\ShadUI\ShadUI.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.Development.json"/>
-        <None Remove="appsettings.json"/>
+        <None Remove="appsettings.Development.json" />
+        <None Remove="appsettings.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml"/>
+        <AdditionalFiles Include="ViewModels\Toolbar\ToolbarDataTemplates.axaml" />
     </ItemGroup>
 
 </Project>
