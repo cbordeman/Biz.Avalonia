@@ -13,4 +13,15 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.18" />		
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="appsettings.json" />
+      <EmbeddedResource Include="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="appsettings.Development.json" />
+      <EmbeddedResource Include="appsettings.Development.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

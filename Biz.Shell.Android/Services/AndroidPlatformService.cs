@@ -47,6 +47,7 @@ public class AndroidPlatformService : IPlatformService
         {
             authProviderRegistry!.RegisterLoginProvider<AndroidMicrosoftLoginProvider>(
                 LoginProvider.Microsoft, "Microsoft", ResourceNames.Microsoft);
+            
         }
         catch (Exception exception)
         {

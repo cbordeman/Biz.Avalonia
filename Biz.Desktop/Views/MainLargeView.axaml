@@ -351,6 +351,18 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
+                        <MenuItem
+                            Command="{Binding OpenUrlCommand}"
+                            Header="Sign Out">
+                            <MenuItem.Icon>
+                                <Viewbox Width="16" Height="16">
+                                    <TextBlock
+                                        Classes="LucideIcon"
+                                        Foreground="{DynamicResource MutedColor}"
+                                        Text="" />
+                                </Viewbox>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                 </Menu>
             </Grid>
