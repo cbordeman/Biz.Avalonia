@@ -1,5 +1,6 @@
 ﻿using Biz.Authentication;
 using Biz.Modules.Dashboard.Core;
+using CompositeFramework.Avalonia.Commands;
 using CompositeFramework.Avalonia.Dialogs;
 using ShadUI;
 
@@ -18,6 +19,8 @@ public abstract class MainViewModelBase
     
     // This must be public so MainWindow can bind to its DialogHost property.
     public IDialogService DialogService { get; }
+    
+    public List<BaseMenuItemViewModel>? ProfileMenu { get; set; }
     
     #region IsDrawerOpen
     public bool IsDrawerOpen
@@ -72,6 +75,7 @@ public abstract class MainViewModelBase
         AuthService.AuthenticationStateChanged.Subscribe(async () =>
         {
             IsLoggedIn = await AuthService.IsAuthenticated();
+            await BuildProfileMenu();
         });
 
         MainContentNavigationService =
@@ -79,6 +83,43 @@ public abstract class MainViewModelBase
         MainContentNavigationService.PageChanged.Subscribe( 
             MainContentRegionNavigationServiceOnPageChanged);
     }
+    
+    async Task BuildProfileMenu()
+    {
+        ProfileMenu = new List<BaseMenuItemViewModel>();
+        User? user = null;
+        if (IsLoggedIn)
+            user = await AuthService.GetCurrentUserAsync();
+
+        // Add profile or sign in / register commands
+        if (IsLoggedIn && user != null)
+        {
+            ProfileMenu.Add(new ProfileMenuItemViewModel(
+                user.Name,
+                user.SourceAvaRes ?? "avares://Biz.Shared/Assets/user.png",
+                user.Email,
+                new AsyncCommand(async () =>
+                {
+                    await AuthService.LogoutAsync(true, true);
+                })));
+        }
+
+        // Add other commands here...
+
+        // Add sign out
+        if (IsLoggedIn)
+            ProfileMenu.Add(new MenuItemViewModel("",
+                "Sign out",
+                "",
+                "",
+                new AsyncCommand(async () =>
+                {
+                    await AuthService.LogoutAsync(true, true);
+                }),
+                null));
+        RaisePropertyChanged(nameof(ProfileMenu));
+    }
+
 
     Task MainContentRegionNavigationServiceOnPageChanged(
         NotifyPageChangedArgs args)
@@ -167,7 +208,7 @@ public abstract class MainViewModelBase
             MainContentRegionNavigationServiceOnPageChanged);
     }
 
-    public async void OnViewLoaded()
+    public async virtual void OnViewLoaded()
     {
         try
         {

@@ -30,27 +30,27 @@ sealed class Program
         try
         {
             // ReSharper disable once UnusedVariable
-            var singleInstanceMutex =
-                new Mutex(
-                    true,
-                    $"{AppConstants.AppShortName}.SingletonMutex",
-                    out bool createdNew);
+            //var singleInstanceMutex =
+            //    new Mutex(
+            //        true,
+            //        $"{AppConstants.AppShortName}.SingletonMutex",
+            //        out bool createdNew);
 
-            if (!createdNew)
-            {
-                // Another instance is running, send args[1] (the URI) via IPC to it
-                if (args.Length > 1)
-                    SendUriToRunningInstance(args[1]);
-                // Exit this new instance
-                return;
-            }
+            //if (!createdNew)
+            //{
+            //    // Another instance is running, send args[1] (the URI) via IPC to it
+            //    if (args.Length > 1)
+            //        SendUriToRunningInstance(args[1]);
+            //    // Exit this new instance
+            //    return;
+            //}
 
             // Start IPC server to listen for URI messages from future instances
-            Task.Run(IpcServer);
+            //Task.Run(IpcServer);
 
             // Handle URI if app started by link
-            if (args.Length > 1)
-                PlatformHandleUri(args[1]);
+            //if (args.Length > 1)
+            //    PlatformHandleUri(args[1]);
 
             PlatformHelper.PlatformService = new DesktopPlatformService();
 
