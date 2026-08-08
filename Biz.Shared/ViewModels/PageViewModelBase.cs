@@ -7,7 +7,7 @@ namespace Biz.Shared.ViewModels;
 
 public abstract class PageViewModelBase : NavigationAwareViewModelBase
 {
-    protected IAuthenticationService AuthenticationService { get; }
+    public IAuthenticationService AuthService { get; }
 
     #region Title
     public string? Title
@@ -38,27 +38,11 @@ public abstract class PageViewModelBase : NavigationAwareViewModelBase
     public bool IsFullUi => !IsMinimalUi;
     #endregion MinimalUi
 
-    #region CurrentUser
-    public User? CurrentUser
-    {
-        get;
-        set => SetProperty(ref field, value);
-    }
-    #endregion CurrentUser
-
     public ObservableCollection<IToolbarEntry> ToolbarEntries { get; } = [];
 
     protected PageViewModelBase()
     {
-        AuthenticationService = Locator.Current
+        AuthService = Locator.Current
             .Resolve<IAuthenticationService>();
-        AuthenticationService.AuthenticationStateChanged
-            .Subscribe(OnAuthStateChanged); 
-    }
-
-    private async Task OnAuthStateChanged()
-    {
-        CurrentUser = await AuthenticationService
-            .GetCurrentUserAsync();
     }
 }

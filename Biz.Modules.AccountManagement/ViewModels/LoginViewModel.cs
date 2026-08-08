@@ -128,7 +128,7 @@ public class LoginViewModel : PageViewModelBase
 
     public override async Task OnNavigatedToAsync(NavigationContext ctx)
     {
-        await AuthenticationService.LogoutAsync(false, false);
+        await AuthService.LogoutAsync(false, false);
         IsValidating = true;
     }
 

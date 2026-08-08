@@ -16,7 +16,9 @@ namespace Biz.Authentication
             LoginProvider providerEnum, CancellationToken ct);
         Task CompleteLogin(Tenant selectedTenant);
         Task LogoutAsync(bool invokeEvent, bool clearBrowserCache);
-        Task<User?> GetCurrentUserAsync();
+        User? CurrentUser { get; }
+        bool IsLoggedIn { get; }
+        
         AsyncEvent AuthenticationStateChanged { get; }
         IClientLoginProvider? CurrentProvider { get; }
         LoginProviderDescriptor? CurrentProviderDescriptor { get; }

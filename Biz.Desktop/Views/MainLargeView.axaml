@@ -246,36 +246,16 @@
                                     <ControlTemplate>
                                         <ContentControl Content="{Binding}">
                                             <ContentControl.DataTemplates>
+
                                                 <!--  Profile item template  -->
                                                 <DataTemplate DataType="viewModels1:ProfileMenuItemViewModel">
-                                                    <MenuItem Header="{Binding}">
-                                                        <shadui:MenuItemAssist.Label>
-                                                            <Grid
-                                                                Width="220"
-                                                                HorizontalAlignment="Stretch"
-                                                                ColumnDefinitions="Auto *">
-                                                                <shadui:Avatar
-                                                                    Width="36"
-                                                                    Height="36"
-                                                                    Margin="0,0,8,0"
-                                                                    CornerRadius="9999"
-                                                                    Fallback="CN"
-                                                                    Source="{Binding SourceAvaRes}" />
-                                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                                    <TextBlock Classes="Small" Text="shadui" />
-                                                                    <TextBlock
-                                                                        Margin="0,-4,0,0"
-                                                                        Classes="Caption"
-                                                                        Text="{Binding Email}" />
-                                                                </StackPanel>
-                                                            </Grid>
-                                                        </shadui:MenuItemAssist.Label>
-                                                    </MenuItem>
+                                                    <MenuItem Header="XXXXXXX" />
                                                 </DataTemplate>
 
                                                 <!--  Standard Item Template  -->
                                                 <DataTemplate DataType="viewModels1:MenuItemViewModel">
                                                     <MenuItem
+                                                        Width="220"
                                                         Command="{Binding Command}"
                                                         CommandParameter="{Binding CommandParameter}"
                                                         Header="{Binding Header}">
@@ -300,6 +280,29 @@
                                 </Setter>
                             </ControlTheme>
                         </MenuItem.ItemContainerTheme>
+
+                        <shadui:MenuItemAssist.Label>
+                            <Grid
+                                Width="220"
+                                HorizontalAlignment="Stretch"
+                                ColumnDefinitions="Auto *">
+                                <shadui:Avatar
+                                    Width="36"
+                                    Height="36"
+                                    Margin="0,0,8,0"
+                                    CornerRadius="9999"
+                                    Fallback="U"
+                                    Source="{Binding AuthService.CurrentUser.SourceAvaRes}" />
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Classes="Small" Text="shadui" />
+                                    <TextBlock
+                                        Margin="0,-4,0,0"
+                                        Classes="Caption"
+                                        Text="{Binding AuthService.CurrentUser.Name}" />
+                                </StackPanel>
+                            </Grid>
+                        </shadui:MenuItemAssist.Label>
+
                     </MenuItem>
 
                     <!-- <Separator /> -->

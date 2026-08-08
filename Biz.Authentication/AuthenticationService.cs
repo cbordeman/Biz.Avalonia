@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CompositeFramework.Core.ViewModels;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -22,9 +23,11 @@ public class AuthenticationService(
     IAuthDataStore authDataStore,
     ITenantsApi tenantsApi,
     ILoginProviderRegistry loginProviderRegistry)
-    : IAuthenticationService
+    : BindableBase, IAuthenticationService
 {
     public AsyncEvent AuthenticationStateChanged { get; } = new();
+    public User? CurrentUser { get; set; }
+    public bool IsLoggedIn => CurrentUser != null;
 
     public IClientLoginProvider? CurrentProvider { get; private set; }
     public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
@@ -218,6 +221,8 @@ public class AuthenticationService(
         authDataStore.Data.Tenant = selectedTenant;
         await authDataStore.SaveAuthDataAsync();
 
+        CurrentUser = await GetCurrentUserAsync();
+        
         await AuthenticationStateChanged.PublishSequentiallyAsync();
     }
 
@@ -323,12 +328,13 @@ public class AuthenticationService(
 
         CurrentProviderDescriptor = null;
         CurrentProvider = null;
+        CurrentUser = null;
 
         if (invokeEvent)
             await AuthenticationStateChanged.PublishSequentiallyAsync();
     }
 
-    public async Task<User?> GetCurrentUserAsync()
+    private async Task<User?> GetCurrentUserAsync()
     {
         if (!await IsAuthenticated())
             return null;

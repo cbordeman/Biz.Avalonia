@@ -92,7 +92,8 @@
                                     CornerRadius="{DynamicResource LgCornerRadius}">
                                     <StackPanel Margin="0,2">
                                         <Border Padding="16,8" IsVisible="{TemplateBinding shadui:MenuItemAssist.Label, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                            <ContentPresenter Content="{TemplateBinding shadui:MenuItemAssist.Label}" FontFamily="{TemplateBinding FontFamily}" />
+                                            <TextBlock Text="ASKDJFKSAJFJSKFJ" />
+                                            <!-- <ContentPresenter Content="{TemplateBinding shadui:MenuItemAssist.Label}" FontFamily="{TemplateBinding FontFamily}" /> -->
                                         </Border>
                                         <ScrollViewer>
                                             <ItemsPresenter

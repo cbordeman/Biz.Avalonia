@@ -26,7 +26,7 @@ public class TenantSelectionViewModel : PageViewModelBase
     async Task ExecuteSelectCommand(Tenant? t)
     {
         Debug.Assert(t != null, nameof(t) + " != null");
-        await AuthenticationService.CompleteLogin(t);
+        await AuthService.CompleteLogin(t);
     }
     #endregion SelectCommand
 

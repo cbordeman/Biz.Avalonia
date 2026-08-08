@@ -15,7 +15,12 @@ public abstract class MainViewModelBase
     : NavigationAwareViewModelBase, IOnViewLoaded
 {
     protected readonly IMainNavigationService MainContentNavigationService;
-    protected readonly IAuthenticationService AuthService;
+
+    public IAuthenticationService AuthService
+    {
+        get => field;
+        set => SetProperty(ref field, value);
+    }
     
     // This must be public so MainWindow can bind to its DialogHost property.
     public IDialogService DialogService { get; }
@@ -83,21 +88,18 @@ public abstract class MainViewModelBase
         MainContentNavigationService.PageChanged.Subscribe( 
             MainContentRegionNavigationServiceOnPageChanged);
     }
-    
-    async Task BuildProfileMenu()
+
+    Task BuildProfileMenu()
     {
         ProfileMenu = new List<BaseMenuItemViewModel>();
-        User? user = null;
-        if (IsLoggedIn)
-            user = await AuthService.GetCurrentUserAsync();
-
+        
         // Add profile or sign in / register commands
-        if (IsLoggedIn && user != null)
+        if (IsLoggedIn && AuthService.CurrentUser != null)
         {
             ProfileMenu.Add(new ProfileMenuItemViewModel(
-                user.Name,
-                user.SourceAvaRes ?? "avares://Biz.Shared/Assets/user.png",
-                user.Email,
+                AuthService.CurrentUser.Name,
+                AuthService.CurrentUser.SourceAvaRes ?? "avares://Biz.Shared/Assets/user.png",
+                AuthService.CurrentUser.Email,
                 new AsyncCommand(async () =>
                 {
                     await AuthService.LogoutAsync(true, true);
@@ -118,8 +120,8 @@ public abstract class MainViewModelBase
                 }),
                 null));
         RaisePropertyChanged(nameof(ProfileMenu));
+        return Task.CompletedTask;
     }
-
 
     Task MainContentRegionNavigationServiceOnPageChanged(
         NotifyPageChangedArgs args)
@@ -226,6 +228,8 @@ public abstract class MainViewModelBase
             await MainContentNavigationService.NavigateWithModuleAsync(
                 DashboardConstants.ModuleName,
                 DashboardConstants.DashboardView);
+
+            await BuildProfileMenu();
         }
         catch (Exception e)
         {
