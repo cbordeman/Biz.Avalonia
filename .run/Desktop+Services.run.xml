@@ -9,7 +9,7 @@
         </option>
         <option name="executable">
           <ExecutableSnapshot>
-            <option name="id" value="runConfig:.NET Project.Biz.Shell.Desktop" />
+            <option name="id" value="runConfig:.NET Launch Settings Profile.Services: https" />
           </ExecutableSnapshot>
         </option>
       </ExecutableRowSnapshot>
@@ -21,7 +21,7 @@
         </option>
         <option name="executable">
           <ExecutableSnapshot>
-            <option name="id" value="runConfig:.NET Launch Settings Profile.Services: https" />
+            <option name="id" value="runConfig:.NET Project.Biz.Shell.Desktop" />
           </ExecutableSnapshot>
         </option>
       </ExecutableRowSnapshot>

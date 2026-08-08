@@ -1,4 +1,5 @@
 using Biz.Desktop.ViewModels;
+using Biz.Shared.ViewModels;
 using Biz.Shared.Views;
 
 namespace Biz.Desktop.Views;
@@ -9,5 +10,5 @@ public partial class MainLargeView : FormFactorAwareUserControl
     public MainLargeView()
     {
         InitializeComponent();
-    }
+    }   
 }

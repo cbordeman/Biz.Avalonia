@@ -169,7 +169,8 @@ public class AuthenticationService(
     }
 
     // Called by LoginWithXXXAsync methods.
-    async Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
+    async Task<(bool isLoggedIn, 
+            Tenant[]? availableTenants, string? error)>
         SaveAuthenticationResultAndGetTenants(
         string internalUserId, string accessToken,
         DateTimeOffset expiresOn,
@@ -345,6 +346,7 @@ public class AuthenticationService(
             var user = new User(
                 authDataStore.Data.Id,
                 authDataStore.Data.Name,
+                null,
                 authDataStore.Data.Email,
                 true,
                 authDataStore.Data.LoginProvider,

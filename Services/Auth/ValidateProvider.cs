@@ -130,7 +130,9 @@ public static partial class Auth
                 {
                     // Success
                     await context.Response.WriteAsJsonAsync(
-                        new User(user.Id, user.Name, user.Email!,
+                        new User(user.Id, user.Name, 
+                            null,
+                            user.Email!,
                             true, user.LoginProvider,
                             new Tenant(
                                 tu.Tenant.Id, tu.Tenant.Name)));

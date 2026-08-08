@@ -28,10 +28,11 @@ public abstract class MainViewModelBase
     #endregion IsDrawerOpen
 
     #region IsLoggedIn
+    bool isLoggedIn;
     public bool IsLoggedIn
     {
-        get;
-        set => SetProperty(ref field, value);
+        get => isLoggedIn;
+        set => SetProperty(ref isLoggedIn, value);
     }
     #endregion IsLoggedIn
 
@@ -201,12 +202,17 @@ public abstract class MainViewModelBase
     {
         // Opens browser to the sign out page to ensure cookies
         // are cleared and provider actions can execute.
-        await AuthService.LogoutAsync(true, true);
-
-        // Can't set to null because of a bug in the sidebar control.
-        // Must set to non-null or the property change doesn't trigger
-        // properly.
-        CurrentArea = "STUPID BUG";
+        try
+        {
+            await AuthService.LogoutAsync(true, true);
+        }
+        finally
+        {
+            // Can't set to null because of a bug in the sidebar control.
+            // Must set to non-null or the property change doesn't trigger
+            // properly.
+            CurrentArea = "STUPID BUG WORKAROUND";
+        }
     }
     #endregion LogoutCommand
 }
