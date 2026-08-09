@@ -235,8 +235,8 @@
 
                                 <shadui:Avatar
                                     CornerRadius="9999"
-                                    Fallback="CN"
-                                    Source="avares://Biz.Shared/Assets/user.png" />
+                                    Fallback="U"
+                                    Source="{Binding AuthService.CurrentUser.SourceAvaRes}" />
                             </Border>
                         </MenuItem.Header>
 
@@ -246,10 +246,30 @@
                                     <ControlTemplate>
                                         <ContentControl Content="{Binding}">
                                             <ContentControl.DataTemplates>
-
-                                                <!--  Profile item template  -->
+                                                <!--  ProfileMenuItemViewModel  -->
                                                 <DataTemplate DataType="viewModels1:ProfileMenuItemViewModel">
-                                                    <MenuItem Header="XXXXXXX" />
+                                                    <MenuItem Width="220" Command="{Binding Command}">
+                                                        <MenuItem.Icon>
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                Margin="0,0,8,0"
+                                                                CornerRadius="9999"
+                                                                Fallback="U"
+                                                                Source="{Binding #Root.ViewModel.AuthService.CurrentUser.SourceAvaRes}" />
+                                                        </MenuItem.Icon>
+                                                        <MenuItem.Header>
+                                                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                                <StackPanel VerticalAlignment="Center">
+                                                                    <TextBlock Classes="Small" Text="{Binding #Root.ViewModel.AuthService.CurrentUser.Name}" />
+                                                                    <TextBlock
+                                                                        Margin="0,-4,0,0"
+                                                                        Classes="Caption"
+                                                                        Text="{Binding #Root.ViewModel.AuthService.CurrentUser.Tenant.Name}" />
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
                                                 </DataTemplate>
 
                                                 <!--  Standard Item Template  -->
@@ -281,45 +301,28 @@
                             </ControlTheme>
                         </MenuItem.ItemContainerTheme>
 
-                        <shadui:MenuItemAssist.Label>
-                            <Grid
-                                Width="220"
-                                HorizontalAlignment="Stretch"
-                                ColumnDefinitions="Auto *">
-                                <shadui:Avatar
-                                    Width="36"
-                                    Height="36"
-                                    Margin="0,0,8,0"
-                                    CornerRadius="9999"
-                                    Fallback="U"
-                                    Source="{Binding AuthService.CurrentUser.SourceAvaRes}" />
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <TextBlock Classes="Small" Text="shadui" />
-                                    <TextBlock
-                                        Margin="0,-4,0,0"
-                                        Classes="Caption"
-                                        Text="{Binding AuthService.CurrentUser.Name}" />
-                                </StackPanel>
-                            </Grid>
-                        </shadui:MenuItemAssist.Label>
-
+                        <!-- <shadui:MenuItemAssist.Label> -->
+                        <!--  <Grid  -->
+                        <!--  Width="220"  -->
+                        <!--  HorizontalAlignment="Stretch"  -->
+                        <!--  ColumnDefinitions="Auto *">  -->
+                        <!--  <shadui:Avatar  -->
+                        <!--  Width="36"  -->
+                        <!--  Height="36"  -->
+                        <!--  Margin="0,0,8,0"  -->
+                        <!--  CornerRadius="9999"  -->
+                        <!--  Fallback="U"  -->
+                        <!--  Source="{Binding AuthService.CurrentUser.SourceAvaRes}" />  -->
+                        <!--         <StackPanel Grid.Column="1" VerticalAlignment="Center"> -->
+                        <!--             <TextBlock Classes="Small" Text="{Binding AuthService.CurrentUser.Name}" /> -->
+                        <!--  <TextBlock  -->
+                        <!--  Margin="0,-4,0,0"  -->
+                        <!--  Classes="Caption"  -->
+                        <!--  Text="{Binding AuthService.CurrentUser.Tenant.Name}" />  -->
+                        <!--         </StackPanel> -->
+                        <!--     </Grid> -->
+                        <!-- </shadui:MenuItemAssist.Label> -->
                     </MenuItem>
-
-                    <!-- <Separator /> -->
-
-                    <!--  <MenuItem  -->
-                    <!--  Command="{Binding OpenUrlCommand}"  -->
-                    <!--  CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme"  -->
-                    <!--  Header="About">  -->
-                    <!--     <MenuItem.Icon> -->
-                    <!--         <Viewbox Width="16" Height="16"> -->
-                    <!--  <TextBlock  -->
-                    <!--  Classes="LucideIcon"  -->
-                    <!--  Foreground="{DynamicResource MutedColor}"  -->
-                    <!--  Text="&#57599;" />  -->
-                    <!--         </Viewbox> -->
-                    <!--     </MenuItem.Icon> -->
-                    <!-- </MenuItem> -->
                 </Menu>
 
             </Grid>
