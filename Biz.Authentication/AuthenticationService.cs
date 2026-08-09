@@ -26,7 +26,15 @@ public class AuthenticationService(
     : BindableBase, IAuthenticationService
 {
     public AsyncEvent AuthenticationStateChanged { get; } = new();
-    public User? CurrentUser { get; set; }
+    public User? CurrentUser
+    {
+        get => field;
+        set
+        {
+            if (SetField(ref field, value))
+                RaisePropertyChanged(nameof(IsLoggedIn));
+        }
+    }
     public bool IsLoggedIn => CurrentUser != null;
 
     public IClientLoginProvider? CurrentProvider { get; private set; }

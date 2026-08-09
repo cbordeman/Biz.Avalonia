@@ -7,7 +7,7 @@ using ShadUI;
 namespace Biz.Shared.ViewModels;
 
 /// <summary>
-/// This is not a page; it is the top level view which contains
+/// This is not a page; it is the top level view that contains
 /// the MainContentRegion, which hosts pages.  Desktop clients
 /// do have a window above this view, though.
 /// </summary>
@@ -19,7 +19,7 @@ public abstract class MainViewModelBase
     public IAuthenticationService AuthService
     {
         get => field;
-        set => SetProperty(ref field, value);
+        init => SetProperty(ref field, value);
     }
     
     // This must be public so MainWindow can bind to its DialogHost property.
@@ -34,15 +34,6 @@ public abstract class MainViewModelBase
         set => SetProperty(ref field, value);
     }
     #endregion IsDrawerOpen
-
-    #region IsLoggedIn
-    bool isLoggedIn;
-    public bool IsLoggedIn
-    {
-        get => isLoggedIn;
-        set => SetProperty(ref isLoggedIn, value);
-    }
-    #endregion IsLoggedIn
 
     #region CurrentArea
     public string? CurrentArea
@@ -79,7 +70,6 @@ public abstract class MainViewModelBase
         AuthService = Locator.Current.Resolve<IAuthenticationService>();
         AuthService.AuthenticationStateChanged.Subscribe(async () =>
         {
-            IsLoggedIn = await AuthService.IsAuthenticated();
             await BuildProfileMenu();
         });
 
@@ -94,7 +84,7 @@ public abstract class MainViewModelBase
         ProfileMenu = new List<BaseMenuItemViewModel>();
         
         // Add profile or sign in / register commands
-        if (IsLoggedIn && AuthService.CurrentUser != null)
+        if (AuthService.CurrentUser != null)
         {
             ProfileMenu.Add(new ProfileMenuItemViewModel(
                 AuthService.CurrentUser.Name,
@@ -109,7 +99,7 @@ public abstract class MainViewModelBase
         // Add other commands here...
 
         // Add sign out
-        if (IsLoggedIn)
+        if (AuthService.IsLoggedIn)
             ProfileMenu.Add(new MenuItemViewModel("",
                 "Sign out",
                 "",
@@ -220,8 +210,6 @@ public abstract class MainViewModelBase
                 .Resolve<ISectionNavigationService>();
             navigation.Initialize(SectionNames.MainContentSection);
              
-            IsLoggedIn = await AuthService.IsAuthenticated();
-
             // This executes after regions are loaded.
             MainContentNavigationService.Initialize();
         
@@ -245,7 +233,7 @@ public abstract class MainViewModelBase
     static bool CanLogoutCommand() => true;
     async Task ExecuteLogoutCommand()
     {
-        // Opens browser to the sign out page to ensure cookies
+        // Opens browser to the sign-out page to ensure cookies
         // are cleared and provider actions can execute.
         try
         {

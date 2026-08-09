@@ -84,7 +84,7 @@
                                                     Command="{Binding Command}"
                                                     CommandParameter="{Binding}"
                                                     Content="{Binding DisplayName}"
-                                                    IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"
+                                                    IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn}"
                                                     Route="{Binding ViewName}"
                                                     ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
                                                                           Converter={x:Static converters:BooleanConverters.NullOrString},

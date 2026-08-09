@@ -7,7 +7,6 @@
     xmlns:infrastructure1="clr-namespace:Biz.Shared.Infrastructure;assembly=Biz.Shared"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigation="clr-namespace:CompositeFramework.Avalonia.Navigation;assembly=CompositeFramework.Avalonia"
-    xmlns:services="clr-namespace:Biz.Shared.Services;assembly=Biz.Shared"
     xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:toolbar="clr-namespace:Biz.Shared.ViewModels.Toolbar;assembly=Biz.Shared"
     xmlns:viewModels="clr-namespace:Biz.Mobile.ViewModels"
@@ -127,7 +126,7 @@
                                                              ConverterParameter='{Binding CommandParameter}'}"
                                         BorderThickness="0"
                                         Command="{Binding Command}"
-                                        IsVisible="{Binding #Root.ViewModel.IsLoggedIn}">
+                                        IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn}">
                                         <StackPanel Orientation="Horizontal">
                                             <PathIcon VerticalAlignment="Center" Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}" />
                                             <TextBlock
@@ -152,7 +151,7 @@
                                                      ConverterParameter='SettingsView'}"
                                 BorderThickness="0"
                                 Command="{Binding NavigateSettingsCommand}"
-                                IsVisible="{Binding #Root.ViewModel.IsLoggedIn}">
+                                IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn}">
                                 <StackPanel Orientation="Horizontal">
                                     <PathIcon VerticalAlignment="Center" Data="{StaticResource gear}" />
                                     <TextBlock
@@ -171,7 +170,7 @@
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Command="{Binding LogoutCommand}"
-                                IsVisible="{Binding #Root.ViewModel.IsLoggedIn,
+                                IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn,
                                                     Converter='{x:Static converters:BooleanConverters.Reverse}'}">
                                 <StackPanel Orientation="Horizontal">
                                     <PathIcon VerticalAlignment="Center" Data="{StaticResource leave}" />
