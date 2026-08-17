@@ -55,7 +55,7 @@ public class MainNavigationService :
     {
         try
         {
-            if (!await authenticationService.IsAuthenticated())
+            if (!authenticationService.IsLoggedIn)
             {
                 // Clear history
                 var nav = Locator.Current.Resolve<ISectionNavigationService>();
@@ -83,7 +83,7 @@ public class MainNavigationService :
         }
         catch (Exception exception)
         {
-            // If we don't redirect to Login because of an exception, it
+            // If we don't redirect to Log in because of an exception, it
             // isn't catastrophic.  Server operations will simply fail
             // because of the lack of a token.
             Log.Logger.Error(exception, "In {ClassName}.{MethodName}()", nameof(OnAuthStateChanged), nameof(OnAuthStateChanged));
@@ -140,7 +140,7 @@ public class MainNavigationService :
                         AccountManagementConstants.LoginView &&
                         args.LocationName != AccountManagementConstants
                             .TenantSelectionView &&
-                        !await AuthenticationService.IsAuthenticated())
+                        !AuthenticationService.IsLoggedIn)
                     {
                         // Redirect to login page
                         await NavigateWithModuleAsync(

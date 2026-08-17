@@ -5,8 +5,11 @@ namespace Biz.Models;
 public record User(
     string Id,
     string Name,
-    string? SourceAvaRes,
+    string? Initials,
     string Email,
     bool IsActive,
     LoginProvider? Provider,
-    Tenant Tenant);
+    Tenant Tenant)
+{
+    public string EmailLink => $"mailto:{Email}";
+}

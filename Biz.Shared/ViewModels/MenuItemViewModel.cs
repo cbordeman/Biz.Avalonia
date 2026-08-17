@@ -13,8 +13,8 @@ public class BaseMenuItemViewModel;
 
 public class MenuItemViewModel(
     string viewName,
-    string header,
-    string iconText,
+    object header,
+    string? iconText,
     string? moduleName,
     ICommand command,
     object? commandParameter) : BaseMenuItemViewModel
@@ -22,8 +22,8 @@ public class MenuItemViewModel(
     protected ICommand CommandField = command;
 
     public string ViewName { get; init; } = viewName;
-    public string Header { get; init; } = header;
-    public string IconText { get; init; } = iconText;
+    public object Header { get; init; } = header;
+    public string? IconText { get; init; } = iconText;
     public string? ModuleName { get; } = moduleName;
     public object? CommandParameter { get; set; } = commandParameter;
 

@@ -88,7 +88,7 @@ public abstract class MainViewModelBase
         {
             ProfileMenu.Add(new ProfileMenuItemViewModel(
                 AuthService.CurrentUser.Name,
-                AuthService.CurrentUser.SourceAvaRes ?? "avares://Biz.Shared/Assets/user.png",
+                AuthService.CurrentUser.Initials ?? "USER",
                 AuthService.CurrentUser.Email,
                 new AsyncCommand(async () =>
                 {
@@ -216,7 +216,7 @@ public abstract class MainViewModelBase
             await MainContentNavigationService.NavigateWithModuleAsync(
                 DashboardConstants.ModuleName,
                 DashboardConstants.DashboardView);
-
+            
             await BuildProfileMenu();
         }
         catch (Exception e)

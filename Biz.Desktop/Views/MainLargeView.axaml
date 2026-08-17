@@ -235,8 +235,8 @@
 
                                 <shadui:Avatar
                                     CornerRadius="9999"
-                                    Fallback="U"
-                                    Source="{Binding AuthService.CurrentUser.SourceAvaRes}" />
+                                    Fallback="{Binding AuthService.CurrentUser.Initials}"
+                                    Source="{Binding AuthService.CurrentUser.Initials}" />
                             </Border>
                         </MenuItem.Header>
 
@@ -256,7 +256,7 @@
                                                                 Margin="0,0,8,0"
                                                                 CornerRadius="9999"
                                                                 Fallback="U"
-                                                                Source="{Binding #Root.ViewModel.AuthService.CurrentUser.SourceAvaRes}" />
+                                                                Source="{Binding #Root.ViewModel.AuthService.CurrentUser.Initials}" />
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -266,13 +266,18 @@
                                                                         Margin="0,-4,0,0"
                                                                         Classes="Caption"
                                                                         Text="{Binding #Root.ViewModel.AuthService.CurrentUser.Tenant.Name}" />
+                                                                    <HyperlinkButton
+                                                                        Margin="0,-4,0,0"
+                                                                        Classes="Caption"
+                                                                        Content="{Binding #Root.ViewModel.AuthService.CurrentUser.Email}"
+                                                                        NavigateUri="{Binding #Root.ViewModel.AuthService.CurrentUser.EmailLink}" />
                                                                 </StackPanel>
                                                             </Grid>
                                                         </MenuItem.Header>
                                                     </MenuItem>
                                                 </DataTemplate>
 
-                                                <!--  Standard Item Template  -->
+                                                <!--  MenuItemViewModel (Standard Item Template)  -->
                                                 <DataTemplate DataType="viewModels1:MenuItemViewModel">
                                                     <MenuItem
                                                         Command="{Binding Command}"
@@ -283,7 +288,7 @@
                                                                 <TextBlock
                                                                     Classes="LucideIcon"
                                                                     Foreground="{DynamicResource MutedColor}"
-                                                                    Text="&#57599;" />
+                                                                    Text="{Binding IconText}" />
                                                             </Viewbox>
                                                         </MenuItem.Icon>
                                                     </MenuItem>
@@ -299,6 +304,7 @@
                                 </Setter>
                             </ControlTheme>
                         </MenuItem.ItemContainerTheme>
+                    </MenuItem>
                 </Menu>
 
             </Grid>

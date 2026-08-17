@@ -23,30 +23,53 @@ public class AuthenticationService(
     IAuthDataStore authDataStore,
     ITenantsApi tenantsApi,
     ILoginProviderRegistry loginProviderRegistry)
-    : BindableBase, IAuthenticationService
+    : BindingBase, IAuthenticationService
 {
+    public bool IsInitialized { get; private set; }
+    
     public AsyncEvent AuthenticationStateChanged { get; } = new();
     public User? CurrentUser
     {
-        get => field;
+        get
+        {
+            VerifyIsInitialized();
+            return field;
+        }
         set
         {
-            if (SetField(ref field, value))
+            if (SetProperty(ref field, value))
                 RaisePropertyChanged(nameof(IsLoggedIn));
         }
     }
     public bool IsLoggedIn => CurrentUser != null;
 
-    public IClientLoginProvider? CurrentProvider { get; private set; }
+    public IClientLoginProvider? CurrentProvider
+    {
+        get
+        {
+            VerifyIsInitialized();
+            return field;
+        }
+        private set;
+    }
     public LoginProviderDescriptor? CurrentProviderDescriptor { get; private set; }
 
+    private void VerifyIsInitialized()
+    {
+        if (!IsInitialized)
+            throw new InvalidOperationException("AuthenticationService is not initialized");
+    }
+    
     public async Task InitializeAsync()
     {
         if (authDataStore.Data == null)
             await authDataStore.RestoreAuthDataAsync();
         if (authDataStore.Data == null ||
             authDataStore.Data.LoginProvider == null)
+        {
+            IsInitialized = true;
             return;
+        }
         if (loginProviderRegistry.Descriptors
             .TryGetValue(authDataStore.Data.LoginProvider.Value,
                 out var descriptor))
@@ -55,9 +78,11 @@ public class AuthenticationService(
             CurrentProvider = (IClientLoginProvider)
                 Locator.Current.Resolve(descriptor.ProviderType);
         }
+        CurrentUser = await GetCurrentUserAsync();
+        IsInitialized = true;
     }
 
-    public async Task<bool> IsAuthenticated()
+    async Task<bool> CheckAuthentication()
     {
         if (authDataStore.Data == null)
             await authDataStore.RestoreAuthDataAsync();
@@ -115,7 +140,7 @@ public class AuthenticationService(
         LoginProvider providerEnum,
         CancellationToken ct)
     {
-        if (await IsAuthenticated())
+        if (await CheckAuthentication())
             await LogoutAsync(false, false);
 
         try
@@ -344,7 +369,7 @@ public class AuthenticationService(
 
     private async Task<User?> GetCurrentUserAsync()
     {
-        if (!await IsAuthenticated())
+        if (!await CheckAuthentication())
             return null;
 
         if (authDataStore.Data == null)
@@ -356,6 +381,7 @@ public class AuthenticationService(
             authDataStore.Data.Email.ShouldNotBeNullOrEmpty();
             authDataStore.Data.LoginProvider.ShouldNotBeNull();
             authDataStore.Data.Tenant.ShouldNotBeNull();
+            authDataStore.Data.Tenant.Name.ShouldNotBeNull();
 
             var user = new User(
                 authDataStore.Data.Id,

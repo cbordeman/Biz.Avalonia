@@ -57,8 +57,8 @@ sealed class Program
             // Register biz:... links
             RegisterCustomUriSchemeIfMissing();
 
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+            var app = BuildAvaloniaApp();
+            app.StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)
         {
