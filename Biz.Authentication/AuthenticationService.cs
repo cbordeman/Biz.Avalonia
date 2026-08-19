@@ -201,7 +201,6 @@ public class AuthenticationService(
             Log.Logger.Error(e, $"ERROR: Failed to get available tenants: {e.Message}");
             return (false, null, e.Message);
         }
-
     }
 
     // Called by LoginWithXXXAsync methods.

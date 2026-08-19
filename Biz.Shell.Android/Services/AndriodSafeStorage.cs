@@ -98,11 +98,11 @@ public class AndroidSafeStorage : ISafeStorage
         }
     }
 
-    public Task<string?> GetAsync(string key)
+    public string? Get(string key)
     {
         var dict = LoadAll();
         dict.TryGetValue(key, out var value);
-        return Task.FromResult(value);
+        return value;
     }
 
     public Task SetAsync(string key, string value)
