@@ -1,17 +1,17 @@
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Biz.Authentication.ClientLoginProvider;
 using Biz.Models;
 using CompositeFramework.Core;
 using CompositeFramework.Core.Extensions;
+using CompositeFramework.Core.ViewModels;
 using Core;
 using Serilog;
 using ServiceClients;
 using Shouldly;
 using Splat;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CompositeFramework.Core.ViewModels;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -60,10 +60,10 @@ public class AuthenticationService(
             throw new InvalidOperationException("AuthenticationService is not initialized");
     }
     
-    public async Task InitializeAsync()
+    public void Initialize()
     {
         if (authDataStore.Data == null)
-            await authDataStore.RestoreAuthDataAsync();
+            authDataStore.RestoreAuthData();
         if (authDataStore.Data == null ||
             authDataStore.Data.LoginProvider == null)
         {
@@ -78,14 +78,14 @@ public class AuthenticationService(
             CurrentProvider = (IClientLoginProvider)
                 Locator.Current.Resolve(descriptor.ProviderType);
         }
-        CurrentUser = await GetCurrentUserAsync();
+        CurrentUser = GetCurrentUserAsync();
         IsInitialized = true;
     }
 
-    async Task<bool> CheckAuthentication()
+    bool CheckAuthentication()
     {
         if (authDataStore.Data == null)
-            await authDataStore.RestoreAuthDataAsync();
+            authDataStore.RestoreAuthData();
 
         if (authDataStore.Data == null || authDataStore.Data.LoginProvider == null)
             return false;
@@ -140,7 +140,7 @@ public class AuthenticationService(
         LoginProvider providerEnum,
         CancellationToken ct)
     {
-        if (await CheckAuthentication())
+        if (CheckAuthentication())
             await LogoutAsync(false, false);
 
         try
@@ -254,7 +254,7 @@ public class AuthenticationService(
         authDataStore.Data.Tenant = selectedTenant;
         await authDataStore.SaveAuthDataAsync();
 
-        CurrentUser = await GetCurrentUserAsync();
+        CurrentUser = GetCurrentUserAsync();
         
         await AuthenticationStateChanged.PublishSequentiallyAsync();
     }
@@ -367,13 +367,13 @@ public class AuthenticationService(
             await AuthenticationStateChanged.PublishSequentiallyAsync();
     }
 
-    private async Task<User?> GetCurrentUserAsync()
+    private User? GetCurrentUserAsync()
     {
-        if (!await CheckAuthentication())
+        if (!CheckAuthentication())
             return null;
 
         if (authDataStore.Data == null)
-            await authDataStore.RestoreAuthDataAsync();
+            authDataStore.RestoreAuthData();
         if (authDataStore.Data != null)
         {
             authDataStore.Data.Id.ShouldNotBeNullOrEmpty();

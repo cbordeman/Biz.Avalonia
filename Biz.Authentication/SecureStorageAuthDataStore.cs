@@ -1,10 +1,9 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Core;
-using Biz.Models;
 using Serilog;
 using ServiceClients;
-using System;
-using System.Threading.Tasks;
 
 namespace Biz.Authentication;
 
@@ -20,12 +19,12 @@ public class SecureStorageAuthDataStore : IAuthDataStore
     {
         this.secureStorage = secureStorage;
     }
-    
-    public async Task RestoreAuthDataAsync()
+
+    public void RestoreAuthData()
     {
         try
         {
-            var json = await secureStorage.GetAsync(AuthDataKey);
+            var json = secureStorage.Get(AuthDataKey);
             if (!string.IsNullOrEmpty(json))
             {
                 try
@@ -45,11 +44,12 @@ public class SecureStorageAuthDataStore : IAuthDataStore
             Log.Logger.Error(e, "Error restoring auth data");
         }
     }
-
-    public async Task<TokenAndProvider?> GetTokenAndProvider()
+    
+    
+    public TokenAndProvider? GetTokenAndProvider()
     {
         if (Data == null)
-            await RestoreAuthDataAsync();
+            RestoreAuthData();
         if (Data == null)
             return null;
 

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Biz.Authentication;
-using Biz.Shared.Services;
 using CloudNimble.BlazorEssentials.IndexedDb;
 using JetBrains.Annotations;
 using Microsoft.JSInterop;
@@ -36,9 +35,9 @@ public class WasmSecureStorage : ISafeStorage
         await db.OpenAsync();
     }
 
-    public async Task<string?> GetAsync(string key)
+    public string? Get(string key)
     {
-        var item = await db.KeyValueStore!.GetAsync<string, KeyValueItem>(key);
+        var item = db.KeyValueStore!.GetAsync<string, KeyValueItem>(key).Result;
         return item?.Value;
     }
 

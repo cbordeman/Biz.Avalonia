@@ -25,13 +25,7 @@ public partial class App : Application
             PlatformHelper.PlatformService?.InitializePlatform();
             
             var authService = Locator.Current.Resolve<IAuthenticationService>();
-            authService
-                .InitializeAsync()
-                .ContinueWith(t =>
-                {
-                    if (t.IsFaulted)
-                        throw t.Exception;
-                });
+            authService.Initialize();
         }
         catch (TypeResolutionFailedException tx)
         {

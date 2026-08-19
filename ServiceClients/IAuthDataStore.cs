@@ -2,9 +2,9 @@
 
 public interface IAuthDataStore
 {
-    Task<TokenAndProvider?> GetTokenAndProvider();
+    TokenAndProvider? GetTokenAndProvider();
     AuthData? Data { get; set; }
-    Task RestoreAuthDataAsync();
+    void RestoreAuthData();
     Task SaveAuthDataAsync();
     void RemoveAuthData();
 }

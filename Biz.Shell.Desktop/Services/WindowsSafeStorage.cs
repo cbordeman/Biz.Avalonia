@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using Biz.Authentication;
-using Biz.Shared.Services;
 
 namespace Biz.Shell.Desktop.Services;
 
@@ -23,9 +18,9 @@ public class WindowsSafeStorage : ISafeStorage
         storageFilePath = Path.Combine(appFolder, "securestorage.json");
     }
 
-    public async Task<string?> GetAsync(string key)
+    public string? Get(string key)
     {
-        await LoadCacheAsync();
+        LoadCache();
         lock (lockObj)
             if (cache != null && cache.Data.TryGetValue(key, out var value))
                 return value;
@@ -35,7 +30,7 @@ public class WindowsSafeStorage : ISafeStorage
 
     public async Task SetAsync(string key, string value)
     {
-        await LoadCacheAsync();
+        LoadCache();
         lock (lockObj)
         {
             if (cache == null)
@@ -67,7 +62,7 @@ public class WindowsSafeStorage : ISafeStorage
         _ = SaveCacheAsync();
     }
 
-    async Task LoadCacheAsync()
+    void LoadCache()
     {
         if (cache != null)
             return;
@@ -77,7 +72,7 @@ public class WindowsSafeStorage : ISafeStorage
             try
             {
                 using var stream = File.OpenRead(storageFilePath);
-                cache = await JsonSerializer.DeserializeAsync<StorageData>(stream) 
+                cache = JsonSerializer.Deserialize<StorageData>(stream) 
                         ?? new StorageData();
             }
             catch

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Biz.Authentication;
-using Biz.Shared.Services;
 using Security;
 using Foundation;
 
@@ -12,7 +11,7 @@ public class iOsSafeStorage : ISafeStorage
 {
     const string ServiceId = "com.biz.app";
 
-    public Task<string?> GetAsync(string key)
+    public string? Get(string key)
     {
         var query = new SecRecord(SecKind.GenericPassword)
         {
@@ -25,10 +24,10 @@ public class iOsSafeStorage : ISafeStorage
         {
             var result = NSString.FromData(match.ValueData!, 
                 NSStringEncoding.UTF8);
-            return Task.FromResult<string?>(result);
+            return result;
         }
 
-        return Task.FromResult<string?>(null);
+        return null;
     }
 
     public Task SetAsync(string key, string value)

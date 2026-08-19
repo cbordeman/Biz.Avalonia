@@ -12,7 +12,7 @@ public interface ISafeStorage
     /// </summary>
     /// <param name="key">The key to retrieve the value for.</param>
     /// <returns>The decrypted string value or <see langword="null"/> if a value was not found.</returns>
-    Task<string?> GetAsync(string key);
+    string? Get(string key);
 
     /// <summary>
     /// Sets and encrypts a value for a given key.

@@ -1,9 +1,6 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using Core;
-using Biz.Models;
 using JetBrains.Annotations;
 
 namespace ServiceClients;
@@ -23,7 +20,7 @@ public class ServicesAuthHeaderHandler
         HttpRequestMessage request, 
         CancellationToken cancellationToken)
     {
-        var tokenAndProvider = await authDataStore.GetTokenAndProvider();
+        var tokenAndProvider = authDataStore.GetTokenAndProvider();
         
         if (tokenAndProvider == null)
         {

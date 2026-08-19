@@ -9,7 +9,7 @@ namespace Biz.Authentication
 {
     public interface IAuthenticationService
     {
-        Task InitializeAsync();
+        void Initialize();
         
         Task<(bool isLoggedIn, Tenant[]? availableTenants, string? error)>
             LoginWithProviderAsync(
