@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0-android</TargetFramework>
-    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>35</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <ApplicationId>com.CompanyName.Biz.Shell</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
@@ -33,10 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Android" Version="11.3.8" />
+    <PackageReference Include="Avalonia" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Android" Version="12.1.1" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.87.0" />
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0" />
-    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.11" />
+    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="2.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

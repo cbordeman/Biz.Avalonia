@@ -4,7 +4,7 @@ using ShadUI;
 
 namespace Biz.Shared.Services;
 
-public class ShadUiDialogService(ModuleManager moduleManager,
+public class ShadUiDialogService(IModuleManager moduleManager,
     DialogManager dialogManager) 
     : BaseDialogService
 {

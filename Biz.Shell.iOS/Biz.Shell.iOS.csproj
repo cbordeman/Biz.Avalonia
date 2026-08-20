@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0-ios</TargetFramework>
+    <TargetFramework>net10.0-ios</TargetFramework>
     <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <AssemblyName>Biz.Shell.iOS</AssemblyName>
@@ -21,8 +21,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.iOS" Version="11.3.2" />    
-    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
+    <PackageReference Include="Avalonia.iOS" Version="12.1.1" />
+    <PackageReference Include="Lucide.Avalonia" Version="0.2.18" />
+    <PackageReference Include="Responsive.Avalonia" Version="0.2.0" />    
+    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="2.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>    

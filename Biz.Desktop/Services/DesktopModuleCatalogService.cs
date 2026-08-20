@@ -13,11 +13,11 @@ public class DesktopModuleCatalogService : IPlatformModuleCatalogService
             return;
         
         var matches1 = moduleIndex.AddModuleFilesDirectory(
-            rootDir: "../../../../Biz.Modules.AccountManagement/bin/Debug/net9.0",
+            rootDir: "../../../../Biz.Modules.AccountManagement/bin/Debug/net10.0",
             includeSpec: "*.Modules.*.dll",
             excludeSpecs: "*.Core.dll");
         var matches2 = moduleIndex.AddModuleFilesDirectory(
-            rootDir: "../../../../Biz.Modules.Dashboard/bin/Debug/net9.0",
+            rootDir: "../../../../Biz.Modules.Dashboard/bin/Debug/net10.0",
             includeSpec: "*.Modules.*.dll",
             excludeSpecs: "*.Core.dll");
     }

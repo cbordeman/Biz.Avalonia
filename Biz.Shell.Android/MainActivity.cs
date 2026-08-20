@@ -19,7 +19,7 @@ namespace Biz.Shell.Android;
     Icon = "@drawable/icon",
     MainLauncher = true,
     ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
-public class MainActivity : AvaloniaMainActivity<App>
+public class MainActivity : AvaloniaMainActivity
 {
     public static Context Context = null!;
     public static Func<Activity>? GetActivity;
@@ -44,12 +44,6 @@ public class MainActivity : AvaloniaMainActivity<App>
         }
     }
 
-    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
-    {
-        return base.CustomizeAppBuilder(builder)
-            .WithInterFont();
-    }
-    
     protected override void OnActivityResult(
         int requestCode, 
         Result resultCode, 

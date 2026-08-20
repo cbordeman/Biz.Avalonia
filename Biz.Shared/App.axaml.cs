@@ -29,13 +29,15 @@ public partial class App : Application
         }
         catch (TypeResolutionFailedException tx)
         {
-            Console.WriteLine($"Failed to resolve type:\n{tx.GetBaseException()}");
-            Environment.Exit(-1);
+            throw;
+            //Console.WriteLine($"Failed to resolve type:\n{tx.GetBaseException()}");
+            //Environment.Exit(-1);
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Failed to initialize application:\n{e}");
-            Environment.Exit(1);
+            throw;
+            //Console.WriteLine($"Failed to initialize application:\n{e}");
+            //Environment.Exit(1);
         }
     }
 
@@ -46,7 +48,7 @@ public partial class App : Application
         // Avoid duplicate validations from both Avalonia and the
         // CommunityToolkit.  More info:
         // https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-        DisableAvaloniaDataAnnotationValidation();
+        //DisableAvaloniaDataAnnotationValidation();
         
         base.OnFrameworkInitializationCompleted();
     }
@@ -120,14 +122,14 @@ public partial class App : Application
         // Dialogs, etc. 
     }
     
-    void DisableAvaloniaDataAnnotationValidation()
-    {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+    //void DisableAvaloniaDataAnnotationValidation()
+    //{
+    //    // Get an array of plugins to remove
+    //    var dataValidationPluginsToRemove =
+    //        BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-            BindingPlugins.DataValidators.Remove(plugin);
-    }
+    //    // remove each entry found
+    //    foreach (var plugin in dataValidationPluginsToRemove)
+    //        BindingPlugins.DataValidators.Remove(plugin);
+    //}
 }
