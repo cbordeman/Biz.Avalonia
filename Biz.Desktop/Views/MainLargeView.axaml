@@ -14,12 +14,12 @@
     xmlns:viewModels1="clr-namespace:Biz.Shared.ViewModels;assembly=Biz.Shared"
     xmlns:views1="clr-namespace:Biz.Shared.Views;assembly=Biz.Shared"
     x:Name="Root"
-	d:DesignHeight="450"
+    d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="viewModels:MainLargeViewModel"
     mc:Ignorable="d">
-	<!--x:TypeArguments="viewModels:MainLargeViewModel"-->
-	<Panel>
+    <!--  x:TypeArguments="viewModels:MainLargeViewModel"  -->
+    <Panel>
         <Grid ColumnDefinitions="Auto,*">
             <shadui:Sidebar
                 Grid.Column="0"
@@ -37,6 +37,7 @@
                         Name="Toggler"
                         Width="36"
                         Height="36"
+                        Margin="0,8,0,0"
                         Padding="8"
                         HorizontalAlignment="{Binding IsDrawerOpen,
                                                       Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
@@ -51,10 +52,10 @@
 
                 <!--  sidebar items  -->
                 <ScrollViewer
-					IsVisible="{Binding AuthService.IsLoggedIn}"
                     DockPanel.Dock="Top"
                     HorizontalScrollBarVisibility="Disabled"
-                     VerticalScrollBarVisibility="Auto">
+                    IsVisible="{Binding AuthService.IsLoggedIn}"
+                    VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding SidebarHeaders}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -158,6 +159,7 @@
                 <ItemsControl
                     Grid.Row="0"
                     Grid.Column="1"
+                    Height="32"
                     Margin="0,0,8,0"
                     BorderThickness="0"
                     Focusable="False"
@@ -208,13 +210,13 @@
 
                 <!--  Profile button and menu on right  -->
                 <Menu
-					IsVisible="{Binding AuthService.IsLoggedIn}"
                     Name="ProfileMenu"
                     Grid.Row="0"
                     Grid.Column="2"
                     Margin="20,0,8,0"
                     Padding="0"
-                    Classes="Single">
+                    Classes="Single"
+                    IsVisible="{Binding AuthService.IsLoggedIn}">
 
                     <!--  Main item with profile pic on it  -->
                     <MenuItem
@@ -228,7 +230,6 @@
                         ItemsSource="{Binding ProfileMenu}">
                         <MenuItem.Header>
                             <Border
-                                Height="32"
                                 Padding="4"
                                 BorderBrush="{DynamicResource BorderColor}"
                                 BorderThickness="1"
