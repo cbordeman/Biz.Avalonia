@@ -50,8 +50,7 @@
                 </shadui:Sidebar.Header>
 
                 <!--  sidebar items  -->
-                <!--  IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"  -->
-				<ScrollViewer
+                <ScrollViewer
 					IsVisible="{Binding AuthService.IsLoggedIn}"
                     DockPanel.Dock="Top"
                     HorizontalScrollBarVisibility="Disabled"
@@ -65,10 +64,6 @@
                         <ItemsControl.ItemTemplate>
                             <TreeDataTemplate DataType="viewModels1:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
                                 <StackPanel Spacing="0">
-
-                                    <!--  IsVisible="{Binding Header,  -->
-                                    <!--  Converter={x:Static ObjectConverters.IsNotNull}}"  -->
-                                    <!--  IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"  -->
                                     <shadui:SidebarItemLabel
                                         AsSeparator="True"
                                         IsVisible="{Binding Header,
@@ -212,8 +207,7 @@
 
 
                 <!--  Profile button and menu on right  -->
-                <!--  IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"  -->
-				<Menu
+                <Menu
 					IsVisible="{Binding AuthService.IsLoggedIn}"
                     Name="ProfileMenu"
                     Grid.Row="0"
