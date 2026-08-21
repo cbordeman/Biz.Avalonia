@@ -11,7 +11,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="viewModels:LoginViewModel"
-    x:TypeArguments="viewModels:LoginViewModel"
+    
     mc:Ignorable="d">
 
     <!-- <Border BorderBrush="BlueViolet" BorderThickness="10"> -->

@@ -4,9 +4,10 @@ using Services_IFormFactorService = Biz.Shared.Services.IFormFactorService;
 
 namespace Biz.Shared.Views;
 
-public class FormFactorAwareUserControl<TViewModel> 
-    : UserControlEx<TViewModel>, IDisposable 
-    where TViewModel : class
+public class FormFactorAwareUserControl : UserControlEx, IDisposable
+//<TViewModel> 
+//: UserControlEx<TViewModel>, IDisposable 
+//where TViewModel : class
 {
     Services_IFormFactorService? formFactorService;
     TopLevel? topLevel;

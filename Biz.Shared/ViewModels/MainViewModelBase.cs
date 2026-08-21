@@ -16,17 +16,19 @@ public abstract class MainViewModelBase
 {
     protected readonly IMainNavigationService MainContentNavigationService;
 
+    public bool IsLoggedIn { get => field; set => SetProperty(ref field, value); }
+
     public IAuthenticationService AuthService
     {
         get => field;
         init => SetProperty(ref field, value);
     }
-    
+
     // This must be public so MainWindow can bind to its DialogHost property.
     public IDialogService DialogService { get; }
-    
+
     public List<BaseMenuItemViewModel>? ProfileMenu { get; set; }
-    
+
     #region IsDrawerOpen
     public bool IsDrawerOpen
     {
@@ -64,25 +66,26 @@ public abstract class MainViewModelBase
     protected MainViewModelBase()
     {
         DialogService = Locator.Current.Resolve<IDialogService>();
-        
+
         ToastManager = Locator.Current.Resolve<ToastManager>();
-        
+
         AuthService = Locator.Current.Resolve<IAuthenticationService>();
         AuthService.AuthenticationStateChanged.Subscribe(async () =>
         {
+            IsLoggedIn = AuthService.IsLoggedIn;
             await BuildProfileMenu();
         });
 
         MainContentNavigationService =
             Locator.Current.Resolve<IMainNavigationService>();
-        MainContentNavigationService.PageChanged.Subscribe( 
+        MainContentNavigationService.PageChanged.Subscribe(
             MainContentRegionNavigationServiceOnPageChanged);
     }
 
     Task BuildProfileMenu()
     {
         ProfileMenu = new List<BaseMenuItemViewModel>();
-        
+
         // Add profile or sign in / register commands
         if (AuthService.CurrentUser != null)
         {
@@ -118,7 +121,7 @@ public abstract class MainViewModelBase
     {
         CurrentArea = args.Area.Split('.').FirstOrDefault();
         CurrentPage = args.Page;
-   
+
         return Task.CompletedTask;
     }
 
@@ -166,8 +169,8 @@ public abstract class MainViewModelBase
     #endregion ToggleIsDrawerOpenCommand
 
     #region NavigateSettingsCommand
-    public AsyncRelayCommand? NavigateSettingsCommand => field ??= 
-        new AsyncRelayCommand(ExecuteNavigateSettingsCommand, 
+    public AsyncRelayCommand? NavigateSettingsCommand => field ??=
+        new AsyncRelayCommand(ExecuteNavigateSettingsCommand,
             CanNavigateSettingsCommand);
     static bool CanNavigateSettingsCommand() => true;
     async Task ExecuteNavigateSettingsCommand()
@@ -209,20 +212,20 @@ public abstract class MainViewModelBase
             var navigation = Locator.Current
                 .Resolve<ISectionNavigationService>();
             navigation.Initialize(SectionNames.MainContentSection);
-             
+
             // This executes after regions are loaded.
             MainContentNavigationService.Initialize();
-        
+
             await MainContentNavigationService.NavigateWithModuleAsync(
                 DashboardConstants.ModuleName,
                 DashboardConstants.DashboardView);
-            
+
             await BuildProfileMenu();
         }
         catch (Exception e)
         {
-            Log.Logger.Error(e, 
-                "In {ClassName}.{MethodName}: {EMessage}", 
+            Log.Logger.Error(e,
+                "In {ClassName}.{MethodName}: {EMessage}",
                 nameof(MainViewModelBase), nameof(OnViewLoaded), e.Message);
         }
     }

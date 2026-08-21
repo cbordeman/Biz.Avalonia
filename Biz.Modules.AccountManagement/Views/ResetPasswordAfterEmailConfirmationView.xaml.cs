@@ -4,7 +4,7 @@ using Biz.Modules.AccountManagement.ViewModels;
 namespace Biz.Modules.AccountManagement.Views;
 
 public partial class ResetPasswordAfterEmailConfirmationView 
-    : FormFactorAwareUserControl<ResetPasswordAfterEmailConfirmationViewModel>
+    : FormFactorAwareUserControl
 {
     public ResetPasswordAfterEmailConfirmationView()
     {

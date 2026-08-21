@@ -4,7 +4,7 @@ using Biz.Shared.Views;
 namespace Biz.Modules.AccountManagement.Views;
 
 public partial class LoginView 
-    : FormFactorAwareUserControl<LoginViewModel>
+    : FormFactorAwareUserControl
 {
     public LoginView() : base()
     {

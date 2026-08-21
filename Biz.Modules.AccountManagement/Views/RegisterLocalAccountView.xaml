@@ -11,7 +11,6 @@
     xmlns:vm="clr-namespace:Biz.Modules.AccountManagement.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="500"
-    x:TypeArguments="vm:RegisterLocalAccountViewModel"
     mc:Ignorable="d">
 
     <!-- <Grid Margin="20"> -->

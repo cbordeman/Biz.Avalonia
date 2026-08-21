@@ -14,13 +14,12 @@
     xmlns:viewModels1="clr-namespace:Biz.Shared.ViewModels;assembly=Biz.Shared"
     xmlns:views1="clr-namespace:Biz.Shared.Views;assembly=Biz.Shared"
     x:Name="Root"
-    d:DesignHeight="450"
+	d:DesignHeight="450"
     d:DesignWidth="800"
-    x:CompileBindings="True"
     x:DataType="viewModels:MainLargeViewModel"
-    x:TypeArguments="viewModels:MainLargeViewModel"
     mc:Ignorable="d">
-    <Panel>
+	<!--x:TypeArguments="viewModels:MainLargeViewModel"-->
+	<Panel>
         <Grid ColumnDefinitions="Auto,*">
             <shadui:Sidebar
                 Grid.Column="0"
@@ -51,10 +50,12 @@
                 </shadui:Sidebar.Header>
 
                 <!--  sidebar items  -->
-                <ScrollViewer
+                <!--  IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"  -->
+				<ScrollViewer
+					IsVisible="{Binding AuthService.IsLoggedIn}"
                     DockPanel.Dock="Top"
                     HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto">
+                     VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding SidebarHeaders}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -65,6 +66,9 @@
                             <TreeDataTemplate DataType="viewModels1:SidebarHeaderViewModel" ItemsSource="{Binding Children}">
                                 <StackPanel Spacing="0">
 
+                                    <!--  IsVisible="{Binding Header,  -->
+                                    <!--  Converter={x:Static ObjectConverters.IsNotNull}}"  -->
+                                    <!--  IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"  -->
                                     <shadui:SidebarItemLabel
                                         AsSeparator="True"
                                         IsVisible="{Binding Header,
@@ -84,7 +88,6 @@
                                                     Command="{Binding Command}"
                                                     CommandParameter="{Binding}"
                                                     Content="{Binding DisplayName}"
-                                                    IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn}"
                                                     Route="{Binding ViewName}"
                                                     ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded,
                                                                           Converter={x:Static converters:BooleanConverters.NullOrString},
@@ -209,13 +212,16 @@
 
 
                 <!--  Profile button and menu on right  -->
-                <Menu
+                <!--  IsVisible="{Binding #Root.ViewModel.IsLoggedIn}"  -->
+				<Menu
+					IsVisible="{Binding AuthService.IsLoggedIn}"
                     Name="ProfileMenu"
                     Grid.Row="0"
                     Grid.Column="2"
                     Margin="20,0,8,0"
                     Padding="0"
                     Classes="Single">
+
                     <!--  Main item with profile pic on it  -->
                     <MenuItem
                         Padding="0"
@@ -228,6 +234,7 @@
                         ItemsSource="{Binding ProfileMenu}">
                         <MenuItem.Header>
                             <Border
+                                Height="32"
                                 Padding="4"
                                 BorderBrush="{DynamicResource BorderColor}"
                                 BorderThickness="1"
@@ -256,21 +263,21 @@
                                                                 Margin="0,0,8,0"
                                                                 CornerRadius="9999"
                                                                 Fallback="U"
-                                                                Source="{Binding #Root.ViewModel.AuthService.CurrentUser.Initials}" />
+                                                                Source="{Binding #Root.DataContext.AuthService.CurrentUser.Initials}" />
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                                 <StackPanel VerticalAlignment="Center">
-                                                                    <TextBlock Classes="Small" Text="{Binding #Root.ViewModel.AuthService.CurrentUser.Name}" />
+                                                                    <TextBlock Classes="Small" Text="{Binding #Root.DataContext.AuthService.CurrentUser.Name}" />
                                                                     <TextBlock
                                                                         Margin="0,-4,0,0"
                                                                         Classes="Caption"
-                                                                        Text="{Binding #Root.ViewModel.AuthService.CurrentUser.Tenant.Name}" />
+                                                                        Text="{Binding #Root.DataContext.AuthService.CurrentUser.Tenant.Name}" />
                                                                     <HyperlinkButton
                                                                         Margin="0,-4,0,0"
                                                                         Classes="Caption"
-                                                                        Content="{Binding #Root.ViewModel.AuthService.CurrentUser.Email}"
-                                                                        NavigateUri="{Binding #Root.ViewModel.AuthService.CurrentUser.EmailLink}" />
+                                                                        Content="{Binding #Root.DataContext.AuthService.CurrentUser.Email}"
+                                                                        NavigateUri="{Binding #Root.DataContext.AuthService.CurrentUser.EmailLink}" />
                                                                 </StackPanel>
                                                             </Grid>
                                                         </MenuItem.Header>
