@@ -37,7 +37,6 @@
                         Name="Toggler"
                         Width="36"
                         Height="36"
-                        Margin="0,8,0,0"
                         Padding="8"
                         HorizontalAlignment="{Binding IsDrawerOpen,
                                                       Converter={x:Static converters:BooleanConverters.SidebarTogglerHorizontalAlignment}}"
