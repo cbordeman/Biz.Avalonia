@@ -18,7 +18,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Biz.Shared\Biz.Shared.csproj" />
-      <ProjectReference Include="..\shad-ui\src\ShadUI\ShadUI.csproj" />
     </ItemGroup>
 
     <ItemGroup>

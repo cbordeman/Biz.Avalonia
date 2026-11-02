@@ -27,6 +27,7 @@
         <PackageReference Include="Responsive.Avalonia" Version="0.2.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+        <PackageReference Include="ShadUI" Version="0.2.4" />
         <PackageReference Include="Shouldly" Version="4.3.0" />
         <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="2.3.0">
             <PrivateAssets>all</PrivateAssets>
@@ -42,7 +43,6 @@
         <ProjectReference Include="..\CompositeFramework.Modules\CompositeFramework.Modules.csproj" />
         <ProjectReference Include="..\CompositeFramework.Avalonia\CompositeFramework.Avalonia.csproj" />
         <ProjectReference Include="..\ServiceClients\ServiceClients.csproj" />
-        <ProjectReference Include="..\shad-ui\src\ShadUI\ShadUI.csproj" />
     </ItemGroup>
 
     <ItemGroup>

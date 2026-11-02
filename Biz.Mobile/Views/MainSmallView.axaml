@@ -17,7 +17,6 @@
     d:DesignWidth="800"
     x:CompileBindings="True"
     x:DataType="viewModels:MainSmallViewModel"
-    x:TypeArguments="viewModels:MainSmallViewModel"
     mc:Ignorable="d">
     <Grid
         Background="{DynamicResource MainBackgroundColor}"
@@ -126,7 +125,7 @@
                                                              ConverterParameter='{Binding CommandParameter}'}"
                                         BorderThickness="0"
                                         Command="{Binding Command}"
-                                        IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn}">
+                                        IsVisible="{Binding #Root.DataContext.AuthService.IsLoggedIn}">
                                         <StackPanel Orientation="Horizontal">
                                             <PathIcon VerticalAlignment="Center" Data="{Binding GeometryStyleResourceName, Converter={x:Static converters:StringConverters.AppStyleResource}, ConverterParameter='{Binding GeometryStyleResourceName}'}" />
                                             <TextBlock
@@ -151,7 +150,7 @@
                                                      ConverterParameter='SettingsView'}"
                                 BorderThickness="0"
                                 Command="{Binding NavigateSettingsCommand}"
-                                IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn}">
+                                IsVisible="{Binding #Root.DataContext.AuthService.IsLoggedIn}">
                                 <StackPanel Orientation="Horizontal">
                                     <PathIcon VerticalAlignment="Center" Data="{StaticResource gear}" />
                                     <TextBlock
@@ -170,7 +169,7 @@
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Command="{Binding LogoutCommand}"
-                                IsVisible="{Binding #Root.ViewModel.AuthService.IsLoggedIn,
+                                IsVisible="{Binding #Root.DataContext.AuthService.IsLoggedIn,
                                                     Converter='{x:Static converters:BooleanConverters.Reverse}'}">
                                 <StackPanel Orientation="Horizontal">
                                     <PathIcon VerticalAlignment="Center" Data="{StaticResource leave}" />
