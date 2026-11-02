@@ -1,0 +1,45 @@
+<Solution>
+  <Folder Name="/Client/">
+    <Project Path="Biz.Shared/Biz.Shared.csproj" />
+    <Project Path="ServiceClients/ServiceClients.csproj" />
+  </Folder>
+  <Folder Name="/Client/CompositeFramework/">
+    <Project Path="CompositeFramework.Avalonia/CompositeFramework.Avalonia.csproj" />
+    <Project Path="CompositeFramework.Core/CompositeFramework.Core.csproj" />
+    <Project Path="CompositeFramework.Modules/CompositeFramework.Modules.csproj" />
+  </Folder>
+  <Folder Name="/Client/Form Factors/">
+    <Project Path="Biz.Desktop/Biz.Desktop.csproj">
+      <BuildDependency Project="Biz.Modules.AccountManagement/Biz.Modules.AccountManagement.csproj" />
+      <BuildDependency Project="Biz.Modules.Dashboard/Biz.Modules.Dashboard.csproj" />
+    </Project>
+    <Project Path="Biz.Mobile/Biz.Mobile.csproj" />
+  </Folder>
+  <Folder Name="/Client/Modules/" />
+  <Folder Name="/Client/Modules/AccountManagement/">
+    <Project Path="Biz.Modules.AccountManagement.Core/Biz.Modules.AccountManagement.Core.csproj" />
+    <Project Path="Biz.Modules.AccountManagement/Biz.Modules.AccountManagement.csproj" />
+  </Folder>
+  <Folder Name="/Client/Modules/Dashboard/">
+    <Project Path="Biz.Modules.Dashboard.Core/Biz.Modules.Dashboard.Core.csproj" />
+    <Project Path="Biz.Modules.Dashboard/Biz.Modules.Dashboard.csproj" />
+  </Folder>
+  <Folder Name="/Client/Platforms/">
+    <Project Path="Biz.Shell.Android/Biz.Shell.Android.csproj">
+      <Deploy />
+    </Project>
+    <Project Path="Biz.Shell.Browser/Biz.Shell.Browser.csproj" />
+    <Project Path="Biz.Shell.Desktop/Biz.Shell.Desktop.csproj" />
+    <Project Path="Biz.Shell.iOS/Biz.Shell.iOS.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Server/">
+    <Project Path="Data/Data.csproj" />
+    <Project Path="Services/Services.csproj" />
+  </Folder>
+  <Project Path="Biz.Authentication/Biz.Authentication.csproj" />
+  <Project Path="Biz.Configuration/Biz.Configuration.csproj" />
+  <Project Path="Core/Core.csproj" />
+  <Project Path="Models/Models.csproj" />
+</Solution>
